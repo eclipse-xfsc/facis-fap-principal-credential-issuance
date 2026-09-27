@@ -233,7 +233,7 @@ if [[ -z "$KC_PUBLIC" ]]; then KC_HOST="$("${K[@]}" -n "$OCM_NS" get ingress -o 
 KC_INTERNAL="${KC_INTERNAL%/}"; KC_PUBLIC="${KC_PUBLIC%/}"
 
 PROVIDER_PASSWORD="$(read_secret_key "$ORCE_NS" fap-pci-runtime PCI_BOOTSTRAP_PROVIDER_PASSWORD)"; [[ -n "$PROVIDER_PASSWORD" ]] || {            [[ -n "$PROVIDER_PASSWORD_FILE" ]]&&PROVIDER_PASSWORD="$(<"$PROVIDER_PASSWORD_FILE")"||PROVIDER_PASSWORD="$(openssl rand -base64 32|tr -d '\n')"; }
-VERIFY_PEPPER="$(preserve_or_generate PCI_VERIFICATION_TOKEN_PEPPER 'openssl rand -hex 32')"; INTERNAL_TOKEN="$(preserve_or_generate PCI_INTERNAL_SERVICE_TOKEN 'openssl rand -hex 32')"; POSTGRES_PASSWORD="$(preserve_or_generate PCI_POSTGRES_PASSWORD 'openssl rand -base64 32|tr -d "\n"|tr "/+" "_-"')"; SMTP_RELAY_PASSWORD=""; [[ -z "$SMTP_RELAY_PASSWORD_FILE" ]]||SMTP_RELAY_PASSWORD="$(<"$SMTP_RELAY_PASSWORD_FILE")"; [[ "$DB_MODE" != managed ]]||DB_URL="postgresql://fap_pci:${POSTGRES_PASSWORD}@fap-pci-postgres.${ORCE_NS}.svc.cluster.local:5432/fap_pci"
+VERIFY_PEPPER="$(preserve_or_generate PCI_VERIFICATION_TOKEN_PEPPER 'openssl rand -hex 32')"; INTERNAL_TOKEN="$(preserve_or_generate PCI_INTERNAL_SERVICE_TOKEN 'openssl rand -hex 32')"; POSTGRES_PASSWORD="$(read_secret_key "$ORCE_NS" fap-pci-runtime PCI_POSTGRES_PASSWORD)"; [[ -n "$POSTGRES_PASSWORD" ]] || POSTGRES_PASSWORD="$(read_secret_key "$ORCE_NS" fap-pci-managed-postgres password)"; [[ -n "$POSTGRES_PASSWORD" ]] || POSTGRES_PASSWORD="$(openssl rand -base64 32|tr -d "\n"|tr "/+" "_-")"; SMTP_RELAY_PASSWORD=""; [[ -z "$SMTP_RELAY_PASSWORD_FILE" ]]||SMTP_RELAY_PASSWORD="$(<"$SMTP_RELAY_PASSWORD_FILE")"; [[ "$DB_MODE" != managed ]]||DB_URL="postgresql://fap_pci:${POSTGRES_PASSWORD}@fap-pci-postgres.${ORCE_NS}.svc.cluster.local:5432/fap_pci"
 
 log "Prepare persistent ORCE /data and Function-node prerequisites"
 CURRENT_DATA_VOLUME="$(jq -r --arg c "$ORCE_CONTAINER" '.spec.template.spec.containers[]|select(.name==$c)|[.volumeMounts[]?|select(.mountPath=="/data")|.name][0]//empty'<<<"$DEPLOY_JSON")"; CURRENT_DATA_CLAIM="$(jq -r --arg v "$CURRENT_DATA_VOLUME" '.spec.template.spec.volumes[]?|select(.name==$v)|.persistentVolumeClaim.claimName//empty'<<<"$DEPLOY_JSON")"; DATA_CLAIM="${CURRENT_DATA_CLAIM:-$ORCE_DATA_PVC}"; DATA_VOLUME="${CURRENT_DATA_VOLUME:-fap-pci-data}"
@@ -406,7 +406,7 @@ spec:
   podSelector: {matchLabels: {app.kubernetes.io/name: fap-pci-mailpit}}
   policyTypes: [Ingress]
   ingress:
-  - {from: [{podSelector: {}}], ports: [{protocol: TCP, port: 1025}]}
+  - {from: [{podSelector: {}}, {namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: ${OCM_NS}}}}], ports: [{protocol: TCP, port: 1025}]}
   - {from: [{namespaceSelector: {matchLabels: {kubernetes.io/metadata.name: ${ENVOY_NS}}}}], ports: [{protocol: TCP, port: 8025}]}
 ---
 apiVersion: networking.k8s.io/v1

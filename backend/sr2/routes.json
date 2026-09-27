@@ -1,0 +1,623 @@
+[
+  {
+    "key": "issuer-admin",
+    "label": "M8_PCI-IssuerAdministration",
+    "route": "issuer-admin",
+    "functionFile": "issuer-admin.js",
+    "includeK8s": false,
+    "sr2": true,
+    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "routes": [
+      [
+        "issuer-admin-0",
+        "GET /api/v1/tenants/:tenantId/credential-configurations",
+        "get",
+        "/api/v1/tenants/:tenantId/credential-configurations",
+        "config.list"
+      ],
+      [
+        "issuer-admin-1",
+        "POST /api/v1/tenants/:tenantId/credential-configurations",
+        "post",
+        "/api/v1/tenants/:tenantId/credential-configurations",
+        "config.create"
+      ],
+      [
+        "issuer-admin-2",
+        "GET /api/v1/tenants/:tenantId/credential-configurations/:configurationId",
+        "get",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId",
+        "config.get"
+      ],
+      [
+        "issuer-admin-3",
+        "PATCH /api/v1/tenants/:tenantId/credential-configurations/:configurationId",
+        "patch",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId",
+        "config.update"
+      ],
+      [
+        "issuer-admin-4",
+        "POST /api/v1/tenants/:tenantId/credential-configurations/:configurationId/publish",
+        "post",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/publish",
+        "config.publish"
+      ],
+      [
+        "issuer-admin-5",
+        "POST /api/v1/tenants/:tenantId/credential-configurations/:configurationId/preview",
+        "post",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/preview",
+        "config.preview"
+      ],
+      [
+        "issuer-admin-6",
+        "POST /api/v1/tenants/:tenantId/credential-configurations/:configurationId/rollback",
+        "post",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/rollback",
+        "config.rollback"
+      ],
+      [
+        "issuer-admin-7",
+        "GET /api/v1/tenants/:tenantId/credential-configurations/:configurationId/versions",
+        "get",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/versions",
+        "config.versions"
+      ],
+      [
+        "issuer-admin-8",
+        "DELETE /api/v1/tenants/:tenantId/credential-configurations/:configurationId",
+        "delete",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId",
+        "config.archive"
+      ],
+      [
+        "issuer-admin-9",
+        "POST /api/v1/tenants/:tenantId/credential-configurations/:configurationId/validate",
+        "post",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/validate",
+        "config.validate"
+      ],
+      [
+        "issuer-admin-10",
+        "GET /api/v1/tenants/:tenantId/issuer-capabilities",
+        "get",
+        "/api/v1/tenants/:tenantId/issuer-capabilities",
+        "issuer.capabilities"
+      ],
+      [
+        "issuer-admin-11",
+        "GET /api/v1/tenants/:tenantId/administrators",
+        "get",
+        "/api/v1/tenants/:tenantId/administrators",
+        "assignment.list"
+      ],
+      [
+        "issuer-admin-12",
+        "POST /api/v1/tenants/:tenantId/administrators",
+        "post",
+        "/api/v1/tenants/:tenantId/administrators",
+        "assignment.grant"
+      ],
+      [
+        "issuer-admin-13",
+        "DELETE /api/v1/tenants/:tenantId/administrators/:assignmentId",
+        "delete",
+        "/api/v1/tenants/:tenantId/administrators/:assignmentId",
+        "assignment.revoke"
+      ],
+      [
+        "issuer-admin-14",
+        "POST /api/v1/tenants/:tenantId/assets",
+        "post",
+        "/api/v1/tenants/:tenantId/assets",
+        "asset.create"
+      ],
+      [
+        "issuer-admin-15",
+        "GET /api/v1/tenants/:tenantId/assets",
+        "get",
+        "/api/v1/tenants/:tenantId/assets",
+        "asset.list"
+      ],
+      [
+        "issuer-admin-16",
+        "GET /api/v1/tenants/:tenantId/assets/:assetId",
+        "get",
+        "/api/v1/tenants/:tenantId/assets/:assetId",
+        "asset.get"
+      ],
+      [
+        "issuer-admin-17",
+        "DELETE /api/v1/tenants/:tenantId/assets/:assetId",
+        "delete",
+        "/api/v1/tenants/:tenantId/assets/:assetId",
+        "asset.archive"
+      ],
+      [
+        "issuer-admin-18",
+        "GET /api/v1/public/assets/:assetId",
+        "get",
+        "/api/v1/public/assets/:assetId",
+        "public.asset"
+      ]
+    ]
+  },
+  {
+    "key": "issuer-metadata",
+    "label": "M9_PCI-IssuerMetadata",
+    "route": "issuer-metadata",
+    "functionFile": "issuer-metadata.js",
+    "includeK8s": false,
+    "sr2": true,
+    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "routes": [
+      [
+        "issuer-metadata-0",
+        "GET /api/v1/tenants/:tenantId/issuer-metadata",
+        "get",
+        "/api/v1/tenants/:tenantId/issuer-metadata",
+        "metadata.get"
+      ],
+      [
+        "issuer-metadata-1",
+        "POST /api/v1/tenants/:tenantId/issuer-metadata",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-metadata",
+        "metadata.create"
+      ],
+      [
+        "issuer-metadata-2",
+        "PUT /api/v1/tenants/:tenantId/issuer-metadata",
+        "put",
+        "/api/v1/tenants/:tenantId/issuer-metadata",
+        "metadata.update"
+      ],
+      [
+        "issuer-metadata-3",
+        "POST /api/v1/tenants/:tenantId/issuer-metadata/publish",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-metadata/publish",
+        "metadata.publish"
+      ],
+      [
+        "issuer-metadata-4",
+        "POST /api/v1/tenants/:tenantId/issuer-metadata/preview",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-metadata/preview",
+        "metadata.preview"
+      ],
+      [
+        "issuer-metadata-5",
+        "POST /api/v1/tenants/:tenantId/issuer-metadata/rollback",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-metadata/rollback",
+        "metadata.rollback"
+      ],
+      [
+        "issuer-metadata-6",
+        "GET /api/v1/tenants/:tenantId/issuer-metadata/versions",
+        "get",
+        "/api/v1/tenants/:tenantId/issuer-metadata/versions",
+        "metadata.versions"
+      ],
+      [
+        "issuer-metadata-7",
+        "GET /api/v1/tenants/:tenantId/branding",
+        "get",
+        "/api/v1/tenants/:tenantId/branding",
+        "branding.get"
+      ],
+      [
+        "issuer-metadata-8",
+        "POST /api/v1/tenants/:tenantId/branding",
+        "post",
+        "/api/v1/tenants/:tenantId/branding",
+        "branding.create"
+      ],
+      [
+        "issuer-metadata-9",
+        "PUT /api/v1/tenants/:tenantId/branding",
+        "put",
+        "/api/v1/tenants/:tenantId/branding",
+        "branding.update"
+      ],
+      [
+        "issuer-metadata-10",
+        "POST /api/v1/tenants/:tenantId/branding/publish",
+        "post",
+        "/api/v1/tenants/:tenantId/branding/publish",
+        "branding.publish"
+      ],
+      [
+        "issuer-metadata-11",
+        "POST /api/v1/tenants/:tenantId/branding/preview",
+        "post",
+        "/api/v1/tenants/:tenantId/branding/preview",
+        "branding.preview"
+      ],
+      [
+        "issuer-metadata-12",
+        "POST /api/v1/tenants/:tenantId/branding/rollback",
+        "post",
+        "/api/v1/tenants/:tenantId/branding/rollback",
+        "branding.rollback"
+      ],
+      [
+        "issuer-metadata-13",
+        "GET /api/v1/tenants/:tenantId/branding/versions",
+        "get",
+        "/api/v1/tenants/:tenantId/branding/versions",
+        "branding.versions"
+      ],
+      [
+        "issuer-metadata-14",
+        "GET /api/v1/tenants/:tenantId/issuer-settings",
+        "get",
+        "/api/v1/tenants/:tenantId/issuer-settings",
+        "settings.get"
+      ],
+      [
+        "issuer-metadata-15",
+        "POST /api/v1/tenants/:tenantId/issuer-settings",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-settings",
+        "settings.create"
+      ],
+      [
+        "issuer-metadata-16",
+        "PUT /api/v1/tenants/:tenantId/issuer-settings",
+        "put",
+        "/api/v1/tenants/:tenantId/issuer-settings",
+        "settings.update"
+      ],
+      [
+        "issuer-metadata-17",
+        "POST /api/v1/tenants/:tenantId/issuer-settings/publish",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-settings/publish",
+        "settings.publish"
+      ],
+      [
+        "issuer-metadata-18",
+        "POST /api/v1/tenants/:tenantId/issuer-settings/preview",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-settings/preview",
+        "settings.preview"
+      ],
+      [
+        "issuer-metadata-19",
+        "POST /api/v1/tenants/:tenantId/issuer-settings/rollback",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-settings/rollback",
+        "settings.rollback"
+      ],
+      [
+        "issuer-metadata-20",
+        "GET /api/v1/tenants/:tenantId/issuer-settings/versions",
+        "get",
+        "/api/v1/tenants/:tenantId/issuer-settings/versions",
+        "settings.versions"
+      ],
+      [
+        "issuer-metadata-21",
+        "GET /api/v1/tenants/:tenantId/publication",
+        "get",
+        "/api/v1/tenants/:tenantId/publication",
+        "publication.get"
+      ],
+      [
+        "issuer-metadata-22",
+        "POST /api/v1/tenants/:tenantId/publication",
+        "post",
+        "/api/v1/tenants/:tenantId/publication",
+        "publication.publish"
+      ],
+      [
+        "issuer-metadata-23",
+        "GET /api/v1/public/branding",
+        "get",
+        "/api/v1/public/branding",
+        "public.branding"
+      ]
+    ]
+  },
+  {
+    "key": "flow-management",
+    "label": "M10_PCI-IssuanceFlowManagement",
+    "route": "flow-management",
+    "functionFile": "flow-management.js",
+    "includeK8s": false,
+    "sr2": true,
+    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "routes": [
+      [
+        "flow-management-0",
+        "GET /api/v1/tenants/:tenantId/flows",
+        "get",
+        "/api/v1/tenants/:tenantId/flows",
+        "flow.list"
+      ],
+      [
+        "flow-management-1",
+        "POST /api/v1/tenants/:tenantId/flows",
+        "post",
+        "/api/v1/tenants/:tenantId/flows",
+        "flow.create"
+      ],
+      [
+        "flow-management-2",
+        "GET /api/v1/tenants/:tenantId/flows/:flowId",
+        "get",
+        "/api/v1/tenants/:tenantId/flows/:flowId",
+        "flow.get"
+      ],
+      [
+        "flow-management-3",
+        "PATCH /api/v1/tenants/:tenantId/flows/:flowId",
+        "patch",
+        "/api/v1/tenants/:tenantId/flows/:flowId",
+        "flow.update"
+      ],
+      [
+        "flow-management-4",
+        "POST /api/v1/tenants/:tenantId/flows/:flowId/publish",
+        "post",
+        "/api/v1/tenants/:tenantId/flows/:flowId/publish",
+        "flow.publish"
+      ],
+      [
+        "flow-management-5",
+        "POST /api/v1/tenants/:tenantId/flows/:flowId/preview",
+        "post",
+        "/api/v1/tenants/:tenantId/flows/:flowId/preview",
+        "flow.preview"
+      ],
+      [
+        "flow-management-6",
+        "POST /api/v1/tenants/:tenantId/flows/:flowId/rollback",
+        "post",
+        "/api/v1/tenants/:tenantId/flows/:flowId/rollback",
+        "flow.rollback"
+      ],
+      [
+        "flow-management-7",
+        "GET /api/v1/tenants/:tenantId/flows/:flowId/versions",
+        "get",
+        "/api/v1/tenants/:tenantId/flows/:flowId/versions",
+        "flow.versions"
+      ],
+      [
+        "flow-management-8",
+        "DELETE /api/v1/tenants/:tenantId/flows/:flowId",
+        "delete",
+        "/api/v1/tenants/:tenantId/flows/:flowId",
+        "flow.archive"
+      ]
+    ]
+  },
+  {
+    "key": "issuer-runtime",
+    "label": "M11_PCI-IssuerRuntime",
+    "route": "issuer-runtime",
+    "functionFile": "issuer-runtime.js",
+    "includeK8s": false,
+    "sr2": true,
+    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "routes": [
+      [
+        "issuer-runtime-0",
+        "GET /api/v1/tenants/:tenantId/eligible-configurations",
+        "get",
+        "/api/v1/tenants/:tenantId/eligible-configurations",
+        "issuance.eligible"
+      ],
+      [
+        "issuer-runtime-1",
+        "POST /api/v1/tenants/:tenantId/issuance-requests",
+        "post",
+        "/api/v1/tenants/:tenantId/issuance-requests",
+        "issuance.start"
+      ],
+      [
+        "issuer-runtime-2",
+        "GET /api/v1/tenants/:tenantId/issuance-requests/:requestId",
+        "get",
+        "/api/v1/tenants/:tenantId/issuance-requests/:requestId",
+        "issuance.get"
+      ],
+      [
+        "issuer-runtime-3",
+        "POST /api/v1/tenants/:tenantId/issuance-requests/:requestId/advance",
+        "post",
+        "/api/v1/tenants/:tenantId/issuance-requests/:requestId/advance",
+        "issuance.advance"
+      ],
+      [
+        "issuer-runtime-4",
+        "POST /api/v1/tenants/:tenantId/issuance-requests/:requestId/offer",
+        "post",
+        "/api/v1/tenants/:tenantId/issuance-requests/:requestId/offer",
+        "issuance.offer"
+      ],
+      [
+        "issuer-runtime-5",
+        "POST /api/v1/internal/tenants/:tenantId/offers",
+        "post",
+        "/api/v1/internal/tenants/:tenantId/offers",
+        "internal.offer-create"
+      ],
+      [
+        "issuer-runtime-6",
+        "GET /api/v1/internal/tenants/:tenantId/offers/:requestId",
+        "get",
+        "/api/v1/internal/tenants/:tenantId/offers/:requestId",
+        "internal.offer-get"
+      ],
+      [
+        "issuer-runtime-7",
+        "POST /api/v1/internal/tenants/:tenantId/callbacks",
+        "post",
+        "/api/v1/internal/tenants/:tenantId/callbacks",
+        "internal.callback"
+      ],
+      [
+        "issuer-runtime-8",
+        "PUT /api/v1/internal/tenants/:tenantId/plugin-configuration",
+        "put",
+        "/api/v1/internal/tenants/:tenantId/plugin-configuration",
+        "internal.plugin-put"
+      ],
+      [
+        "issuer-runtime-9",
+        "DELETE /api/v1/internal/tenants/:tenantId/plugin-configuration",
+        "delete",
+        "/api/v1/internal/tenants/:tenantId/plugin-configuration",
+        "internal.plugin-delete"
+      ],
+      [
+        "issuer-runtime-10",
+        "POST /api/v1/internal/tenants/:tenantId/metadata/publish",
+        "post",
+        "/api/v1/internal/tenants/:tenantId/metadata/publish",
+        "internal.metadata-publish"
+      ],
+      [
+        "issuer-runtime-11",
+        "GET /api/v1/internal/tenants/:tenantId/metadata/publication-status",
+        "get",
+        "/api/v1/internal/tenants/:tenantId/metadata/publication-status",
+        "internal.publication-status"
+      ]
+    ],
+    "injects": [
+      [
+        "issuer-maintenance",
+        "Expire requests and reconcile metadata",
+        50,
+        60,
+        "sr2.maintenance"
+      ]
+    ]
+  },
+  {
+    "key": "participant",
+    "label": "M12_PCI-ParticipantIntegration",
+    "route": "participant",
+    "functionFile": "participant.js",
+    "includeK8s": false,
+    "sr2": true,
+    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "routes": [
+      [
+        "participant-0",
+        "GET /api/v1/tenants/:tenantId/participant-connectors",
+        "get",
+        "/api/v1/tenants/:tenantId/participant-connectors",
+        "connector.list"
+      ],
+      [
+        "participant-1",
+        "POST /api/v1/tenants/:tenantId/participant-connectors",
+        "post",
+        "/api/v1/tenants/:tenantId/participant-connectors",
+        "connector.create"
+      ],
+      [
+        "participant-2",
+        "GET /api/v1/tenants/:tenantId/participant-connectors/:connectorId",
+        "get",
+        "/api/v1/tenants/:tenantId/participant-connectors/:connectorId",
+        "connector.get"
+      ],
+      [
+        "participant-3",
+        "PATCH /api/v1/tenants/:tenantId/participant-connectors/:connectorId",
+        "patch",
+        "/api/v1/tenants/:tenantId/participant-connectors/:connectorId",
+        "connector.update"
+      ],
+      [
+        "participant-4",
+        "POST /api/v1/tenants/:tenantId/participant-connectors/:connectorId/publish",
+        "post",
+        "/api/v1/tenants/:tenantId/participant-connectors/:connectorId/publish",
+        "connector.publish"
+      ],
+      [
+        "participant-5",
+        "POST /api/v1/tenants/:tenantId/participant-connectors/:connectorId/preview",
+        "post",
+        "/api/v1/tenants/:tenantId/participant-connectors/:connectorId/preview",
+        "connector.preview"
+      ],
+      [
+        "participant-6",
+        "POST /api/v1/tenants/:tenantId/participant-connectors/:connectorId/rollback",
+        "post",
+        "/api/v1/tenants/:tenantId/participant-connectors/:connectorId/rollback",
+        "connector.rollback"
+      ],
+      [
+        "participant-7",
+        "GET /api/v1/tenants/:tenantId/participant-connectors/:connectorId/versions",
+        "get",
+        "/api/v1/tenants/:tenantId/participant-connectors/:connectorId/versions",
+        "connector.versions"
+      ],
+      [
+        "participant-8",
+        "DELETE /api/v1/tenants/:tenantId/participant-connectors/:connectorId",
+        "delete",
+        "/api/v1/tenants/:tenantId/participant-connectors/:connectorId",
+        "connector.archive"
+      ]
+    ]
+  },
+  {
+    "key": "history-status",
+    "label": "M13_PCI-HistoryStatus",
+    "route": "history-status",
+    "functionFile": "history-status.js",
+    "includeK8s": false,
+    "sr2": true,
+    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "routes": [
+      [
+        "history-status-0",
+        "GET /api/v1/tenants/:tenantId/credential-configurations/:configurationId/history",
+        "get",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/history",
+        "history.list"
+      ],
+      [
+        "history-status-1",
+        "POST /api/v1/tenants/:tenantId/credential-configurations/:configurationId/revocations",
+        "post",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/revocations",
+        "history.revoke"
+      ],
+      [
+        "history-status-2",
+        "POST /api/v1/tenants/:tenantId/credential-configurations/:configurationId/reissuance-unblocks",
+        "post",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/reissuance-unblocks",
+        "history.unblock"
+      ],
+      [
+        "history-status-3",
+        "POST /api/v1/tenants/:tenantId/lifecycle",
+        "post",
+        "/api/v1/tenants/:tenantId/lifecycle",
+        "tenant.lifecycle"
+      ],
+      [
+        "history-status-4",
+        "POST /api/v1/provider/tenants/:tenantId/lifecycle",
+        "post",
+        "/api/v1/provider/tenants/:tenantId/lifecycle",
+        "provider.lifecycle"
+      ]
+    ]
+  }
+]

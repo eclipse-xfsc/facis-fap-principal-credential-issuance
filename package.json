@@ -1,0 +1,29 @@
+{
+  "name": "facis-fap-principal-credential-issuance",
+  "private": true,
+  "version": "0.4.1",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "build:ui": "node tools/build-ui.mjs",
+    "build:flows": "node tools/build-flows.mjs",
+    "test": "npm run test:ci",
+    "test:static": "node --test test/tests/static/*.test.mjs",
+    "test:bdd": "node --test test/tests/bdd/*.test.mjs",
+    "test:integration": "node --test test/tests/integration/*.test.mjs",
+    "test:ci": "npm run build && npm run test:static && npm run test:bdd && npm run test:integration",
+    "security:audit": "npm audit --omit=dev --audit-level=high",
+    "test:offline": "node tools/validate-offline.mjs"
+  },
+  "dependencies": {
+    "jsonwebtoken": "9.0.2",
+    "jwks-rsa": "3.2.0",
+    "nodemailer": "10.0.9",
+    "pg": "8.16.3",
+    "vue": "3.5.21",
+    "yaml": "2.9.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

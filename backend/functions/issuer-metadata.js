@@ -1,0 +1,2 @@
+// M9_PCI-IssuerMetadata
+return handleSr2(["metadata.get", "metadata.create", "metadata.update", "metadata.publish", "metadata.preview", "metadata.rollback", "metadata.versions", "branding.get", "branding.create", "branding.update", "branding.publish", "branding.preview", "branding.rollback", "branding.versions", "settings.get", "settings.create", "settings.update", "settings.publish", "settings.preview", "settings.rollback", "settings.versions", "publication.get", "publication.publish", "public.branding"]);

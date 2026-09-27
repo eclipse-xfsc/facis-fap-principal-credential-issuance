@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Historical XFSC common.Request fragment only",
+  "description": "Transcribed from supplied master knowledge section 14.4, nats-message-library d1a5d2156e8d. Not a complete offer, callback, CloudEvent or selected release contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant_id", "request_id"],
+  "properties": {
+    "tenant_id": {"type": "string", "minLength": 1},
+    "request_id": {"type": "string", "minLength": 1},
+    "group_id": {"type": "string", "minLength": 1}
+  }
+}
