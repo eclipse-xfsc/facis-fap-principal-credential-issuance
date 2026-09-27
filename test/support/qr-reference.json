@@ -1,0 +1,205 @@
+{
+  "provenance": "ReportLab 4.4.9 QRCode, explicit QR8bitByte, L, mask 0; generated offline 2026-09-24",
+  "cases": [
+    {
+      "version": 1,
+      "byteLength": 16,
+      "sha256": "c5faf6d54a2ce739eab85b9ee1b04fd9caf4762eb22a1fd10f7be3985f195abb"
+    },
+    {
+      "version": 2,
+      "byteLength": 31,
+      "sha256": "5769846f91944288e4d7a1ec1f106da58d427b3264663efc4ad602d5badeb6aa"
+    },
+    {
+      "version": 3,
+      "byteLength": 52,
+      "sha256": "d70e58c9d795a45d0dbae5b691efd30af750e303f5df046e1fe90ddb73e3643b"
+    },
+    {
+      "version": 4,
+      "byteLength": 77,
+      "sha256": "875ddd95444585e63210df4135cfc7093ffd728df8a2faea6a2d9130c38d3efb"
+    },
+    {
+      "version": 5,
+      "byteLength": 105,
+      "sha256": "61447a28c2549dd58aa85b5456da21dd16eb261b212cb83574020bc3c989ca82"
+    },
+    {
+      "version": 6,
+      "byteLength": 133,
+      "sha256": "b0a3187a42bb9f885a062b5f56a33474a6f7ae60c7762e2d78b438597ec1bd2b"
+    },
+    {
+      "version": 7,
+      "byteLength": 153,
+      "sha256": "278eaa49f55f94f4eb3b370574ab68537c74dc49443b151a351112aa8f72ed87"
+    },
+    {
+      "version": 8,
+      "byteLength": 191,
+      "sha256": "ec225266d959c6c70dd71d3a9338e2eb7fcbf361f88485f1ff8aeb6147455d66"
+    },
+    {
+      "version": 9,
+      "byteLength": 229,
+      "sha256": "ce1e0b78e819dede1e70ef490e686f4471412be15878e6d3239a3dc905823d98"
+    },
+    {
+      "version": 10,
+      "byteLength": 270,
+      "sha256": "31d09fc83e6f748a8f620694444dbf235cc9b0002d415f94ad395db4e09d3189"
+    },
+    {
+      "version": 11,
+      "byteLength": 320,
+      "sha256": "3e68a82cc80cc506fa7289877f4961ac648cb012fcb4b4df7b3d1f1217683ab0"
+    },
+    {
+      "version": 12,
+      "byteLength": 366,
+      "sha256": "170ea4af620260ab854370afa7548365e51f51516b450635e582bf920c6e9daa"
+    },
+    {
+      "version": 13,
+      "byteLength": 424,
+      "sha256": "f51cb91a462f8e148ffd163f0cb71f71aa3e130bc19404be972702c7a82434f4"
+    },
+    {
+      "version": 14,
+      "byteLength": 457,
+      "sha256": "97be676db4071a75175dcfafce9648e6a23ac223d8d14e445f2a403a6803b4c9"
+    },
+    {
+      "version": 15,
+      "byteLength": 519,
+      "sha256": "27027ee9f648672e3d5485602f306ce2f18f535af5ba86c9e76a8e2ebb5fd035"
+    },
+    {
+      "version": 16,
+      "byteLength": 585,
+      "sha256": "a9b891e672338d1facd540a7ad9e0f462ee450123604966f7ecce58881568766"
+    },
+    {
+      "version": 17,
+      "byteLength": 643,
+      "sha256": "443866ea5c9f9e74ac32c47a56b85b793f1b371825a69b6652de38d3de37a419"
+    },
+    {
+      "version": 18,
+      "byteLength": 717,
+      "sha256": "0225022820c86974a11dfed2c4ba46a1170075c35e8890dbf898d6efb324d70d"
+    },
+    {
+      "version": 19,
+      "byteLength": 791,
+      "sha256": "caf944618281e828f8ac34661701052a23a15a010b9677f67463544f420681fb"
+    },
+    {
+      "version": 20,
+      "byteLength": 857,
+      "sha256": "c3505bdf358483d232c663411ba063c96310871ff90b814fb22921242244137d"
+    },
+    {
+      "version": 21,
+      "byteLength": 928,
+      "sha256": "d91c7aaad316fffca041dd3626666df1556bce9d683cf40a2b5ce518b554f4fa"
+    },
+    {
+      "version": 22,
+      "byteLength": 1002,
+      "sha256": "77331a326361e35b3efc73d457a68a2f1ecc6cee66ff5fab72ab67fdb812fcde"
+    },
+    {
+      "version": 23,
+      "byteLength": 1090,
+      "sha256": "3885602cb1bb6590a7a866295f2c5e2ca5cb65b49b50065127dc6fabeacd55c2"
+    },
+    {
+      "version": 24,
+      "byteLength": 1170,
+      "sha256": "f5c506f5b1aee325f24e4920e1121f767ef261a75620cc95f0312f0fd3d61465"
+    },
+    {
+      "version": 25,
+      "byteLength": 1272,
+      "sha256": "b2fac86cbbb83dca6598471d6ead6bab42c95a7035104b2880729f81fe4bd92b"
+    },
+    {
+      "version": 26,
+      "byteLength": 1366,
+      "sha256": "aa1e60820f82ef7c83f60880c4dd605d6cf3e3ae04b718d61ae1faf8c7fd0961"
+    },
+    {
+      "version": 27,
+      "byteLength": 1464,
+      "sha256": "4d846deaa6757ec008ec38c661787c46d25a33b08ea4620b07ca31053bac0593"
+    },
+    {
+      "version": 28,
+      "byteLength": 1527,
+      "sha256": "374290cdfbdfccc6f275ff4563993bbb530f19927b35601792783a4af174201f"
+    },
+    {
+      "version": 29,
+      "byteLength": 1627,
+      "sha256": "93e034445f44d5c1a4aa22e6076de46921d7050873974511b4b78c70981c322e"
+    },
+    {
+      "version": 30,
+      "byteLength": 1731,
+      "sha256": "4c81efb32ed14782e9d7d8e8dd4a3086a7e7fd4dc56146f9437bfa0ccfd41e3a"
+    },
+    {
+      "version": 31,
+      "byteLength": 1839,
+      "sha256": "7e6de4a0924712ca065642249c1a5a982663599f320b5dd6b8bc67d411514c36"
+    },
+    {
+      "version": 32,
+      "byteLength": 1951,
+      "sha256": "78a865c1b29695f2cb454bda45a1c685793850b44258bee8b37d57475f333411"
+    },
+    {
+      "version": 33,
+      "byteLength": 2067,
+      "sha256": "544f4130349047ce4376e0afc0d616d503590b5a1580c76170ebe9c65e05e67b"
+    },
+    {
+      "version": 34,
+      "byteLength": 2187,
+      "sha256": "7768fbd179a3cbef0db95be32fb4ab034fcae5cdbe48b8bf125c28c507bedc25"
+    },
+    {
+      "version": 35,
+      "byteLength": 2302,
+      "sha256": "9083d451738cdd70453e553fd1ffc5460ef8caf03dda4454db5a10ebee7f0b6f"
+    },
+    {
+      "version": 36,
+      "byteLength": 2430,
+      "sha256": "ecc08fc7ec8f9ce92d8f5deccb77f489a7e04ecc3659453728170e3473c96191"
+    },
+    {
+      "version": 37,
+      "byteLength": 2562,
+      "sha256": "10e8fe78d24e53642848b712e7ef6c9494a84e7784316e176acb0b4766fc8e89"
+    },
+    {
+      "version": 38,
+      "byteLength": 2698,
+      "sha256": "3cc9937ca1a7c7ac1a267e9f971f9b5e3c869f763b3e55a77269d0f9c53ac5fe"
+    },
+    {
+      "version": 39,
+      "byteLength": 2808,
+      "sha256": "d739e548fb77b66340cc0f51cc94e97d5d9246d3886132edf0d17d7570f53b18"
+    },
+    {
+      "version": 40,
+      "byteLength": 2952,
+      "sha256": "967e4d70fe0c8568b68c3b607a96022e4fa5e05bd6d8282d468218ffcd2c831a"
+    }
+  ]
+}
