@@ -7,6 +7,8 @@ async function parse(response) {
     const error = new Error(body.detail || body.message || `Request failed with status ${response.status}`);
     error.status = response.status;
     error.code = body.code;
+    error.correlationId = body.correlation_id;
+    error.retryable = body.retryable === true;
     throw error;
   }
   return body;

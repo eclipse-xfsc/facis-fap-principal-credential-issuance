@@ -1,0 +1,28 @@
+[
+  "https://www.w3.org/2018/credentials/v1",
+  "https://w3id.org/security/suites/jws-2020/v1",
+  {
+    "pciClaims": {
+      "@id": "https://alpha.example.com/.well-known/pci-vocabulary/Employee#claims",
+      "@context": {
+        "issuer": "https://alpha.example.com/.well-known/pci-vocabulary/Employee#issuer",
+        "type": "https://alpha.example.com/.well-known/pci-vocabulary/Employee#type"
+      }
+    },
+    "StatusList2021Entry": {
+      "@id": "https://w3id.org/vc/status-list#StatusList2021Entry",
+      "@context": {
+        "@protected": true,
+        "id": "@id",
+        "type": "@type",
+        "statusPurpose": "https://w3id.org/vc/status-list#statusPurpose",
+        "statusListIndex": "https://w3id.org/vc/status-list#statusListIndex",
+        "statusListCredential": {
+          "@id": "https://w3id.org/vc/status-list#statusListCredential",
+          "@type": "@id"
+        }
+      }
+    },
+    "Employee": "https://alpha.example.com/.well-known/pci-vocabulary/Employee#Employee"
+  }
+]

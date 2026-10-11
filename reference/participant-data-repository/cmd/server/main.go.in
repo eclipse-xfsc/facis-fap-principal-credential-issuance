@@ -1,0 +1,52 @@
+//go:build generated
+
+// SPDX-License-Identifier: Apache-2.0
+package main
+
+import (
+ "context"
+ "crypto/tls"
+ "crypto/x509"
+ "encoding/json"
+ "errors"
+ "log"
+ "net"
+ "os"
+ "os/signal"
+ "strings"
+ "syscall"
+ "time"
+
+ core "github.com/eclipse-xfsc/crypto-provider-core/v2/types/proto"
+ participant "github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/reference/participant-data-repository"
+ generated "github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/reference/participant-data-repository/gen/participant"
+ pb "github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/reference/participant-data-repository/wirepb"
+ "github.com/lestrrat-go/jwx/v2/jwk"
+ "google.golang.org/grpc"
+ "google.golang.org/grpc/credentials"
+ "google.golang.org/grpc/health"
+ healthpb "google.golang.org/grpc/health/grpc_health_v1"
+)
+func fatal(message string){b,_:=json.Marshal(map[string]string{"event":"participant.startup.failed","reason":message});log.Print(string(b));os.Exit(1)}
+func required(name string)string{value:=os.Getenv(name);if value==""{fatal("missing configuration: "+name)};return value}
+func tlsConfig(prefix string,server bool)*tls.Config{pair,err:=tls.LoadX509KeyPair(required(prefix+"_CERT"),required(prefix+"_KEY"));if err!=nil{fatal("invalid TLS key pair")};ca,err:=os.ReadFile(required(prefix+"_CA"));if err!=nil{fatal("CA unavailable")};pool:=x509.NewCertPool();if !pool.AppendCertsFromPEM(ca){fatal("invalid CA")};cfg:=&tls.Config{Certificates:[]tls.Certificate{pair},MinVersion:tls.VersionTLS13,MaxVersion:tls.VersionTLS13,RootCAs:pool,ClientCAs:pool};if server{cfg.ClientAuth=tls.RequireAndVerifyClientCert;expected:=required("PCI_CLIENT_DNS");cfg.VerifyConnection=func(s tls.ConnectionState)error{if len(s.PeerCertificates)==0{return errors.New("missing client")};return s.PeerCertificates[0].VerifyHostname(expected)}}else{cfg.ServerName=required(prefix+"_SERVER_NAME")};return cfg}
+type server struct{pb.UnimplementedParticipantServer;endpoints *generated.Endpoints}
+func(s *server)Notify(ctx context.Context,in *pb.Envelope)(*pb.Envelope,error){out,err:=s.endpoints.Notify(ctx,in.Json);if err!=nil{return nil,err};return &pb.Envelope{Json:out.([]byte)},nil}
+func(s *server)GetCredentialData(ctx context.Context,in *pb.Envelope)(*pb.Envelope,error){out,err:=s.endpoints.GetCredentialData(ctx,in.Json);if err!=nil{return nil,err};return &pb.Envelope{Json:out.([]byte)},nil}
+func main(){
+ log.SetFlags(0);ctx,stop:=signal.NotifyContext(context.Background(),syscall.SIGTERM,syscall.SIGINT);defer stop()
+ keyBytes,err:=os.ReadFile(required("PARTICIPANT_JWKS_FILE"));if err!=nil{fatal("JWKS unavailable")};keys,err:=jwk.Parse(keyBytes);if err!=nil{fatal("invalid JWKS")}
+ tenantID:=required("PARTICIPANT_TENANT_ID")
+ var lookup participant.Lookup
+ if source:=os.Getenv("PARTICIPANT_SOURCE_URL");source!=""{
+  token,err:=os.ReadFile(required("PARTICIPANT_SOURCE_TOKEN_FILE"));if err!=nil{fatal("record source token unavailable")}
+  lookup,err=participant.HTTPSource(source,strings.TrimSpace(string(token)),tenantID,nil);if err!=nil{fatal("invalid record source configuration")}
+ }else{
+  data,err:=os.ReadFile(required("PARTICIPANT_DATA_FILE"));if err!=nil{fatal("data unavailable")};var records map[string]map[string]map[string]any;if json.Unmarshal(data,&records)!=nil{fatal("invalid data")}
+  lookup=func(_ context.Context,tenant,configuration,subject string)(map[string]any,error){if tenant!=tenantID{return nil,errors.New("tenant mismatch")};values:=records[configuration][subject];if values==nil{return nil,errors.New("record absent")};return values,nil}
+ }
+ repo:=&participant.Repository{TenantID:tenantID,CryptoNamespace:required("CRYPTO_NAMESPACE"),CryptoGroup:tenantID,Issuer:required("PARTICIPANT_JWT_ISSUER"),Audience:required("PARTICIPANT_JWT_AUDIENCE"),Scopes:strings.Fields(required("PARTICIPANT_JWT_SCOPES")),Keys:keys,Lookup:lookup}
+ if endpoint:=os.Getenv("CRYPTO_GRPC_ENDPOINT");endpoint!=""{conn,err:=grpc.NewClient(endpoint,grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig("CRYPTO_TLS",false))));if err!=nil{fatal("crypto connection unavailable")};defer conn.Close();repo.Crypto=core.NewCryptoProviderServiceClient(conn)}
+ listener,err:=net.Listen("tcp",":9443");if err!=nil{fatal("listen failed")};grpcServer:=grpc.NewServer(grpc.Creds(credentials.NewTLS(tlsConfig("PARTICIPANT_TLS",true))),grpc.MaxRecvMsgSize(1048576),grpc.MaxSendMsgSize(1048576),grpc.MaxConcurrentStreams(16));pb.RegisterParticipantServer(grpcServer,&server{endpoints:generated.NewEndpoints(repo)});healthService:=health.NewServer();healthpb.RegisterHealthServer(grpcServer,healthService);healthService.SetServingStatus("",healthpb.HealthCheckResponse_SERVING)
+ go func(){<-ctx.Done();healthService.Shutdown();timer:=time.AfterFunc(10*time.Second,grpcServer.Stop);grpcServer.GracefulStop();timer.Stop()}();log.Print(`{"event":"participant.ready","port":9443}`);if err:=grpcServer.Serve(listener);err!=nil{log.Print(`{"event":"participant.stopped"}`)}
+}

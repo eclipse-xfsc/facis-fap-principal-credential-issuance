@@ -4,7 +4,7 @@ import { randomUrlSafe, sha256UrlSafe } from "../utils/pkce.js";
 
 const PREFIX = "fap-pci-oidc";
 
-export async function beginLogin() {
+export async function beginLogin(native=false) {
   const config = await api.authConfig();
   const verifier = randomUrlSafe(48);
   const challenge = await sha256UrlSafe(verifier);
@@ -24,6 +24,8 @@ export async function beginLogin() {
   url.searchParams.set("nonce", nonce);
   url.searchParams.set("code_challenge", challenge);
   url.searchParams.set("code_challenge_method", "S256");
+  url.searchParams.set('kc_idp_hint',native===true?'':(config.identityProvider || ''));
+  if(native===true)url.searchParams.set('prompt','login');
   window.location.assign(url.toString());
 }
 

@@ -1,5 +1,5 @@
 import { createApp, computed, onMounted, ref } from "vue";
-import { api } from "./services/api.js";
+import { api, request } from "./services/api.js";
 import { beginLogin, completeLoginFromLocation } from "./services/auth.js";
 import { store } from "./state/store.js";
 import { runtime, applyPublicConfiguration } from "./config/runtime.js";
@@ -18,6 +18,10 @@ const App = {
     const verification = ref({ state: "idle", message: "" });
     const hashRoute = ref(window.location.hash || "#/register");
 
+    const tenantTheme=computed(()=>{
+      const b=store.tenant?.branding||{};const color=(c,f)=>/^#[a-f0-9]{6}$/i.test(c||'')?c:f;
+      return {'--tenant-accent':color(b.accent,'#173c67'),'--primary':color(b.accent,'#173c67'),'--tenant-background':color(b.background,'#f5f7fb'),'--tenant-foreground':color(b.foreground,'#1f2937'),'--tenant-font':({system:'system-ui, sans-serif',serif:'Georgia, serif',mono:'ui-monospace, monospace'})[b.font]||'system-ui, sans-serif','--tenant-width':b.layout==='focused'?'1040px':'1600px','--tenant-radius':b.corners==='square'?'0':'8px'};
+    });
     const isTenantHost = computed(() => Boolean(store.tenant));
     const isProvider = computed(() => hashRoute.value.startsWith("#/provider"));
     const isTenantAdmin = computed(() => store.session?.roles?.includes("participant_tenant_admin"));
@@ -25,7 +29,7 @@ const App = {
     const pending = computed(() => registrations.value.filter((item) => item.state === "pending_approval"));
 
     function setError(error) {
-      store.error = error instanceof Error ? error.message : String(error || "Unexpected error");
+      store.error = [error instanceof Error ? error.message : String(error || "Unexpected error"),error?.code ? "Code: "+error.code : "",error?.correlationId ? "Reference: "+error.correlationId : ""].filter(Boolean).join(" · ");
     }
 
     async function loadSession() {
@@ -35,7 +39,7 @@ const App = {
     async function loadTenant() {
       try { store.tenant = (await api.tenantContext()).tenant;
         try {store.tenant.branding=(await request('/api/v1/public/branding')).branding;}catch{}
-        store.error = ""; } catch { store.tenant = null; }
+         } catch { store.tenant = null; }
     }
 
     async function loadProvider() {
@@ -45,19 +49,19 @@ const App = {
         const [r, t] = await Promise.all([api.registrations(), api.tenants()]);
         registrations.value = r.items;
         tenants.value = t.items;
-        store.error = "";
+        
       } catch (error) { setError(error); }
       finally { store.busy = false; }
     }
 
     async function loadMembers() {
       if (!store.tenant || !isTenantAdmin.value) return;
-      try { members.value = (await api.tenantMembers(store.tenant.tenantId)).items; store.error = ""; }
+      try { members.value = (await api.tenantMembers(store.tenant.tenantId)).items;  }
       catch (error) { setError(error); }
     }
 
     async function submitRegistration() {
-      store.busy = true; store.error = "";
+      store.busy = true; 
       try { submission.value = (await api.register(form.value)).registration; }
       catch (error) { setError(error); }
       finally { store.busy = false; }
@@ -90,7 +94,7 @@ const App = {
 
     async function inviteMember() {
       if (!store.tenant) return;
-      store.busy = true; store.error = "";
+      store.busy = true; 
       try {
         await api.inviteMember(store.tenant.tenantId, invite.value);
         invite.value = { username: "", email: "", firstName: "", lastName: "", role: "principal" };
@@ -132,6 +136,7 @@ const App = {
       try {
         config.value = await api.registrationConfig();
         applyPublicConfiguration(config.value);
+        form.value.registrationMode = config.value.registrationMode;
       } catch (error) {
         setError(error);
         return;
@@ -146,6 +151,7 @@ const App = {
     });
 
     return {
+      tenantTheme,
       store, runtime, config, registrations, tenants, members, form, invite, submission, verification, hashRoute,
       isTenantHost, isProvider, isTenantAdmin, isProviderAdmin, pending,
       submitRegistration, decide, inviteMember, beginLogin, logout, lifecycleTenant, loadProvider, loadMembers,
@@ -164,7 +170,7 @@ const App = {
       </nav>
     </header>
     <main id="main">
-      <div v-if="store.error" class="global-error" role="alert">{{ store.error }}</div>
+      <div v-if="store.error" class="global-error persistent-error" role="alert"><span>{{ store.error }}</span><button type="button" class="secondary" @click="store.error=''">Dismiss</button></div>
 
       <section v-if="verification.state !== 'idle'" class="center-card card" aria-live="polite">
         <span class="status-icon" :class="verification.state">{{ verification.state === 'working' ? '...' : verification.state === 'success' ? 'OK' : '!' }}</span>
@@ -174,7 +180,7 @@ const App = {
         <a class="button-link secondary" :href="runtime.uiPath">Return to registration</a>
       </section>
 
-      <section v-else-if="isTenantHost" class="tenant-landing" :class="{'tenant-workspace':store.session && store.tenant.state==='active'}" :style="{'--tenant-accent':store.tenant.branding?.accent}">
+      <section v-else-if="isTenantHost" class="tenant-landing" :class="{'tenant-workspace':store.session && store.tenant.state==='active'}" :style="tenantTheme">
         <template v-if="!store.session || store.tenant.state!=='active'">
         <p class="eyebrow">PARTICIPANT PORTAL</p>
         <img v-if="store.tenant.branding?.logoAssetId" class="tenant-logo" :src="runtime.basePath+'/api/v1/public/assets/'+store.tenant.branding.logoAssetId" alt="Organization logo"><h1>{{ store.tenant.branding?.title || store.tenant.organizationName }}</h1>
@@ -183,7 +189,7 @@ const App = {
           <span class="badge" :class="'badge-' + store.tenant?.state">{{ store.tenant?.state }}</span>
           <code>{{ store.tenant?.primaryDomain }}</code>
           <p v-if="!store.session">Authentication is required before participant or principal functions are available.</p>
-          <button v-if="!store.session" @click="beginLogin">Sign in to your organization</button>
+          <button v-if="!store.session" @click="beginLogin">Sign in to your organization</button><button v-if="!store.session" class="secondary" @click="beginLogin(true)">Tenant administrator sign in</button>
           <div v-else class="profile-box">
             <strong>{{ store.session.displayName || store.session.username }}</strong>
             <span>{{ store.session.email }}</span>
@@ -203,8 +209,9 @@ const App = {
             <button :disabled="store.busy">Invite</button>
           </form>
           <div class="table-wrap"><table><thead><tr><th>User</th><th>Email</th><th>Roles</th><th>Status</th></tr></thead><tbody><tr v-for="member in members" :key="member.subject"><td>{{ member.username }}</td><td>{{ member.email }}</td><td>{{ member.roles.join(', ') }}</td><td>{{ member.enabled ? 'Enabled' : 'Disabled' }}</td></tr></tbody></table></div>
-        </section>
+      </section>
 </template></sr2-console>
+        <footer v-if="store.tenant.branding?.footer" class="tenant-footer preserve-lines">{{store.tenant.branding.footer}}</footer>
       </section>
 
       <section v-else-if="isProvider" class="console-page">

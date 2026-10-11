@@ -1,0 +1,51 @@
+site_name: FACIS Principal Credential Issuance
+site_description: Deployment, operation and acceptance of the ORCE-based PCI service
+repo_url: https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance
+theme: readthedocs
+plugins: [search]
+nav:
+  - Overview: README.md
+  - Neutral configuration: operations/neutral-configuration.md
+  - Deploy: operations/deployment.md
+  - Fresh cluster and upgrade: operations/deploy-0.5.0-rc.6.md
+  - Automation: operations/automation.md
+  - ArgoCD handoff: operations/argocd.md
+  - Transport: operations/transport.md
+  - Specifications: specifications/README.md
+  - Participant test source: testing/participant-test.md
+  - Acceptance order: testing/acceptance-walkthrough.md
+  - Telemetry: operations/observability.md
+  - Release rc.12: release/0.5.0-rc.12.md
+  - Upgrade prepared PCI to rc.12: operations/upgrade-0.5.0-rc.12.md
+  - Release rc.11: release/0.5.0-rc.11.md
+  - Release rc.10: release/0.5.0-rc.10.md
+  - Upgrade prepared PCI to rc.10: operations/upgrade-0.5.0-rc.10.md
+  - Release rc.9: release/0.5.0-rc.9.md
+  - Upgrade prepared PCI to rc.9: operations/upgrade-0.5.0-rc.9.md
+  - Release rc.8: release/0.5.0-rc.8.md
+  - Upgrade rc.7 to rc.8: operations/upgrade-0.5.0-rc.8.md
+  - Release rc.7: release/0.5.0-rc.7.md
+  - Upgrade rc.6 to rc.7: operations/upgrade-0.5.0-rc.7.md
+  - Release rc.6: release/0.5.0-rc.6.md
+  - Current requirement audit: release/requirement-audit.md
+  - Completion evidence: release/completion.md
+  - Neutral revision validation: release/neutral-revision.md
+  - Issuer setup: operations/issuer-runbook.md
+  - Identity: operations/identity.md
+  - Operations: operations/runbook.md
+  - Architecture: architecture/architecture.md
+  - ORCE nodes: architecture/orce-nodes.md
+  - Presentation: contracts/presentation.md
+  - Semantic templates: contracts/semantic-templates.md
+  - Completion tests: testing/completion.md
+  - Native contracts: contracts/native-ocm.md
+  - Participant: contracts/participant-protocol.md
+  - API: api/README.md
+  - Tests: testing/test-strategy.md
+  - Live acceptance: testing/live-acceptance.md
+  - Requirements: requirements/traceability.md
+  - Technical clauses: requirements/technical-clauses.md
+  - Upstream blockers: known-gaps.md
+  - Compliance roadmap: security/compliance-roadmap.md
+  - CI and releases: ci-cd.md
+markdown_extensions: [tables, fenced_code]
