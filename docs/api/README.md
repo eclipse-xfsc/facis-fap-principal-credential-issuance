@@ -28,7 +28,7 @@ The two `/api/v1/internal/provisioning/*` endpoints remain as compatibility endp
 
 `tools/build-sr2-api.mjs` merges typed SR2 schemas/routes from `backend/sr2/routes.json` into the checked-in OpenAPI while preserving SR1 paths. Routes remain `/api/v1/...` internally; the public prefix is composed with `PCI_ORCE_BASE_PATH`. Resource creation/update uses `{data: ...}`, plus immutable `configurationId` for flows/assets. Mutations use quoted numeric If-Match. Publication state distinguishes desired/observed upstream revisions. Compatibility HTTP callbacks fail closed; native issuance callbacks arrive through the NATS subscription. Fixed native wallet routes are documented in the issuer runbook. See the issuer architecture/runbook for roles, protected payload handling and exact limitations.
 
-The synthetic employee [JSON-LD context and SHACL shapes](../../contracts/examples/README.md) document the reference data template. They are separate from native JWT/SD-JWT validation and carry no conformance claim.
+The synthetic employee [JSON-LD context and SHACL shapes](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/contracts/examples/README.md) document the reference data template. They are separate from native JWT/SD-JWT validation and carry no conformance claim.
 
 Each credential configuration also has an authorized [semantic template export](../contracts/semantic-templates.md), available in the editor and through its GET endpoint. The export describes the current draft's fields and contains only synthetic values. Generated SR2 operations are rebuilt from the route catalogue, so obsolete routes do not remain in the API or request examples.
 
