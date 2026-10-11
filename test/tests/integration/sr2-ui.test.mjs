@@ -9,7 +9,7 @@ import {pciQrImage} from '../../../src/qr.js';
 function vueContext(){
  const messages=[];
  const document={createElement(){return {set innerHTML(value){this.textContent=String(value).replace(/&(amp|lt|gt|quot|apos);/g,(_,x)=>({amp:'&',lt:'<',gt:'>',quot:'"',apos:"'"}[x])).replace(/&#(x[0-9a-f]+|[0-9]+);/gi,(_,x)=>String.fromCodePoint(x[0]==='x'?parseInt(x.slice(1),16):Number(x)));this.children=[{getAttribute:()=>this.textContent.replace(/^<div foo="/, '').replace(/">$/, '')}];},get innerHTML(){return this.textContent || '';}};}};
- const ctx={pciQrImage,console:{warn:(...args)=>messages.push(args.join(' ')),error:(...args)=>messages.push(args.join(' ')),log(){}},document,crypto,URL,URLSearchParams,TextEncoder,setTimeout,clearTimeout,window:{location:{origin:'https://alpha-pci.example.com'},confirm:()=>true,prompt:()=>null},runtime:{basePath:''}};
+ const ctx={Document:class {},ShadowRoot:class {},pciQrImage,console:{warn:(...args)=>messages.push(args.join(' ')),error:(...args)=>messages.push(args.join(' ')),log(){}},document,crypto,URL,URLSearchParams,TextEncoder,setTimeout,clearTimeout,window:{location:{origin:'https://alpha-pci.example.com'},confirm:()=>true,prompt:()=>null},runtime:{basePath:''}};
  vm.createContext(ctx);vm.runInContext(fs.readFileSync('vendor/vue.global.prod.js','utf8'),ctx);Object.assign(ctx,{ref:ctx.Vue.ref,computed:ctx.Vue.computed,onMounted:ctx.Vue.onMounted});
  vm.runInContext(fs.readFileSync('src/sr2.js','utf8')+'\nglobalThis.component=Sr2Console;',ctx);return {ctx,messages};
 }
@@ -20,6 +20,11 @@ test('both Vue templates compile offline using the pinned runtime',()=>{
 test('issuer component executes create/edit/preview and grant/revoke handlers against the real HTTP wrapper',async()=>{
  const {ctx,messages}=vueContext(),f=fixture(),http=httpHarness(f);ctx.request=async(path,options)=>{if(path.endsWith('/identity-provider'))return {item:{version:1,state:'active',mode:'keycloak',displayName:'Account',issuer:'',clientId:'',audience:'',scopes:'openid profile email'},redirectUri:'https://identity.example.com/broker'};const r=await http(path,options);if(r.status>=400)throw new Error(r.body.detail);return r.body;};ctx.api={tenantMembers:async()=>({items:[{subject:'issuer',username:'Issuer',enabled:true},{subject:'principal',username:'Principal',enabled:true}]})};
  const make=(type,text='')=>({type,tagName:type.toUpperCase(),text,children:[],props:{},parent:null,value:'',selected:false,multiple:false,
+  getRootNode(){
+   let root=this;
+   while(root.parent) root=root.parent;
+   return root;
+  },
   addEventListener(){},removeEventListener(){},dispatchEvent(){},setAttribute(k,v){this.props[k]=v;},removeAttribute(k){delete this.props[k];},get options(){return this.children.filter(c=>c.type==='option');}});
  const host={createElement:tag=>make(tag),createText:t=>make('text',t),createComment:t=>make('comment',t),setText:(n,t)=>n.text=t,setElementText:(n,t)=>{n.text=t;n.children=[];},parentNode:n=>n.parent,nextSibling:n=>{const a=n.parent?.children || [];return a[a.indexOf(n)+1] || null;},patchProp:(n,k,prev,next)=>{n.props[k]=next;if(k==='value'){n.value=next;n._value=next;}if(k==='multiple')n.multiple=next!==null;},insert(n,p,anchor){if(n.parent){const old=n.parent.children;old.splice(old.indexOf(n),1);}n.parent=p;const index=anchor?p.children.indexOf(anchor):-1;p.children.splice(index<0?p.children.length:index,0,n);},remove(n){if(n.parent)n.parent.children.splice(n.parent.children.indexOf(n),1);},insertStaticContent(content,p,anchor){const n=make('static',content);this.insert(n,p,anchor);return [n,n];}};
  // Vue invokes host hooks without a receiver.
