@@ -46,7 +46,7 @@ Use certificate verification for acceptance. G0's explicit `--keycloak-insecure`
 
 The complete owner-inventory renderer, STRICT workload policy, TLS 1.3 mesh
 configuration and G0 job injection are supplied under
-[all-hop-tls](../../deployment/prerequisites/all-hop-tls/README.md).
+[all-hop-tls](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/deployment/prerequisites/all-hop-tls/README.md).
 Set `PCI_MESH_REVISION` during G0 after the owner installs the approved mesh.
 This applies to managed workloads and schema/bootstrap jobs. Enroll existing
 ORCE, the Gateway data plane and all shared native dependencies using the
