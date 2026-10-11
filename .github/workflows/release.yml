@@ -1,19 +1,26 @@
 name: Official release workflows
-# Stable versions require completed acceptance receipts; prereleases remain
-# explicitly unaccepted candidates. These
-# upstream workflows publish artifacts and can open Eclipse IP review requests.
+
+# Stable versions require completed acceptance receipts.
+# These workflows publish artifacts and can open Eclipse IP review requests.
 on:
   workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
   source-gate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
-        with: {node-version: '24', cache: npm}
-      - run: |
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Validate release source
+        run: |
           test "$GITHUB_REF_TYPE" = tag
           test "$GITHUB_REF_NAME" = "v$(cat VERSION)"
           if [[ "$(cat VERSION)" != *-* ]]; then
@@ -21,6 +28,7 @@ jobs:
           fi
           npm ci --no-audit --no-fund
           npm test
+
   docker:
     needs: source-gate
     uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@880a05d7832796e8ddf71fcde340ef65349f5db6
@@ -29,15 +37,26 @@ jobs:
       buildContext: .
       service: .
     secrets: inherit
+
   helm:
     needs: source-gate
+    strategy:
+      fail-fast: false
+      matrix:
+        chart:
+          - fap-pci
+          - observability
+          - participant
     uses: eclipse-xfsc/dev-ops/.github/workflows/helm.yml@880a05d7832796e8ddf71fcde340ef65349f5db6
-    with: {buildContext: deployment/helm}
+    with:
+      buildContext: deployment/helm/${{ matrix.chart }}
     secrets: inherit
+
   eclipse-ip:
     needs: source-gate
     uses: eclipse-xfsc/dev-ops/.github/workflows/eclipse-dash-licence-node.yml@880a05d7832796e8ddf71fcde340ef65349f5db6
     secrets: inherit
+
   sbom:
     needs: source-gate
     uses: eclipse-xfsc/dev-ops/.github/workflows/sbom-node.yml@880a05d7832796e8ddf71fcde340ef65349f5db6
