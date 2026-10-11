@@ -9,11 +9,13 @@ const releaseVersion = (await readFile(path.join(root, "VERSION"), "utf8")).trim
 
 const sharedUrlSource = await readFile(path.join(root, "shared", "public-url.js"), "utf8");
 const sharedUrl = sharedUrlSource.replace(/^export\s+(?=(?:async\s+)?function|const|let|var|class)/gm, "");
-const common = (await readFile(path.join(root, "backend", "functions", "_common.js"), "utf8")).replaceAll("__FAP_PCI_VERSION__", releaseVersion);
-const sr2Files = ['domain.js','assets.js','participant-security.js','store.js','adapters.js','service.js','issuance.js','maintenance.js','http.js'];
-const sr2Source = (await Promise.all(sr2Files.map(file => readFile(path.join(root,'backend','sr2',file),'utf8')))).map(source => source.replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'')).join('\n');
+const commonBase = (await readFile(path.join(root, "backend", "functions", "_common.js"), "utf8")).replaceAll("__FAP_PCI_VERSION__", releaseVersion);
+const common = commonBase+'\n'+await readFile(path.join(root,'backend/functions/_identity.js'),'utf8');
+const sr2Files = ['domain.js','assets.js','participant-security.js','store.js','adapters.js','wire.js','transport.js','profiles.js','sdjwt.js','linked-data.js','native.js','history.js','semantics.js','service.js','revocation.js','issuance.js','presentation.js','maintenance.js','runtime.js','http.js'];
+let sr2Source = (await Promise.all(sr2Files.map(file => readFile(path.join(root,'backend','sr2',file),'utf8')))).map(source => source.replace(/^export \{.*\} from .*;\s*$/gm,'').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'')).join('\n');
+sr2Source=sr2Source.replaceAll('__PCI_SR2_BUILD_ID__',createHash('sha256').update(sr2Source).digest('hex'));
 const sr2Specs = JSON.parse(await readFile(path.join(root,'backend','sr2','routes.json'),'utf8'));
-const k8s = await readFile(path.join(root, "backend", "functions", "_k8s.js"), "utf8");
+const k8s = await readFile(path.join(root, "backend", "functions", "_k8s.js"), "utf8")+"\n"+await readFile(path.join(root,"backend/functions/_participant-cleanup.js"),"utf8");
 
 function id(name) {
   return createHash("sha256").update(`fap-pci:${name}`).digest("hex").slice(0, 16);
@@ -32,6 +34,7 @@ const libs = [
   { var: "dns", module: "dns" },
   { var: "fs", module: "fs" },
   { var: "http", module: "http" },
+  { var: "http2", module: "http2" },
   { var: "https", module: "https" },
   { var: "url", module: "url" },
   { var: "jwt", module: "jsonwebtoken" },
@@ -168,6 +171,7 @@ async function buildModule(spec) {
   const inNode = linkIn(z, `${spec.key}:uib-in`, `${spec.route}-in`, 120, 130, [id(`link-out:base:${spec.route}`)]);
   const fnNode = functionNode(z, spec.key, spec.label, moduleSource, 920, 300, spec.includeK8s);
   const outNode = linkOut(z, `${spec.key}:uib-out`, "→ uibuilder response", 1380, 500, [id("link-in:base:response")]);
+  if(spec.key==='issuer-runtime')fnNode.finalize='const states=pg.Pool[Symbol.for("xfsc.fap-pci.process-state.v1")];for(const state of states?.values() || []){const pool=state.poolHolder?.pool;if(pool?.pciNative){pool.pciNative.nats.close();delete pool.pciNative;}}';
   const response = httpResponse(z, spec.key, 1390, 240);
   nodes.push(inNode, fnNode, outNode, response);
   inNode.wires[0] = [fnNode.id];

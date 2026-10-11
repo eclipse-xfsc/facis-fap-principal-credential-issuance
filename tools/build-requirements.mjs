@@ -1,0 +1,26 @@
+// Derive human-readable audit tables from the authoritative local ledgers.
+import fs from 'node:fs';
+const json=p=>JSON.parse(fs.readFileSync(p,'utf8'));
+const requirements=json('docs/requirements/requirements.json');
+const technical=json('docs/requirements/technical-clauses.json');
+const escape=value=>String(value).replaceAll('|','\\|').replaceAll('\n',' ');
+const table=(headers,rows)=>'| '+headers.join(' | ')+' |\n|'+headers.map(()=>'---').join('|')+'|\n'+rows.map(row=>'| '+row.map(escape).join(' | ')+' |').join('\n')+'\n';
+const count=(rows,key)=>Object.fromEntries([...new Set(rows.map(r=>r[key]))].sort().map(value=>[value,rows.filter(r=>r[key]===value).length]));
+const srs=requirements.items.filter(r=>r.id.startsWith('FR-'));
+let out='# Requirement implementation and acceptance — '+requirements.version+'\n\n';
+out+='The supplied specifications are authoritative. Development **DONE** means the source implementation is delivered, not that formal acceptance has passed. **BLOCKED_OWNER** identifies a remaining end-to-end implementation dependency in owner-controlled infrastructure or native components. Overall PARTIAL records unexecuted build/live/review evidence; GAP / EXCLUDED records public or governance actions excluded from this source-only task. No excluded action is waived.\n\n';
+out+='The 101 SRS IDs are unchanged. TDR-01 through TDR-07 are local audit groupings of unnumbered technical provisions; TDR-08 is the supplemental AI-assistance disclosure retained from the earlier audit, not an invented source requirement. The [83 individual technical clauses](technical-clauses.md) and their [machine-readable ledger](technical-clauses.json) prevent grouped rows from hiding a missing obligation. Original PDFs and hashes are under [specifications](../specifications/README.md). FR-81/82/83 correctly map to history / participant signing / participant-data internal signing.\n\n';
+out+='SRS development counts: '+Object.entries(count(srs,'development')).map(([k,v])=>k+' '+v).join('; ')+'. All formal acceptance remains evidence-gated.\n\n';
+out+=table(['ID','Requirement','Overall','Development','Remaining action'],requirements.items.map(r=>[r.id,r.title,r.status,r.development,r.remainingActionType.join(', ')]));
+out+='\n## Source and remaining acceptance\n\n';
+out+=table(['ID','Source deliverable','Checks','Remaining criterion'],requirements.items.map(r=>[r.id,r.developmentNote||r.implementation,r.checks,r.acceptance]));
+out+='\nFull paths, scope decisions and action categories are in [requirements.json](requirements.json). [Validation](../release/validation.json) records only executed checks. [Known gaps](../known-gaps.md) lists owner dependencies and build limits.\n';
+fs.writeFileSync('docs/requirements/traceability.md',out);
+let detail='# Technical requirements — individual provisions\n\n'+technical.idPolicy+'\n\n';
+detail+='Each row is a separate acceptance obligation. DONE refers to source work; EXCLUDED is a real process/public action without a software substitute; BLOCKED_OWNER requires owner-controlled runtime changes. The final receipt must account for every clause, in addition to the 101 FRs and retained audit groups. Client dates, presentations, approvals and public actions are never manufactured.\n\n';
+detail+=table(['Local audit ID','PDF page / section','Provision','Development','Remaining action'],technical.items.map(r=>[r.id,r.source.page+' / '+r.source.section,r.title,r.development,r.remainingActionType.join(', ')]));
+detail+='\n## Evidence and closure\n\n';
+detail+=table(['ID','Delivered source','Required closure'],technical.items.map(r=>[r.id,r.implementation.map(p=>'\`'+p+'\`').join('; '),r.closure]));
+detail+='\n[Original documents](../specifications/README.md) · [SRS and group matrix](traceability.md) · [Receipt procedure](../testing/live-acceptance.md)\n';
+fs.writeFileSync('docs/requirements/technical-clauses.md',detail);
+console.log('[requirements] '+srs.length+' SRS rows, '+technical.items.length+' individual technical clauses');
