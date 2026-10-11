@@ -1,0 +1,72 @@
+name: Release Python BDD SBOM
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-python-sbom
+  cancel-in-progress: false
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: v0.5.0-rc.12
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v0.5.0-rc.12
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify release and source
+        run: |
+          test "$RELEASE_TAG" = "v$(cat VERSION)"
+          gh release view "$RELEASE_TAG"
+          git rev-parse HEAD > sbom-python-source.txt
+          sha256sum test/bdd/requirements.txt >> sbom-python-source.txt
+
+      - name: Install BDD dependencies
+        run: |
+          python -m venv "$RUNNER_TEMP/pci-bdd"
+          "$RUNNER_TEMP/pci-bdd/bin/python" -m pip install \
+            -r test/bdd/requirements.txt
+          "$RUNNER_TEMP/pci-bdd/bin/python" -m pip check
+          "$RUNNER_TEMP/pci-bdd/bin/python" -m pip freeze --all \
+            > sbom-python-resolved.txt
+
+      - name: Install pinned SBOM generator
+        run: |
+          python -m venv "$RUNNER_TEMP/pci-sbom-tool"
+          "$RUNNER_TEMP/pci-sbom-tool/bin/python" -m pip install \
+            cyclonedx-bom==7.2.0
+
+      - name: Generate Python BDD SBOM
+        run: |
+          "$RUNNER_TEMP/pci-sbom-tool/bin/cyclonedx-py" environment \
+            "$RUNNER_TEMP/pci-bdd/bin/python" \
+            --output-format JSON \
+            --output-file sbom-python-bdd.cdx.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-python-bdd-sbom
+          path: |
+            sbom-python-bdd.cdx.json
+            sbom-python-source.txt
+            sbom-python-resolved.txt
+
+      - name: Attach SBOM to existing release
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            sbom-python-bdd.cdx.json \
+            sbom-python-source.txt \
+            sbom-python-resolved.txt --clobber
