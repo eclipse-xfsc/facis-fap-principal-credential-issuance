@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "FACIS FAP PCI ORCE API",
-    "version": "0.4.1",
+    "version": "0.5.0-rc.12",
     "description": "HTTP contract preserved from Sprint Review 1 while implementation runs entirely in ORCE flows and uibuilder. Provider and tenant administration use Keycloak-backed server sessions. Paths remain application-relative; the deployment prefix is supplied by PCI_ORCE_BASE_PATH."
   },
   "servers": [
@@ -342,6 +342,14 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
+              "entitlements": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "maxItems": 50
+              },
               "subjects": {
                 "type": "array",
                 "items": {
@@ -364,6 +372,7 @@
               }
             },
             "required": [
+              "entitlements",
               "subjects",
               "roles"
             ]
@@ -376,7 +385,8 @@
           },
           "blockReissuance": {
             "type": "boolean",
-            "default": false
+            "default": true,
+            "description": "Revocation always blocks reissuance; administrators can explicitly unblock from history."
           }
         },
         "required": [
@@ -427,6 +437,10 @@
           "displayName": {
             "type": "string",
             "maxLength": 100
+          },
+          "tokenKeyRef": {
+            "type": "string",
+            "maxLength": 64
           }
         },
         "required": [
@@ -459,6 +473,40 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "background": {
+            "type": "string",
+            "pattern": "^#[a-fA-F0-9]{6}$"
+          },
+          "foreground": {
+            "type": "string",
+            "pattern": "^#[a-fA-F0-9]{6}$"
+          },
+          "font": {
+            "type": "string",
+            "enum": [
+              "system",
+              "serif",
+              "mono"
+            ]
+          },
+          "layout": {
+            "type": "string",
+            "enum": [
+              "wide",
+              "focused"
+            ]
+          },
+          "corners": {
+            "type": "string",
+            "enum": [
+              "rounded",
+              "square"
+            ]
+          },
+          "footer": {
+            "type": "string",
+            "maxLength": 500
           }
         },
         "required": [
@@ -902,6 +950,21 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "holderDid": {
+            "type": "string",
+            "maxLength": 4096,
+            "nullable": true
+          },
+          "principal": {
+            "type": "object",
+            "nullable": true
+          },
+          "principalJwt": {
+            "type": "string",
+            "maxLength": 4096,
+            "nullable": true,
+            "description": "Short-lived history-only statement, never an access token."
+          },
           "cursor": {
             "type": "integer"
           },
@@ -945,6 +1008,9 @@
           }
         },
         "required": [
+          "holderDid",
+          "principal",
+          "principalJwt",
           "cursor",
           "configurationId",
           "requestId",
@@ -954,6 +1020,48 @@
           "credentialId",
           "currentState",
           "statusReference"
+        ]
+      },
+      "TenantIdentity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "keycloak",
+              "oidc"
+            ]
+          },
+          "displayName": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "issuer": {
+            "type": "string",
+            "maxLength": 2048
+          },
+          "clientId": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "clientSecret": {
+            "type": "string",
+            "maxLength": 4096,
+            "writeOnly": true
+          },
+          "audience": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "scopes": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "mode",
+          "displayName"
         ]
       }
     }
@@ -2212,8 +2320,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2348,8 +2486,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2514,8 +2682,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2669,8 +2867,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -2843,8 +3071,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3013,8 +3271,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3173,8 +3461,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3343,8 +3661,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3510,8 +3858,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3657,8 +4035,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3808,8 +4216,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -3946,8 +4384,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4082,8 +4550,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4239,8 +4737,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4390,8 +4918,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4550,8 +5108,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4698,8 +5286,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -4853,8 +5471,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5001,8 +5649,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5013,6 +5691,436 @@
           }
         },
         "x-pci-action": "public.asset"
+      }
+    },
+    "/api/v1/tenants/{tenantId}/issuer-keys": {
+      "post": {
+        "summary": "Create TSA key",
+        "operationId": "issuer_key-create",
+        "tags": [
+          "M8_PCI-IssuerAdministration"
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sr2Session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "issuer.key-create",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 64
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "ecdsa-p256",
+                      "rsa-2048",
+                      "rsa-3072",
+                      "rsa-4096"
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "type"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/semantic-template": {
+      "get": {
+        "summary": "Export credential semantic template",
+        "operationId": "semantic_export",
+        "tags": [
+          "M8_PCI-IssuerAdministration"
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "configurationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sr2Session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "configurationId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "identifier": {
+                      "type": "string",
+                      "maxLength": 64
+                    },
+                    "format": {
+                      "type": "string",
+                      "maxLength": 20
+                    },
+                    "vocabulary": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "context": {
+                      "type": "object",
+                      "description": "Self-contained JSON-LD 1.1 context; claim terms are scoped to credentialSubject."
+                    },
+                    "subjectSchema": {
+                      "type": "object",
+                      "description": "JSON Schema for the configured claim object."
+                    },
+                    "shacl": {
+                      "type": "string",
+                      "description": "SHACL shapes in Turtle."
+                    },
+                    "example": {
+                      "type": "object",
+                      "description": "Unsigned synthetic semantic example, never a retrieved credential."
+                    },
+                    "notice": {
+                      "type": "string",
+                      "maxLength": 1000
+                    }
+                  },
+                  "required": [
+                    "configurationId",
+                    "version",
+                    "identifier",
+                    "format",
+                    "vocabulary",
+                    "context",
+                    "subjectSchema",
+                    "shacl",
+                    "example",
+                    "notice"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "semantic.export"
       }
     },
     "/api/v1/tenants/{tenantId}/issuer-metadata": {
@@ -5139,8 +6247,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5275,8 +6413,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5440,8 +6608,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5607,8 +6805,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5758,8 +6986,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -5919,8 +7177,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6077,8 +7365,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6215,8 +7533,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6351,8 +7699,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6516,8 +7894,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6683,8 +8091,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6834,8 +8272,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -6995,8 +8463,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7153,8 +8651,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7291,8 +8819,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7427,8 +8985,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7592,8 +9180,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7759,8 +9377,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -7910,8 +9558,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8071,8 +9749,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8229,8 +9937,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8367,8 +10105,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8503,8 +10271,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8640,8 +10438,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8778,8 +10606,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -8914,8 +10772,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9086,8 +10974,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9241,8 +11159,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9420,8 +11368,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9590,8 +11568,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9750,8 +11758,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -9920,8 +11958,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10087,8 +12155,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10225,8 +12323,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10373,8 +12501,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10540,8 +12698,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10687,8 +12875,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -10865,8 +13083,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11026,8 +13274,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11185,8 +13463,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11323,8 +13631,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11473,8 +13811,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11621,8 +13989,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11771,8 +14169,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11921,8 +14349,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -11933,6 +14391,2123 @@
           }
         },
         "x-pci-action": "internal.publication-status"
+      }
+    },
+    "/.well-known/openid-credential-issuer": {
+      "get": {
+        "summary": "Native issuer",
+        "operationId": "native_issuer",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.issuer"
+      }
+    },
+    "/.well-known/openid-configuration": {
+      "get": {
+        "summary": "Native authorization",
+        "operationId": "native_authorization",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.authorization"
+      }
+    },
+    "/api/auth/token": {
+      "post": {
+        "summary": "Native token",
+        "operationId": "native_token",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/nonce": {
+      "post": {
+        "summary": "Native nonce",
+        "operationId": "native_nonce",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.nonce",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/credential": {
+      "post": {
+        "summary": "Native credential",
+        "operationId": "native_credential",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.credential",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/did.json": {
+      "get": {
+        "summary": "Native did",
+        "operationId": "native_did",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.did"
+      }
+    },
+    "/.well-known/jwks.json": {
+      "get": {
+        "summary": "Native jwks",
+        "operationId": "native_jwks",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.jwks"
+      }
+    },
+    "/v1/tenants/{statusTenant}/status/{listId}": {
+      "get": {
+        "summary": "Native status",
+        "operationId": "native_status",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [
+          {
+            "name": "statusTenant",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "native.status"
+      }
+    },
+    "/api/v1/tenants/{tenantId}/presentation-requests": {
+      "post": {
+        "summary": "POST /api/v1/tenants/:tenantId/presentation-requests",
+        "operationId": "presentation_start",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sr2Session": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "requestId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "requestUri": {
+                      "type": "string",
+                      "maxLength": 16000
+                    },
+                    "profile": {
+                      "type": "string",
+                      "enum": [
+                        "oid4vp-draft13",
+                        "oid4vp-1.0"
+                      ]
+                    },
+                    "expiresAt": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "requestId",
+                    "requestUri",
+                    "profile",
+                    "expiresAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "presentation.start",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "configurationId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "profile": {
+                    "type": "string",
+                    "enum": [
+                      "oid4vp-draft13",
+                      "oid4vp-1.0"
+                    ]
+                  }
+                },
+                "required": [
+                  "configurationId",
+                  "profile"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tenants/{tenantId}/presentation-requests/{requestId}/result": {
+      "post": {
+        "summary": "POST /api/v1/tenants/:tenantId/presentation-requests/:requestId/result",
+        "operationId": "presentation_result",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sr2Session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "processing",
+                        "awaiting_confirmation",
+                        "verified",
+                        "failed"
+                      ]
+                    },
+                    "expiresAt": {
+                      "type": "integer"
+                    },
+                    "verified": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string",
+                      "enum": [
+                        "oid4vp-draft13",
+                        "oid4vp-1.0"
+                      ]
+                    },
+                    "credentialId": {
+                      "type": "string",
+                      "maxLength": 1024
+                    },
+                    "holderDid": {
+                      "type": "string",
+                      "maxLength": 4096
+                    },
+                    "configurationId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "code": {
+                      "type": "string",
+                      "maxLength": 100
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "presentation.result",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "responseCode": {
+                    "type": "string",
+                    "maxLength": 43
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/presentation-response": {
+      "post": {
+        "summary": "POST /api/v1/presentation-response",
+        "operationId": "presentation_respond",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "redirect_uri": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "redirect_uri"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "presentation.respond",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "maxLength": 43
+                  },
+                  "vp_token": {
+                    "type": "string",
+                    "maxLength": 131072
+                  },
+                  "presentation_submission": {
+                    "type": "string",
+                    "maxLength": 4096
+                  },
+                  "error": {
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "state"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tenants/{tenantId}/presentation-configurations": {
+      "get": {
+        "summary": "GET /api/v1/tenants/:tenantId/presentation-configurations",
+        "operationId": "presentation_configurations",
+        "tags": [
+          "M11_PCI-IssuerRuntime"
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sr2Session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "presentation.configurations"
       }
     },
     "/api/v1/tenants/{tenantId}/participant-connectors": {
@@ -12059,8 +16634,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12195,8 +16800,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12361,8 +16996,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12516,8 +17181,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12690,8 +17385,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -12860,8 +17585,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13020,8 +17775,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13190,8 +17975,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13357,8 +18172,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13424,7 +18269,16 @@
               "type": "string",
               "maxLength": 200
             },
-            "description": "Tenant-scoped pseudonymous HMAC subject; no raw name/token search."
+            "description": "Tenant-scoped pseudonymous HMAC subject. Use principal for authorized literal username/email/name search."
+          },
+          {
+            "name": "principal",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "description": "History filter."
           },
           {
             "name": "requestId",
@@ -13596,8 +18450,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13743,8 +18627,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -13917,8 +18831,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14075,8 +19019,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14242,8 +19216,38 @@
               }
             }
           },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
             "content": {
               "application/problem+json": {
                 "schema": {
@@ -14279,6 +19283,359 @@
                   "state",
                   "confirmation"
                 ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tenants/{tenantId}/identity-provider": {
+      "get": {
+        "summary": "Read tenant identity",
+        "operationId": "tenant_identity_get",
+        "tags": [
+          "M17_PCI-TenantIdentity"
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sr2Session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "tenant.identity.get"
+      },
+      "put": {
+        "summary": "Configure tenant identity",
+        "operationId": "tenant_identity_put",
+        "tags": [
+          "M17_PCI-TenantIdentity"
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\"[1-9][0-9]*\"$"
+            }
+          }
+        ],
+        "security": [
+          {
+            "sr2Session": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation succeeded. Local publication is distinct from confirmed OCM delivery.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "428": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Dependency or exact contract unavailable; fails closed.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Structured safe problem.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sr2Problem"
+                }
+              }
+            }
+          }
+        },
+        "x-pci-action": "tenant.identity.put",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantIdentity"
               }
             }
           }

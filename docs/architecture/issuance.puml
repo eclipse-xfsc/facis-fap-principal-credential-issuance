@@ -1,0 +1,27 @@
+@startuml
+!theme plain
+actor "Principal / wallet" as Wallet
+participant "PCI ORCE" as PCI
+participant "Native OCM" as OCM
+participant "Participant repository" as Repository
+Wallet -> PCI : authenticated request + consent
+PCI -> OCM : credential.offer.url request
+OCM --> PCI : correlated offer
+PCI --> Wallet : offer URI / QR
+Wallet -> PCI : native token + proof-bearing credential request
+PCI -> OCM : trusted tenant proxy
+OCM -> PCI : private correlated NATS callback
+PCI -> Repository : Notify + GetCredentialData (mTLS / participant JWT)
+alt internal signing
+Repository --> PCI : transient unsigned claims
+PCI -> OCM : status allocation + native TSA signing
+OCM --> PCI : signed credential
+else participant signing
+Repository -> Repository : Crypto Provider Core signing
+Repository --> PCI : transient signed credential
+end
+PCI -> OCM : verify signature / expected status binding
+PCI -> PCI : persist only IDs, state, versions, holder DID
+PCI --> OCM : native callback reply
+OCM --> Wallet : credential response
+@enduml

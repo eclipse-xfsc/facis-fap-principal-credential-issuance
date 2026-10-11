@@ -9,3 +9,20 @@ body{line-height:1.5}button,.button-link{font-weight:600;border-radius:7px;paddi
 @media(min-width:1100px){.workspace-sidebar{position:sticky;top:0;height:calc(100vh - 64px)}.sr2-console .history-filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:1100px){.sr2-console{grid-template-columns:210px minmax(0,1fr)}.workspace-content{padding:20px}.workspace-header{padding:20px}.workspace-stats{grid-template-columns:1fr}.metric small{font-size:12px}.sr2-columns{grid-template-columns:1fr}.sr2-console .sr2-form{grid-template-columns:1fr}.registry-toolbar{align-items:flex-start;flex-wrap:wrap}.registry-filters{flex-wrap:wrap}.result-count{margin-left:0}}
 @media(max-width:720px){.sr2-console{grid-template-columns:1fr}.workspace-sidebar{border-right:0;border-bottom:1px solid var(--line);padding:12px}.workspace-brand,.workspace-tenant,.workspace-account{display:none}.sr2-tabs{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px;padding:0}.sr2-tabs button{padding:8px 10px;font-size:12px;flex:0 1 auto}.sr2-tabs svg{width:16px;height:16px}.workspace-header{padding:16px}.workspace-content{padding:16px}.workspace-header h1{font-size:20px}.workspace-stats{gap:10px}.registry-filters{padding:0 16px 16px;gap:10px}.registry-filters .config-search{flex-basis:100%;max-width:none}.registry-toolbar{padding:16px}.workspace-content>.card,.configuration-workspace>.card:not(.registry-card),.sr2-columns>.card{padding:16px}.sr2-row{align-items:stretch}.sr2-row>label{flex-basis:100%}.member-form{grid-template-columns:1fr}.topbar{padding:12px 16px;align-items:center;min-height:64px}.topbar .brand small{display:none}.topbar nav{gap:10px}.page-grid{padding:28px 16px;background:#f5f7fb}.two-column{grid-template-columns:1fr}.tenant-landing:not(.tenant-workspace){padding:40px 16px}.center-card{padding:24px;margin:40px 16px}.console-page{padding:28px 16px}}
+
+/* Each tenant-settings column flows independently; a tall issuer form must not
+   push branding below the signing-key card. */
+.tenant-settings-columns{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;align-items:start}
+.tenant-settings-column{display:grid;gap:24px;min-width:0;align-content:start}
+.tenant-settings-column>.card{margin:0;min-width:0}
+.persistent-error{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;white-space:pre-wrap;overflow-wrap:anywhere}
+.persistent-error>button{flex-shrink:0}
+@media(max-width:1100px){.tenant-settings-columns{grid-template-columns:1fr}}
+
+/* Typed tenant appearance applies to the landing page and every issuance step. */
+.tenant-landing,.tenant-landing .workspace-main{background:var(--tenant-background);color:var(--tenant-foreground);font-family:var(--tenant-font)}
+.tenant-landing .workspace-content{max-width:var(--tenant-width);width:100%}
+.tenant-landing .card,.tenant-landing .sr2-journey,.tenant-landing input,.tenant-landing textarea,.tenant-landing select{border-radius:var(--tenant-radius)}
+.tenant-landing .card:not(.dark-card),.tenant-landing label,.tenant-landing input,.tenant-landing textarea,.tenant-landing select,.tenant-landing h1,.tenant-landing h2,.tenant-landing h3{color:var(--tenant-foreground)}
+.tenant-landing .workspace-brand strong{color:var(--tenant-accent)}
+.tenant-footer{padding:24px;max-width:var(--tenant-width);margin:auto;text-align:center;font-size:14px}

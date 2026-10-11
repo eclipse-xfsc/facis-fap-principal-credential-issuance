@@ -1,0 +1,61 @@
+{
+  "status": "PARTIAL_CURRENT_BASELINE_UNVERIFIED",
+  "baseline": "OCM ESB 12.3.9",
+  "previousByteValidation": "docs/release/upstream-validation-rc5.json",
+  "items": [
+    {
+      "repository": "eclipse-xfsc/oid4-vci-issuer-service",
+      "commit": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "patchSha256": "a4951a372ce7824f09a0f429c96f162ba4e5246bf0f7843a6b41307c968deea6",
+      "currentRevisionPatchValidation": "HISTORICAL_FILE_BYTES_PASS",
+      "reason": "Exact original Git blob/SHA-256, patch SHA-256, zero-fuzz application and result SHA-256 PASS; compilation and native runtime acceptance NOT_RUN. See docs/release/upstream-validation.json."
+    },
+    {
+      "repository": "eclipse-xfsc/crypto-provider-service",
+      "commit": "0d15633b2a5267a41a22f1baaabc74852d68a0ef",
+      "patchSha256": "905b57ac5a744fad4e65b1a9d7ebdef9c1518cc05ab9715487f480e2c4b5a42b",
+      "currentRevisionPatchValidation": "NOT_RUN",
+      "reason": "NOT_RUN against the new upstream source. Supplied OCM assessment identifies the exact commit. Owner-provided checkout must match this commit and the unchanged zero-fuzz patch context; tools record original/result hashes at execution. No fallback to the previous revision."
+    },
+    {
+      "repository": "eclipse-xfsc/oid4-vci-credential-verification-service",
+      "commit": "5630f2acfc71d5a3a57aa0da9692266e85d27d7c",
+      "patchSha256": "56b60a5cb459857b832c592177eada4c6eb28cbe68d906f0aea36bed350c9f5f",
+      "currentRevisionPatchValidation": "HISTORICAL_FILE_BYTES_PASS",
+      "reason": "Exact original Git blob/SHA-256, patch SHA-256, zero-fuzz application and result SHA-256 PASS; compilation and native runtime acceptance NOT_RUN. See docs/release/upstream-validation.json."
+    },
+    {
+      "repository": "eclipse-xfsc/oid4-vci-vp-well-known-service",
+      "commit": "9d595cd5ceb25a48aee544efa1301a426a4caa32",
+      "patchSha256": "4fb4daa13e6472a8f2f2e5fc6dcf3e61b2de3d8a3a6c0caf8d5c4a7a3e8aa9be",
+      "currentRevisionPatchValidation": "HISTORICAL_FILE_BYTES_PASS",
+      "reason": "Exact original Git blob/SHA-256, patch SHA-256, zero-fuzz application and result SHA-256 PASS; compilation and native runtime acceptance NOT_RUN. See docs/release/upstream-validation.json."
+    }
+  ],
+  "notRun": [
+    "Crypto 2.3.7 current-commit patch application",
+    "All upstream Go compilation",
+    "Native service/PostgreSQL integration",
+    "Native deployment and full-sink payload-canary acceptance"
+  ],
+  "signerJwkContract": {
+    "status": "PINNED_SOURCE_INSPECTED_LOCAL_REGRESSIONS_PASS",
+    "service": {
+      "repository": "eclipse-xfsc/crypto-provider-service",
+      "commit": "0d15633b2a5267a41a22f1baaabc74852d68a0ef",
+      "path": "internal/service/signer/service.go",
+      "gitBlobSha": "33d6261bddd62aa8d34819758e4c4af61b2f2d13",
+      "method": "JwkPublicKey returns GetJwk directly"
+    },
+    "core": {
+      "repository": "eclipse-xfsc/crypto-provider-core",
+      "version": "v2.3.0",
+      "commit": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "path": "types/extensions.go",
+      "gitBlobSha": "64fca2c2996f8ea3fc55e50c3eb96c68f353c24c",
+      "method": "GetJwk returns []jwk.Key, with EC and RSA algorithm variants"
+    },
+    "test": "test/tests/integration/rc12-native-jwk.test.mjs",
+    "liveAcceptance": "NOT_RUN"
+  }
+}

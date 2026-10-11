@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+top to bottom direction
+skinparam componentStyle uml2
+actor "Provider / tenant administrator" as Admin
+actor "Principal + wallet" as Principal
+component "PCI ORCE\nVue/uibuilder + Function modules" as PCI
+database "PCI PostgreSQL\nconfiguration, history, IAM records" as DB
+component "Keycloak\nPCI realm + optional Entra broker" as IAM
+component "Native OCM\noffer, issuer, TSA, Well-Known, status" as OCM
+component "Participant Go/Goa\nmTLS gRPC repository" as Repository
+component "Participant data source\nORCE synthetic flow in tests" as Data
+component "Crypto Provider Core\nOpenBao / Vault provider" as Core
+Admin --> PCI : HTTPS / session
+Principal --> PCI : HTTPS / OID4VCI / OID4VP
+PCI --> IAM : OIDC / admin API
+PCI --> DB : metadata and state only
+PCI --> OCM : native NATS + HTTP(S)
+PCI --> Repository : Notify + GetCredentialData
+Repository --> Data : authenticated lookup
+Repository --> Core : gRPC signing
+OCM --> Core : native signing
+note bottom of PCI
+No retrieved claims, access tokens or presentations
+are stored in database history or ORCE context.
+TLS endpoint configuration and shared service ownership
+are described in operations/transport.md.
+end note
+@enduml

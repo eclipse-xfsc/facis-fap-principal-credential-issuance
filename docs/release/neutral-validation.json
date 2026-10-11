@@ -1,0 +1,180 @@
+{
+  "version": "0.5.0-rc.12",
+  "revision": "neutral-source",
+  "status": "PASS",
+  "date": "2026-10-12",
+  "identityScan": {
+    "status": "PASS",
+    "filesScanned": 353,
+    "pdfObjectsScanned": 4054,
+    "identifierFindings": 0,
+    "scope": [
+      "paths",
+      "UTF-8/UTF-16 content",
+      "URL-decoded content",
+      "PDF page text, metadata, dictionaries and decoded streams"
+    ]
+  },
+  "documentation": {
+    "documentation": "PASS",
+    "requirements": 109,
+    "technicalClauses": 83,
+    "apiExamples": 122,
+    "specifications": 2,
+    "markdownFiles": 82,
+    "navigation": {
+      "status": "PASS",
+      "targets": 44
+    }
+  },
+  "documentationExampleSyntax": {
+    "status": "PASS",
+    "examplesChecked": 49
+  },
+  "offlineSuite": {
+    "tests": 302,
+    "passed": 302,
+    "failed": 0,
+    "skipped": 0,
+    "deterministic": true,
+    "g0Yaml": {
+      "g0Yaml": "PASS",
+      "scenarios": 12,
+      "documents": 360,
+      "kubernetesAdmission": "NOT_RUN"
+    },
+    "bddCatalogue": {
+      "stepBindings": "PASS",
+      "stepOccurrences": 109,
+      "scenarioDefinitions": 26,
+      "execution": "NOT_RUN"
+    },
+    "shellSyntax": "PASS",
+    "pythonSyntax": {
+      "status": "PASS",
+      "files": 27
+    },
+    "secretLiteralScan": "PASS"
+  },
+  "walletHelper": {
+    "status": "PASS",
+    "cases": 8,
+    "javascriptSyntax": "PASS",
+    "results": [
+      {
+        "case": "missing issuer",
+        "status": "PASS",
+        "networkCalls": 0
+      },
+      {
+        "case": "invalid issuer scheme",
+        "status": "PASS",
+        "networkCalls": 0
+      },
+      {
+        "case": "invalid tenant UUID",
+        "status": "PASS",
+        "networkCalls": 0
+      },
+      {
+        "case": "invalid configuration UUID",
+        "status": "PASS",
+        "networkCalls": 0
+      },
+      {
+        "case": "invalid gateway address",
+        "status": "PASS",
+        "networkCalls": 0
+      },
+      {
+        "case": "missing synthetic acknowledgement",
+        "status": "PASS",
+        "networkCalls": 0
+      },
+      {
+        "case": "DNS routing",
+        "status": "PASS",
+        "transport": "stubbed curl; verified TLS 1.3 options retained",
+        "secretEcho": "none"
+      },
+      {
+        "case": "optional gateway pinning",
+        "status": "PASS",
+        "transport": "stubbed curl; verified TLS 1.3 options retained",
+        "secretEcho": "none"
+      }
+    ],
+    "liveWallet": "NOT_RUN"
+  },
+  "normativePdfPages": {
+    "status": "PASS",
+    "pages": 35,
+    "textUnchanged": true,
+    "renderPixelIdentical": true,
+    "documentMetadataRemoved": true,
+    "files": [
+      {
+        "file": "SRS.pdf",
+        "pages": 28,
+        "textUnchanged": true,
+        "renderUnchanged": true,
+        "authorMetadataRemoved": true
+      },
+      {
+        "file": "Technical-Development-Requirements.pdf",
+        "pages": 7,
+        "textUnchanged": true,
+        "renderUnchanged": true,
+        "authorMetadataRemoved": true
+      }
+    ]
+  },
+  "applicationDistribution": {
+    "status": "UNCHANGED",
+    "comparison": "Every dist file matches supplied rc.12 SHA-256"
+  },
+  "changedFiles": [
+    "README.md",
+    "docs/README.md",
+    "docs/operations/automation.md",
+    "docs/operations/deployment.md",
+    "docs/operations/neutral-configuration.md",
+    "docs/operations/observability.md",
+    "docs/operations/upgrade-0.5.0-rc.10.md",
+    "docs/operations/upgrade-0.5.0-rc.11.md",
+    "docs/operations/upgrade-0.5.0-rc.12.md",
+    "docs/operations/upgrade-0.5.0-rc.2.md",
+    "docs/operations/upgrade-0.5.0-rc.3.md",
+    "docs/operations/upgrade-0.5.0-rc.8.md",
+    "docs/operations/upgrade-0.5.0-rc.9.md",
+    "docs/release/0.5.0-rc.11.md",
+    "docs/release/0.5.0-rc.12.md",
+    "docs/release/neutral-revision.md",
+    "docs/release/neutral-validation.json",
+    "docs/release/validation.json",
+    "docs/source-baseline.md",
+    "docs/specifications/README.md",
+    "docs/specifications/SRS.pdf",
+    "docs/specifications/Technical-Development-Requirements.pdf",
+    "docs/specifications/manifest.json",
+    "mkdocs.yml",
+    "scripts/lifecycle.py",
+    "scripts/test-alpha-wallet.sh",
+    "scripts/upgrade-artifacts.sh",
+    "test/fixtures/wellknown-1.5.2-metadata.json",
+    "test/tests/integration/rc12-native-jwk.test.mjs",
+    "test/tests/integration/rc8-metadata.test.mjs",
+    "test/tests/integration/rc9-sandbox.test.mjs",
+    "test/tests/integration/release-automation.test.mjs",
+    "tools/check-documentation.mjs"
+  ],
+  "notRun": [
+    "PostgreSQL server migration/concurrency",
+    "Go/Goa/protobuf compile and race tests",
+    "Helm lint/template and Kubernetes/ArgoCD admission",
+    "XFSC BDD Executor, Chromium browser and accessibility",
+    "Real ORCE/Keycloak/Entra/OCM/NATS/participant/PCM deployments",
+    "MkDocs build and semantic JSON-LD/SHACL engine validation",
+    "npm install/audit and official Eclipse workflows"
+  ]
+}

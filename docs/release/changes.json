@@ -1,0 +1,50 @@
+{
+  "version": "0.5.0-rc.12",
+  "baseline": "OCM-WStack ESB 12.3.9; observed issuance 1.9.2 and signer 2.3.7",
+  "input": "Latest patched rc.11 source from operator allsources.zip",
+  "inputArchiveSha256": "d8cb5070aa89737806ad6962eac192487943308eec3da4ebaec999fc92f87313",
+  "record": "Decode native single-key JWK arrays; select configured public key and supported credential algorithm; preserve mandatory independent verification. Remove temporary broad diagnostics, retain callback code/stage. Retain operator discovery correction and prior fixes. Add safe Alpha runner and surgical upgrade documentation. Generated distribution rebuilt. Local tests only; no remote deployment, image push or public repository mutation.",
+  "added": [
+    "docs/operations/upgrade-0.5.0-rc.12.md",
+    "docs/release/0.5.0-rc.12.md",
+    "scripts/test-alpha-wallet.sh",
+    "test/tests/integration/rc12-native-jwk.test.mjs"
+  ],
+  "modified": [
+    "README.md",
+    "VERSION",
+    "backend/sr2/adapters.js",
+    "backend/sr2/native.js",
+    "backend/sr2/runtime.js",
+    "contracts/integration-lock.json",
+    "contracts/ocm-12.3.9-assessment.json",
+    "deployment/helm/fap-pci/Chart.yaml",
+    "deployment/helm/observability/Chart.yaml",
+    "deployment/helm/participant/Chart.yaml",
+    "dist/fap-pci-flow.json",
+    "dist/ui/index.js",
+    "docs/README.md",
+    "docs/api/examples.json",
+    "docs/api/openapi.json",
+    "docs/compatibility/compatibility-matrix.md",
+    "docs/release/acceptance.example.json",
+    "docs/release/changes.json",
+    "docs/release/completion.md",
+    "docs/release/gap-closure.json",
+    "docs/release/requirement-audit.json",
+    "docs/release/requirement-audit.md",
+    "docs/release/signoff-status.json",
+    "docs/requirements/requirements.json",
+    "docs/requirements/technical-clauses.json",
+    "docs/requirements/traceability.md",
+    "docs/source-baseline.md",
+    "mkdocs.yml",
+    "package-lock.json",
+    "package.json",
+    "scripts/upgrade-artifacts.sh",
+    "tools/build-requirement-audit.mjs"
+  ],
+  "deleted": [
+    "test/live/wallet.mjs.before-discovery-fix-20261011T170919Z"
+  ]
+}

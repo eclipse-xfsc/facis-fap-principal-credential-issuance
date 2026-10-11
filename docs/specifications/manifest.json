@@ -1,0 +1,19 @@
+{
+  "authority": "User-supplied normative documents; page content unchanged, document metadata removed",
+  "files": [
+    {
+      "path": "SRS.pdf",
+      "sha256": "f7d0fc6eb7adff5653536d7ae45f87fb81a6006678ba8aa2625a34735662b9c8",
+      "originalSha256": "d590615b4f5019ab55ac901a91d147096789bc7f912c69e51a2ae1481d817bf6",
+      "metadataSanitized": true,
+      "pageContent": "Unchanged text and pixel-identical page rendering verified"
+    },
+    {
+      "path": "Technical-Development-Requirements.pdf",
+      "sha256": "1883eb937dfe4d72b1ab5a9ffa11d5dc95232c9da0909f74753fda559add70b2",
+      "originalSha256": "eb72fb7b25f5291271eb328aac96fcb4b5fac88ed4036c1dd7d6b03571fc4458",
+      "metadataSanitized": true,
+      "pageContent": "Unchanged text and pixel-identical page rendering verified"
+    }
+  ]
+}

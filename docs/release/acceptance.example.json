@@ -1,0 +1,972 @@
+{
+  "version": "0.5.0-rc.12",
+  "reviewer": "",
+  "reviewedAt": null,
+  "environments": [],
+  "artifacts": {},
+  "evidence": [],
+  "requirements": [
+    {
+      "id": "FR-PCI-01",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-02",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-03",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-04",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-05",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-06",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-07",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-08",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-09",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-10",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-11",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-12",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-13",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-14",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-15",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-16",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-17",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-18",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-19",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-20",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-21",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-22",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-23",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-24",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-25",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-26",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-27",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-28",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-29",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-30",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-31",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-32",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-33",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-34",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-35",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-36",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-37",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-38",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-39",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-40",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-41",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-42",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-43",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-44",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-45",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-46",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-47",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-48",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-49",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-50",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-51",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-52",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-53",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-54",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-55",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-56",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-57",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-58",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-59",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-60",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-61",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-62",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-63",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-64",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-65",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-66",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-67",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-68",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-69",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-70",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-71",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-72",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-73",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-74",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-75",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-76",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-77",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-78",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-79",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-80",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-81",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-82",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-83",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-84",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-85",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-86",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-87",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-88",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-89",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-90",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-91",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-92",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-93",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-94",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-95",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-96",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-97",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-98",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-99",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-100",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "FR-PCI-101",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-01",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-02",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-03",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-04",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-05",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-06",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-07",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDR-08",
+      "status": "NOT_RUN",
+      "evidence": []
+    }
+  ],
+  "technicalClauses": [
+    {
+      "id": "TDC-001",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-002",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-003",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-004",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-005",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-006",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-007",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-008",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-009",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-010",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-011",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-012",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-013",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-014",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-015",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-016",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-017",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-018",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-019",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-020",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-021",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-022",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-023",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-024",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-025",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-026",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-027",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-028",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-029",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-030",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-031",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-032",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-033",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-034",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-035",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-036",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-037",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-038",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-039",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-040",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-041",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-042",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-043",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-044",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-045",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-046",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-047",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-048",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-049",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-050",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-051",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-052",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-053",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-054",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-055",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-056",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-057",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-058",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-059",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-060",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-061",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-062",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-063",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-064",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-065",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-066",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-067",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-068",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-069",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-070",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-071",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-072",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-073",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-074",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-075",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-076",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-077",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-078",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-079",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-080",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-081",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-082",
+      "status": "NOT_RUN",
+      "evidence": []
+    },
+    {
+      "id": "TDC-083",
+      "status": "NOT_RUN",
+      "evidence": []
+    }
+  ]
+}

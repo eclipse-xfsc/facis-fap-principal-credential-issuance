@@ -1,0 +1,2354 @@
+{
+  "version": "0.5.0-rc.12",
+  "purpose": "Synthetic request shapes. Replace IDs, private session, If-Match and resource bindings; these are not captured acceptance results. Consult OpenAPI response schemas and live BDD assertions.",
+  "items": [
+    {
+      "operationId": "get /healthz",
+      "method": "GET",
+      "path": "/healthz",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1healthz/get/responses"
+    },
+    {
+      "operationId": "get /readyz",
+      "method": "GET",
+      "path": "/readyz",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1readyz/get/responses"
+    },
+    {
+      "operationId": "get /metrics",
+      "method": "GET",
+      "path": "/metrics",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1metrics/get/responses"
+    },
+    {
+      "operationId": "get /api/openapi.json",
+      "method": "GET",
+      "path": "/api/openapi.json",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1openapi.json/get/responses"
+    },
+    {
+      "operationId": "get /api/v1/platform/status",
+      "method": "GET",
+      "path": "/api/v1/platform/status",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1platform~1status/get/responses"
+    },
+    {
+      "operationId": "post /api/v1/platform/initialize",
+      "method": "POST",
+      "path": "/api/v1/platform/initialize",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1platform~1initialize/post/responses"
+    },
+    {
+      "operationId": "get /api/v1/tenant-registration-config",
+      "method": "GET",
+      "path": "/api/v1/tenant-registration-config",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenant-registration-config/get/responses"
+    },
+    {
+      "operationId": "post /api/v1/tenant-registrations",
+      "method": "POST",
+      "path": "/api/v1/tenant-registrations",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "202"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenant-registrations/post/responses"
+    },
+    {
+      "operationId": "post /api/v1/tenant-registrations/{registrationId}/verify-email",
+      "method": "POST",
+      "path": "/api/v1/tenant-registrations/{registrationId}/verify-email",
+      "pathParameters": {
+        "registrationId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenant-registrations~1{registrationId}~1verify-email/post/responses"
+    },
+    {
+      "operationId": "post /api/v1/tenant-registrations/{registrationId}/resend-verification",
+      "method": "POST",
+      "path": "/api/v1/tenant-registrations/{registrationId}/resend-verification",
+      "pathParameters": {
+        "registrationId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenant-registrations~1{registrationId}~1resend-verification/post/responses"
+    },
+    {
+      "operationId": "get /api/v1/auth/config",
+      "method": "GET",
+      "path": "/api/v1/auth/config",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1auth~1config/get/responses"
+    },
+    {
+      "operationId": "post /api/v1/auth/oidc/exchange",
+      "method": "POST",
+      "path": "/api/v1/auth/oidc/exchange",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1auth~1oidc~1exchange/post/responses"
+    },
+    {
+      "operationId": "get /api/v1/auth/session",
+      "method": "GET",
+      "path": "/api/v1/auth/session",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1auth~1session/get/responses"
+    },
+    {
+      "operationId": "post /api/v1/auth/logout",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1auth~1logout/post/responses"
+    },
+    {
+      "operationId": "get /api/v1/provider/tenant-registrations",
+      "method": "GET",
+      "path": "/api/v1/provider/tenant-registrations",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenant-registrations/get/responses"
+    },
+    {
+      "operationId": "get /api/v1/provider/tenant-registrations/{registrationId}",
+      "method": "GET",
+      "path": "/api/v1/provider/tenant-registrations/{registrationId}",
+      "pathParameters": {
+        "registrationId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenant-registrations~1{registrationId}/get/responses"
+    },
+    {
+      "operationId": "post /api/v1/provider/tenant-registrations/{registrationId}/approve",
+      "method": "POST",
+      "path": "/api/v1/provider/tenant-registrations/{registrationId}/approve",
+      "pathParameters": {
+        "registrationId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200",
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenant-registrations~1{registrationId}~1approve/post/responses"
+    },
+    {
+      "operationId": "post /api/v1/provider/tenant-registrations/{registrationId}/reject",
+      "method": "POST",
+      "path": "/api/v1/provider/tenant-registrations/{registrationId}/reject",
+      "pathParameters": {
+        "registrationId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenant-registrations~1{registrationId}~1reject/post/responses"
+    },
+    {
+      "operationId": "get /api/v1/provider/tenants",
+      "method": "GET",
+      "path": "/api/v1/provider/tenants",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenants/get/responses"
+    },
+    {
+      "operationId": "get /api/v1/provider/tenants/{tenantId}/reconciliation",
+      "method": "GET",
+      "path": "/api/v1/provider/tenants/{tenantId}/reconciliation",
+      "pathParameters": {
+        "tenantId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenants~1{tenantId}~1reconciliation/get/responses"
+    },
+    {
+      "operationId": "post /api/v1/provider/tenants/{tenantId}/reconcile",
+      "method": "POST",
+      "path": "/api/v1/provider/tenants/{tenantId}/reconcile",
+      "pathParameters": {
+        "tenantId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenants~1{tenantId}~1reconcile/post/responses"
+    },
+    {
+      "operationId": "post /api/v1/provider/email/test",
+      "method": "POST",
+      "path": "/api/v1/provider/email/test",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1email~1test/post/responses"
+    },
+    {
+      "operationId": "get /api/v1/runtime/tenant-context",
+      "method": "GET",
+      "path": "/api/v1/runtime/tenant-context",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1runtime~1tenant-context/get/responses"
+    },
+    {
+      "operationId": "get /api/v1/tenant/profile",
+      "method": "GET",
+      "path": "/api/v1/tenant/profile",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenant~1profile/get/responses"
+    },
+    {
+      "operationId": "get /api/v1/tenants/{tenantId}/members",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/members",
+      "pathParameters": {
+        "tenantId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1members/get/responses"
+    },
+    {
+      "operationId": "post /api/v1/tenants/{tenantId}/members",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/members",
+      "pathParameters": {
+        "tenantId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1members/post/responses"
+    },
+    {
+      "operationId": "get /api/v1/internal/provisioning/tenants",
+      "method": "GET",
+      "path": "/api/v1/internal/provisioning/tenants",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1provisioning~1tenants/get/responses"
+    },
+    {
+      "operationId": "put /api/v1/internal/provisioning/tenants/{tenantId}/status",
+      "method": "PUT",
+      "path": "/api/v1/internal/provisioning/tenants/{tenantId}/status",
+      "pathParameters": {
+        "tenantId": "REPLACE_WITH_VALUE"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1provisioning~1tenants~1{tenantId}~1status/put/responses"
+    },
+    {
+      "operationId": "config_list",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations/get/responses"
+    },
+    {
+      "operationId": "config_create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "identifier": "Employee",
+          "name": "Employee credential",
+          "description": "Synthetic acceptance fixture",
+          "profile": "oid4vci-1.0",
+          "format": "jwt_vc_json",
+          "credentialTypes": [
+            "VerifiableCredential",
+            "EmployeeCredential"
+          ],
+          "claims": [
+            {
+              "name": "department",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "signingMode": "internal-signing",
+          "keyRef": "issuer",
+          "statusProfile": "StatusList2021",
+          "eligibility": {
+            "roles": [
+              "principal"
+            ],
+            "subjects": [],
+            "entitlements": []
+          },
+          "ratePerMinute": 10,
+          "blockReissuance": true
+        }
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations/post/responses"
+    },
+    {
+      "operationId": "config_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}/get/responses"
+    },
+    {
+      "operationId": "config_update",
+      "method": "PATCH",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "identifier": "Employee",
+          "name": "Employee credential",
+          "description": "Synthetic acceptance fixture",
+          "profile": "oid4vci-1.0",
+          "format": "jwt_vc_json",
+          "credentialTypes": [
+            "VerifiableCredential",
+            "EmployeeCredential"
+          ],
+          "claims": [
+            {
+              "name": "department",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "signingMode": "internal-signing",
+          "keyRef": "issuer",
+          "statusProfile": "StatusList2021",
+          "eligibility": {
+            "roles": [
+              "principal"
+            ],
+            "subjects": [],
+            "entitlements": []
+          },
+          "ratePerMinute": 10,
+          "blockReissuance": true
+        }
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}/patch/responses"
+    },
+    {
+      "operationId": "config_archive",
+      "method": "DELETE",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}/delete/responses"
+    },
+    {
+      "operationId": "config_publish",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/publish",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1publish/post/responses"
+    },
+    {
+      "operationId": "config_preview",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/preview",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1preview/post/responses"
+    },
+    {
+      "operationId": "config_rollback",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/rollback",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "version": 1
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1rollback/post/responses"
+    },
+    {
+      "operationId": "config_versions",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/versions",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1versions/get/responses"
+    },
+    {
+      "operationId": "config_validate",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/validate",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1validate/post/responses"
+    },
+    {
+      "operationId": "issuer_capabilities",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/issuer-capabilities",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-capabilities/get/responses"
+    },
+    {
+      "operationId": "assignment_list",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/administrators",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1administrators/get/responses"
+    },
+    {
+      "operationId": "assignment_grant",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/administrators",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "subject": "REPLACE_WITH_EXISTING_KEYCLOAK_SUBJECT",
+        "configurationIds": [
+          "11111111-1111-4111-8111-111111111111"
+        ]
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1administrators/post/responses"
+    },
+    {
+      "operationId": "assignment_revoke",
+      "method": "DELETE",
+      "path": "/api/v1/tenants/{tenantId}/administrators/{assignmentId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "assignmentId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1administrators~1{assignmentId}/delete/responses"
+    },
+    {
+      "operationId": "asset_create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/assets",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "mediaType": "image/png",
+          "base64": "REPLACE_WITH_VALUE"
+        }
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1assets/post/responses"
+    },
+    {
+      "operationId": "asset_list",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/assets",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1assets/get/responses"
+    },
+    {
+      "operationId": "asset_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/assets/{assetId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "assetId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1assets~1{assetId}/get/responses"
+    },
+    {
+      "operationId": "asset_archive",
+      "method": "DELETE",
+      "path": "/api/v1/tenants/{tenantId}/assets/{assetId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "assetId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1assets~1{assetId}/delete/responses"
+    },
+    {
+      "operationId": "public_asset",
+      "method": "GET",
+      "path": "/api/v1/public/assets/{assetId}",
+      "pathParameters": {
+        "assetId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1public~1assets~1{assetId}/get/responses"
+    },
+    {
+      "operationId": "issuer_key-create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-keys",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "name": "REPLACE_WITH_VALUE",
+        "type": "ecdsa-p256"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-keys/post/responses"
+    },
+    {
+      "operationId": "semantic_export",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/semantic-template",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1semantic-template/get/responses"
+    },
+    {
+      "operationId": "metadata_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/issuer-metadata",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-metadata/get/responses"
+    },
+    {
+      "operationId": "metadata_create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-metadata",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "profile": "oid4vci-1.0",
+          "issuer": "https://alpha-pci.example.com/pci-orce",
+          "authorizationServers": [
+            "https://alpha-pci.example.com/pci-orce"
+          ],
+          "did": "did:web:alpha-pci.example.com",
+          "jwksUrl": "https://alpha-pci.example.com/pci-orce/.well-known/jwks.json",
+          "displayName": "Alpha",
+          "tokenKeyRef": "preauth"
+        }
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-metadata/post/responses"
+    },
+    {
+      "operationId": "metadata_update",
+      "method": "PUT",
+      "path": "/api/v1/tenants/{tenantId}/issuer-metadata",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "profile": "oid4vci-1.0",
+          "issuer": "https://alpha-pci.example.com/pci-orce",
+          "authorizationServers": [
+            "https://alpha-pci.example.com/pci-orce"
+          ],
+          "did": "did:web:alpha-pci.example.com",
+          "jwksUrl": "https://alpha-pci.example.com/pci-orce/.well-known/jwks.json",
+          "displayName": "Alpha",
+          "tokenKeyRef": "preauth"
+        }
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-metadata/put/responses"
+    },
+    {
+      "operationId": "metadata_publish",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-metadata/publish",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-metadata~1publish/post/responses"
+    },
+    {
+      "operationId": "metadata_preview",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-metadata/preview",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-metadata~1preview/post/responses"
+    },
+    {
+      "operationId": "metadata_rollback",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-metadata/rollback",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "version": 1
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-metadata~1rollback/post/responses"
+    },
+    {
+      "operationId": "metadata_versions",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/issuer-metadata/versions",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-metadata~1versions/get/responses"
+    },
+    {
+      "operationId": "branding_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/branding",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1branding/get/responses"
+    },
+    {
+      "operationId": "branding_create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/branding",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "title": "Alpha",
+          "description": "Synthetic employee credentials",
+          "accent": "#173c67",
+          "background": "#f5f7fb",
+          "foreground": "#1f2937",
+          "font": "system",
+          "layout": "wide",
+          "corners": "rounded",
+          "footer": "Alpha credential service",
+          "logoAssetId": null
+        }
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1branding/post/responses"
+    },
+    {
+      "operationId": "branding_update",
+      "method": "PUT",
+      "path": "/api/v1/tenants/{tenantId}/branding",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "title": "Alpha",
+          "description": "Synthetic employee credentials",
+          "accent": "#173c67",
+          "background": "#f5f7fb",
+          "foreground": "#1f2937",
+          "font": "system",
+          "layout": "wide",
+          "corners": "rounded",
+          "footer": "Alpha credential service",
+          "logoAssetId": null
+        }
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1branding/put/responses"
+    },
+    {
+      "operationId": "branding_publish",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/branding/publish",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1branding~1publish/post/responses"
+    },
+    {
+      "operationId": "branding_preview",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/branding/preview",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1branding~1preview/post/responses"
+    },
+    {
+      "operationId": "branding_rollback",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/branding/rollback",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "version": 1
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1branding~1rollback/post/responses"
+    },
+    {
+      "operationId": "branding_versions",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/branding/versions",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1branding~1versions/get/responses"
+    },
+    {
+      "operationId": "settings_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/issuer-settings",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-settings/get/responses"
+    },
+    {
+      "operationId": "settings_create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-settings",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "ratePerMinute": 30,
+          "maxConcurrent": 2
+        }
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-settings/post/responses"
+    },
+    {
+      "operationId": "settings_update",
+      "method": "PUT",
+      "path": "/api/v1/tenants/{tenantId}/issuer-settings",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "ratePerMinute": 30,
+          "maxConcurrent": 2
+        }
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-settings/put/responses"
+    },
+    {
+      "operationId": "settings_publish",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-settings/publish",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-settings~1publish/post/responses"
+    },
+    {
+      "operationId": "settings_preview",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-settings/preview",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-settings~1preview/post/responses"
+    },
+    {
+      "operationId": "settings_rollback",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuer-settings/rollback",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "version": 1
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-settings~1rollback/post/responses"
+    },
+    {
+      "operationId": "settings_versions",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/issuer-settings/versions",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuer-settings~1versions/get/responses"
+    },
+    {
+      "operationId": "publication_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/publication",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1publication/get/responses"
+    },
+    {
+      "operationId": "publication_publish",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/publication",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1publication/post/responses"
+    },
+    {
+      "operationId": "public_branding",
+      "method": "GET",
+      "path": "/api/v1/public/branding",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1public~1branding/get/responses"
+    },
+    {
+      "operationId": "flow_list",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/flows",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows/get/responses"
+    },
+    {
+      "operationId": "flow_create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/flows",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "configurationId": null,
+        "data": {
+          "name": "Employee request",
+          "steps": [
+            {
+              "id": "consent",
+              "type": "consent",
+              "title": "Use employee data",
+              "text": "Synthetic acceptance only",
+              "fields": []
+            },
+            {
+              "id": "offer",
+              "type": "offer",
+              "title": "Collect your credential",
+              "text": "Open your wallet",
+              "fields": []
+            }
+          ]
+        }
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows/post/responses"
+    },
+    {
+      "operationId": "flow_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/flows/{flowId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "flowId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows~1{flowId}/get/responses"
+    },
+    {
+      "operationId": "flow_update",
+      "method": "PATCH",
+      "path": "/api/v1/tenants/{tenantId}/flows/{flowId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "flowId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "name": "Employee request",
+          "steps": [
+            {
+              "id": "consent",
+              "type": "consent",
+              "title": "Use employee data",
+              "text": "Synthetic acceptance only",
+              "fields": []
+            },
+            {
+              "id": "offer",
+              "type": "offer",
+              "title": "Collect your credential",
+              "text": "Open your wallet",
+              "fields": []
+            }
+          ]
+        }
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows~1{flowId}/patch/responses"
+    },
+    {
+      "operationId": "flow_archive",
+      "method": "DELETE",
+      "path": "/api/v1/tenants/{tenantId}/flows/{flowId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "flowId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows~1{flowId}/delete/responses"
+    },
+    {
+      "operationId": "flow_publish",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/flows/{flowId}/publish",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "flowId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows~1{flowId}~1publish/post/responses"
+    },
+    {
+      "operationId": "flow_preview",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/flows/{flowId}/preview",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "flowId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows~1{flowId}~1preview/post/responses"
+    },
+    {
+      "operationId": "flow_rollback",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/flows/{flowId}/rollback",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "flowId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "version": 1
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows~1{flowId}~1rollback/post/responses"
+    },
+    {
+      "operationId": "flow_versions",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/flows/{flowId}/versions",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "flowId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1flows~1{flowId}~1versions/get/responses"
+    },
+    {
+      "operationId": "issuance_eligible",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/eligible-configurations",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1eligible-configurations/get/responses"
+    },
+    {
+      "operationId": "issuance_start",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuance-requests",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Idempotency-Key": "synthetic-request-00000001",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuance-requests/post/responses"
+    },
+    {
+      "operationId": "issuance_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/issuance-requests/{requestId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "requestId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuance-requests~1{requestId}/get/responses"
+    },
+    {
+      "operationId": "issuance_advance",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuance-requests/{requestId}/advance",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "requestId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "step": 1
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuance-requests~1{requestId}~1advance/post/responses"
+    },
+    {
+      "operationId": "issuance_offer",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/issuance-requests/{requestId}/offer",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "requestId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1issuance-requests~1{requestId}~1offer/post/responses"
+    },
+    {
+      "operationId": "internal_offer-create",
+      "method": "POST",
+      "path": "/api/v1/internal/tenants/{tenantId}/offers",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Idempotency-Key": "synthetic-request-00000001",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "contractStatus": "BLOCKED",
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1tenants~1{tenantId}~1offers/post/responses"
+    },
+    {
+      "operationId": "internal_offer-get",
+      "method": "GET",
+      "path": "/api/v1/internal/tenants/{tenantId}/offers/{requestId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "requestId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1tenants~1{tenantId}~1offers~1{requestId}/get/responses"
+    },
+    {
+      "operationId": "internal_callback",
+      "method": "POST",
+      "path": "/api/v1/internal/tenants/{tenantId}/callbacks",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "contractStatus": "BLOCKED",
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1tenants~1{tenantId}~1callbacks/post/responses"
+    },
+    {
+      "operationId": "internal_plugin-put",
+      "method": "PUT",
+      "path": "/api/v1/internal/tenants/{tenantId}/plugin-configuration",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "contractStatus": "BLOCKED",
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1tenants~1{tenantId}~1plugin-configuration/put/responses"
+    },
+    {
+      "operationId": "internal_plugin-delete",
+      "method": "DELETE",
+      "path": "/api/v1/internal/tenants/{tenantId}/plugin-configuration",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "contractStatus": "BLOCKED",
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1tenants~1{tenantId}~1plugin-configuration/delete/responses"
+    },
+    {
+      "operationId": "internal_metadata-publish",
+      "method": "POST",
+      "path": "/api/v1/internal/tenants/{tenantId}/metadata/publish",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "contractStatus": "BLOCKED",
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1tenants~1{tenantId}~1metadata~1publish/post/responses"
+    },
+    {
+      "operationId": "internal_publication-status",
+      "method": "GET",
+      "path": "/api/v1/internal/tenants/{tenantId}/metadata/publication-status",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1tenants~1{tenantId}~1metadata~1publication-status/get/responses"
+    },
+    {
+      "operationId": "native_issuer",
+      "method": "GET",
+      "path": "/.well-known/openid-credential-issuer",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1.well-known~1openid-credential-issuer/get/responses"
+    },
+    {
+      "operationId": "native_authorization",
+      "method": "GET",
+      "path": "/.well-known/openid-configuration",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1.well-known~1openid-configuration/get/responses"
+    },
+    {
+      "operationId": "native_token",
+      "method": "POST",
+      "path": "/api/auth/token",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1auth~1token/post/responses"
+    },
+    {
+      "operationId": "native_nonce",
+      "method": "POST",
+      "path": "/api/nonce",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1nonce/post/responses"
+    },
+    {
+      "operationId": "native_credential",
+      "method": "POST",
+      "path": "/api/credential",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1credential/post/responses"
+    },
+    {
+      "operationId": "native_did",
+      "method": "GET",
+      "path": "/.well-known/did.json",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1.well-known~1did.json/get/responses"
+    },
+    {
+      "operationId": "native_jwks",
+      "method": "GET",
+      "path": "/.well-known/jwks.json",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1.well-known~1jwks.json/get/responses"
+    },
+    {
+      "operationId": "native_status",
+      "method": "GET",
+      "path": "/v1/tenants/{statusTenant}/status/{listId}",
+      "pathParameters": {
+        "statusTenant": "11111111-1111-4111-8111-111111111111",
+        "listId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1v1~1tenants~1{statusTenant}~1status~1{listId}/get/responses"
+    },
+    {
+      "operationId": "presentation_start",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/presentation-requests",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "configurationId": "11111111-1111-4111-8111-111111111111",
+        "profile": "oid4vp-draft13"
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1presentation-requests/post/responses"
+    },
+    {
+      "operationId": "presentation_result",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/presentation-requests/{requestId}/result",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "requestId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1presentation-requests~1{requestId}~1result/post/responses"
+    },
+    {
+      "operationId": "presentation_respond",
+      "method": "POST",
+      "path": "/api/v1/presentation-response",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "body": {
+        "state": "REPLACE_WITH_VALUE"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1presentation-response/post/responses"
+    },
+    {
+      "operationId": "presentation_configurations",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/presentation-configurations",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1presentation-configurations/get/responses"
+    },
+    {
+      "operationId": "connector_list",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors/get/responses"
+    },
+    {
+      "operationId": "connector_create",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "configurationIds": [
+            "11111111-1111-4111-8111-111111111111"
+          ],
+          "name": "Participant repository",
+          "endpoint": "https://pci-participant.pci-participant-alpha.svc.cluster.local:9443",
+          "serverName": "pci-participant.pci-participant-alpha.svc.cluster.local",
+          "protocolVersion": "participant-v1",
+          "tlsSecret": {
+            "name": "alpha-participant-client"
+          },
+          "trustSecret": {
+            "name": "alpha-participant-client"
+          },
+          "jwtIssuer": "https://identity.example.com/realms/fap-pci",
+          "jwtAudience": "participant-data",
+          "jwtScopes": [
+            "credential:issue"
+          ],
+          "signingModes": [
+            "internal-signing",
+            "participant-signed"
+          ],
+          "timeoutMs": 10000,
+          "attempts": 1,
+          "ratePerMinute": 10,
+          "circuitFailureThreshold": 3,
+          "circuitCooldownMs": 30000
+        }
+      },
+      "expectedSuccess": [
+        "201"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors/post/responses"
+    },
+    {
+      "operationId": "connector_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors/{connectorId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "connectorId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors~1{connectorId}/get/responses"
+    },
+    {
+      "operationId": "connector_update",
+      "method": "PATCH",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors/{connectorId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "connectorId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "data": {
+          "configurationIds": [
+            "11111111-1111-4111-8111-111111111111"
+          ],
+          "name": "Participant repository",
+          "endpoint": "https://pci-participant.pci-participant-alpha.svc.cluster.local:9443",
+          "serverName": "pci-participant.pci-participant-alpha.svc.cluster.local",
+          "protocolVersion": "participant-v1",
+          "tlsSecret": {
+            "name": "alpha-participant-client"
+          },
+          "trustSecret": {
+            "name": "alpha-participant-client"
+          },
+          "jwtIssuer": "https://identity.example.com/realms/fap-pci",
+          "jwtAudience": "participant-data",
+          "jwtScopes": [
+            "credential:issue"
+          ],
+          "signingModes": [
+            "internal-signing",
+            "participant-signed"
+          ],
+          "timeoutMs": 10000,
+          "attempts": 1,
+          "ratePerMinute": 10,
+          "circuitFailureThreshold": 3,
+          "circuitCooldownMs": 30000
+        }
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors~1{connectorId}/patch/responses"
+    },
+    {
+      "operationId": "connector_archive",
+      "method": "DELETE",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors/{connectorId}",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "connectorId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors~1{connectorId}/delete/responses"
+    },
+    {
+      "operationId": "connector_publish",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors/{connectorId}/publish",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "connectorId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors~1{connectorId}~1publish/post/responses"
+    },
+    {
+      "operationId": "connector_preview",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors/{connectorId}/preview",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "connectorId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {},
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors~1{connectorId}~1preview/post/responses"
+    },
+    {
+      "operationId": "connector_rollback",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors/{connectorId}/rollback",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "connectorId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "version": 1
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors~1{connectorId}~1rollback/post/responses"
+    },
+    {
+      "operationId": "connector_versions",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/participant-connectors/{connectorId}/versions",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "connectorId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1participant-connectors~1{connectorId}~1versions/get/responses"
+    },
+    {
+      "operationId": "history_list",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/history",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1history/get/responses"
+    },
+    {
+      "operationId": "history_revoke",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/revocations",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "requestId": "11111111-1111-4111-8111-111111111111",
+        "confirmed": true
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1revocations/post/responses"
+    },
+    {
+      "operationId": "history_unblock",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/credential-configurations/{configurationId}/reissuance-unblocks",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111",
+        "configurationId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "subjectHash": "REPLACE_WITH_VALUE"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1credential-configurations~1{configurationId}~1reissuance-unblocks/post/responses"
+    },
+    {
+      "operationId": "tenant_lifecycle",
+      "method": "POST",
+      "path": "/api/v1/tenants/{tenantId}/lifecycle",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "state": "suspended",
+        "confirmation": "REPLACE_WITH_VALUE"
+      },
+      "expectedSuccess": [
+        "202"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1lifecycle/post/responses"
+    },
+    {
+      "operationId": "provider_lifecycle",
+      "method": "POST",
+      "path": "/api/v1/provider/tenants/{tenantId}/lifecycle",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "state": "suspended",
+        "confirmation": "REPLACE_WITH_VALUE"
+      },
+      "expectedSuccess": [
+        "202"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1provider~1tenants~1{tenantId}~1lifecycle/post/responses"
+    },
+    {
+      "operationId": "tenant_identity_get",
+      "method": "GET",
+      "path": "/api/v1/tenants/{tenantId}/identity-provider",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1identity-provider/get/responses"
+    },
+    {
+      "operationId": "tenant_identity_put",
+      "method": "PUT",
+      "path": "/api/v1/tenants/{tenantId}/identity-provider",
+      "pathParameters": {
+        "tenantId": "11111111-1111-4111-8111-111111111111"
+      },
+      "headers": {
+        "Accept": "application/json",
+        "If-Match": "\"1\"",
+        "Cookie": "fap_pci_session=REPLACE_WITH_PRIVATE_SESSION",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "mode": "keycloak",
+        "displayName": "REPLACE_WITH_VALUE"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1tenants~1{tenantId}~1identity-provider/put/responses"
+    }
+  ]
+}

@@ -1,0 +1,1636 @@
+{
+  "version": "0.5.0-rc.12",
+  "idPolicy": "TDC identifiers are local audit keys for unnumbered provisions, not identifiers assigned by the source document. Page numbers are printed PDF pages. TDR group references retain compatibility with the earlier grouped audit.",
+  "items": [
+    {
+      "id": "TDC-001",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Scope Management"
+      },
+      "group": "TDR-03",
+      "title": "Use the preferred Kanban or Scrum development process",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client records the selected process and real delivery history."
+    },
+    {
+      "id": "TDC-002",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Scope Management"
+      },
+      "group": "TDR-04",
+      "title": "Release scoped software under Apache 2.0",
+      "development": "DONE",
+      "implementation": [
+        "LICENSE.txt",
+        "NOTICE.md",
+        "THIRD_PARTY_NOTICES.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW",
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Approve dependency/IP evidence and publish the licensed release."
+    },
+    {
+      "id": "TDC-003",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Scope Management"
+      },
+      "group": "TDR-05",
+      "title": "Present the UX concept before implementation",
+      "development": "DONE",
+      "implementation": [
+        "docs/ux/ux-concept.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Record the actual presentation/approval history; do not backdate it."
+    },
+    {
+      "id": "TDC-004",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Scope Management"
+      },
+      "group": "TDR-03",
+      "title": "Include repository structure in the project plan",
+      "development": "DONE",
+      "implementation": [
+        "README.md",
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client approves the structure in the authoritative project plan."
+    },
+    {
+      "id": "TDC-005",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Scope Management"
+      },
+      "group": "TDR-05",
+      "title": "Present progress every two weeks",
+      "development": "EXCLUDED",
+      "implementation": [
+        "docs/requirements/traceability.md",
+        "docs/release/0.5.0-rc.4.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Actual presenters retain attendance, dates and progress decisions."
+    },
+    {
+      "id": "TDC-006",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Scope Management"
+      },
+      "group": "TDR-05",
+      "title": "Use BDD tests in milestone presentations",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd",
+        "docs/testing/completion.md"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Execute the delivered packs and present actual milestone outcomes."
+    },
+    {
+      "id": "TDC-007",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "ORCE"
+      },
+      "group": "TDR-01",
+      "title": "Use ORCE for service orchestration",
+      "development": "DONE",
+      "implementation": [
+        "backend/functions",
+        "backend/sr2",
+        "dist/fap-pci-flow.json"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Execute deployed native issuance and tenant operations."
+    },
+    {
+      "id": "TDC-008",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "ORCE"
+      },
+      "group": "TDR-01",
+      "title": "Use ORCE for Builder Node orchestration",
+      "development": "DONE",
+      "implementation": [
+        "tools/build-flows.mjs",
+        "docs/architecture/orce-nodes.md"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Inspect imported functions and run them in the target ORCE."
+    },
+    {
+      "id": "TDC-009",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "ORCE"
+      },
+      "group": "TDR-02",
+      "title": "Use ORCE for applicable deployment workflows",
+      "development": "DONE",
+      "implementation": [
+        "automation/flows",
+        "docs/operations/automation.md"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Run deploy, upgrade and uninstall from the separate operator ORCE."
+    },
+    {
+      "id": "TDC-010",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "ORCE"
+      },
+      "group": "TDR-01",
+      "title": "Use low-code integration",
+      "development": "DONE",
+      "implementation": [
+        "backend/sr2/service.js",
+        "src/sr2.js"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Configure multiple journeys and connectors without source edits."
+    },
+    {
+      "id": "TDC-011",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Deployment on Kubernetes"
+      },
+      "group": "TDR-01",
+      "title": "Deploy on IONOS Cloud Kubernetes",
+      "development": "DONE",
+      "implementation": [
+        "scripts/deploy.sh",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Complete the IONOS deployment and test receipt."
+    },
+    {
+      "id": "TDC-012",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Deployment on Kubernetes"
+      },
+      "group": "TDR-01",
+      "title": "Deploy on T-Systems Open Sovereign Cloud Kubernetes",
+      "development": "DONE",
+      "implementation": [
+        "scripts/deploy.sh",
+        "docs/testing/live-acceptance.md"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Complete the OSC deployment and test receipt."
+    },
+    {
+      "id": "TDC-013",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Kubernetes and Helm"
+      },
+      "group": "TDR-02",
+      "title": "Automate deployment with Kubernetes and Helm",
+      "development": "DONE",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "deployment/helm"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION",
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Render/lint the charts and execute cluster admission/deployment."
+    },
+    {
+      "id": "TDC-014",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Kubernetes and Helm"
+      },
+      "group": "TDR-02",
+      "title": "Automate updates with Kubernetes and Helm",
+      "development": "DONE",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/stage1/install.sh"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Upgrade with existing PVCs, sessions and configurations, then verify."
+    },
+    {
+      "id": "TDC-015",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Kubernetes and Helm"
+      },
+      "group": "TDR-02",
+      "title": "Automate uninstall with Kubernetes and Helm",
+      "development": "DONE",
+      "implementation": [
+        "scripts/uninstall.sh",
+        "automation/stage1/restore-runtime.mjs",
+        "scripts/import-legacy-baseline.py"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Run on a disposable installation; preserve unrelated edits and data. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+    },
+    {
+      "id": "TDC-016",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Kubernetes and Helm"
+      },
+      "group": "TDR-02",
+      "title": "Manage resources and ingress",
+      "development": "DONE",
+      "implementation": [
+        "backend/functions/_k8s.js",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Review live ownership, limits, routes and tenant header isolation."
+    },
+    {
+      "id": "TDC-017",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Helm charts"
+      },
+      "group": "TDR-07",
+      "title": "Deliver charts with each release",
+      "development": "DONE",
+      "implementation": [
+        "deployment/helm",
+        ".github/workflows/release.yml"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Publish reviewed chart artifacts alongside each approved release."
+    },
+    {
+      "id": "TDC-018",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Keycloak"
+      },
+      "group": "TDR-01",
+      "title": "Provision realms and clients",
+      "development": "DONE",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "backend/functions/reconcile.js"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Inspect realm/client settings and login flows in deployed Keycloak."
+    },
+    {
+      "id": "TDC-019",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Keycloak"
+      },
+      "group": "TDR-01",
+      "title": "Manage service credentials",
+      "development": "DONE",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "backend/functions/_common.js"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Verify Secret reuse, mounts, rotation and current service authority."
+    },
+    {
+      "id": "TDC-020",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Repository rules"
+      },
+      "group": "TDR-03",
+      "title": "Keep all code, schemas, charts and scripts in the client-designated repository",
+      "development": "EXCLUDED",
+      "implementation": [
+        "README.md",
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Project lead supplies the designated repository and accepts these files."
+    },
+    {
+      "id": "TDC-021",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Repository rules"
+      },
+      "group": "TDR-03",
+      "title": "Run GitHub Actions with security checks",
+      "development": "DONE",
+      "implementation": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "BUILD_VALIDATION"
+      ],
+      "closure": "Execute actual workflows and retain dependency/IP results."
+    },
+    {
+      "id": "TDC-022",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Repository rules"
+      },
+      "group": "TDR-03",
+      "title": "Do not create parallel private repositories",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Project participants attest to repository authority; no repository was created here."
+    },
+    {
+      "id": "TDC-023",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Repository rules"
+      },
+      "group": "TDR-03",
+      "title": "Commit work to the client repository daily",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Actual daily history is required and cannot be manufactured retrospectively."
+    },
+    {
+      "id": "TDC-024",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 2,
+        "section": "Apache License"
+      },
+      "group": "TDR-04",
+      "title": "Include Apache license text and SPDX identity",
+      "development": "DONE",
+      "implementation": [
+        "LICENSE.txt",
+        "NOTICE.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client/IP reviewer approves the final licensed scope."
+    },
+    {
+      "id": "TDC-025",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "FOSS"
+      },
+      "group": "TDR-04",
+      "title": "Use only Apache-compatible FOSS and approved licenses",
+      "development": "DONE",
+      "implementation": [
+        "THIRD_PARTY_NOTICES.md",
+        "package-lock.json",
+        "reference/participant-data-repository/go.mod"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Resolve Go sums and full SBOM, scan transitive dependencies and approve licenses."
+    },
+    {
+      "id": "TDC-026",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "FOSS"
+      },
+      "group": "TDR-04",
+      "title": "Inform the client in writing about planned license exceptions",
+      "development": "EXCLUDED",
+      "implementation": [
+        "THIRD_PARTY_NOTICES.md",
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client records any exception assessment; no approval is implied."
+    },
+    {
+      "id": "TDC-027",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "FOSS"
+      },
+      "group": "TDR-04",
+      "title": "Obtain client confirmation of existing FOSS content",
+      "development": "DONE",
+      "implementation": [
+        "THIRD_PARTY_NOTICES.md",
+        "contracts/source-manifest.json"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client approves the inventoried dependencies and reused source."
+    },
+    {
+      "id": "TDC-028",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "FOSS"
+      },
+      "group": "TDR-04",
+      "title": "Assess and obtain approval of API and component versions",
+      "development": "DONE",
+      "implementation": [
+        "docs/compatibility/compatibility-matrix.md",
+        "contracts/source-manifest.json"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Verify deployed revisions and record client approval of the compatibility matrix."
+    },
+    {
+      "id": "TDC-029",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "XFSC reuse"
+      },
+      "group": "TDR-01",
+      "title": "Avoid redundant XFSC functions",
+      "development": "DONE",
+      "implementation": [
+        "docs/architecture/architecture.md",
+        "docs/contracts/native-ocm.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review boundaries: PCI orchestration reuses native keys/signing/offers/metadata/status."
+    },
+    {
+      "id": "TDC-030",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Contributor agreement"
+      },
+      "group": "TDR-03",
+      "title": "Comply with Eclipse Contributor Agreement 3.1.0 or higher",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW",
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Each actual contributor completes the required onboarding and agreement."
+    },
+    {
+      "id": "TDC-031",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Runtime environments"
+      },
+      "group": "TDR-01",
+      "title": "Use Kubernetes 1.29 or higher",
+      "development": "DONE",
+      "implementation": [
+        "scripts/preflight.sh",
+        "docs/compatibility/compatibility-matrix.md"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Validate the selected supported version; the documented supported range is narrower than the minimum."
+    },
+    {
+      "id": "TDC-032",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Runtime environments"
+      },
+      "group": "TDR-02",
+      "title": "Use Helm deployments and ORCE Builder runtime without Docker Compose",
+      "development": "DONE",
+      "implementation": [
+        "scripts/deploy.sh",
+        "deployment/helm",
+        "tools/build-flows.mjs"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Confirm the supplied Kubernetes/ORCE topology in the running environment."
+    },
+    {
+      "id": "TDC-033",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Programming Languages"
+      },
+      "group": "TDR-01",
+      "title": "Use Node.js for Builder logic",
+      "development": "DONE",
+      "implementation": [
+        "backend/functions",
+        "backend/sr2"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Load the generated functions into the approved ORCE Node.js runtime."
+    },
+    {
+      "id": "TDC-034",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Programming Languages"
+      },
+      "group": "TDR-01",
+      "title": "Use HTML, JavaScript and JSON schemas for ORCE UI nodes",
+      "development": "DONE",
+      "implementation": [
+        "src",
+        "backend/sr2/domain.js",
+        "docs/api/openapi.json"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Run the browser and UI acceptance pack."
+    },
+    {
+      "id": "TDC-035",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Programming Languages"
+      },
+      "group": "TDR-02",
+      "title": "Supply Bash automation under scripts",
+      "development": "DONE",
+      "implementation": [
+        "scripts/deploy.sh",
+        "scripts/uninstall.sh",
+        "scripts/preflight.sh"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Execute Bash entrypoints and supplemental Python orchestration in the operator environment."
+    },
+    {
+      "id": "TDC-036",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Programming Languages"
+      },
+      "group": "TDR-02",
+      "title": "Use YAML for charts and Kubernetes manifests",
+      "development": "DONE",
+      "implementation": [
+        "deployment/helm",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION",
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Helm lint/render and live admission remain required."
+    },
+    {
+      "id": "TDC-037",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Programming Languages"
+      },
+      "group": "TDR-01",
+      "title": "Use Go for backend services",
+      "development": "DONE",
+      "implementation": [
+        "reference/participant-data-repository"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION"
+      ],
+      "closure": "Generate Goa/protobuf, run vet/race tests and compile the participant service."
+    },
+    {
+      "id": "TDC-038",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Mandated component dependencies"
+      },
+      "group": "TDR-01",
+      "title": "Report upstream issues in writing and obtain approval for additional work",
+      "development": "DONE",
+      "implementation": [
+        "docs/known-gaps.md",
+        "deployment/prerequisites/upstream"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW",
+        "GIT_PUBLIC_ACTION",
+        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
+      ],
+      "closure": "Deliver the written findings through the client's approved process; owners review/build/deploy their component fixes."
+    },
+    {
+      "id": "TDC-039",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Documentation"
+      },
+      "group": "TDR-03",
+      "title": "Follow the Eclipse Handbook",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md",
+        "CODE_OF_CONDUCT.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW",
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Project lead reviews governance, releases and contributor records."
+    },
+    {
+      "id": "TDC-040",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Documentation"
+      },
+      "group": "TDR-06",
+      "title": "Use FAP Partner Onboarding as reference",
+      "development": "DONE",
+      "implementation": [
+        "docs/source-baseline.md",
+        "docs/architecture/architecture.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Confirm the selected reference and PCI-specific adaptations with the client."
+    },
+    {
+      "id": "TDC-041",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Documentation"
+      },
+      "group": "TDR-05",
+      "title": "Submit BDD documentation within one month of project-plan approval",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd",
+        "docs/testing/completion.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Actual project-plan and submission dates are required; no backdated submission."
+    },
+    {
+      "id": "TDC-042",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Local Repo"
+      },
+      "group": "TDR-06",
+      "title": "Document high-level behavior",
+      "development": "DONE",
+      "implementation": [
+        "README.md",
+        "docs/product.adoc",
+        "docs/architecture/architecture.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review the product scope against the source specifications."
+    },
+    {
+      "id": "TDC-043",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Local Repo"
+      },
+      "group": "TDR-06",
+      "title": "Document packaging and container boundaries",
+      "development": "DONE",
+      "implementation": [
+        "README.md",
+        "reference/participant-data-repository/Dockerfile",
+        "docs/testing/participant-test.md"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Build the mandated participant image; approve its digest. PCI remains imported flows/UI."
+    },
+    {
+      "id": "TDC-044",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 3,
+        "section": "Local Repo"
+      },
+      "group": "TDR-06",
+      "title": "Document deployment and preconditions",
+      "development": "DONE",
+      "implementation": [
+        "docs/operations/deployment.md",
+        "docs/operations/upgrade-0.5.0-rc.4.md"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Execute the documented deployment/upgrade against the actual environment."
+    },
+    {
+      "id": "TDC-045",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Local Repo"
+      },
+      "group": "TDR-06",
+      "title": "Document changes and additions to source specifications",
+      "development": "DONE",
+      "implementation": [
+        "docs/requirements/traceability.md",
+        "docs/known-gaps.md",
+        "docs/release/0.5.0-rc.4.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client reviews implementation decisions and unresolved dependencies; source specifications are unchanged."
+    },
+    {
+      "id": "TDC-046",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Local Repo"
+      },
+      "group": "TDR-06",
+      "title": "Document orchestrated flow breakdown",
+      "development": "DONE",
+      "implementation": [
+        "docs/architecture/orce-nodes.md",
+        "docs/architecture/issuer-runtime.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review node inputs/outputs and trust boundaries."
+    },
+    {
+      "id": "TDC-047",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Local Repo"
+      },
+      "group": "TDR-06",
+      "title": "Include BDD, licenses, dependencies and external OSS references",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd",
+        "LICENSE.txt",
+        "THIRD_PARTY_NOTICES.md",
+        "contracts/source-manifest.json"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review the complete tested dependency inventory before release."
+    },
+    {
+      "id": "TDC-048",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "General Principles"
+      },
+      "group": "TDR-03",
+      "title": "Use one monorepo, one history and unified concepts/specifications/source",
+      "development": "DONE",
+      "implementation": [
+        "README.md",
+        "docs/specifications",
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Import into the designated repository; no nested independent Git projects are supplied."
+    },
+    {
+      "id": "TDC-049",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Repository Creation"
+      },
+      "group": "TDR-03",
+      "title": "Have project leads create the main repository via the client",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client/project leads supply the official destination and naming."
+    },
+    {
+      "id": "TDC-050",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Contributor Onboarding"
+      },
+      "group": "TDR-03",
+      "title": "Complete XFSC contributor onboarding",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Actual contributors complete and retain onboarding records."
+    },
+    {
+      "id": "TDC-051",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Documentation Generator"
+      },
+      "group": "TDR-06",
+      "title": "Supply a MkDocs or ReadTheDocs documentation build",
+      "development": "DONE",
+      "implementation": [
+        "mkdocs.yml",
+        ".github/workflows/docs.yml"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION",
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Run strict MkDocs build and publish the reviewed site."
+    },
+    {
+      "id": "TDC-052",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Product Documentation"
+      },
+      "group": "TDR-06",
+      "title": "Supply AsciiDoc product documentation",
+      "development": "DONE",
+      "implementation": [
+        "docs/product.adoc"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client reviews the product document in its accepted documentation format."
+    },
+    {
+      "id": "TDC-053",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Architecture Modelling"
+      },
+      "group": "TDR-06",
+      "title": "Supply editable architecture models",
+      "development": "DONE",
+      "implementation": [
+        "docs/architecture/components.puml",
+        "docs/architecture/issuance.puml"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review/render the delivered UML sources and confirm the client's model format."
+    },
+    {
+      "id": "TDC-054",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "APIs"
+      },
+      "group": "TDR-06",
+      "title": "Define every REST endpoint and provide examples",
+      "development": "DONE",
+      "implementation": [
+        "docs/api/openapi.json",
+        "docs/api/examples.json",
+        "tools/check-documentation.mjs"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Execute API examples with private real sessions and validate deployed responses."
+    },
+    {
+      "id": "TDC-055",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Node-RED hooks"
+      },
+      "group": "TDR-06",
+      "title": "Describe orchestration node contracts",
+      "development": "DONE",
+      "implementation": [
+        "docs/architecture/orce-nodes.md",
+        "backend/sr2/routes.json"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review imported nodes and configured external modules."
+    },
+    {
+      "id": "TDC-056",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Semantic templates"
+      },
+      "group": "TDR-06",
+      "title": "Supply JSON-LD contexts and SHACL shapes for templates/data",
+      "development": "DONE",
+      "implementation": [
+        "contracts/examples",
+        "backend/sr2/semantics.js",
+        "docs/contracts/semantic-templates.md",
+        "backend/sr2/linked-data.js",
+        "test/live/semantic-validation.py"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Run a semantic processor and SHACL validator; client approves production vocabulary/template profiles. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+    },
+    {
+      "id": "TDC-057",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "Client templates"
+      },
+      "group": "TDR-06",
+      "title": "Reconcile client-supplied template examples",
+      "development": "DONE",
+      "implementation": [
+        "contracts/examples",
+        "docs/contracts/semantic-templates.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Replace synthetic reference vocabulary when the client provides its approved templates."
+    },
+    {
+      "id": "TDC-058",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 4,
+        "section": "README"
+      },
+      "group": "TDR-06",
+      "title": "Provide overview, setup, environment/configuration and documentation links",
+      "development": "DONE",
+      "implementation": [
+        "README.md",
+        "docs/operations/deployment.md",
+        "docs/operations/transport.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client reviews the documented installation choices."
+    },
+    {
+      "id": "TDC-059",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 5,
+        "section": "README"
+      },
+      "group": "TDR-06",
+      "title": "Include an understandable use-case diagram",
+      "development": "DONE",
+      "implementation": [
+        "README.md",
+        "docs/architecture/components.puml"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review the rendered diagram with the client."
+    },
+    {
+      "id": "TDC-060",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "FOSS Repository Workflows"
+      },
+      "group": "TDR-03",
+      "title": "Reference official XFSC Dash scanner and build workflows",
+      "development": "DONE",
+      "implementation": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml",
+        "docs/ci-cd.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "BUILD_VALIDATION"
+      ],
+      "closure": "Run workflows, capture resolved nested versions and review actual findings."
+    },
+    {
+      "id": "TDC-061",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "FOSS Repository README"
+      },
+      "group": "TDR-06",
+      "title": "Confirm responsible contributor/contact information",
+      "development": "DONE",
+      "implementation": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client must name the maintainer and approved contact; no identity or mailbox is invented."
+    },
+    {
+      "id": "TDC-062",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "FOSS Repository Contributing"
+      },
+      "group": "TDR-03",
+      "title": "Document contributor, release and issue-reporting processes",
+      "development": "DONE",
+      "implementation": [
+        "CONTRIBUTING.md",
+        "SECURITY.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Client finalizes these processes for the designated project."
+    },
+    {
+      "id": "TDC-063",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "FOSS Repository License"
+      },
+      "group": "TDR-04",
+      "title": "Include license terms",
+      "development": "DONE",
+      "implementation": [
+        "LICENSE.txt",
+        "NOTICE.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "IP reviewer approves final software and third-party notices."
+    },
+    {
+      "id": "TDC-064",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "FOSS Repository Code of Conduct"
+      },
+      "group": "TDR-03",
+      "title": "Finalize the code of conduct with the Principal",
+      "development": "DONE",
+      "implementation": [
+        "CODE_OF_CONDUCT.md"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Principal approves the existing code-of-conduct text."
+    },
+    {
+      "id": "TDC-065",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "FOSS Repository Docs"
+      },
+      "group": "TDR-06",
+      "title": "Host specifications/models and documentation on GitHub Pages",
+      "development": "DONE",
+      "implementation": [
+        "docs",
+        "mkdocs.yml",
+        ".github/workflows/docs.yml"
+      ],
+      "remainingActionType": [
+        "BUILD_VALIDATION",
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Review the generated documentation and explicitly publish it."
+    },
+    {
+      "id": "TDC-066",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "FOSS Repository CI and APIs"
+      },
+      "group": "TDR-06",
+      "title": "Document CI/CD and OpenAPI",
+      "development": "DONE",
+      "implementation": [
+        "docs/ci-cd.md",
+        "docs/api/README.md",
+        "docs/api/openapi.json"
+      ],
+      "remainingActionType": [
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Review exact workflow inputs and API response contracts."
+    },
+    {
+      "id": "TDC-067",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "ORCE Automation QA"
+      },
+      "group": "TDR-02",
+      "title": "Run deploy/redeploy/uninstall with zero manual intervention after inputs",
+      "development": "DONE",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/flows/pci-deployment.json",
+        "scripts/import-legacy-baseline.py",
+        "scripts/reconcile-participant-ownership.py"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Run all three operations with pre-provisioned private inputs and inspect outcomes. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+    },
+    {
+      "id": "TDC-068",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "ORCE Automation QA"
+      },
+      "group": "TDR-02",
+      "title": "Use structured JSON automation/runtime logs",
+      "development": "DONE",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/flows/lifecycle.js",
+        "backend/functions/_common.js"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Inspect safe structured outcomes across actual success/failure executions."
+    },
+    {
+      "id": "TDC-069",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "ORCE Automation QA"
+      },
+      "group": "TDR-02",
+      "title": "Expose machine-readable errors in ORCE context",
+      "development": "DONE",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/flows/lifecycle.js"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Confirm phase/code/detail/nextStep/exitCode without child payload leakage."
+    },
+    {
+      "id": "TDC-070",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "Runtime Validation"
+      },
+      "group": "TDR-01",
+      "title": "Enforce TLS 1.3 for every endpoint and hop",
+      "development": "BLOCKED_OWNER",
+      "implementation": [
+        "docs/operations/transport.md",
+        "backend/sr2/transport.js",
+        "deployment/helm/observability",
+        "deployment/prerequisites/all-hop-tls/mesh.yaml",
+        "tools/prepare-all-hop-tls.py"
+      ],
+      "remainingActionType": [
+        "OWNER_CONFIGURATION_OR_DEPLOYMENT",
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Platform owners must encrypt compatibility ORCE/database/mail and shared native links. Client flags alone do not close this requirement. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+    },
+    {
+      "id": "TDC-071",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "Runtime Validation"
+      },
+      "group": "TDR-01",
+      "title": "Store secrets in Kubernetes Secrets and keep them out of logs",
+      "development": "BLOCKED_OWNER",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "docs/privacy/data-handling.md",
+        "scripts/privacy-audit.py",
+        "deployment/prerequisites/upstream",
+        "tools/prepare-upstream-builds.py"
+      ],
+      "remainingActionType": [
+        "OWNER_CONFIGURATION_OR_DEPLOYMENT",
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Deploy owner-approved upstream log fixes and inspect every real payload sink. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+    },
+    {
+      "id": "TDC-072",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "Runtime Validation"
+      },
+      "group": "TDR-01",
+      "title": "Create namespaces, ingress/routes, services and deployments correctly",
+      "development": "DONE",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "backend/functions/_k8s.js",
+        "tools/check-g0-manifests.py"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Validate Kubernetes admission, controllers, ownership and readiness on both clouds."
+    },
+    {
+      "id": "TDC-073",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "Runtime Validation"
+      },
+      "group": "TDR-01",
+      "title": "Reach identity and trust dependencies",
+      "development": "DONE",
+      "implementation": [
+        "scripts/preflight.sh",
+        "backend/functions/status.js"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Demonstrate Keycloak, native TSA/status/metadata/NATS and trust connectivity."
+    },
+    {
+      "id": "TDC-074",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "BDD Suite"
+      },
+      "group": "TDR-05",
+      "title": "Execute successful deployment scenario",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Run the official Executor against an approved disposable installation."
+    },
+    {
+      "id": "TDC-075",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 6,
+        "section": "BDD Suite"
+      },
+      "group": "TDR-05",
+      "title": "Execute invalid parameter scenario",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Run the delivered negative parameter case and retain its safe result."
+    },
+    {
+      "id": "TDC-076",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "BDD Suite"
+      },
+      "group": "TDR-05",
+      "title": "Execute idempotent redeployment scenario",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Prove repeated deployment preserves identities and unrelated resources."
+    },
+    {
+      "id": "TDC-077",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "BDD Suite"
+      },
+      "group": "TDR-05",
+      "title": "Execute uninstall scenario",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Prove owned removal, retained PVCs and unrelated-resource preservation."
+    },
+    {
+      "id": "TDC-078",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "BDD Suite"
+      },
+      "group": "TDR-05",
+      "title": "Execute identity/policy/token/integration validation scenarios",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd/features",
+        "test/live/wallet.mjs",
+        "test/bdd/features/pcm.feature",
+        "test/bdd/features/native-wallet.feature"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Run real authentication, permissions, native issuance and failure cases. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+    },
+    {
+      "id": "TDC-079",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "BDD packs"
+      },
+      "group": "TDR-05",
+      "title": "Deliver BDD packs with every release",
+      "development": "DONE",
+      "implementation": [
+        "test/bdd",
+        "docs/testing/completion.md",
+        ".github/workflows/release.yml"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION"
+      ],
+      "closure": "Publish the reviewed pack and actual BDD results with each release."
+    },
+    {
+      "id": "TDC-080",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "QA hosting"
+      },
+      "group": "TDR-01",
+      "title": "Test Keycloak, OCM, PCM Mobile, TSA, OpenBao and ORCE on both clouds",
+      "development": "DONE",
+      "implementation": [
+        "docs/testing/live-acceptance.md",
+        "test/bdd"
+      ],
+      "remainingActionType": [
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Collect real IONOS/OSC receipts with all mandated services and PCM."
+    },
+    {
+      "id": "TDC-081",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "DevOps tools"
+      },
+      "group": "TDR-03",
+      "title": "Use Git, GitFlow, GitHub Actions and Jira",
+      "development": "EXCLUDED",
+      "implementation": [
+        "CONTRIBUTING.md",
+        ".github/workflows",
+        "docs/ci-cd.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "EXTERNAL_REVIEW"
+      ],
+      "closure": "Project team records actual issue/branch/review/release use."
+    },
+    {
+      "id": "TDC-082",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "Release artifacts"
+      },
+      "group": "TDR-07",
+      "title": "Deliver Helm repository artifacts, OCI images and BDD reports",
+      "development": "DONE",
+      "implementation": [
+        "deployment/helm",
+        "reference/participant-data-repository/Dockerfile",
+        ".github/workflows/release.yml",
+        "test/bdd"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "BUILD_VALIDATION"
+      ],
+      "closure": "Build/scan/publish the mandated participant image and charts; attach executed BDD reports."
+    },
+    {
+      "id": "TDC-083",
+      "source": {
+        "document": "Technical-Development-Requirements.pdf",
+        "page": 7,
+        "section": "DevOps tools"
+      },
+      "group": "TDR-07",
+      "title": "Integrate approved deployment with ArgoCD",
+      "development": "DONE",
+      "implementation": [
+        "deployment/argocd/participant-application.example.yaml",
+        "docs/operations/argocd.md"
+      ],
+      "remainingActionType": [
+        "GIT_PUBLIC_ACTION",
+        "MANUAL_VALIDATION"
+      ],
+      "closure": "Client supplies approved repository/ArgoCD destination and performs deployment integration."
+    }
+  ]
+}

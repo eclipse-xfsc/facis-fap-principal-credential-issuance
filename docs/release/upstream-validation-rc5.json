@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "method": "Private temporary copies; original Git-blob/SHA-256, patch SHA-256, zero-fuzz dry-run/application and result SHA-256. No Git or upstream mutation.",
+  "items": [
+    {
+      "repository": "eclipse-xfsc/oid4-vci-issuer-service",
+      "declaredCommit": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "file": "internal/gateway/nats/nats_gateway.go",
+      "originalBlob": "af4f5b7ffde592323e254ac484e2f2edfd3187ea",
+      "patchSha256": "a4951a372ce7824f09a0f429c96f162ba4e5246bf0f7843a6b41307c968deea6",
+      "originalSha256": "4f41bd33f6d8d4476d73e58eaf0d9189eb5eb1c8a430380837eb2ec3ee830561",
+      "patchedSha256": "35403270299a55264e0752e5a25552940116d1a9a6871f67d573597119e05476",
+      "exactByteCheck": "PASS",
+      "zeroFuzzApplication": "PASS"
+    },
+    {
+      "repository": "eclipse-xfsc/crypto-provider-service",
+      "declaredCommit": "b9ab28ebeb0c810665b642a7dbf98ada1865febf",
+      "file": "internal/service/signer/service.go",
+      "originalBlob": "666b45f8db030737dd6c745ee733c63a53511f6e",
+      "patchSha256": "905b57ac5a744fad4e65b1a9d7ebdef9c1518cc05ab9715487f480e2c4b5a42b",
+      "originalSha256": "77ea277b9682bd8030a9b85da045a07a17b4783f5e9c1010c9bbe0a2afca7082",
+      "patchedSha256": "c202e3b6efaeb23fac9db8fe5148b80bded8da1909d0acf66e7ce7e681f7ba59",
+      "exactByteCheck": "PASS",
+      "zeroFuzzApplication": "PASS"
+    },
+    {
+      "repository": "eclipse-xfsc/oid4-vci-credential-verification-service",
+      "declaredCommit": "5630f2acfc71d5a3a57aa0da9692266e85d27d7c",
+      "file": "internal/services/proofHandling.go",
+      "originalBlob": "a22d84aaf899fd798aeb4e12fd38df571b34e9c6",
+      "patchSha256": "56b60a5cb459857b832c592177eada4c6eb28cbe68d906f0aea36bed350c9f5f",
+      "originalSha256": "37e0680c3b05580e8bcd9e3e0f387e7449ace35b7a1fdf4665187c6b8ffcc330",
+      "patchedSha256": "62327ced814b149c2269e305e956a6538b06da0b9b3fa438d3c0663310cdc05d",
+      "exactByteCheck": "PASS",
+      "zeroFuzzApplication": "PASS"
+    },
+    {
+      "repository": "eclipse-xfsc/oid4-vci-vp-well-known-service",
+      "declaredCommit": "9d595cd5ceb25a48aee544efa1301a426a4caa32",
+      "file": "internal/database/issuers/postgres/issuers.go",
+      "originalBlob": "8189a1bff3b20d517f277c11c7311c8775cbdfa1",
+      "patchSha256": "4fb4daa13e6472a8f2f2e5fc6dcf3e61b2de3d8a3a6c0caf8d5c4a7a3e8aa9be",
+      "originalSha256": "e65ffd96816b1536afc32f119efca631ba61ebce7fb29abf35cc58f4076148c8",
+      "patchedSha256": "c9e30c5554d5ec054d81a10fd42c0ec6ffbc409855155a85563b5e204dfba948",
+      "exactByteCheck": "PASS",
+      "zeroFuzzApplication": "PASS"
+    }
+  ],
+  "notRun": [
+    "Upstream Go compilation",
+    "Native service/PostgreSQL integration",
+    "Native deployment and payload-canary acceptance"
+  ]
+}

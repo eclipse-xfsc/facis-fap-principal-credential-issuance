@@ -1,0 +1,45 @@
+= FACIS Principal Credential Issuance
+:toc:
+:sectnums:
+
+== Product and authority
+
+PCI is a tenant service inside XFSC ORCE. The supplied SRS and Technical Development Requirements are the normative inputs; their copies and hashes are under `docs/specifications/`. The source release is Apache-2.0. The SRS retains its CC BY 4.0 notice. This document describes implementation, not a completed acceptance certificate.
+
+Provider administrators review verified registrations. Tenant administrators configure identity, branding, keys, connectors, limits and delegated issuers. Issuers manage configurations, journeys, history and revocation within their assigned scope. Principals request and present credentials using their enabled tenant membership and IdP entitlements.
+
+== Deployment units
+
+Import `dist/fap-pci-flow.json` and copy `dist/ui/` into the PCI ORCE instance after G0. `scripts/lifecycle.py` and `automation/flows/pci-deployment.json` automate prerequisites, upgrade and artifact installation using a private operator configuration. The deployment flow belongs in a separate operator ORCE instance. It has no public HTTP trigger.
+
+G0 reuses the existing OCM/Envoy installation. It owns PCI prerequisites, the dedicated Gateway and routes, and its bounded runtime RBAC. Declared OCM changes are restricted to the PCI Keycloak realm/client/profile and the additive identity/mail NetworkPolicy. It does not change shared OCM images, crypto policies or shared Gateways. A single ORCE replica uses a Recreate rollout with an RWO volume. PVCs and operator backups survive uninstall.
+
+The separate Go/Goa participant repository is required by FR-22/24. It receives gRPC data requests over TLS 1.3 mutual authentication and uses Crypto Provider Core for participant signing. `reference/participant-data-source/flows.json` is a synthetic record source importable into an internet-reachable test ORCE. It is not an OCM replacement. The participant service is the only application image this repository builds.
+
+== Runtime behavior
+
+* Registration supports public and provider-only private mode. Verification tokens expire and are single-use. Approval triggers identity and route reconciliation; rejection creates no tenant. Confirmed deletion removes tenant routes and public DID resolution.
+* Identity uses Keycloak-backed sessions, PKCE, current tenant membership and delegated scopes. Entra setup is supplied as an operator helper. Secret material is mounted from Kubernetes Secrets; participant access tokens remain volatile.
+* Configurations, connectors, journeys, metadata and branding have validated drafts, optimistic versions and immutable published snapshots. Issuance pins the active versions. Configuration archive stops new issuance while preserving live-tenant verification dependencies.
+* A connector specifies the allowed configuration IDs, participant HTTPS host, TLS Secret names, issuer/audience/scopes, signing modes and bounded deadlines. The production adapter uses native OCM offer, signer, status and Well-Known contracts.
+* History provides credential IDs, dates, latest state, authorized principal search, a history-only JWT statement and the verified holder key's did:jwk identifier. It never returns the participant access token. Revocation uses the native status provider and always blocks reissuance until an explicit administrator unblock.
+* The presentation panel supports OpenID4VP Draft 13 and 1.0 for holder-bound JWT W3C credentials. It verifies the holder proof, native issuer key, pinned credential definition, principal binding and native status. Sessions, VP tokens and return codes are not persisted. Other VP credential formats are not advertised.
+* Branding controls title, description, logo, colors, typography, page width, corner style and footer without editing JavaScript. Colors are contrast-checked. Settings cards use independent columns; errors persist until dismissed.
+
+== Operations and privacy
+
+Health and readiness, sanitized structured failures, Prometheus metrics and OTLP spans are supplied. The optional telemetry chart has bounded resources and short test retention. Source values and deployment instructions document TLS, Secret names, network boundaries and single-replica behavior.
+
+Retrieved participant claims, signed credentials, wallet proofs, VP tokens and access tokens are transient in PCI. Database history stores IDs, statuses, version references and controlled principal association. Audit statements use a separate type, audience and derived signing key and cannot authenticate to application APIs. Required IAM registration/member records are distinct from retrieved credential claims.
+
+The upstream patch bundle removes identified native payload logs and fixes empty-catalogue reads. Its manifest binds patches to exact revisions. The OCM owner must review, build and deploy those images. PCI cannot prove privacy of an unchanged shared service. The capture scanner checks the submitted log, database, NATS, context, trace and backup exports for synthetic canaries.
+
+== API and orchestration
+
+`docs/api/openapi.json` defines REST operations. `docs/api/examples.json` has synthetic request shapes for every operation. Public URLs compose the configured ORCE base path; host-root DID/issuer discovery routes retain their standards-defined placement. Node input/output and trust contracts are in `docs/architecture/orce-nodes.md`; UML sequence and component sources are in the same directory.
+
+== Validation and delivery
+
+Run `npm run test:offline`. CI additionally generates and compiles the Go transport, runs a real PostgreSQL test, renders Helm charts, builds browser tests and documentation, and scans dependencies. The live Executor pack covers registration, tenant boundaries, administration, native issuance/presentation, history/revocation and lifecycle. It uses actual deployed services and private authenticated browser sessions.
+
+Manual or externally executed evidence remains necessary for PCM Mobile, Entra/MFA, both clouds, accessibility, workload capacity, upstream image remediation, IP reviews and published workflows/releases. The sign-off gate requires evidence for all 101 FRs, eight retained audit groups and 83 individual technical provisions bound to the actual artifact hashes. The eighth group is a supplemental AI-assistance disclosure, not an invented normative provision. The gate has no automatic waiver mechanism.

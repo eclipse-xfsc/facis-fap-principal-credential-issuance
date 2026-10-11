@@ -1,0 +1,7 @@
+{
+  "version": "0.5.0-rc.12",
+  "status": "NOT_READY_FOR_SIGNOFF",
+  "errorCount": 540,
+  "receipt": "acceptance.example.json",
+  "note": "Expected evidence-gate failure: no completed acceptance receipt was supplied. Missing evidence/bindings are not a count of software bugs."
+}

@@ -1,0 +1,220 @@
+{
+  "version": "0.5.0-rc.12",
+  "inputSha256": "4c535c4e343f91052359247040a359a6c6d4d1751440881c73faf5826ac036ef",
+  "signoffReady": false,
+  "zeroRequirementGapsVerified": false,
+  "findings": [
+    {
+      "id": "RC4-01",
+      "title": "Catalogue withdrawal",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/maintenance.js"
+      ],
+      "remaining": "Patched native empty-catalogue read-back, last archive and restart",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC4-02",
+      "title": "All-hop TLS",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "deployment/prerequisites/all-hop-tls/mesh.yaml",
+        "tools/prepare-all-hop-tls.py",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "remaining": "Owner-approved mesh enrollment and observed every-hop TLS1.3; no plaintext/TLS1.2 fallback",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC4-03",
+      "title": "Linked-data context and semantic consistency",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "backend/sr2/linked-data.js",
+        "backend/sr2/semantics.js",
+        "test/live/semantic-validation.py"
+      ],
+      "remaining": "Independent JSON-LD/SHACL engines, migration and native/PCM format matrix",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC4-04",
+      "title": "Interrupted helper cleanup",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "scripts/deploy-participant.py",
+        "backend/functions/_participant-cleanup.js",
+        "scripts/reconcile-participant-ownership.py"
+      ],
+      "remaining": "Cluster crash injection, exact ownership, GC and permission-repair tests",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC4-05",
+      "title": "Core gRPC LDP signing",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "reference/participant-data-repository/ldp_signer.go",
+        "reference/participant-data-repository/ldp_signer_test.go"
+      ],
+      "remaining": "Go/Goa/protobuf compile/race tests and real Core/native signature verification",
+      "localBehaviorRegressionExecuted": false
+    },
+    {
+      "id": "RC4-06",
+      "title": "Legacy helper baseline",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "scripts/import-legacy-baseline.py",
+        "scripts/lifecycle.py"
+      ],
+      "remaining": "Trusted historical baseline input and actual upgrade/uninstall restoration",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC4-07",
+      "title": "Acceptance coverage",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "test/bdd/features/steps/fresh_identity.py",
+        "test/bdd/features/steps/administration.py",
+        "test/bdd/features/steps/completion.py",
+        "test/bdd/features/steps/pcm.py"
+      ],
+      "remaining": "Actual Executor/browser/Keycloak/Entra/PCM execution with prepared synthetic fixtures",
+      "localBehaviorRegressionExecuted": false
+    },
+    {
+      "id": "RC4-08",
+      "title": "Native payload privacy",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "tools/prepare-upstream-builds.py",
+        "deployment/prerequisites/upstream",
+        "scripts/privacy-audit.py"
+      ],
+      "remaining": "Owner must supply current Crypto 2.3.7 checkout for exact-commit/zero-fuzz patch verification, then review/build/scan/deploy native fixes and execute full-sink canary/retention checks.",
+      "localBehaviorRegressionExecuted": false
+    },
+    {
+      "id": "RC6-01",
+      "title": "Crypto 2.3.7 verification contract",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "backend/sr2/native.js",
+        "contracts/ocm-12.3.9-assessment.json"
+      ],
+      "remaining": "Real Crypto and Retrieval image provenance plus native LDP/SD-JWT/wallet interoperability.",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC6-02",
+      "title": "Independent native status before delivery and presentation",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "backend/sr2/issuance.js",
+        "backend/sr2/presentation.js"
+      ],
+      "remaining": "Native revoked/suspended/unknown/outage cases in both signing modes and supported credential formats.",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC6-03",
+      "title": "Helm-to-G0 migration",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "automation/stage1/apply-resources.py",
+        "automation/stage1/ground-zero.sh",
+        "build.js"
+      ],
+      "remaining": "Fresh/repeat cluster deployments and unpatched rc.1 upgrade; verify foreign releases/managers remain rejected on actual API server.",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC6-04",
+      "title": "Current native patch revision guard",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "tools/upstream_patch.py",
+        "tools/check-upstream-patches.py",
+        "tools/prepare-upstream-builds.py",
+        "deployment/prerequisites/upstream/manifest.json"
+      ],
+      "remaining": "Current upstream Crypto patch applicability, source review and owner builds/deployment. Synthetic helper tests do not prove that the patch applies to upstream.",
+      "localBehaviorRegressionExecuted": true
+    },
+    {
+      "id": "RC6-05",
+      "title": "Fresh-cluster deployment and resumable artifact install",
+      "status": "SOURCE_IMPLEMENTED_VALIDATION_AND_PREREQUISITES_PENDING",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "docs/operations/deploy-0.5.0-rc.6.md"
+      ],
+      "remaining": "Live non-interactive lifecycle run with valid private inputs, including artifact-stage recovery and uninstall.",
+      "localBehaviorRegressionExecuted": false
+    },
+    {
+      "id": "RC8-01",
+      "title": "Well-Known optional claim display readback",
+      "status": "SOURCE_IMPLEMENTED_LIVE_VALIDATION_PENDING",
+      "implementation": [
+        "backend/sr2/native.js",
+        "test/tests/integration/rc8-metadata.test.mjs"
+      ],
+      "remaining": "Upgrade rebuilt release, confirm Alpha catalogue desired/observed convergence and wallet metadata claim labels."
+    },
+    {
+      "id": "RC9-01",
+      "title": "Function-node sandbox and Bash artifact upgrade",
+      "status": "LIVE_PARTIAL_VALIDATION_CONFIRMED",
+      "implementation": [
+        "backend/sr2/native.js",
+        "scripts/upgrade-artifacts.sh",
+        "automation/stage1/install.sh",
+        "test/tests/integration/rc9-sandbox.test.mjs",
+        "test/tests/integration/rc8-bash-upgrade.test.mjs"
+      ],
+      "remaining": "Operator rc.9 upgrade, health/readiness and Alpha publication desired 6 / observed 6 passed on 2026-10-11. Public wallet discovery failed in a separate profiles.js clone call; rc.10 fixes and tests that handler. Full acceptance remains pending."
+    },
+    {
+      "id": "RC10-01",
+      "title": "Wallet discovery and credential-request Function-node profile conversion",
+      "status": "LIVE_PARTIAL_VALIDATION_CONFIRMED",
+      "implementation": [
+        "backend/sr2/profiles.js",
+        "backend/sr2/runtime.js",
+        "test/tests/integration/rc9-sandbox.test.mjs"
+      ],
+      "remaining": "Operator rc.10 public issuer and authorization discovery, TSA key creation and JWKS availability passed. Token exchange and nonce returned 200; credential issuance rejected the DID-qualified token kid against bare JWKS IDs. Actual issuance remains pending."
+    },
+    {
+      "id": "RC11-01",
+      "title": "Exact tenant DID key IDs in public JWKS",
+      "status": "SOURCE_IMPLEMENTED_LIVE_VALIDATION_PENDING",
+      "implementation": [
+        "backend/sr2/profiles.js",
+        "backend/sr2/runtime.js",
+        "test/tests/integration/rc9-sandbox.test.mjs"
+      ],
+      "remaining": "Upgrade rc.11, verify DID-qualified public kids, then perform one fresh native wallet issuance and inspect its history. Local exact-ID signature verification is not live OCM acceptance."
+    },
+    {
+      "id": "RC12-SIGNER-JWK",
+      "title": "Native signer single-key JWK array decoding",
+      "status": "SOURCE_IMPLEMENTED_LIVE_VALIDATION_PENDING",
+      "implementation": [
+        "backend/sr2/native.js",
+        "test/tests/integration/rc12-native-jwk.test.mjs",
+        "scripts/test-alpha-wallet.sh"
+      ],
+      "localBehaviorRegressionExecuted": true,
+      "remaining": "Fresh Alpha offer after artifact-only upgrade, successful credential response and both presentation checks on the existing live stack."
+    }
+  ],
+  "scope": "Source-side remediation delivered. Build/live execution, trusted historic/environment inputs, owner approval/deployment and specified public/governance obligations are not silently marked complete.",
+  "baseline": "OCM-WStack ESB 12.3.9"
+}
