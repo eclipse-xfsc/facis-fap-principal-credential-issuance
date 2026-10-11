@@ -1,6 +1,6 @@
 # Native OCM contract
 
-Baseline: uploaded ESB 12.3.9, as recorded in [the current assessment](../../contracts/ocm-12.3.9-assessment.json). `contracts/source-manifest.json` preserves earlier immutable source review records; changed native revisions are explicitly superseded in that assessment. Source compatibility is not proof that a deployed image corresponds to that source; record image digests in live acceptance. `contracts/integration-lock.json` states the remaining validation boundary.
+Baseline: uploaded ESB 12.3.9, as recorded in [the current assessment](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/contracts/ocm-12.3.9-assessment.json). `contracts/source-manifest.json` preserves earlier immutable source review records; changed native revisions are explicitly superseded in that assessment. Source compatibility is not proof that a deployed image corresponds to that source; record image digests in live acceptance. `contracts/integration-lock.json` states the remaining validation boundary.
 
 ## NATS
 
