@@ -81,7 +81,7 @@ return (async () => {
 
 Tenant URL: ${uiUrl(tenant.primaryDomain, cfg.orceBasePath)}`,
       });
-    } catch (error) { node.warn("PCI-EMAIL-DELIVERY-FAILED"); }
+    } catch (error) { node.warn(JSON.stringify({event:"pci.email.failed",code:"PCI-EMAIL-DELIVERY-FAILED"})); }
     return emit(created ? 201 : 200, { registration, tenant, created }, { etag: `"${registration.version}"` }, "pci:tenant-approved");
   }
 
@@ -117,7 +117,7 @@ Tenant URL: ${uiUrl(tenant.primaryDomain, cfg.orceBasePath)}`,
       await sendMail({ to: registration.contactEmail, subject: "FAP PCI tenant registration rejected", text: `The registration for ${registration.organizationName} was rejected. Contact the service provider for further details.
 
 PCI portal: ${uiUrl(cfg.mainHost, cfg.orceBasePath)}` });
-    } catch (error) { node.warn("PCI-EMAIL-DELIVERY-FAILED"); }
+    } catch (error) { node.warn(JSON.stringify({event:"pci.email.failed",code:"PCI-EMAIL-DELIVERY-FAILED"})); }
     return emit(200, { registration }, { etag: `"${registration.version}"` }, "pci:tenant-rejected");
   }
 

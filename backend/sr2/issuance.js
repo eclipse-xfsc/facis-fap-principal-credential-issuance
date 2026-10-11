@@ -1,6 +1,8 @@
+import { extendSr2Revocation } from './revocation.js';
 import crypto from 'node:crypto';
 import { sr2Assert, sr2Fail, sr2Text, sr2Uuid, sr2Object, sr2Integer, sr2Eligible, sr2Claims, sr2OneOf, sr2Correlation, sr2Hash } from './domain.js';
 import { sr2Deadline, sr2Retry } from './adapters.js';
+import { sr2HolderDid } from './history.js';
 
 export function extendSr2Issuance(api) {
   const {store,adapters,now,authorize,get,event,hashSubject,connectorAccess}=api;
@@ -21,7 +23,7 @@ export function extendSr2Issuance(api) {
     sr2Assert((await tx.version('connector',connector.id,connector.activeVersion)).signingModes.includes(configuration.signingMode) && (await tx.version('metadata',metadata.id,metadata.activeVersion)).profile===configuration.profile,'Published dependency compatibility changed.');
     const settings=await tx.get('settings',p.tenantId);await tx.rate('offers',Math.floor(now()/60000),settings?.draft.ratePerMinute || 30);await tx.rate('configuration:'+c.id,Math.floor(now()/60000),configuration.ratePerMinute);
     const r={id:crypto.randomUUID(),tenantId:p.tenantId,configurationId:c.id,configurationVersion:c.activeVersion,flowId:flow.id,flowVersion:flow.activeVersion,connectorId:connector.id,connectorVersion:connector.activeVersion,metadataVersion:metadata.activeVersion,subjectHash,idempotencyHash:key,state:'journey',step:0,expiresAt:now()+600000,createdAt:now()};
-    await tx.saveRequest(r);await event(tx,p,'requested',c.id,r);return {request:safeRequest(r),flow:(await pinned(tx,r)).flow};
+    await tx.bindPrincipal(subjectHash,p.subject);await tx.saveRequest(r);await event(tx,p,'requested',c.id,r);return {request:safeRequest(r),flow:(await pinned(tx,r)).flow};
   });
   api.advance=async(p,requestId,input)=>store.transaction(p.tenantId,async tx=>{
     sr2Object(input,['step','consent','values']);const r=await tx.request(sr2Uuid(requestId));await assertOwner(tx,p,r);sr2Correlation(r,{tenantId:p.tenantId,configurationId:r.configurationId,subjectHash:hashSubject(p.tenantId,p.subject)},now());
@@ -81,13 +83,18 @@ export function extendSr2Issuance(api) {
       async function allocate() {
         const status=await sr2Deadline(()=>adapters.allocateStatus({...transient,idempotencyKey:id}),deadline,now);
         sr2Object(status,['tenantId','configurationId','requestId','handle','entry']);sr2Assert(status.tenantId===p.tenantId && status.configurationId===ctx.r.configurationId && status.requestId===id,'Status ownership mismatch.');sr2Text(status.handle,200);
-        const entry=sr2Object(status.entry,['id','type','statusPurpose','statusListIndex','statusListCredential']);
-        sr2Text(entry.id,1024);sr2Text(entry.type,100);
         const origin=new URL(api.issuerUrl(ctx.tenant)).origin;
-        sr2Assert(new URL(entry.id).protocol==='https:' && new URL(entry.id).origin===origin,'Status must belong to the tenant origin.');
-        if(entry.statusPurpose!==undefined)sr2Assert(['revocation','suspension'].includes(entry.statusPurpose),'Invalid status purpose.');
-        if(entry.statusListIndex!==undefined)sr2Assert(typeof entry.statusListIndex==='string' && /^\d{1,16}$/.test(entry.statusListIndex),'Invalid status index.');
-        if(entry.statusListCredential!==undefined)sr2Assert(typeof entry.statusListCredential==='string' && new URL(entry.statusListCredential).origin===origin,'Status list origin mismatch.');
+        if(ctx.configuration.format.includes('sd-jwt')){
+          const e=sr2Object(status.entry,['status_list']),list=sr2Object(e.status_list,['idx','uri']);
+          sr2Assert(Number.isSafeInteger(list.idx) && list.idx>=0 && new URL(list.uri).protocol==='https:' && new URL(list.uri).origin===origin,'Invalid token status binding.');
+        }else{
+          const entry=sr2Object(status.entry,['id','type','statusPurpose','statusListIndex','statusListCredential']);
+          sr2Text(entry.id,1024);sr2Text(entry.type,100);
+          sr2Assert(new URL(entry.id).protocol==='https:' && new URL(entry.id).origin===origin,'Status must belong to the tenant origin.');
+          if(entry.statusPurpose!==undefined)sr2Assert(['revocation','suspension'].includes(entry.statusPurpose),'Invalid status purpose.');
+          if(entry.statusListIndex!==undefined)sr2Assert(typeof entry.statusListIndex==='string' && /^\d{1,16}$/.test(entry.statusListIndex),'Invalid status index.');
+          if(entry.statusListCredential!==undefined)sr2Assert(new URL(entry.statusListCredential).protocol==='https:' && new URL(entry.statusListCredential).origin===origin,'Status list origin mismatch.');
+        }
         await store.transaction(p.tenantId,async tx=>{const r=await tx.request(id);await tx.bindStatus(r,status);r.status=status;r.state='status_allocated';await tx.saveRequest(r);await event(tx,p,'status_allocated',r.configurationId,r);});
         transient.status=status;return status;
       }
@@ -103,18 +110,13 @@ export function extendSr2Issuance(api) {
       else credential=response.signedCredential;
       sr2Assert(typeof credential==='string' && credential.length<=262144,'Invalid credential response size.');
       const verified=await sr2Deadline(()=>adapters.verifySigned({...transient,status,credential}),deadline,now);sr2Object(verified,['credentialId']);if(verified.credentialId!==null)sr2Text(verified.credentialId,1024);
-      const final=await store.transaction(p.tenantId,async tx=>{await assertOwner(tx,p,await tx.request(id));await connectorAccess(tx,ctx.r.connectorId,ctx.r.configurationId);const c=await get(tx,'configuration',ctx.r.configurationId);sr2Assert(c.state!=='archived' && sr2Eligible(ctx.configuration,await authorize(tx,p,'principal')) && !await tx.blocked(c.id,ctx.r.subjectHash),'Issuance was cancelled during processing.');const r=await tx.request(id);sr2Assert(r.expiresAt>now(),'Request expired.');r.state='issued';r.credentialId=verified.credentialId;await tx.saveRequest(r);await event(tx,p,'issued',r.configurationId,r);return {credential,format:ctx.configuration.format};});
+      sr2Assert(typeof adapters.verifyStatus==='function','Native status verification is not configured.');
+      const statusResult=await sr2Deadline(()=>adapters.verifyStatus({...transient,status,credential}),deadline,now);
+      sr2Assert(statusResult?.valid===true,'Native credential status verification failed.');
+      const final=await store.transaction(p.tenantId,async tx=>{await assertOwner(tx,p,await tx.request(id));await connectorAccess(tx,ctx.r.connectorId,ctx.r.configurationId);const c=await get(tx,'configuration',ctx.r.configurationId);sr2Assert(c.state!=='archived' && sr2Eligible(ctx.configuration,await authorize(tx,p,'principal')) && !await tx.blocked(c.id,ctx.r.subjectHash),'Issuance was cancelled during processing.');const r=await tx.request(id);sr2Assert(r.expiresAt>now(),'Request expired.');r.state='issued';r.credentialId=verified.credentialId;r.holderDid=sr2HolderDid(holderBinding);await tx.saveRequest(r);await event(tx,p,'issued',r.configurationId,r);return {credential,format:ctx.configuration.format};});
       response=null;credential=null;return final;
     }catch(e){if(!participantSettled)await settleCircuit(participantFailed?'failure':'neutral');await setState(p,id,'indeterminate','PCI-SR2-ISSUANCE-FAILED');throw e;}
     finally {transient.participantJwt=undefined;transient.holderBinding=undefined;}
   };
-  api.revoke=async(p,configurationId,requestId,confirmed)=>{
-    const ctx=await store.transaction(p.tenantId,async tx=>{sr2Uuid(configurationId);sr2Uuid(requestId);await authorize(tx,p,'issuer',configurationId);await get(tx,'configuration',configurationId);const r=await tx.request(requestId);if(!r || r.configurationId!==configurationId)sr2Fail(404,'PCI-SR2-NOT-FOUND');if(r.state==='revoked')return {r,done:true};sr2Assert(confirmed===true,'Confirm revocation.');sr2Assert(r.state==='issued' && r.status,'Only issued credentials with a status reference can be revoked.');const pin=await pinned(tx,r);await adapters.assertReady(pin);r.state='revoking';await tx.saveRequest(r);return {r,...pin};});
-    if(ctx.done)return {revoked:true,requestId};
-    try{const result=await sr2Deadline(()=>adapters.revokeStatus({tenantId:p.tenantId,configurationId,requestId,status:ctx.r.status,idempotencyKey:'revoke:'+requestId,deadline:now()+10000}),now()+10000,now);
-      sr2Assert(result?.revoked===true && result.tenantId===p.tenantId && result.requestId===requestId && result.handle===ctx.r.status.handle,'Status provider did not confirm the revocation.');
-      await store.transaction(p.tenantId,async tx=>{const r=await tx.request(requestId);r.state='revoked';await tx.saveRequest(r);if(ctx.configuration.blockReissuance)await tx.block(configurationId,r.subjectHash);await event(tx,p,'revoked',configurationId,r);});return {revoked:true,requestId};
-    }catch(e){await setState(p,requestId,'revocation_indeterminate','PCI-SR2-REVOCATION-FAILED');throw e;}
-  };
-  return api;
+  return extendSr2Revocation(api,pinned);
 }

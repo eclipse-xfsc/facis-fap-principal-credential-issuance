@@ -1,0 +1,20 @@
+--- a/internal/gateway/nats/nats_gateway.go
++++ b/internal/gateway/nats/nats_gateway.go
+@@ -71,7 +71,7 @@
+ }
+ 
+ func (g NatsGateway) offerHandler(ctx context.Context, event event.Event) (*event.Event, error) {
+-	g.log.Info("Offer request received", "data", string(event.Data()))
++	g.log.Info("Offer request received")
+ 	var req messaging.OfferingURLReq
+ 	if err := json.Unmarshal(event.Data(), &req); err != nil {
+ 		g.log.Error(err, "could not unmarshal offer")
+@@ -102,7 +102,7 @@
+ 		return nil, err
+ 	}
+ 
+-	g.log.Info("Offer Reply Data", "data", string(offerReplyData))
++	g.log.Info("Offer reply prepared")
+ 
+ 	offerReplyEvent, err := cloudeventprovider.NewEvent(SourceIssuanceService, messaging.EventTypeOffering, offerReplyData)
+ 	if err != nil {

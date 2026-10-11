@@ -87,3 +87,38 @@ CREATE TABLE IF NOT EXISTS pci_participant_circuits (
  tenant_id UUID NOT NULL REFERENCES tenants(tenant_id), connector_id UUID NOT NULL,
  document JSONB NOT NULL, PRIMARY KEY(tenant_id,connector_id)
 );
+
+CREATE TABLE IF NOT EXISTS pci_issuer_retirements (
+ tenant_id UUID PRIMARY KEY REFERENCES tenants(tenant_id),
+ issuer JSONB NOT NULL, state TEXT NOT NULL CHECK(state IN('pending','withdrawn')),
+ requested_at TIMESTAMPTZ NOT NULL DEFAULT now(), withdrawn_at TIMESTAMPTZ
+);
+
+-- Only links existing IAM administrative identities. No participant claims/tokens.
+CREATE TABLE IF NOT EXISTS pci_issuance_principals (
+ tenant_id UUID NOT NULL REFERENCES tenants(tenant_id), subject_hash TEXT NOT NULL,
+ keycloak_subject TEXT NOT NULL, PRIMARY KEY(tenant_id,subject_hash),
+ FOREIGN KEY(tenant_id,keycloak_subject) REFERENCES tenant_members(tenant_id,keycloak_subject) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_pci_request_credential ON pci_issuance_requests(tenant_id,(document->>'credentialId')) WHERE document->>'credentialId' IS NOT NULL;
+
+-- Public tenant IAM configuration; the broker client secret remains in Keycloak.
+CREATE TABLE IF NOT EXISTS pci_tenant_identity (
+ tenant_id UUID PRIMARY KEY REFERENCES tenants(tenant_id) ON DELETE CASCADE,
+ document JSONB NOT NULL
+);
+
+-- Reconcile the changed LDP context/claim paths once on an rc.5 upgrade.
+-- Atomic marker insertion ensures a repeated bootstrap does not churn revisions.
+WITH migration AS (
+ INSERT INTO pci_schema_migrations(version) VALUES('0.5.0-rc.5-linked-data')
+ ON CONFLICT DO NOTHING RETURNING version
+)
+INSERT INTO pci_metadata_publication(tenant_id,desired,state)
+SELECT DISTINCT r.tenant_id,1,'pending' FROM pci_issuer_resources r
+JOIN pci_issuer_versions v ON v.tenant_id=r.tenant_id AND v.kind=r.kind
+ AND v.resource_id=r.resource_id AND v.version=(r.document->>'activeVersion')::integer
+WHERE EXISTS(SELECT 1 FROM migration) AND r.kind='configuration'
+ AND r.document->>'state'<>'archived' AND v.snapshot->>'format'='ldp_vc'
+ON CONFLICT(tenant_id) DO UPDATE SET desired=pci_metadata_publication.desired+1,state='pending',error_code=NULL;

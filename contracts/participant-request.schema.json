@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:xfsc:fap-pci:participant-request:v1",
+  "title": "PCI participant request envelope v1",
+  "description": "JSON carried in field 1 of participant.v1.Envelope. Notify and GetCredentialData share the same binding; only status may change after Notify. Identity, deadline, claim and cryptographic checks remain mandatory in addition to this shape.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocolVersion", "tenantId", "configurationId", "requestId", "subject", "participantSubject", "participantJwt", "configuration", "issuer", "holderBinding", "status", "deadline", "signingContext"],
+  "properties": {
+    "protocolVersion": {"const": "participant-v1"},
+    "tenantId": {"$ref": "#/$defs/identifier"},
+    "configurationId": {"$ref": "#/$defs/identifier"},
+    "requestId": {"$ref": "#/$defs/identifier"},
+    "subject": {"$ref": "#/$defs/identifier"},
+    "participantSubject": {"$ref": "#/$defs/identifier"},
+    "participantJwt": {"type": "string", "minLength": 1, "maxLength": 131072},
+    "configuration": {
+      "type": "object",
+      "description": "Complete pinned published PCI configuration; the participant uses the signing and claim subset. Additional configuration fields are retained in the two-call binding.",
+      "required": ["identifier", "profile", "format", "signingMode", "keyRef", "credentialTypes", "claims"],
+      "properties": {
+        "identifier": {"$ref": "#/$defs/identifier"},
+        "profile": {"enum": ["oid4vci-draft13", "oid4vci-1.0"]},
+        "format": {"enum": ["jwt_vc_json", "vc+sd-jwt", "dc+sd-jwt", "ldp_vc"]},
+        "signingMode": {"enum": ["internal-signing", "participant-signed"]},
+        "keyRef": {"$ref": "#/$defs/identifier"},
+        "credentialTypes": {"type": "array", "maxItems": 10, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 100}},
+        "vct": {"type": ["string", "null"], "maxLength": 200},
+        "claims": {"type": "array", "minItems": 1, "maxItems": 50, "items": {"type": "object", "additionalProperties": false, "required": ["name", "type", "required"], "properties": {"name": {"type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$"}, "type": {"enum": ["string", "number", "boolean"]}, "required": {"type": "boolean"}}}}
+      }
+    },
+    "issuer": {"type": "string", "pattern": "^did:web:", "maxLength": 512},
+    "holderBinding": {
+      "type": "object", "additionalProperties": false, "required": ["jwk"],
+      "properties": {"jwk": {"type": "object", "required": ["kty"], "properties": {"kty": {"enum": ["EC", "RSA"]}}, "not": {"anyOf": [{"required": ["d"]}, {"required": ["p"]}, {"required": ["q"]}, {"required": ["k"]}]}}}
+    },
+    "status": {"type": ["object", "null"], "description": "Null for Notify; server-allocated status entry for GetCredentialData."},
+    "deadline": {"type": "string", "format": "date-time", "description": "Shared deadline, greater than now and no more than 30 seconds ahead."},
+    "signingContext": {
+      "type": "object", "additionalProperties": false,
+      "required": ["namespace", "group", "key", "did", "origin"],
+      "properties": {
+        "namespace": {"$ref": "#/$defs/identifier"},
+        "group": {"const": "default"},
+        "key": {"$ref": "#/$defs/identifier"},
+        "did": {"type": "string", "pattern": "^did:web:", "maxLength": 512},
+        "origin": {"type": "string", "format": "uri", "pattern": "^https://", "maxLength": 1024}
+      }
+    }
+  },
+  "$defs": {"identifier": {"type": "string", "minLength": 1, "maxLength": 200}}
+}

@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
-import { Sr2Error, sr2Assert, sr2Fail, sr2Text, sr2Uuid, sr2Integer, sr2List, sr2Object, sr2Unique, sr2Hash, sr2Metadata, sr2Branding, sr2Configuration, sr2Flow, sr2Connector, sr2Eligible } from './domain.js';
+import { Sr2Error, sr2IsError, sr2Assert, sr2Fail, sr2Text, sr2Uuid, sr2Integer, sr2List, sr2Object, sr2Unique, sr2Hash, sr2Metadata, sr2Branding, sr2Configuration, sr2Flow, sr2Connector, sr2Eligible } from './domain.js';
 import { sr2Png } from './assets.js';
+import { sr2PrincipalStatement } from './history.js';
+import { sr2SemanticTemplate } from './semantics.js';
 
 export function createSr2Service({store, adapters, now=Date.now, pepper, allowedHosts=[], issuerUrl, assetUrl}) {
   const hashSubject=(tenantId,subject)=>crypto.createHmac('sha256',pepper).update(tenantId+'\0'+subject).digest('hex');
@@ -36,9 +38,13 @@ export function createSr2Service({store, adapters, now=Date.now, pepper, allowed
       for(const id of [d.logoAssetId,d.backgroundAssetId].filter(Boolean))await referencedAsset(tx,id,r.id);
       if(d.connectorId){const c=await connectorAccess(tx,d.connectorId,r.id);const cd=c.activeVersion?await tx.version('connector',c.id,c.activeVersion):c.draft;sr2Assert(cd.signingModes.includes(d.signingMode),'Connector does not support the signing mode.');}
       if(d.flowId){const f=await get(tx,'flow',d.flowId);sr2Assert(f.configurationId===r.id && f.state!=='archived','Flow ownership mismatch.');}
-      if(publish){sr2Assert(d.connectorId && d.flowId,'A connector and published journey are required.');
-        const c=await get(tx,'connector',d.connectorId),f=await get(tx,'flow',d.flowId),m=await get(tx,'metadata',r.tenantId);
-        sr2Assert(c.activeVersion && f.activeVersion && m.activeVersion,'Publish connector, journey and issuer metadata first.');
+      if(publish){
+        const c=d.connectorId?await tx.get('connector',d.connectorId):null,f=d.flowId?await tx.get('flow',d.flowId):null,m=await tx.get('metadata',r.tenantId);
+        const missing=[];
+        if(!c)missing.push('select a participant connector');else if(!c.activeVersion)missing.push('activate the participant connector');
+        if(!f)missing.push('select an issuance journey');else if(!f.activeVersion)missing.push('publish the issuance journey');
+        if(!m?.activeVersion)missing.push('save and activate issuer metadata in Tenant settings');
+        if(missing.length)sr2Fail(400,'PCI-CONFIG-PREREQUISITES','Before publishing this configuration: '+missing.join('; ')+'.');
         const md=await tx.version('metadata',m.id,m.activeVersion);sr2Assert(md.profile===d.profile,'Issuer and configuration profiles differ.');}
     } else if(r.kind==='connector'){for(const cid of r.draft.configurationIds || [])await get(tx,'configuration',cid);
     } else if(r.kind==='metadata' && publish){for(const c of await tx.list('configuration'))if(c.activeVersion && c.state!=='archived')sr2Assert((await tx.version('configuration',c.id,c.activeVersion)).profile===d.profile,'Archive incompatible published configurations before changing issuer profile.');
@@ -116,30 +122,32 @@ export function createSr2Service({store, adapters, now=Date.now, pepper, allowed
         for(const c of await tx.list('configuration'))if(c.state!=='archived' && c.activeVersion)configurations.push({id:c.id,version:c.activeVersion,data:await tx.version('configuration',c.id,c.activeVersion)});
         return {state,tenantId:p.tenantId,issuer:metadata?.activeVersion?await tx.version('metadata',metadata.id,metadata.activeVersion):null,configurations};});
       if(!run)return bundle;
-      try {sr2Assert(bundle.issuer,'Publish issuer metadata first.');await adapters.publishMetadata(bundle);await store.transaction(p.tenantId,tx=>tx.publicationResult(Number(bundle.state.desired),null));}
-      catch(e){await store.transaction(p.tenantId,tx=>tx.publicationResult(Number(bundle.state.desired),'PCI-SR2-CONTRACT-BLOCKED'));throw e;}
+      try {sr2Assert(bundle.issuer,'Save and activate issuer metadata first.');if(!bundle.configurations.length && adapters.capabilities().emptyCatalogue!==true)sr2Fail(409,'PCI-METADATA-EMPTY-CATALOGUE','Publish at least one credential configuration before sending metadata to this OCM version. Empty catalogues cannot be read reliably by its Well-Known service.');await adapters.publishMetadata(bundle);await store.transaction(p.tenantId,tx=>tx.publicationResult(Number(bundle.state.desired),null));}
+      catch(e){await store.transaction(p.tenantId,tx=>tx.publicationResult(Number(bundle.state.desired),sr2IsError(e)?e.code:'PCI-SR2-PUBLICATION-FAILED'));throw e;}
       return store.transaction(p.tenantId,tx=>tx.publication());
     },
+    async semanticTemplate(p,configurationId){return store.transaction(p.tenantId,async tx=>{
+      sr2Uuid(configurationId);await authorize(tx,p,'issuer',configurationId);
+      const c=await get(tx,'configuration',configurationId);
+      return {configurationId:c.id,version:c.version,...sr2SemanticTemplate(c.draft,issuerUrl(tx.tenant))};
+    });},
     async history(p,configurationId,filter={}){return store.transaction(p.tenantId,async tx=>{
       sr2Uuid(configurationId);await authorize(tx,p,'issuer',configurationId);await get(tx,'configuration',configurationId);
-      const f={limit:sr2Integer(Number(filter.limit || 30),1,100),cursor:filter.cursor?sr2Integer(Number(filter.cursor),1,Number.MAX_SAFE_INTEGER):null,subjectHash:filter.subjectHash || null,requestId:filter.requestId?sr2Uuid(filter.requestId):null,type:filter.type || null,credentialId:filter.credentialId?sr2Text(filter.credentialId,1024):null,from:filter.from || null,to:filter.to || null};
+      const f={limit:sr2Integer(Number(filter.limit || 30),1,100),cursor:filter.cursor?sr2Integer(Number(filter.cursor),1,Number.MAX_SAFE_INTEGER):null,subjectHash:filter.subjectHash || null,requestId:filter.requestId?sr2Uuid(filter.requestId):null,type:filter.type || null,credentialId:filter.credentialId?sr2Text(filter.credentialId,1024):null,from:filter.from || null,to:filter.to || null,principal:filter.principal?sr2Text(filter.principal,200):null};
       for(const date of [f.from,f.to].filter(Boolean))sr2Assert(typeof date==='string' && /^\d{4}-\d{2}-\d{2}T/.test(date) && Number.isFinite(Date.parse(date)),'Use an ISO date-time.');
       if(f.from && f.to)sr2Assert(Date.parse(f.from)<=Date.parse(f.to),'History date range is reversed.');
       if(f.subjectHash)sr2Assert(/^[a-f0-9]{64}$/.test(f.subjectHash),'Search with the pseudonymous subject hash.');if(f.type)sr2Assert(/^[a-z_.]{1,50}$/.test(f.type),'Invalid event type.');
-      const items=await tx.events(configurationId,f);return {items,nextCursor:items.length===f.limit?items.at(-1).cursor:null};
+      // Backfill references for pre-upgrade history from existing tenant membership only.
+      for(const member of await tx.historyMembers())await tx.bindPrincipal(hashSubject(p.tenantId,member.keycloak_subject),member.keycloak_subject);
+      const rows=await tx.events(configurationId,f);const items=rows.map(({principalMember,...e})=>({...e,...(e.subjectHash?sr2PrincipalStatement(principalMember,{tenantId:p.tenantId,subjectHash:e.subjectHash,issuer:issuerUrl(tx.tenant),pepper,now:now()}):{principal:null,principalJwt:null})}));return {items,nextCursor:items.length===f.limit?items.at(-1).cursor:null};
     });},
-    async unblock(p,configurationId,subjectHash){return store.transaction(p.tenantId,async tx=>{await authorize(tx,p,'admin');sr2Uuid(configurationId);await get(tx,'configuration',configurationId);sr2Assert(/^[a-f0-9]{64}$/.test(subjectHash),'Invalid subject hash.');await tx.unblock(configurationId,subjectHash);await event(tx,p,'reissuance.unblocked',configurationId);return {unblocked:true};});},
+    async unblock(p,configurationId,subjectHash){return store.transaction(p.tenantId,async tx=>{await authorize(tx,p,'admin');sr2Uuid(configurationId);await get(tx,'configuration',configurationId);sr2Assert(/^[a-f0-9]{64}$/.test(subjectHash),'Invalid subject hash.');if((await tx.requests(configurationId)).some(r=>r.subjectHash===subjectHash&&['revoking','revocation_indeterminate'].includes(r.state)))sr2Fail(409,'PCI-REVOCATION-PENDING','Resolve pending revocations before removing the reissuance block.');await tx.unblock(configurationId,subjectHash);await event(tx,p,'reissuance.unblocked',configurationId);return {unblocked:true};});},
     async lifecycle(p,state,confirmation){return store.transaction(p.tenantId,async tx=>{
       if(!(p.provider && p.roles.includes('provider_admin')))await authorize(tx,p,'admin');
       sr2Assert(['suspended','provisioning','deleting'].includes(state),'Invalid lifecycle action.');
       sr2Assert(confirmation===tx.tenant.tenant_slug,'Confirm by entering the tenant slug.');
       sr2Assert(tx.tenant.state!=='deleted','Tenant is already deleted.');
       if(state==='provisioning')sr2Assert(p.provider && tx.tenant.state==='suspended','Only provider administration can resume a suspended tenant.');
-      if(state==='deleting'){
-        // Until upstream retirement is defined, never break an issued credential's
-        // public status/DID dependencies through a local-only deletion.
-        for(const c of await tx.list('configuration'))if(c.activeVersion)sr2Fail(409,'PCI-SR2-RETIREMENT-BLOCKED','Published issuer resources require the verified OCM retirement contract before tenant deletion.');
-      }
       await tx.lifecycle(state);await event(tx,p,'tenant.'+state);return {state};
     });}
   };return api;

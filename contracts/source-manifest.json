@@ -1,0 +1,524 @@
+{
+  "reviewedAt": "2026-10-05",
+  "ocmArchiveSha256": "08ca64d0c49fde37bb4c51470207eaa69ef74d5465266ee4f7fab67d50e00ed3",
+  "files": [
+    {
+      "repo": "nats-message-library",
+      "path": "common/reply.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "c243e647c0b23d8ebc8cf932aac9fd617d667223",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/common/reply.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "common/request.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "db1fd69eaa15abd808ff2f68635b6d15699842eb",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/common/request.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "go.mod",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "b4b0f6bc7d1c83faf6dda2ac627bbcc6e4fb6722",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/go.mod"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "history.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "71d3da2208e54d306c5ba1bb545f896d2745382e",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/history.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "issuance.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "7750ef5a59a3d95691a6f043e622317c997bd9be",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/issuance.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "retrieval.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "b13ab40ab37f7bb981446fd4721b9de23f8a4c7d",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/retrieval.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "signer.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "45c4c734e13da2b5f836fadf10818d4fdce86d9b",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/signer.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "status.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "3663c52af6243b31847b75496648d01d1a0afc09",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/status.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "storage.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "d97b725568836e6b39b8fdd1bd1447617e2b03e2",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/storage.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "wellknown.go",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "94c259c9552d6108b98ac1e7ec38eb58ac4f6330",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/wellknown.go"
+    },
+    {
+      "repo": "nats-message-library",
+      "path": "LICENSE",
+      "ref": "e2e7e621939006d49740c7c3feea088c4da7acad",
+      "blob": "60b820ac46d1339840ca49c9c995db5e455e0f27",
+      "url": "https://github.com/eclipse-xfsc/nats-message-library/blob/e2e7e621939006d49740c7c3feea088c4da7acad/LICENSE"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "go.mod",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "4bf2ff6bd3a3fa3e4b1b714cebc1dc4b37b2f370",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/go.mod"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/api/api.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "778f64ec17cd4fd767e18d43231361d3aff70366",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/api/api.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/common/constants.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "cc0c8e69d17cfedd7e6225d7e85028b3fb30ee87",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/common/constants.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/common/environment.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "10a22c88b90baa007536669f2e366e84abca2309",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/common/environment.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/config/config.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "f19949de202846525a474768f61ca6d76045ab35",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/config/config.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/database/database.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "c1f502f17db0d17889d83860733c470e14fbc17d",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/database/database.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/gateway/nats/nats_gateway.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "af4f5b7ffde592323e254ac484e2f2edfd3187ea",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/gateway/nats/nats_gateway.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/gateway/rest/credential_service.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "8119fd513c2e1782e293e77c29e9fca4d0e035d1",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/gateway/rest/credential_service.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/gateway/rest/rest_gateway.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "ff2cba07faea6e6282dbad8aa65a37f4f372629e",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/gateway/rest/rest_gateway.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/service/credential_service_impl.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "12ac9dec36f554797b8a016475b1280771836fac",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/service/credential_service_impl.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "internal/types/types.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "e3c45db32aecb15d2f8045c810114bb5bd06a13b",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/internal/types/types.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "main.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "cc4ce4907a10aabd7f252b12d048af1ff061c8a8",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/main.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "pkg/messaging/types.go",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "8a71207483c7bd26815a1d0a23eb43f0a38af02b",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/pkg/messaging/types.go"
+    },
+    {
+      "repo": "oid4-vci-issuer-service",
+      "path": "LICENSE",
+      "ref": "5a47e4544d41af3f5e05145f6dca054bbf3ff1f3",
+      "blob": "60b820ac46d1339840ca49c9c995db5e455e0f27",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-issuer-service/blob/5a47e4544d41af3f5e05145f6dca054bbf3ff1f3/LICENSE"
+    },
+    {
+      "repo": "crypto-provider-service",
+      "path": "design/design.go",
+      "ref": "b9ab28ebeb0c810665b642a7dbf98ada1865febf",
+      "blob": "d454a32cecf3f1cd6d6dfb9359151ccd11327050",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-service/blob/b9ab28ebeb0c810665b642a7dbf98ada1865febf/design/design.go"
+    },
+    {
+      "repo": "crypto-provider-service",
+      "path": "design/types.go",
+      "ref": "b9ab28ebeb0c810665b642a7dbf98ada1865febf",
+      "blob": "65f324c0996bd1f6a348186d1bacafecfc05cc48",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-service/blob/b9ab28ebeb0c810665b642a7dbf98ada1865febf/design/types.go"
+    },
+    {
+      "repo": "crypto-provider-service",
+      "path": "internal/service/signer/service.go",
+      "ref": "b9ab28ebeb0c810665b642a7dbf98ada1865febf",
+      "blob": "666b45f8db030737dd6c745ee733c63a53511f6e",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-service/blob/b9ab28ebeb0c810665b642a7dbf98ada1865febf/internal/service/signer/service.go"
+    },
+    {
+      "repo": "crypto-provider-service",
+      "path": "pkg/messaging/types.go",
+      "ref": "b9ab28ebeb0c810665b642a7dbf98ada1865febf",
+      "blob": "6fd1e5423add901a90cd40b5ace9231c00bd1a14",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-service/blob/b9ab28ebeb0c810665b642a7dbf98ada1865febf/pkg/messaging/types.go"
+    },
+    {
+      "repo": "crypto-provider-service",
+      "path": "LICENSE",
+      "ref": "b9ab28ebeb0c810665b642a7dbf98ada1865febf",
+      "blob": "8500073e7c4a92be233d04a1d801459ae68a50e4",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-service/blob/b9ab28ebeb0c810665b642a7dbf98ada1865febf/LICENSE"
+    },
+    {
+      "repo": "statuslist-service",
+      "path": "internal/api/messaging.go",
+      "ref": "45ee326126cc8c515d85517460af37de84c1d06c",
+      "blob": "064ddbd74edba9b8a3ce43cac50efc0da0e8e640",
+      "url": "https://github.com/eclipse-xfsc/statuslist-service/blob/45ee326126cc8c515d85517460af37de84c1d06c/internal/api/messaging.go"
+    },
+    {
+      "repo": "statuslist-service",
+      "path": "internal/service/status.go",
+      "ref": "45ee326126cc8c515d85517460af37de84c1d06c",
+      "blob": "ce58aae4d70fbe0a65826ad52bf040c6780f4ef0",
+      "url": "https://github.com/eclipse-xfsc/statuslist-service/blob/45ee326126cc8c515d85517460af37de84c1d06c/internal/service/status.go"
+    },
+    {
+      "repo": "statuslist-service",
+      "path": "internal/config/config.go",
+      "ref": "45ee326126cc8c515d85517460af37de84c1d06c",
+      "blob": "dbb0fcef246e3aa63d5338db7e5b839860de0b08",
+      "url": "https://github.com/eclipse-xfsc/statuslist-service/blob/45ee326126cc8c515d85517460af37de84c1d06c/internal/config/config.go"
+    },
+    {
+      "repo": "statuslist-service",
+      "path": "internal/entity/list.go",
+      "ref": "45ee326126cc8c515d85517460af37de84c1d06c",
+      "blob": "a12cfad7d3a05c26f8c5b92b3853de98285355ff",
+      "url": "https://github.com/eclipse-xfsc/statuslist-service/blob/45ee326126cc8c515d85517460af37de84c1d06c/internal/entity/list.go"
+    },
+    {
+      "repo": "statuslist-service",
+      "path": "design/design.go",
+      "ref": "45ee326126cc8c515d85517460af37de84c1d06c",
+      "blob": "41334e88b58f4f251d0a933f71fe417c32f5ddf1",
+      "url": "https://github.com/eclipse-xfsc/statuslist-service/blob/45ee326126cc8c515d85517460af37de84c1d06c/design/design.go"
+    },
+    {
+      "repo": "statuslist-service",
+      "path": "LICENSE",
+      "ref": "45ee326126cc8c515d85517460af37de84c1d06c",
+      "blob": "60b820ac46d1339840ca49c9c995db5e455e0f27",
+      "url": "https://github.com/eclipse-xfsc/statuslist-service/blob/45ee326126cc8c515d85517460af37de84c1d06c/LICENSE"
+    },
+    {
+      "repo": "deployment",
+      "path": "XFSC/tenant/chart/templates/httproute.yaml",
+      "ref": "3160031da9f75afb02c8dc2c4444d1f29563edbb",
+      "blob": "7310467fa5b5b084d01279c1d027db03d71501df",
+      "url": "https://github.com/eclipse-xfsc/deployment/blob/3160031da9f75afb02c8dc2c4444d1f29563edbb/XFSC/tenant/chart/templates/httproute.yaml"
+    },
+    {
+      "repo": "deployment",
+      "path": "XFSC/tenant/chart/templates/listenerset.yaml",
+      "ref": "3160031da9f75afb02c8dc2c4444d1f29563edbb",
+      "blob": "81c90274c747f3538e680ac3e8fea1a670653669",
+      "url": "https://github.com/eclipse-xfsc/deployment/blob/3160031da9f75afb02c8dc2c4444d1f29563edbb/XFSC/tenant/chart/templates/listenerset.yaml"
+    },
+    {
+      "repo": "deployment",
+      "path": "XFSC/tenant/chart/templates/tenant-registration.yaml",
+      "ref": "3160031da9f75afb02c8dc2c4444d1f29563edbb",
+      "blob": "c8ca8098207db910a5e4faced09082462c546de3",
+      "url": "https://github.com/eclipse-xfsc/deployment/blob/3160031da9f75afb02c8dc2c4444d1f29563edbb/XFSC/tenant/chart/templates/tenant-registration.yaml"
+    },
+    {
+      "repo": "deployment",
+      "path": "XFSC/tenant/chart/templates/registration-cron.yaml",
+      "ref": "3160031da9f75afb02c8dc2c4444d1f29563edbb",
+      "blob": "f2c3b5e23c976c0be7cbc28464fbe7bb6e44e6cd",
+      "url": "https://github.com/eclipse-xfsc/deployment/blob/3160031da9f75afb02c8dc2c4444d1f29563edbb/XFSC/tenant/chart/templates/registration-cron.yaml"
+    },
+    {
+      "repo": "deployment",
+      "path": "XFSC/tenant/chart/values.yaml",
+      "ref": "3160031da9f75afb02c8dc2c4444d1f29563edbb",
+      "blob": "fe787539032c12e080e795fb7a3b261cef284d39",
+      "url": "https://github.com/eclipse-xfsc/deployment/blob/3160031da9f75afb02c8dc2c4444d1f29563edbb/XFSC/tenant/chart/values.yaml"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "types/proto/commonProvider.proto",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "8152d7403cb9099d845c040c41ef86c713263aca",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/types/proto/commonProvider.proto"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "types/commonTypes.go",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "02ae5a56c052ea24c46721e663eb08f17d0ad51f",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/types/commonTypes.go"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "types/cryptoContext.go",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "84c2a4dfbba33d469707c27816d26d39be222e5e",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/types/cryptoContext.go"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "README.md",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "136705862ef3352e664a61e471212e259e78171f",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/README.md"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "go.mod",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "c29628a788f74eae467a7bbd9c57d42376daf7bf",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/go.mod"
+    },
+    {
+      "repo": "oid4-vci-vp-library",
+      "path": "model/credential/IssuerMetaData.go",
+      "ref": "c0586526b4cbb6eb6fb62014960c08cc09300cf9",
+      "blob": "8bb4e1fa4f9f1ed85e9f286e1c59b411ccb74285",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-library/blob/c0586526b4cbb6eb6fb62014960c08cc09300cf9/model/credential/IssuerMetaData.go"
+    },
+    {
+      "repo": "oid4-vci-vp-library",
+      "path": "model/credential/credentialOfferRequest.go",
+      "ref": "c0586526b4cbb6eb6fb62014960c08cc09300cf9",
+      "blob": "e82fc2610ca243cf14d06c210b4135bc8a064aae",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-library/blob/c0586526b4cbb6eb6fb62014960c08cc09300cf9/model/credential/credentialOfferRequest.go"
+    },
+    {
+      "repo": "oid4-vci-vp-library",
+      "path": "model/credential/credentialRequest.go",
+      "ref": "c0586526b4cbb6eb6fb62014960c08cc09300cf9",
+      "blob": "82941a5170279806d04ec7e3c5112dd4429833a9",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-library/blob/c0586526b4cbb6eb6fb62014960c08cc09300cf9/model/credential/credentialRequest.go"
+    },
+    {
+      "repo": "bdd-executor",
+      "path": "README.md",
+      "ref": "478909cdd735bbab8bb63ce955183713d6bb387b",
+      "blob": "fff6f56b202b17d74a95176530d709132580c695",
+      "url": "https://github.com/eclipse-xfsc/bdd-executor/blob/478909cdd735bbab8bb63ce955183713d6bb387b/README.md"
+    },
+    {
+      "repo": "dev-ops",
+      "path": ".github/workflows/helm.yml",
+      "ref": "880a05d7832796e8ddf71fcde340ef65349f5db6",
+      "blob": "efcba19336c1cca457135b01c5285974e06e28f9",
+      "url": "https://github.com/eclipse-xfsc/dev-ops/blob/880a05d7832796e8ddf71fcde340ef65349f5db6/.github/workflows/helm.yml"
+    },
+    {
+      "repo": "dev-ops",
+      "path": ".github/workflows/dockerbuild.yml",
+      "ref": "880a05d7832796e8ddf71fcde340ef65349f5db6",
+      "blob": "18b0ca7b127d971ce1459778e075f3e277068b29",
+      "url": "https://github.com/eclipse-xfsc/dev-ops/blob/880a05d7832796e8ddf71fcde340ef65349f5db6/.github/workflows/dockerbuild.yml"
+    },
+    {
+      "repo": "dev-ops",
+      "path": ".github/workflows/eclipse-dash-licence-node.yml",
+      "ref": "880a05d7832796e8ddf71fcde340ef65349f5db6",
+      "blob": "e6f496b09ca732de97a4e4eec92dbf395daacd50",
+      "url": "https://github.com/eclipse-xfsc/dev-ops/blob/880a05d7832796e8ddf71fcde340ef65349f5db6/.github/workflows/eclipse-dash-licence-node.yml"
+    },
+    {
+      "repo": "dev-ops",
+      "path": ".github/workflows/sbom-node.yml",
+      "ref": "880a05d7832796e8ddf71fcde340ef65349f5db6",
+      "blob": "1777e3028de289acafbc990aad3f58f052d85736",
+      "url": "https://github.com/eclipse-xfsc/dev-ops/blob/880a05d7832796e8ddf71fcde340ef65349f5db6/.github/workflows/sbom-node.yml"
+    },
+    {
+      "repo": "oid4-vci-vp-well-known-service",
+      "path": "internal/gateway/nats/natsGW.go",
+      "ref": "9d595cd5ceb25a48aee544efa1301a426a4caa32",
+      "blob": "bdaa4de6dc7b17e199ede41f9821c16072ed580f",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-well-known-service/blob/9d595cd5ceb25a48aee544efa1301a426a4caa32/internal/gateway/nats/natsGW.go"
+    },
+    {
+      "repo": "oid4-vci-vp-well-known-service",
+      "path": "internal/importer/broadcast/broadcastImporter.go",
+      "ref": "9d595cd5ceb25a48aee544efa1301a426a4caa32",
+      "blob": "2838928b716541b9d803ea01313aa48184d97906",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-well-known-service/blob/9d595cd5ceb25a48aee544efa1301a426a4caa32/internal/importer/broadcast/broadcastImporter.go"
+    },
+    {
+      "repo": "oid4-vci-vp-well-known-service",
+      "path": "internal/service/issuerSvc.go",
+      "ref": "9d595cd5ceb25a48aee544efa1301a426a4caa32",
+      "blob": "172dc44132d1a769c558966c0a1ee1b22b0cde63",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-well-known-service/blob/9d595cd5ceb25a48aee544efa1301a426a4caa32/internal/service/issuerSvc.go"
+    },
+    {
+      "repo": "oid4-vci-vp-well-known-service",
+      "path": "internal/gateway/rest/restGW.go",
+      "ref": "9d595cd5ceb25a48aee544efa1301a426a4caa32",
+      "blob": "83cf081503b0d8af9761545fafa2ac25f0977610",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-well-known-service/blob/9d595cd5ceb25a48aee544efa1301a426a4caa32/internal/gateway/rest/restGW.go"
+    },
+    {
+      "repo": "oid4-vci-vp-well-known-service",
+      "path": "internal/database/issuers/postgres/issuers.go",
+      "ref": "9d595cd5ceb25a48aee544efa1301a426a4caa32",
+      "blob": "8189a1bff3b20d517f277c11c7311c8775cbdfa1",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-vp-well-known-service/blob/9d595cd5ceb25a48aee544efa1301a426a4caa32/internal/database/issuers/postgres/issuers.go"
+    },
+    {
+      "repo": "cloud-event-provider",
+      "path": "reply.go",
+      "ref": "b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31",
+      "blob": "575fccfe07b61a085d96b6828a353aada818fe83",
+      "url": "https://github.com/eclipse-xfsc/cloud-event-provider/blob/b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31/reply.go"
+    },
+    {
+      "repo": "cloud-event-provider",
+      "path": "request.go",
+      "ref": "b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31",
+      "blob": "f7a5775596e70ab92ccdcd110e9364ad4269c77a",
+      "url": "https://github.com/eclipse-xfsc/cloud-event-provider/blob/b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31/request.go"
+    },
+    {
+      "repo": "cloud-event-provider",
+      "path": "cloudeventprovider.go",
+      "ref": "b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31",
+      "blob": "dc95fd9380e6f47a96b2b2bdd015686a81e31165",
+      "url": "https://github.com/eclipse-xfsc/cloud-event-provider/blob/b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31/cloudeventprovider.go"
+    },
+    {
+      "repo": "cloud-event-provider",
+      "path": "connection.go",
+      "ref": "b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31",
+      "blob": "932fce7c6fdbb3e1422677dd31fd8d115756420c",
+      "url": "https://github.com/eclipse-xfsc/cloud-event-provider/blob/b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31/connection.go"
+    },
+    {
+      "repo": "cloud-event-provider",
+      "path": "config.go",
+      "ref": "b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31",
+      "blob": "454080715d27890979f8cf71fb0300049bf79071",
+      "url": "https://github.com/eclipse-xfsc/cloud-event-provider/blob/b8fe09a1ebc7f373f7b7ad2f6d6ec2d538926c31/config.go"
+    },
+    {
+      "repo": "bdd-executor",
+      "path": "implementations/minimal-project/README.md",
+      "ref": "478909cdd735bbab8bb63ce955183713d6bb387b",
+      "blob": "84d1544d41180ff87e0f7c2f5edfb1766bfaa1ca",
+      "url": "https://github.com/eclipse-xfsc/bdd-executor/blob/478909cdd735bbab8bb63ce955183713d6bb387b/implementations/minimal-project/README.md"
+    },
+    {
+      "repo": "bdd-executor",
+      "path": "implementations/minimal-project/Makefile",
+      "ref": "478909cdd735bbab8bb63ce955183713d6bb387b",
+      "blob": "8ed19b2b7bc7f7a1a891f3c2f877ed67f36fbda7",
+      "url": "https://github.com/eclipse-xfsc/bdd-executor/blob/478909cdd735bbab8bb63ce955183713d6bb387b/implementations/minimal-project/Makefile"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "types/commonProviderClient.go",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "4ab7f09e4f1169e1475932d4658a493a51adbcf1",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/types/commonProviderClient.go"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "types/commonProvider.go",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "a81ea9831357ead327eb8bcd727abea0a0092689",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/types/commonProvider.go"
+    },
+    {
+      "repo": "crypto-provider-core",
+      "path": "cryptoProvider.go",
+      "ref": "f73410d8e0d64627112b25a3866c24ca16f7cc8f",
+      "blob": "7e5f5d1b54b3854a9e7ea1f8a3bb22a0d25452eb",
+      "url": "https://github.com/eclipse-xfsc/crypto-provider-core/blob/f73410d8e0d64627112b25a3866c24ca16f7cc8f/cryptoProvider.go"
+    },
+    {
+      "repo": "oid4-vci-credential-verification-service",
+      "path": "README.md",
+      "ref": "5630f2acfc71d5a3a57aa0da9692266e85d27d7c",
+      "blob": "99eafd07c5d73f7ce7212f09da509dee6ba6ef57",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-credential-verification-service/blob/5630f2acfc71d5a3a57aa0da9692266e85d27d7c/README.md"
+    },
+    {
+      "repo": "oid4-vci-credential-verification-service",
+      "path": "internal/api/externalRoutes.go",
+      "ref": "5630f2acfc71d5a3a57aa0da9692266e85d27d7c",
+      "blob": "8f623378217db02fbe523d4988c81d24ac892d88",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-credential-verification-service/blob/5630f2acfc71d5a3a57aa0da9692266e85d27d7c/internal/api/externalRoutes.go"
+    },
+    {
+      "repo": "oid4-vci-credential-verification-service",
+      "path": "pkg/messaging/types.go",
+      "ref": "5630f2acfc71d5a3a57aa0da9692266e85d27d7c",
+      "blob": "e436855377ef503a5bfb4e11a57c8197c86b8f7e",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-credential-verification-service/blob/5630f2acfc71d5a3a57aa0da9692266e85d27d7c/pkg/messaging/types.go"
+    },
+    {
+      "repo": "oid4-vci-credential-verification-service",
+      "path": "internal/services/proofHandling.go",
+      "ref": "5630f2acfc71d5a3a57aa0da9692266e85d27d7c",
+      "blob": "a22d84aaf899fd798aeb4e12fd38df571b34e9c6",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-credential-verification-service/blob/5630f2acfc71d5a3a57aa0da9692266e85d27d7c/internal/services/proofHandling.go"
+    },
+    {
+      "repo": "oid4-vci-credential-verification-service",
+      "path": "internal/services/presentationRequestor.go",
+      "ref": "5630f2acfc71d5a3a57aa0da9692266e85d27d7c",
+      "blob": "02d33a603f7ae56edb82ce5af23cc58da3b6fa04",
+      "url": "https://github.com/eclipse-xfsc/oid4-vci-credential-verification-service/blob/5630f2acfc71d5a3a57aa0da9692266e85d27d7c/internal/services/presentationRequestor.go"
+    }
+  ]
+}

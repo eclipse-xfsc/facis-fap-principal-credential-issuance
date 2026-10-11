@@ -1,14 +1,15 @@
 import crypto from 'node:crypto';
+import { createPciNativeAdapters } from './native.js';
 import { sr2Assert, sr2Fail, sr2Object, sr2Text, sr2Claims, sr2Hash } from './domain.js';
 
-// Internal ports, NOT XFSC wire schemas. Replace only from verified offline
-// upstream source and fixtures; never enable by an environment boolean.
-export function createSr2Adapters() {
-  const blocked=async()=>sr2Fail(503,'PCI-SR2-CONTRACT-BLOCKED','The exact OCM/NATS and participant protocol contracts are not supplied.');
-  return {capabilities:()=>({ready:false,code:'PCI-SR2-CONTRACT-BLOCKED',missing:['OCM request/reply schemas and library revision','Participant protobuf and Crypto Provider contract','OID4VCI profile fixtures']}),assertReady:blocked,publishMetadata:blocked,createOffer:blocked,authenticateInvocation:blocked,authenticateCallback:blocked,notifyParticipant:blocked,getParticipantData:blocked,allocateStatus:blocked,sign:blocked,verifySigned:blocked,revokeStatus:blocked,participantIdentity:blocked,signingContext:blocked};
+// An unconfigured adapter is fail-closed. Production uses the source-pinned
+// native adapter with explicit transport and trust dependencies.
+export function createSr2Adapters(options) {
+  if (options) return createPciNativeAdapters(options);
+  const blocked=async()=>sr2Fail(503,'PCI-SR2-CONTRACT-BLOCKED','The native adapter is not configured.');
+  return {capabilities:()=>({ready:false,code:'PCI-SR2-CONTRACT-BLOCKED',missing:['OCM service URLs and NATS transport','Participant trust material and token provider']}),assertReady:blocked,publishMetadata:blocked,createOffer:blocked,authenticateInvocation:blocked,authenticateCallback:blocked,notifyParticipant:blocked,getParticipantData:blocked,allocateStatus:blocked,sign:blocked,verifySigned:blocked,verifyStatus:blocked,revokeStatus:blocked,revocationStatus:blocked,participantIdentity:blocked,signingContext:blocked};
 }
-// The only exact message fragment in supplied knowledge: common.Request.
-// Does not imply support for OfferingURLReq or IssuanceModuleReq serialization.
+// Official XFSC common.Request fields; native.js adds the operation schema.
 export function sr2CommonRequest(tenantId,requestId,groupId) {
   sr2Text(tenantId,200);sr2Text(requestId,200);if(groupId!==undefined)sr2Text(groupId,200);
   return {tenant_id:tenantId,request_id:requestId,...(groupId?{group_id:groupId}:{})};
@@ -17,7 +18,10 @@ export function sr2VerifyJwt(token,{issuer,audience,subject,tenantId,scopes=[],k
   sr2Assert(typeof token==='string' && token.length<131072,'Invalid JWT size.');
   const parts=token.split('.');sr2Assert(parts.length===3 && parts.every(p=>/^[A-Za-z0-9_-]+$/.test(p)),'Invalid compact JWT.');let header,claims;
   try {header=JSON.parse(Buffer.from(parts[0],'base64url'));claims=JSON.parse(Buffer.from(parts[1],'base64url'));}catch{sr2Fail(400,'PCI-SR2-VALIDATION','Malformed JWT.');}
-  sr2Object(header,['alg','kid','typ']);sr2Assert(['RS256','PS256','ES256'].includes(header.alg) && typeof header.kid==='string','Unsupported JWT key or algorithm.');
+  sr2Object(header,['alg','kid','typ','x5t','x5t#S256']);sr2Assert(['RS256','PS256','ES256'].includes(header.alg) && typeof header.kid==='string','Unsupported JWT key or algorithm.');
+  // Entra includes certificate thumbprints. They are informational: resolve
+  // keys only from the configured issuer's trusted JWKS and the signed kid.
+  for(const name of ['x5t','x5t#S256'])if(Object.hasOwn(header,name))sr2Assert(typeof header[name]==='string' && /^[A-Za-z0-9_-]{1,128}$/.test(header[name]),'Invalid certificate thumbprint.');
   if(kid)sr2Assert(header.kid===kid,'Unexpected signing key.');
   const keys=sr2ListKeys(jwks).filter(k=>k.kid===header.kid);sr2Assert(keys.length===1,'A unique trusted key is required.');
   const jwk=keys[0];sr2Assert(!Object.hasOwn(jwk,'d') && (!jwk.use || jwk.use==='sig') && (!jwk.alg || jwk.alg===header.alg),'Invalid public signing key.');
@@ -30,7 +34,7 @@ export function sr2VerifyJwt(token,{issuer,audience,subject,tenantId,scopes=[],k
   sr2Assert(claims.iss===issuer && claims.sub===subject && (!tenantId || claims.tenant_id===tenantId),'JWT identity binding failed.');
   if(audience)sr2Assert(typeof claims.aud==='string'?claims.aud===audience:Array.isArray(claims.aud)&&claims.aud.includes(audience),'JWT audience mismatch.');
   sr2Assert(Number.isSafeInteger(claims.exp) && claims.exp>seconds && (!Object.hasOwn(claims,'nbf') || Number.isSafeInteger(claims.nbf)&&claims.nbf<=seconds) && (!Object.hasOwn(claims,'iat') || Number.isSafeInteger(claims.iat)&&claims.iat<=seconds),'JWT lifetime is invalid.');
-  const granted=typeof claims.scope==='string'?claims.scope.split(' '):[];sr2Assert(scopes.every(s=>granted.includes(s)),'JWT scope mismatch.');return claims;
+  const scope=claims.scope ?? claims.scp;const granted=typeof scope==='string'?scope.split(' '):[];sr2Assert(scopes.every(s=>granted.includes(s)),'JWT scope mismatch.');return claims;
 }
 function sr2ListKeys(jwks){sr2Assert(jwks && Array.isArray(jwks.keys) && jwks.keys.length<=20,'Invalid trusted JWKS.');return jwks.keys;}
 export function sr2VerifyCredential(token,configuration,context,jwks,now=Date.now()) {

@@ -1,0 +1,11 @@
+syntax = "proto3";
+package participant.v1;
+option go_package = "github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/reference/participant-data-repository/wirepb";
+// UTF-8 JSON; request contract: participant-request.schema.json.
+// Implementations enforce the contract and identity binding before dispatch.
+// The envelope is not a CloudEvent and is never persisted by PCI.
+message Envelope { bytes json = 1; }
+service Participant {
+  rpc Notify(Envelope) returns (Envelope);
+  rpc GetCredentialData(Envelope) returns (Envelope);
+}

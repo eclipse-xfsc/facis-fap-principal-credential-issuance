@@ -1,0 +1,17 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vc: <https://www.w3.org/2018/credentials#> .
+@prefix pci: <https://example.org/pci/> .
+@prefix schema: <https://schema.org/> .
+
+# Synthetic documentation vocabulary. This is not an ETSI EAA profile.
+pci:EmployeeCredentialShape a sh:NodeShape ;
+  sh:targetClass pci:EmployeeCredential ;
+  sh:property [ sh:path vc:issuer ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vc:credentialSubject ; sh:minCount 1 ; sh:maxCount 1 ; sh:node pci:EmployeeSubjectShape ] .
+
+pci:EmployeeSubjectShape a sh:NodeShape ;
+  sh:nodeKind sh:IRI ;
+  sh:property [ sh:path schema:name ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:minLength 1 ; sh:maxLength 2000 ] ;
+  sh:property [ sh:path pci:employeeId ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:minLength 1 ; sh:maxLength 2000 ] ;
+  sh:property [ sh:path pci:department ; sh:datatype xsd:string ; sh:maxCount 1 ; sh:maxLength 2000 ] .

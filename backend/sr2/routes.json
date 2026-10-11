@@ -6,7 +6,7 @@
     "functionFile": "issuer-admin.js",
     "includeK8s": false,
     "sr2": true,
-    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "info": "SR2 tenant-scoped issuer management. Native OCM adapters require explicit transport and trust configuration.",
     "routes": [
       [
         "issuer-admin-0",
@@ -140,6 +140,20 @@
         "get",
         "/api/v1/public/assets/:assetId",
         "public.asset"
+      ],
+      [
+        "key-create",
+        "Create TSA key",
+        "post",
+        "/api/v1/tenants/:tenantId/issuer-keys",
+        "issuer.key-create"
+      ],
+      [
+        "semantic-export",
+        "Export credential semantic template",
+        "get",
+        "/api/v1/tenants/:tenantId/credential-configurations/:configurationId/semantic-template",
+        "semantic.export"
       ]
     ]
   },
@@ -150,7 +164,7 @@
     "functionFile": "issuer-metadata.js",
     "includeK8s": false,
     "sr2": true,
-    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "info": "SR2 tenant-scoped issuer management. Native OCM adapters require explicit transport and trust configuration.",
     "routes": [
       [
         "issuer-metadata-0",
@@ -329,7 +343,7 @@
     "functionFile": "flow-management.js",
     "includeK8s": false,
     "sr2": true,
-    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "info": "SR2 tenant-scoped issuer management. Native OCM adapters require explicit transport and trust configuration.",
     "routes": [
       [
         "flow-management-0",
@@ -403,7 +417,7 @@
     "functionFile": "issuer-runtime.js",
     "includeK8s": false,
     "sr2": true,
-    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "info": "SR2 tenant-scoped issuer management. Native OCM adapters require explicit transport and trust configuration.",
     "routes": [
       [
         "issuer-runtime-0",
@@ -488,13 +502,97 @@
         "get",
         "/api/v1/internal/tenants/:tenantId/metadata/publication-status",
         "internal.publication-status"
+      ],
+      [
+        "native-issuer",
+        "Native issuer",
+        "get",
+        "/.well-known/openid-credential-issuer",
+        "native.issuer"
+      ],
+      [
+        "native-authorization",
+        "Native authorization",
+        "get",
+        "/.well-known/openid-configuration",
+        "native.authorization"
+      ],
+      [
+        "native-token",
+        "Native token",
+        "post",
+        "/api/auth/token",
+        "native.token"
+      ],
+      [
+        "native-nonce",
+        "Native nonce",
+        "post",
+        "/api/nonce",
+        "native.nonce"
+      ],
+      [
+        "native-credential",
+        "Native credential",
+        "post",
+        "/api/credential",
+        "native.credential"
+      ],
+      [
+        "native-did",
+        "Native did",
+        "get",
+        "/.well-known/did.json",
+        "native.did"
+      ],
+      [
+        "native-jwks",
+        "Native jwks",
+        "get",
+        "/.well-known/jwks.json",
+        "native.jwks"
+      ],
+      [
+        "native-status",
+        "Native status",
+        "get",
+        "/v1/tenants/:statusTenant/status/:listId",
+        "native.status"
+      ],
+      [
+        "presentation-start",
+        "POST /api/v1/tenants/:tenantId/presentation-requests",
+        "post",
+        "/api/v1/tenants/:tenantId/presentation-requests",
+        "presentation.start"
+      ],
+      [
+        "presentation-result",
+        "POST /api/v1/tenants/:tenantId/presentation-requests/:requestId/result",
+        "post",
+        "/api/v1/tenants/:tenantId/presentation-requests/:requestId/result",
+        "presentation.result"
+      ],
+      [
+        "presentation-respond",
+        "POST /api/v1/presentation-response",
+        "post",
+        "/api/v1/presentation-response",
+        "presentation.respond"
+      ],
+      [
+        "presentation-configurations",
+        "GET /api/v1/tenants/:tenantId/presentation-configurations",
+        "get",
+        "/api/v1/tenants/:tenantId/presentation-configurations",
+        "presentation.configurations"
       ]
     ],
     "injects": [
       [
         "issuer-maintenance",
         "Expire requests and reconcile metadata",
-        50,
+        3,
         60,
         "sr2.maintenance"
       ]
@@ -507,7 +605,7 @@
     "functionFile": "participant.js",
     "includeK8s": false,
     "sr2": true,
-    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "info": "SR2 tenant-scoped issuer management. Native OCM adapters require explicit transport and trust configuration.",
     "routes": [
       [
         "participant-0",
@@ -581,7 +679,7 @@
     "functionFile": "history-status.js",
     "includeK8s": false,
     "sr2": true,
-    "info": "SR2 tenant-scoped issuer management. External contracts fail closed until supplied.",
+    "info": "SR2 tenant-scoped issuer management. Native OCM adapters require explicit transport and trust configuration.",
     "routes": [
       [
         "history-status-0",
@@ -617,6 +715,37 @@
         "post",
         "/api/v1/provider/tenants/:tenantId/lifecycle",
         "provider.lifecycle"
+      ]
+    ]
+  },
+  {
+    "key": "tenant-identity",
+    "label": "M17_PCI-TenantIdentity",
+    "route": "tenant-identity",
+    "file": "M17_PCI-TenantIdentity_flow.json",
+    "functionFile": "tenant.js",
+    "includeK8s": true,
+    "sr2": false,
+    "info": "Tenant-admin OIDC provider configuration with exact tenant broker identity, optimistic concurrency and verified principal admission.",
+    "requirements": [
+      "FR-PCI-30",
+      "FR-PCI-45",
+      "FR-PCI-69"
+    ],
+    "routes": [
+      [
+        "identity-get",
+        "Read tenant identity",
+        "get",
+        "/api/v1/tenants/:tenantId/identity-provider",
+        "tenant.identity.get"
+      ],
+      [
+        "identity-put",
+        "Configure tenant identity",
+        "put",
+        "/api/v1/tenants/:tenantId/identity-provider",
+        "tenant.identity.put"
       ]
     ]
   }

@@ -1,0 +1,33 @@
+--- a/internal/database/issuers/postgres/issuers.go
++++ b/internal/database/issuers/postgres/issuers.go
+@@ -550,6 +550,8 @@
+ 	for rows.Next() {
+ 		var issuer issuers.Issuer
+ 		var csr issuers.CredentialSupportedRow
++		// LEFT JOIN returns NULL timestamps when the issuer has no configurations.
++		var firstSeen, lastSeen *time.Time
+ 
+ 		err := rows.Scan(
+ 			&issuer.TenantID,
+@@ -576,8 +578,8 @@
+ 			&csr.Vct,
+ 			&csr.Schema,
+ 			&csr.Subject,
+-			&csr.FirstSeen,
+-			&csr.LastSeen,
++			&firstSeen,
++			&lastSeen,
+ 		)
+ 		if err != nil {
+ 			s.log.Error(
+@@ -589,6 +591,10 @@
+ 		}
+ 
+ 		if csr.CredentialConfigurationID != nil {
++			if firstSeen == nil || lastSeen == nil {
++				return nil, fmt.Errorf("configuration timestamps missing")
++			}
++			csr.FirstSeen, csr.LastSeen = *firstSeen, *lastSeen
+ 			configuration := issuers.CredentialsSupported{
+ 				TenantID: issuer.TenantID,
+ 

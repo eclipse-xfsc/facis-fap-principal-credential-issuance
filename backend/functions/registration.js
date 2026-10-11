@@ -73,7 +73,7 @@ return (async () => {
       });
     } catch (error) {
       delivery = "failed";
-      node.warn("PCI-EMAIL-DELIVERY-FAILED");
+      node.warn(JSON.stringify({event:"pci.email.failed",code:"PCI-EMAIL-DELIVERY-FAILED"}));
     }
     const updated = await pool.query("UPDATE tenant_registrations SET email_delivery_status=$2, updated_at=now() WHERE registration_id=$1 RETURNING *", [registrationId, delivery]);
     row = updated.rows[0];
@@ -124,7 +124,7 @@ return (async () => {
     let delivery = "sent";
     try {
       await sendMail({ to: row.contact_email, subject: "Verify your FAP PCI tenant registration", text: `Verify the registration for ${row.organization_name}:\n${verificationUrl.toString()}` });
-    } catch (error) { delivery = "failed"; node.warn("PCI-EMAIL-DELIVERY-FAILED"); }
+    } catch (error) { delivery = "failed"; node.warn(JSON.stringify({event:"pci.email.failed",code:"PCI-EMAIL-DELIVERY-FAILED"})); }
     const finalRow = (await pool.query("UPDATE tenant_registrations SET email_delivery_status=$2,updated_at=now() WHERE registration_id=$1 RETURNING *", [registrationId, delivery])).rows[0];
     const registration = mapRegistration(finalRow);
     return emit(202, { registration }, { etag: `"${registration.version}"` }, "pci:registration-verification-resent");

@@ -3,7 +3,7 @@ import tls from 'node:tls';
 import net from 'node:net';
 import { sr2Assert, sr2Fail } from './domain.js';
 
-// For the eventual pinned gRPC adapter. readSecret must be an operator-approved,
+// The native gRPC adapter uses an operator-approved,
 // namespace-restricted reader; never a function selected by browser input.
 export async function sr2TlsMaterial(connector,tenant,readSecret,now=Date.now()) {
   const client=await readSecret(connector.tlsSecret.name),trust=await readSecret(connector.trustSecret.name);

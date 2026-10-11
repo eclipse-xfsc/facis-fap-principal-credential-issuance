@@ -32,7 +32,7 @@ function k8sRequest(method, path, options = {}) {
       ca: runtime.ca,
       rejectUnauthorized: true,
       headers: {
-        authorization: `Bearer ${runtime.token}`,
+        authorization: `Bearer ${fs.readFileSync("/var/run/secrets/kubernetes.io/serviceaccount/token", "utf8").trim()}`,
         accept: "application/json",
         ...(options.headers || {}),
         ...(body ? { "content-length": body.length } : {}),
@@ -204,7 +204,7 @@ async function applyYamlDocuments(text, options = {}) {
       && String(object.metadata && object.metadata.name || "").endsWith(".gateway.networking.k8s.io")) {
       const existing = await k8sGet("apiextensions.k8s.io/v1", "CustomResourceDefinition", object.metadata.name, "").catch(() => null);
       if (existing) {
-        node.warn(`Preserving existing shared Gateway API CRD ${object.metadata.name}`);
+        node.warn(JSON.stringify({event:"pci.infrastructure.preserved",kind:"CustomResourceDefinition",name:object.metadata.name}));
         continue;
       }
     }

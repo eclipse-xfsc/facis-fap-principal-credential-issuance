@@ -6,13 +6,16 @@ return (async () => {
   if (action === "auth.config") {
     const host = routedHost();
     if (!host) throw pciErrors.invalidTenantContext();
+    let identity=null;
     if (host !== cfg.mainHost) {
       const tenant = await pool.query("SELECT tenant_id,state FROM tenants WHERE primary_domain=$1", [host]);
       if (!tenant.rows[0] || !["provisioning", "active"].includes(tenant.rows[0].state)) throw pciErrors.notFound("No active tenant is assigned to this host.");
     }
+      identity=host===cfg.mainHost?null:await pciIdentityRead((await pool.query('SELECT tenant_id FROM tenants WHERE primary_domain=$1',[host])).rows[0].tenant_id);
     const issuer = `${cfg.keycloak.publicUrl}/realms/${encodeURIComponent(cfg.keycloak.realm)}`;
     return emit(200, {
       enabled: true,
+      identityProvider:identity?.state==='active'&&identity.mode==='oidc'?identity.alias:null,
       issuer,
       clientId: cfg.keycloak.uiClientId,
       redirectUri: uiUrl(host, cfg.orceBasePath),
@@ -58,7 +61,7 @@ return (async () => {
       nonce,
       clockTolerance: 10,
     });
-    const roles = roleClaim(claims);
+    let roles = roleClaim(claims),admission={};
     const tenantIdClaim = Array.isArray(claims.tenant_id) ? claims.tenant_id[0] : claims.tenant_id;
     const tenantSlugClaim = Array.isArray(claims.tenant_slug) ? claims.tenant_slug[0] : claims.tenant_slug;
     let routedTenant = null;
@@ -67,9 +70,10 @@ return (async () => {
       if (!result.rows[0]) throw pciErrors.invalidTenantContext();
       routedTenant = result.rows[0];
       if(!['provisioning','active'].includes(routedTenant.state))throw pciErrors.notFound();
-      if (!roles.includes("provider_admin") && String(tenantIdClaim || "") !== String(routedTenant.tenant_id)) throw pciErrors.invalidTenantContext();
+      admission=await pciIdentityAdmit(routedTenant,claims,tokenSet);roles=admission.roles;
+      if (!admission.broker && !roles.includes("provider_admin") && String(tenantIdClaim || "") !== String(routedTenant.tenant_id)) throw pciErrors.invalidTenantContext();
     }
-    if (host === cfg.mainHost && !roles.includes("provider_admin")) throw pciErrors.forbidden("Only provider administrators can sign in on the PCI provider host.");
+    if (host === cfg.mainHost && (claims.pci_identity_provider || !roles.includes("provider_admin"))) throw pciErrors.forbidden("Only provider administrators can sign in on the PCI provider host.");
     if (!roles.length) throw pciErrors.forbidden("No FAP PCI role is assigned to this Keycloak account.");
     const sessionToken = crypto.randomBytes(32).toString("base64url");
     const tokenHash = crypto.createHash("sha256").update(sessionToken).digest("hex");
@@ -88,6 +92,9 @@ return (async () => {
       `INSERT INTO audit_events(event_type,actor,tenant_id,safe_metadata) VALUES('auth.login',$1,$2,$3::jsonb)`,
       [`keycloak:${claims.sub}`, tenantId, JSON.stringify({ host, roles })],
     );
+    const access=jwt.decode(tokenSet.access_token);
+    const tokens=pciSessionTokens();if(tokens.size>=2000)tokens.delete(tokens.keys().next().value);
+    tokens.set(sessionId,{token:tokenSet.access_token,subject:claims.sub,identityVersion:admission.identityVersion,broker:admission.broker,external:admission.external,entitlements:admission.external?.entitlements || [...(claims.realm_access?.roles || []).map(v=>'role:'+v),...(Array.isArray(claims.groups)?claims.groups:[]).map(v=>'group:'+v)].filter(v=>v.length<=200).slice(0,100),expiresAt:Math.min(expiresAt.getTime(),Number(access?.exp || 0)*1000)});
     const cookie = `fap_pci_session=${encodeURIComponent(sessionToken)}; Path=${sessionCookiePath()}; HttpOnly; Secure; SameSite=Lax; Max-Age=${cfg.sessionTtlMinutes * 60}`;
     return emit(200, {
       session: { sessionId, subject: claims.sub, username: claims.preferred_username || claims.email, displayName, email: claims.email || null, roles, tenantId, tenantSlug, expiresAt: expiresAt.toISOString() },
@@ -103,7 +110,8 @@ return (async () => {
     const token = cookieValue("fap_pci_session") || bearerToken();
     if (token) {
       const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
-      await pool.query("UPDATE auth_sessions SET revoked_at=now() WHERE token_hash=$1", [tokenHash]);
+      const revoked=await pool.query("UPDATE auth_sessions SET revoked_at=now() WHERE token_hash=$1 RETURNING session_id", [tokenHash]);
+      for(const r of revoked.rows)pciSessionTokens().delete(r.session_id);
     }
     return emit(200, { loggedOut: true }, { "set-cookie": `fap_pci_session=; Path=${sessionCookiePath()}; HttpOnly; Secure; SameSite=Lax; Max-Age=0` }, "pci:auth-logout");
   }

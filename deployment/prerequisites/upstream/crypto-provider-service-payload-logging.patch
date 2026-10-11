@@ -1,0 +1,11 @@
+--- a/internal/service/signer/service.go
++++ b/internal/service/signer/service.go
+@@ -2325,7 +2325,7 @@
+ 		e, err := cloudeventprovider.NewEvent(event.Source(), messaging.SignerServiceErrorType, s.createNatsReply(reply))
+ 		return &e, err
+ 	}
+-	s.logger.Info(string(signed))
++	s.logger.Info("Token signed")
+ 
+ 	reply.Token = signed
+ 

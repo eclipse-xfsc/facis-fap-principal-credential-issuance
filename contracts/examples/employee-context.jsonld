@@ -1,0 +1,10 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+    "EmployeeCredential": "https://example.org/pci/EmployeeCredential",
+    "name": "https://schema.org/name",
+    "employeeId": "https://example.org/pci/employeeId",
+    "department": "https://example.org/pci/department"
+  }
+}

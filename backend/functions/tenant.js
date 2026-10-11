@@ -52,6 +52,18 @@ return (async () => {
     return emit(200, { tenant: mapTenant(row), session }, {}, "pci:tenant-profile");
   }
 
+  if(action==='tenant.identity.get'||action==='tenant.identity.put'){
+    const tenantId=String(params().tenantId||input.tenantId||'');
+    const {session,tenant}=await authorizeTenant(tenantId,['participant_tenant_admin']);
+    let item;
+    if(action==='tenant.identity.put'){
+      const h=requestHeaders();
+      if(h.origin!==publicOrigin(tenant.primary_domain)||!String(h['content-type']||'').startsWith('application/json'))throw pciErrors.forbidden('Use the tenant administration page.');
+      item=await pciIdentityConfigure(tenant,session,input,parseIfMatch());
+    }else item=await pciIdentityRead(tenantId);
+    return emit(200,{item,redirectUri:cfg.keycloak.publicUrl+'/realms/'+encodeURIComponent(cfg.keycloak.realm)+'/broker/'+encodeURIComponent(item.alias)+'/endpoint'},{'cache-control':'no-store'});
+  }
+
   if (action === "tenant.members.list") {
     const tenantId = String(params().tenantId || input.tenantId || "");
     await authorizeTenant(tenantId, ["provider_admin", "participant_tenant_admin"]);

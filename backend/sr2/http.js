@@ -1,5 +1,6 @@
 // ORCE transport wrapper. Uses _common.js helpers, inlined only in SR2 tabs.
 async function handleSr2(allowedActions) {
+  const started=Date.now();
   try {
     if(msg.pciTransport!=='http')throw new Sr2Error(400,'PCI-SR2-TRANSPORT','Use the authenticated HTTP API.');
     const action=String(msg.pciAction || '');if(!allowedActions.includes(action))throw new Sr2Error(404,'PCI-SR2-NOT-FOUND','Unknown operation.');
@@ -13,8 +14,7 @@ async function handleSr2(allowedActions) {
       if(!String(headers['content-type'] || '').toLowerCase().startsWith('application/json'))throw pciErrors.validation('Use application/json.');
     }
     const input=parseBody();if(Buffer.byteLength(JSON.stringify(input))>1500000)throw new Sr2Error(413,'PCI-SR2-SIZE','Request is too large.');
-    const pool=getPool(),store=createSr2Store(pool),adapters=createSr2Adapters();
-    const service=extendSr2Issuance(createSr2Service({store,adapters,pepper:cfg.verificationPepper,allowedHosts:envList('PCI_PARTICIPANT_ALLOWED_HOSTS',[]),issuerUrl:t=>publicUrl(t.primary_domain,'',cfg.orceBasePath).replace(/\/$/,''),assetUrl:(t,id)=>publicUrl(t.primary_domain,`/api/v1/public/assets/${id}`,cfg.orceBasePath)}));
+    const pool=getPool(),{service,adapters}=pciRuntime();
     const route=params();let tenantId=route.tenantId?sr2Uuid(route.tenantId):null,p;
     if(action.startsWith('internal.')){
       const remote=String(msg.req.socket?.remoteAddress || '').replace(/^::ffff:/,'');
@@ -48,14 +48,19 @@ async function handleSr2(allowedActions) {
       else if(group==='asset' && verb==='get'){const a=await service.asset(p,id);return emit(200,a.bytes,{'content-type':a.mediaType,'x-content-type-options':'nosniff','cache-control':'no-store'});}
       else {result=await service.resource(p,kind,verb,verb==='create'?null:id,input,match);if(verb==='create')status=201;}
     }else if(group==='assignment')result=await service.assignments(p,verb,route.assignmentId,input);
+    else if(action==='issuer.key-create'){await service.store.transaction(p.tenantId,tx=>service.authorize(tx,p,'admin'));sr2Object(input,['name','type']);result=await adapters.key(p.tenantId,input.name,input.type);}
     else if(action==='issuer.capabilities')result=await service.capabilities(p);
     else if(action==='publication.get' || action==='internal.publication-status')result=await service.publication(p);
     else if(action==='publication.publish' || action==='internal.metadata-publish')result=await service.publication(p,true);
+    else if(action==='presentation.configurations')result=await service.presentationConfigurations(p);
+    else if(action==='presentation.start'){result=await service.presentationStart(p,input);status=201;}
+    else if(action==='presentation.result'){sr2Object(input,['responseCode']);result=await service.presentationResult(p,route.requestId,input.responseCode);}
     else if(action==='issuance.eligible')result=await service.eligible(p);
     else if(action==='issuance.start' || action==='internal.offer-create'){sr2Object(input,['configurationId']);result=await service.start(p,input.configurationId,String(headers['idempotency-key'] || ''));status=201;}
     else if(action==='issuance.get' || action==='internal.offer-get')result=await service.request(p,route.requestId);
     else if(action==='issuance.advance')result=await service.advance(p,route.requestId,input);
-    else if(action==='issuance.offer')result=await service.offer(p,route.requestId);
+    else if(action==='issuance.offer'){await pciListen();result=await service.offer(p,route.requestId);}
+    else if(action==='semantic.export')result=await service.semanticTemplate(p,route.configurationId);
     else if(action==='history.list')result=await service.history(p,route.configurationId,query());
     else if(action==='history.revoke'){sr2Object(input,['requestId','confirmed']);result=await service.revoke(p,route.configurationId,input.requestId,input.confirmed);}
     else if(action==='history.unblock'){sr2Object(input,['subjectHash']);result=await service.unblock(p,route.configurationId,input.subjectHash);}
@@ -63,18 +68,19 @@ async function handleSr2(allowedActions) {
     else if(action==='internal.plugin-put')result=await service.resource(p,'settings',input.create?'create':'update',tenantId,{data:input.data},match);
     else if(action==='internal.plugin-delete')throw new Sr2Error(409,'PCI-SR2-RETIREMENT-BLOCKED','Upstream plugin retirement contract is required.');
     else throw pciErrors.notFound();
+    if(['issuance.offer','history.revoke','publication.publish'].includes(action))pciObserve(action.replace('.','_'),'ok',started);
     return emit(status,result,{'cache-control':'no-store',...(result?.item?.version?{etag:`"${result.item.version}"`}:{})});
-  }catch(error){if(error instanceof Sr2Error)return emitError(new PciError(error.status,error.code,'Issuer operation failed',error.message,error.status===503));return emitError(error);}
+  }catch(error){if(['issuance.offer','history.revoke','publication.publish'].includes(msg.pciAction))pciObserve(msg.pciAction.replace('.','_'),'error',started);if(sr2IsError(error))return emitError(new PciError(error.status,error.code,error.status<500?'Check the request':'Service operation failed',error.message,[503,504].includes(error.status)));return emitError(error);}
 }
 
 async function handleSr2Maintenance() {
   if(msg.pciTransport!=='internal' || msg.pciInternal!==true)return null;
   try {
-    const pool=getPool();const service=extendSr2Maintenance(createSr2Service({store:createSr2Store(pool),adapters:createSr2Adapters(),pepper:cfg.verificationPepper}));
+    pciRuntime().service.presentationPrune();await pciListen();const pool=getPool(),{service}=pciRuntime();
     let cursor='00000000-0000-0000-0000-000000000000',count=0;
     for(;;){const rows=(await pool.query("SELECT tenant_id FROM tenants WHERE tenant_id>$1 AND state<>'deleted' ORDER BY tenant_id LIMIT 50",[cursor])).rows;if(!rows.length)break;
       for(const t of rows){await service.maintenance(t.tenant_id);cursor=t.tenant_id;count++;}}
-    node.status({fill:'yellow',shape:'dot',text:`${count} tenant(s); contracts blocked`});
+    node.status({fill:'green',shape:'dot',text:`${count} tenant(s); native adapter connected`});
   }catch{node.status({fill:'red',shape:'ring',text:'PCI-SR2-MAINTENANCE-FAILED'});}
   return null;
 }

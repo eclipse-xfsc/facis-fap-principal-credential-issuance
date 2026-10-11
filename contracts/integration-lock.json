@@ -1,15 +1,38 @@
 {
-  "release": "0.4.0",
+  "release": "0.5.0-rc.12",
   "integrationReady": false,
-  "sourceArchiveSha256": "9c39014b04223f857a519952a0e94f39fb9f9f652eaca0094b5908a3cccad472",
-  "knowledgeArchiveSha256": "1737d2be3d64455cd3354d005807fffd216bc0469f2fe37d22db4c98335dd9f5",
-  "masterKnowledgeSha256": "76fed9df52ead3e96a2fc0b548946d6306149849ac89b4b176261dd4b3d1e23f",
+  "runtimeWired": true,
+  "baseline": "OCM ESB 12.3.9",
+  "ocmArchiveSha256": "b7407ebfe8d4fc7920f30eb89ac703a133a89ba9c96da609f0234e0a4c773391",
+  "sourceManifest": "source-manifest.json",
   "contracts": [
-    {"name": "common.Request", "status": "PARTIAL HISTORICAL EVIDENCE", "source": "Master knowledge section 14.4", "recordedLibraryCommit": "d1a5d2156e8d", "fixture": "common-request.schema.json"},
-    {"name": "OfferingURLReq/Rep and IssuanceModuleReq/Rep", "status": "BLOCKED", "missing": "Full source definitions, envelope, correlation algorithm, errors, selected version and success/failure fixtures"},
-    {"name": "Well-Known issuer/configuration publication", "status": "BLOCKED", "missing": "IssuerRegistration and credential registration schemas, revision/delete/acknowledgement behavior and ACLs"},
-    {"name": "Status and TSA/Signer/Crypto Provider", "status": "BLOCKED", "missing": "Allocate/revoke/sign/key APIs, tenant/key namespace semantics, status serialization and recovery contract"},
-    {"name": "Participant notification and data service", "status": "BLOCKED", "missing": "Approved protobuf/Goa design, oneof fields, gRPC metadata/proof binding and generated dependencies"},
-    {"name": "OID4VCI Draft 13 and 1.0", "status": "BLOCKED", "missing": "Selected OCM profile conformance fixtures and complete protocol serialization; local draft fields are not protocol certification"}
-  ]
+    {
+      "name": "OCM offer/callback, Well-Known, TSA and status",
+      "status": "CURRENT_ESB_CONTRACT_IMPLEMENTED_NATIVE_ACCEPTANCE_PENDING",
+      "implementation": "backend/sr2/native.js",
+      "validation": "Local request/response and issuance-status regressions; native images/builds and wallet acceptance NOT_RUN"
+    },
+    {
+      "name": "Participant v1",
+      "status": "IMPLEMENTED_BUILD_UNVERIFIED",
+      "definition": "participant.proto",
+      "implementation": "reference/participant-data-repository",
+      "validation": "Node HTTP/2 mTLS loopback PASS; Go generation/build NOT RUN locally"
+    },
+    {
+      "name": "OID4VCI Draft 13 / 1.0",
+      "status": "SERIALIZERS_IMPLEMENTED",
+      "validation": "profile fixtures PASS; native conformance NOT RUN"
+    },
+    {
+      "name": "OID4VP Draft 13 / 1.0",
+      "status": "JWT_PROFILES_IMPLEMENTED",
+      "implementation": "backend/sr2/presentation.js",
+      "validation": "Local holder crypto/profile/privacy tests; native software-wallet and PCM acceptance NOT_RUN",
+      "formats": [
+        "jwt_vc_json"
+      ]
+    }
+  ],
+  "compatibilityAssessment": "ocm-12.3.9-assessment.json"
 }
