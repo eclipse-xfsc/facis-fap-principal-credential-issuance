@@ -3,7 +3,7 @@ const read=p=>fs.readFileSync(p,'utf8');
 test('SR2 tabs, typed contracts, version and migration stay embedded in canonical release',()=>{
  const flow=JSON.parse(read('dist/fap-pci-flow.json')),api=JSON.parse(read('docs/api/openapi.json'));
  for(const label of ['M8_PCI-IssuerAdministration','M9_PCI-IssuerMetadata','M10_PCI-IssuanceFlowManagement','M11_PCI-IssuerRuntime','M12_PCI-ParticipantIntegration','M13_PCI-HistoryStatus'])assert.ok(flow.some(n=>n.type==='tab'&&n.label===label),label);
- assert.equal(api.info.version,'0.4.1');assert.equal(read('VERSION').trim(),'0.4.1');assert.equal(JSON.parse(read('package-lock.json')).packages[''].version,'0.4.1');
+ const version=read('VERSION').trim();assert.match(version,/^0\.5\.0-rc\.\d+$/);assert.equal(api.info.version,version);assert.equal(JSON.parse(read('package-lock.json')).packages[''].version,version);
  for(const type of ['Sr2Configuration','Sr2Flow','Sr2Connector','Sr2Metadata','Sr2Assignment','Sr2Settings','Sr2Asset'])assert.equal(api.components.schemas[type].additionalProperties,false);
  for(const path of ['/credential-configurations','/flows','/issuer-metadata','/participant-connectors','/administrators','/issuance-requests'])assert.ok(api.paths['/api/v1/tenants/{tenantId}'+path]);
  const g0=read('automation/stage1/ground-zero.sh');assert.ok(g0.includes('-- BEGIN SR2 SCHEMA\n'+read('backend/sr2/schema.sql')+'-- END SR2 SCHEMA'));assert.equal(g0,read('dist/ground-zero.sh'));

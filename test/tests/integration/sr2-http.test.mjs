@@ -30,3 +30,17 @@ test('HTTP history filters by verified credential ID and exposes current state w
  const filtered=await http(path+'?credentialId='+encodeURIComponent(row.credentialId));assert.ok(filtered.body.items.length);
  assert.ok(!JSON.stringify(filtered.body).includes(f.privateClaim));
 });
+
+test('validation errors survive distinct Node-RED VM constructors',async()=>{
+ const vm=await import('node:vm'),fs=await import('node:fs');
+ const domain=fs.readFileSync('backend/sr2/domain.js','utf8').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'');
+ const foreign=vm.runInNewContext(domain+'\nnew Sr2Error(400,"PCI-CONFIG-PREREQUISITES","Activate the participant connector first.")');
+ const f=fixture();f.api.resource=async()=>{throw foreign;};
+ const response=await httpHarness(f)(base+'/credential-configurations/11111111-1111-4111-8111-111111111111/validate',{method:'POST'});
+ assert.equal(response.status,400);assert.equal(response.body.code,'PCI-CONFIG-PREREQUISITES');assert.match(response.body.detail,/participant connector/);
+});
+test('configuration validation names the missing prerequisites instead of throwing a server error',async()=>{
+ const f=fixture(),http=httpHarness(f),created=await http(base+'/credential-configurations',{method:'POST',body:{data:configuration()}});
+ const result=await http(base+'/credential-configurations/'+created.body.item.id+'/validate',{method:'POST'});
+ assert.equal(result.status,400);assert.equal(result.body.code,'PCI-CONFIG-PREREQUISITES');assert.match(result.body.detail,/participant connector/);assert.match(result.body.detail,/issuance journey/);assert.match(result.body.detail,/issuer metadata/);
+});

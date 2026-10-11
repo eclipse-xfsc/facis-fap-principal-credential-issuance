@@ -14,7 +14,7 @@ test("repository keeps authored source separate from the three-part release", as
 
 test("legacy and generated source trees are absent from version control", async () => {
   const entries = await readdir(root);
-  for (const name of ["apps", "services", "deployment", "public"]) assert.equal(entries.includes(name), false);
+  for (const name of ["apps", "services", "public"]) assert.equal(entries.includes(name), false);
   const backendEntries = await readdir(path.join(root, "backend"));
   assert.equal(backendEntries.includes("src"), false);
   assert.equal(backendEntries.includes("test"), false);
@@ -46,7 +46,7 @@ test("tenant subdomain format and trusted header enforcement are present", async
 test("Envoy Gateway dependency is immutable and digest-verified", async () => {
   const groundZero = await read("automation/stage1/ground-zero.sh");
   assert.match(groundZero, /releases\/download\/\$\{ENVOY_VERSION\}\/install\.yaml/);
-  assert.match(groundZero, /72b3971364f172eb0b9636c7142cc84ff695467bc065897958bde85a3c06cfd5/);
+  assert.match(groundZero, /0412a72907e57ff9b73c56a7bf6df5190bf0f6e4f8bb4bba34e38630bbab5778/);
   assert.match(groundZero, /Envoy manifest digest mismatch/i);
 });
 

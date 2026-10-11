@@ -1,0 +1,77 @@
+{
+  "credential_issuer": "https://alpha-pci.example.com/pci-orce",
+  "authorization_servers": [
+    "https://alpha-pci.example.com/pci-orce"
+  ],
+  "credential_endpoint": "https://alpha-pci.example.com/pci-orce/api/credential",
+  "nonce_endpoint": "https://alpha-pci.example.com/pci-orce/api/nonce",
+  "display": [
+    {
+      "name": "Alpha",
+      "locale": "en"
+    }
+  ],
+  "credential_configurations_supported": {
+    "alpha_employee_jwt": {
+      "format": "jwt_vc_json",
+      "scope": "alpha_employee_jwt",
+      "cryptographic_binding_methods_supported": [
+        "jwk"
+      ],
+      "credential_signing_alg_values_supported": [
+        "ES256",
+        "PS256",
+        "RS256"
+      ],
+      "credential_definition": {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1"
+        ],
+        "type": [
+          "VerifiableCredential",
+          "EmployeeCredential"
+        ]
+      },
+      "proof_types_supported": {
+        "jwt": {
+          "proof_signing_alg_values_supported": [
+            "ES256",
+            "PS256",
+            "RS256"
+          ]
+        }
+      },
+      "credential_metadata": {
+        "claims": [
+          {
+            "path": [
+              "credentialSubject",
+              "name"
+            ],
+            "mandatory": true
+          }
+        ],
+        "display": [
+          {
+            "name": "Alpha Employee Credential",
+            "locale": "en",
+            "description": "Synthetic employee credential for functional testing."
+          }
+        ]
+      },
+      "schema": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "topic": "fap.pci.11111111-1111-4111-8111-111111111111.22222222-2222-4222-8222-222222222222"
+    }
+  }
+}

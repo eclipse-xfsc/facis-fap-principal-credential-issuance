@@ -13,6 +13,13 @@ test('participant JWT validation checks real signature, issuer, audience, subjec
  for(const header of [{jku:'https://attacker.example.com/key'},{alg:'none'},{crit:['unknown']}]){const bad=token({},header);assert.throws(()=>sr2VerifyJwt(bad.token,identity,bad.jwks,clock));}
 });
 test('common.Request fragment preserves only evidenced field names; it is not an offering contract',()=>{assert.deepEqual(sr2CommonRequest('tenant','request'),{tenant_id:'tenant',request_id:'request'});assert.deepEqual(sr2CommonRequest('tenant','request','group'),{tenant_id:'tenant',request_id:'request',group_id:'group'});});
+test('Entra scope and informational thumbprints preserve trusted-key verification',()=>{
+ const good=token({scope:undefined,scp:'openid credential:issue'},{x5t:'issuer-thumbprint','x5t#S256':'issuer-sha256-thumbprint'});
+ assert.equal(sr2VerifyJwt(good.token,identity,good.jwks,clock).sub,'principal');
+ assert.throws(()=>sr2VerifyJwt(good.token,identity,token().jwks,clock));
+ for(const patch of [{scope:undefined,scp:'openid'},{scope:'openid',scp:'credential:issue'}]){const bad=token(patch);assert.throws(()=>sr2VerifyJwt(bad.token,identity,bad.jwks,clock));}
+ for(const header of [{x5t:[]},{x5t:'a'.repeat(129)},{x5u:'https://attacker.example.com/cert'},{jwk:good.jwks.keys[0]}]){const bad=token({},header);assert.throws(()=>sr2VerifyJwt(bad.token,identity,bad.jwks,clock));}
+});
 test('participant DNS pinning rejects metadata, loopback and rebinding answers',async()=>{
  for(const address of ['127.0.0.1','169.254.169.254','::1','::ffff:127.0.0.1','10.0.0.1','fe80::1'])await assert.rejects(()=>sr2ResolvedParticipant(connector(),async()=>[{address,family:address.includes(':')?6:4}]));
  const ok=await sr2ResolvedParticipant(connector(),async()=>[{address:'10.0.0.1',family:4}],['10.0.0.1']);assert.equal(ok.address,'10.0.0.1');assert.equal(ok.servername,'participant.example.com');

@@ -18,7 +18,7 @@ test('both Vue templates compile offline using the pinned runtime',()=>{
  const main=fs.readFileSync('src/main.js','utf8').replace(/^import.*;\s*$/gm,'').replace('createApp(App).mount("#app");','globalThis.rootComponent=App;');vm.runInContext(main,ctx);assert.equal(typeof ctx.Vue.compile(ctx.rootComponent.template),'function');
 });
 test('issuer component executes create/edit/preview and grant/revoke handlers against the real HTTP wrapper',async()=>{
- const {ctx,messages}=vueContext(),f=fixture(),http=httpHarness(f);ctx.request=async(path,options)=>{const r=await http(path,options);if(r.status>=400)throw new Error(r.body.detail);return r.body;};ctx.api={tenantMembers:async()=>({items:[{subject:'issuer',username:'Issuer',enabled:true},{subject:'principal',username:'Principal',enabled:true}]})};
+ const {ctx,messages}=vueContext(),f=fixture(),http=httpHarness(f);ctx.request=async(path,options)=>{if(path.endsWith('/identity-provider'))return {item:{version:1,state:'active',mode:'keycloak',displayName:'Account',issuer:'',clientId:'',audience:'',scopes:'openid profile email'},redirectUri:'https://identity.example.com/broker'};const r=await http(path,options);if(r.status>=400)throw new Error(r.body.detail);return r.body;};ctx.api={tenantMembers:async()=>({items:[{subject:'issuer',username:'Issuer',enabled:true},{subject:'principal',username:'Principal',enabled:true}]})};
  const make=(type,text='')=>({type,tagName:type.toUpperCase(),text,children:[],props:{},parent:null,value:'',selected:false,multiple:false,
   addEventListener(){},removeEventListener(){},dispatchEvent(){},setAttribute(k,v){this.props[k]=v;},removeAttribute(k){delete this.props[k];},get options(){return this.children.filter(c=>c.type==='option');}});
  const host={createElement:tag=>make(tag),createText:t=>make('text',t),createComment:t=>make('comment',t),setText:(n,t)=>n.text=t,setElementText:(n,t)=>{n.text=t;n.children=[];},parentNode:n=>n.parent,nextSibling:n=>{const a=n.parent?.children || [];return a[a.indexOf(n)+1] || null;},patchProp:(n,k,prev,next)=>{n.props[k]=next;if(k==='value'){n.value=next;n._value=next;}if(k==='multiple')n.multiple=next!==null;},insert(n,p,anchor){if(n.parent){const old=n.parent.children;old.splice(old.indexOf(n),1);}n.parent=p;const index=anchor?p.children.indexOf(anchor):-1;p.children.splice(index<0?p.children.length:index,0,n);},remove(n){if(n.parent)n.parent.children.splice(n.parent.children.indexOf(n),1);},insertStaticContent(content,p,anchor){const n=make('static',content);this.insert(n,p,anchor);return [n,n];}};
@@ -31,9 +31,14 @@ test('issuer component executes create/edit/preview and grant/revoke handlers ag
  const prepared=await f.prepared('UiPublished');await ui.refresh();ui.tab='request';await ui.start(prepared.config.id);ui.consent=true;await ui.next();await ui.prepareOffer();assert.ok(ui.offer?.offerUrl,ui.error);assert.ok(ui.qr?.path);
  // Exercise the revised navigation, filters, connector scopes and status actions.
  ui.navigate('configurations');ui.query='UiPublished';assert.equal(ui.filteredConfigs.length,1);ui.configState='draft';assert.equal(ui.filteredConfigs.length,0);ui.configState='all';ui.query='';
- ui.navigate('connectors');ui.editConnector(ui.connectors.find(c=>c.id===prepared.connector.id));ui.connectorForm.configurationIds=[prepared.config.id];await ui.saveConnector();assert.equal(ui.error,'');ui.newConnector();assert.equal(ui.connectorForm.configurationIds.length,0);
+ ui.configForm=null;ui.navigate('connectors');await ctx.Vue.nextTick();ui.editConnector(ui.connectors.find(c=>c.id===prepared.connector.id));ui.connectorForm.configurationIds=[prepared.config.id];await ui.saveConnector();assert.equal(ui.error,'');ui.newConnector();assert.equal(ui.connectorForm.configurationIds.length,0);
  const completedId=await f.offered(prepared.config);await f.api.complete(f.principal('principal'),completedId,'ephemeral',null);
  ui.navigate('history');ui.historyConfig=prepared.config.id;await ui.loadHistory();const issued=ui.history.find(e=>e.type==='issued');assert.ok(issued.credentialId);ui.search.credentialId=issued.credentialId;await ui.loadHistory();await ui.revoke(issued.requestId);assert.ok(ui.history.every(e=>e.currentState==='revoked'));
+ // Errors remain visible through navigation and successful refresh until dismissed.
+ ui.newConfig();ui.configForm.identifier='';await ui.saveConfig();assert.ok(ui.error);const visibleError=ui.error;
+ ui.navigate('settings');await ui.refresh();assert.equal(ui.error,visibleError);
+ const nodes=(n)=>[n,...n.children.flatMap(nodes)];await ctx.Vue.nextTick();
+ const dismiss=nodes(root).find(n=>n.type==='button' && n.text==='Dismiss');assert.ok(dismiss);dismiss.props.onClick();await ctx.Vue.nextTick();assert.equal(ui.error,'');
  for(const section of ui.sections){ui.navigate(section.id);await ctx.Vue.nextTick();}
  await ctx.Vue.nextTick();assert.equal(messages.length,0,messages.join('\n'));app.unmount();
 });

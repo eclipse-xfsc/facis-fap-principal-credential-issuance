@@ -1,0 +1,662 @@
+{
+  "mainUrl": "https://pci.example.com/pci-orce",
+  "alphaUrl": "https://alpha-pci.example.com/pci-orce",
+  "betaUrl": "https://beta-pci.example.com/pci-orce",
+  "alphaTenantId": "11111111-1111-4111-8111-111111111111",
+  "betaTenantId": "22222222-2222-4222-8222-222222222222",
+  "namespace": "pci-acceptance",
+  "deployment": "xfsc-orce",
+  "g0ArgsFile": "/private/g0-args.json",
+  "sessions": {
+    "alphaAdmin": {
+      "url": "https://alpha-pci.example.com/pci-orce",
+      "stateFile": "/private/alpha-admin.json"
+    },
+    "alphaPrincipal": {
+      "url": "https://alpha-pci.example.com/pci-orce",
+      "stateFile": "/private/alpha-principal.json"
+    },
+    "provider": {
+      "url": "https://pci.example.com/pci-orce",
+      "stateFile": "/private/provider.json"
+    },
+    "betaAdmin": {
+      "url": "https://beta-pci.example.com/pci-orce",
+      "stateFile": "/private/beta-admin.json"
+    },
+    "betaPrincipal": {
+      "url": "https://beta-pci.example.com/pci-orce",
+      "stateFile": "/private/beta-principal.json"
+    }
+  },
+  "issuerKey": "issuer",
+  "offerConfigurationName": "Employee credential",
+  "journeyAnswers": {},
+  "mailpitUrl": "https://mailpit-pci.example.com",
+  "lifecycleConfigFile": "/private/pci-lifecycle.json",
+  "nativeCases": {
+    "draft13-internal": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "33333333-3333-4333-8333-333333333333",
+      "profile": "oid4vci-draft13",
+      "signingMode": "internal-signing",
+      "answers": {}
+    },
+    "draft13-participant": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "44444444-4444-4444-8444-444444444444",
+      "profile": "oid4vci-draft13",
+      "signingMode": "participant-signed",
+      "answers": {}
+    },
+    "final-internal": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "55555555-5555-4555-8555-555555555555",
+      "profile": "oid4vci-1.0",
+      "signingMode": "internal-signing",
+      "answers": {}
+    },
+    "final-participant": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "66666666-6666-4666-8666-666666666666",
+      "profile": "oid4vci-1.0",
+      "signingMode": "participant-signed",
+      "answers": {}
+    },
+    "draft13-sd-internal": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "REPLACE_WITH_SEPARATE_DRAFT13_SD_INTERNAL_UUID",
+      "profile": "oid4vci-draft13",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "vc+sd-jwt"
+    },
+    "draft13-sd-participant": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "REPLACE_WITH_SEPARATE_DRAFT13_SD_PARTICIPANT_UUID",
+      "profile": "oid4vci-draft13",
+      "signingMode": "participant-signed",
+      "answers": {},
+      "format": "vc+sd-jwt"
+    },
+    "draft13-ldp-internal": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "REPLACE_WITH_SEPARATE_DRAFT13_LDP_INTERNAL_UUID",
+      "profile": "oid4vci-draft13",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "ldp_vc",
+      "linkedDataVerifier": {
+        "url": "https://approved-tsa.example.com",
+        "namespace": "ocm-wstack",
+        "caFile": "/private/tsa-ca.pem",
+        "certFile": "/private/tsa-client.pem",
+        "keyFile": "/private/tsa-client.key"
+      }
+    },
+    "draft13-ldp-participant": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "REPLACE_WITH_SEPARATE_DRAFT13_LDP_PARTICIPANT_UUID",
+      "profile": "oid4vci-draft13",
+      "signingMode": "participant-signed",
+      "answers": {},
+      "format": "ldp_vc",
+      "linkedDataVerifier": {
+        "url": "https://approved-tsa.example.com",
+        "namespace": "ocm-wstack",
+        "caFile": "/private/tsa-ca.pem",
+        "certFile": "/private/tsa-client.pem",
+        "keyFile": "/private/tsa-client.key"
+      }
+    },
+    "final-sd-internal": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "REPLACE_WITH_SEPARATE_FINAL_SD_INTERNAL_UUID",
+      "profile": "oid4vci-1.0",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "dc+sd-jwt"
+    },
+    "final-sd-participant": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "REPLACE_WITH_SEPARATE_FINAL_SD_PARTICIPANT_UUID",
+      "profile": "oid4vci-1.0",
+      "signingMode": "participant-signed",
+      "answers": {},
+      "format": "dc+sd-jwt"
+    },
+    "final-ldp-internal": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "REPLACE_WITH_SEPARATE_FINAL_LDP_INTERNAL_UUID",
+      "profile": "oid4vci-1.0",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "ldp_vc",
+      "linkedDataVerifier": {
+        "url": "https://approved-tsa.example.com",
+        "namespace": "ocm-wstack",
+        "caFile": "/private/tsa-ca.pem",
+        "certFile": "/private/tsa-client.pem",
+        "keyFile": "/private/tsa-client.key"
+      }
+    },
+    "final-ldp-participant": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "REPLACE_WITH_SEPARATE_FINAL_LDP_PARTICIPANT_UUID",
+      "profile": "oid4vci-1.0",
+      "signingMode": "participant-signed",
+      "answers": {},
+      "format": "ldp_vc",
+      "linkedDataVerifier": {
+        "url": "https://approved-tsa.example.com",
+        "namespace": "ocm-wstack",
+        "caFile": "/private/tsa-ca.pem",
+        "certFile": "/private/tsa-client.pem",
+        "keyFile": "/private/tsa-client.key"
+      }
+    },
+    "pcm-alpha-first": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "33333333-3333-4333-8333-333333333333",
+      "profile": "oid4vci-draft13",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "jwt_vc_json",
+      "pcm": {
+        "appiumUrl": "http://127.0.0.1:4723",
+        "dedicatedSyntheticDevice": true,
+        "package": "REPLACE_WITH_PCM_PACKAGE",
+        "capabilities": {
+          "platformName": "Android",
+          "appium:automationName": "UiAutomator2",
+          "appium:udid": "REPLACE_WITH_DEDICATED_DEVICE"
+        },
+        "importSteps": [
+          {
+            "action": "click",
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PCM_ACCEPT"
+            }
+          }
+        ],
+        "assertions": {
+          "principal": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PRINCIPAL"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_PRINCIPAL"
+          },
+          "issuer": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_ISSUER"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_ISSUER"
+          },
+          "credentialName": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_CREDENTIALNAME"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_CREDENTIALNAME"
+          },
+          "branding": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_BRANDING"
+            }
+          }
+        }
+      }
+    },
+    "pcm-alpha-second": {
+      "session": "alphaSecondPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "33333333-3333-4333-8333-333333333333",
+      "profile": "oid4vci-draft13",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "jwt_vc_json",
+      "pcm": {
+        "appiumUrl": "http://127.0.0.1:4723",
+        "dedicatedSyntheticDevice": true,
+        "package": "REPLACE_WITH_PCM_PACKAGE",
+        "capabilities": {
+          "platformName": "Android",
+          "appium:automationName": "UiAutomator2",
+          "appium:udid": "REPLACE_WITH_DEDICATED_DEVICE"
+        },
+        "importSteps": [
+          {
+            "action": "click",
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PCM_ACCEPT"
+            }
+          }
+        ],
+        "assertions": {
+          "principal": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PRINCIPAL"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_PRINCIPAL"
+          },
+          "issuer": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_ISSUER"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_ISSUER"
+          },
+          "credentialName": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_CREDENTIALNAME"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_CREDENTIALNAME"
+          },
+          "branding": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_BRANDING"
+            }
+          }
+        }
+      }
+    },
+    "pcm-beta-first": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "55555555-5555-4555-8555-555555555555",
+      "profile": "oid4vci-1.0",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "jwt_vc_json",
+      "pcm": {
+        "appiumUrl": "http://127.0.0.1:4723",
+        "dedicatedSyntheticDevice": true,
+        "package": "REPLACE_WITH_PCM_PACKAGE",
+        "capabilities": {
+          "platformName": "Android",
+          "appium:automationName": "UiAutomator2",
+          "appium:udid": "REPLACE_WITH_DEDICATED_DEVICE"
+        },
+        "importSteps": [
+          {
+            "action": "click",
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PCM_ACCEPT"
+            }
+          }
+        ],
+        "assertions": {
+          "principal": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PRINCIPAL"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_PRINCIPAL"
+          },
+          "issuer": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_ISSUER"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_ISSUER"
+          },
+          "credentialName": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_CREDENTIALNAME"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_CREDENTIALNAME"
+          },
+          "branding": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_BRANDING"
+            }
+          }
+        }
+      }
+    },
+    "pcm-beta-second": {
+      "session": "betaSecondPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "55555555-5555-4555-8555-555555555555",
+      "profile": "oid4vci-1.0",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "jwt_vc_json",
+      "pcm": {
+        "appiumUrl": "http://127.0.0.1:4723",
+        "dedicatedSyntheticDevice": true,
+        "package": "REPLACE_WITH_PCM_PACKAGE",
+        "capabilities": {
+          "platformName": "Android",
+          "appium:automationName": "UiAutomator2",
+          "appium:udid": "REPLACE_WITH_DEDICATED_DEVICE"
+        },
+        "importSteps": [
+          {
+            "action": "click",
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PCM_ACCEPT"
+            }
+          }
+        ],
+        "assertions": {
+          "principal": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PRINCIPAL"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_PRINCIPAL"
+          },
+          "issuer": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_ISSUER"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_ISSUER"
+          },
+          "credentialName": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_CREDENTIALNAME"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_CREDENTIALNAME"
+          },
+          "branding": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_BRANDING"
+            }
+          }
+        }
+      }
+    },
+    "archive-published": {
+      "session": "betaPrincipal",
+      "adminSession": "betaAdmin",
+      "tenantId": "22222222-2222-4222-8222-222222222222",
+      "configurationId": "REPLACE_WITH_DISPOSABLE_PUBLISHED_CONFIGURATION_UUID",
+      "profile": "oid4vci-1.0",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "jwt_vc_json"
+    },
+    "pcm-modification": {
+      "session": "alphaPrincipal",
+      "adminSession": "alphaAdmin",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "configurationId": "33333333-3333-4333-8333-333333333333",
+      "profile": "oid4vci-draft13",
+      "signingMode": "internal-signing",
+      "answers": {},
+      "format": "jwt_vc_json",
+      "pcm": {
+        "appiumUrl": "http://127.0.0.1:4723",
+        "dedicatedSyntheticDevice": true,
+        "package": "REPLACE_WITH_PCM_PACKAGE",
+        "capabilities": {
+          "platformName": "Android",
+          "appium:automationName": "UiAutomator2",
+          "appium:udid": "REPLACE_WITH_DEDICATED_DEVICE"
+        },
+        "importSteps": [
+          {
+            "action": "click",
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PCM_ACCEPT"
+            }
+          }
+        ],
+        "assertions": {
+          "principal": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_PRINCIPAL"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_PRINCIPAL"
+          },
+          "issuer": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_ISSUER"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_ISSUER"
+          },
+          "credentialName": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_CREDENTIALNAME"
+            },
+            "text": "REPLACE_WITH_EXPECTED_SYNTHETIC_CREDENTIALNAME"
+          },
+          "branding": {
+            "selector": {
+              "using": "accessibility id",
+              "value": "REPLACE_WITH_BRANDING"
+            }
+          }
+        },
+        "brandingReferenceFile": "/private/expected-modified-logo-crop.png"
+      },
+      "modifiedName": "Changed synthetic employee",
+      "modifiedDescription": "Changed synthetic acceptance description",
+      "logoFile": "/private/synthetic-logo.png"
+    }
+  },
+  "freshLogins": {
+    "keycloak": {
+      "url": "https://alpha-pci.example.com/pci-orce",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "username": "synthetic-keycloak",
+      "expectedRoles": [
+        "principal"
+      ],
+      "configurationId": "REPLACE_WITH_PUBLISHED_CONFIGURATION_UUID",
+      "allowedIdentityHosts": [
+        "identity.example.com",
+        "login.microsoftonline.com"
+      ],
+      "steps": [
+        {
+          "action": "fill",
+          "selector": "#username",
+          "valueFile": "/private/keycloak-username.txt"
+        },
+        {
+          "action": "fill",
+          "selector": "#password",
+          "valueFile": "/private/keycloak-password.txt"
+        },
+        {
+          "action": "click",
+          "selector": "#kc-login"
+        }
+      ]
+    },
+    "entra": {
+      "url": "https://alpha-pci.example.com/pci-orce",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "username": "synthetic-entra",
+      "expectedRoles": [
+        "principal"
+      ],
+      "configurationId": "REPLACE_WITH_PUBLISHED_CONFIGURATION_UUID",
+      "allowedIdentityHosts": [
+        "identity.example.com",
+        "login.microsoftonline.com"
+      ],
+      "steps": [
+        {
+          "action": "fill",
+          "selector": "#username",
+          "valueFile": "/private/entra-username.txt"
+        },
+        {
+          "action": "fill",
+          "selector": "#password",
+          "valueFile": "/private/entra-password.txt"
+        },
+        {
+          "action": "click",
+          "selector": "#kc-login"
+        }
+      ]
+    },
+    "firstLogin": {
+      "url": "https://alpha-pci.example.com/pci-orce",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "username": "synthetic-firstLogin",
+      "expectedRoles": [
+        "principal"
+      ],
+      "configurationId": "REPLACE_WITH_PUBLISHED_CONFIGURATION_UUID",
+      "allowedIdentityHosts": [
+        "identity.example.com",
+        "login.microsoftonline.com"
+      ],
+      "steps": [
+        {
+          "action": "fill",
+          "selector": "#username",
+          "valueFile": "/private/firstLogin-username.txt"
+        },
+        {
+          "action": "fill",
+          "selector": "#password",
+          "valueFile": "/private/firstLogin-password.txt"
+        },
+        {
+          "action": "click",
+          "selector": "#kc-login"
+        },
+        {
+          "action": "fill",
+          "selector": "#password-new",
+          "valueFile": "/private/firstLogin-new-password.txt",
+          "requirementAction": "passwordChange"
+        },
+        {
+          "action": "fill",
+          "selector": "#password-confirm",
+          "valueFile": "/private/firstLogin-new-password.txt"
+        },
+        {
+          "action": "click",
+          "selector": "#kc-form-buttons input[type=submit]"
+        },
+        {
+          "action": "totp",
+          "selector": "#totp",
+          "secretSelector": "#kc-totp-secret-key",
+          "requirementAction": "mfaEnrollment"
+        },
+        {
+          "action": "click",
+          "selector": "#saveTOTPBtn"
+        }
+      ],
+      "keycloakAdmin": {
+        "url": "https://identity.example.com",
+        "realm": "pci",
+        "userId": "REPLACE_WITH_FIRST_LOGIN_SUBJECT",
+        "tokenFile": "/private/keycloak-readonly-admin-token.txt"
+      }
+    },
+    "passkey": {
+      "url": "https://alpha-pci.example.com/pci-orce",
+      "tenantId": "11111111-1111-4111-8111-111111111111",
+      "username": "synthetic-passkey",
+      "expectedRoles": [
+        "principal"
+      ],
+      "configurationId": "REPLACE_WITH_PUBLISHED_CONFIGURATION_UUID",
+      "allowedIdentityHosts": [
+        "identity.example.com",
+        "login.microsoftonline.com"
+      ],
+      "steps": [
+        {
+          "action": "fill",
+          "selector": "#username",
+          "valueFile": "/private/passkey-username.txt"
+        },
+        {
+          "action": "fill",
+          "selector": "#password",
+          "valueFile": "/private/passkey-password.txt"
+        },
+        {
+          "action": "click",
+          "selector": "#kc-login"
+        },
+        {
+          "action": "click",
+          "selector": "REPLACE_WITH_REGISTER_PASSKEY_SELECTOR"
+        }
+      ],
+      "repeatSteps": [
+        {
+          "action": "click",
+          "selector": "REPLACE_WITH_AUTHENTICATE_PASSKEY_SELECTOR"
+        }
+      ]
+    }
+  },
+  "identityConfigurationFile": "/private/tenant-identity.json",
+  "delegationCase": {
+    "tenantId": "11111111-1111-4111-8111-111111111111",
+    "configurationId": "REPLACE_WITH_CONFIGURATION_UUID",
+    "subject": "REPLACE_WITH_ORDINARY_PRINCIPAL_SUBJECT",
+    "session": "alphaPrincipal"
+  },
+  "allowDestructiveAcceptance": false,
+  "kubeconfig": "/private/kubeconfig",
+  "context": "REPLACE_WITH_DISPOSABLE_CONTEXT",
+  "participantDeletionCase": {
+    "tenantId": "REPLACE_WITH_DISPOSABLE_TENANT_UUID",
+    "slug": "disposable",
+    "adminSession": "disposableAdmin",
+    "participantNamespace": "pci-participant-REPLACE_WITH_DISPOSABLE_TENANT_UUID"
+  }
+}

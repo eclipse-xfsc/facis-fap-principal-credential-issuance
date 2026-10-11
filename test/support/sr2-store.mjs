@@ -3,7 +3,7 @@ import { sr2Fail, sr2Hash } from '../../backend/sr2/domain.js';
 // Transactional test double for the same service used by ORCE. This deliberately
 // makes no claim of PostgreSQL migration/locking execution.
 export function memoryStore(tenants,members) {
-  const db={tenants:new Map(tenants.map(t=>[t.tenant_id,t])),members:new Map(members.map(m=>[m.tenantId+':'+m.subject,{keycloak_subject:m.subject,roles:m.roles,enabled:true}])),resources:new Map(),allocations:new Map(),versions:new Map(),assignments:new Map(),requests:new Map(),events:[],blocks:new Set(),rates:new Map(),circuits:new Map(),publications:new Map()};
+  const db={tenants:new Map(tenants.map(t=>[t.tenant_id,t])),members:new Map(members.map(m=>[m.tenantId+':'+m.subject,{keycloak_subject:m.subject,roles:m.roles,enabled:true}])),principals:new Map(),resources:new Map(),allocations:new Map(),versions:new Map(),assignments:new Map(),requests:new Map(),events:[],blocks:new Set(),rates:new Map(),circuits:new Map(),publications:new Map(),retirements:new Map()};
   let lock=Promise.resolve();
   return {db,async transaction(tenantId,fn){const wait=lock;let release;lock=new Promise(resolve=>release=resolve);await wait;const copy=structuredClone(db);const key=(kind,id)=>tenantId+':'+kind+':'+id;
     const tx={tenant:db.tenants.get(tenantId),
@@ -17,15 +17,20 @@ export function memoryStore(tenants,members) {
       async grant(a){db.assignments.set(key('assignment',a.id),{...structuredClone(a),tenantId});},
       async revokeAssignment(id){db.assignments.get(key('assignment',id)).revoked=true;},
       async member(subject){return structuredClone(db.members.get(tenantId+':'+subject)||null);},
+      async historyMembers(){return [...db.members.entries()].filter(([k])=>k.startsWith(tenantId+':')).map(([,m])=>({keycloak_subject:m.keycloak_subject}));},
+   async bindPrincipal(hash,subject){db.principals.set(tenantId+':'+hash,subject);},
+      async presentationConfigurations(hash){return [...new Set([...db.requests.values()].filter(r=>r.tenantId===tenantId&&r.subjectHash===hash&&['issued','revoked'].includes(r.state)).map(r=>r.configurationId))].map(id=>db.resources.get(key('configuration',id))).filter(c=>c?.draft.format==='jwt_vc_json').map(c=>({id:c.id,name:c.draft.name,format:c.draft.format}));},
+      async requestByCredential(id){const rows=[...db.requests.values()].filter(r=>r.tenantId===tenantId&&r.credentialId===id);if(rows.length>1)sr2Fail(409,'PCI-VP-AMBIGUOUS-CREDENTIAL');return structuredClone(rows[0]||null);},
       async request(id){return structuredClone(db.requests.get(key('request',id))||null);},
       async requestByKey(id){return structuredClone([...db.requests.values()].find(r=>r.tenantId===tenantId&&r.idempotencyHash===id)||null);},
       async bindStatus(r,status){const hash=sr2Hash(status.entry);const existing=db.allocations.get(key('status',r.id));if(existing && (existing.hash!==hash||existing.handle!==status.handle))sr2Fail(409,'PCI-SR2-STATUS-COLLISION');for(const [k,v]of db.allocations)if(k.startsWith(tenantId+':')&&k!==key('status',r.id)&&(v.hash===hash||v.handle===status.handle))sr2Fail(409,'PCI-SR2-STATUS-COLLISION');db.allocations.set(key('status',r.id),{hash,handle:status.handle});},
       async saveRequest(r){db.requests.set(key('request',r.id),structuredClone(r));},
       async requests(id){return [...db.requests.values()].filter(r=>r.tenantId===tenantId&&r.configurationId===id).map(r=>structuredClone(r));},
+      async pendingRevocations(now){return [...db.requests.values()].filter(r=>r.tenantId===tenantId&&['revoking','revocation_indeterminate'].includes(r.state)&&(r.revocation?.nextAttemptAt||0)<=now).slice(0,20).map(r=>structuredClone(r));},
       async expiredRequests(now){return [...db.requests.values()].filter(r=>r.tenantId===tenantId&&r.expiresAt<=now&&['journey','offered','preparing','processing','participant_notified','participant_data_received','status_allocated','signed'].includes(r.state)).map(r=>structuredClone(r));},
       async inFlight(now){return [...db.requests.values()].filter(r=>r.tenantId===tenantId&&['processing','participant_notified','participant_data_received','status_allocated','signed'].includes(r.state)&&r.expiresAt>now).length;},
       async event(e){db.events.push({...structuredClone(e),tenantId,cursor:db.events.length+1,createdAt:'2026-09-24T00:00:00Z'});},
-      async events(id,f){return db.events.map(e=>{const r=db.requests.get(key('request',e.requestId));return {...e,credentialId:r?.credentialId ?? null,currentState:r?.state ?? null,statusReference:r?.status?.entry ?? null};}).filter(e=>e.tenantId===tenantId&&e.configurationId===id&&(!f.credentialId||e.credentialId===f.credentialId)&&(!f.cursor||e.cursor<f.cursor)&&(!f.subjectHash||e.subjectHash===f.subjectHash)&&(!f.requestId||e.requestId===f.requestId)&&(!f.type||e.type===f.type)&&(!f.from||Date.parse(e.createdAt)>=Date.parse(f.from))&&(!f.to||Date.parse(e.createdAt)<=Date.parse(f.to))).slice().reverse().slice(0,f.limit);},
+      async events(id,f){return db.events.map(e=>{const r=db.requests.get(key('request',e.requestId));return {...e,credentialId:r?.credentialId ?? null,currentState:r?.state ?? null,statusReference:r?.status?.entry ?? null,holderDid:r?.holderDid ?? null,principalMember:db.members.get(tenantId+':'+db.principals.get(tenantId+':'+e.subjectHash)) || null};}).filter(e=>e.tenantId===tenantId&&e.configurationId===id&&(!f.credentialId||e.credentialId===f.credentialId)&&(!f.principal||[e.principalMember?.username,e.principalMember?.email,e.principalMember?.first_name,e.principalMember?.last_name].filter(Boolean).join(' ').toLowerCase().includes(f.principal.toLowerCase()))&&(!f.cursor||e.cursor<f.cursor)&&(!f.subjectHash||e.subjectHash===f.subjectHash)&&(!f.requestId||e.requestId===f.requestId)&&(!f.type||e.type===f.type)&&(!f.from||Date.parse(e.createdAt)>=Date.parse(f.from))&&(!f.to||Date.parse(e.createdAt)<=Date.parse(f.to))).slice().reverse().slice(0,f.limit);},
       async blocked(id,s){return db.blocks.has(key(id,s));},async block(id,s){db.blocks.add(key(id,s));},async unblock(id,s){db.blocks.delete(key(id,s));},
       async rate(bucket,window,limit){const k=key(bucket,window);db.rates.set(k,(db.rates.get(k)||0)+1);if(db.rates.get(k)>limit)sr2Fail(429,'PCI-SR2-RATE');},
       async circuit(id){return structuredClone(db.circuits.get(key('circuit',id))||{failures:0,openUntil:0,probe:null});},
@@ -33,6 +38,7 @@ export function memoryStore(tenants,members) {
       async publication(){return structuredClone(db.publications.get(tenantId)||{desired:0,observed:0,state:'draft'});},
       async dirty(){const r=await this.publication();r.desired++;r.state='pending';r.error_code=null;db.publications.set(tenantId,r);},
       async publicationResult(rev,code){const r=await this.publication();if(Number(r.desired)!==rev)return;r.state=code?'error':'published';r.error_code=code;if(!code)r.observed=rev;db.publications.set(tenantId,r);},
+      async retirement(){return db.retirements.get(tenantId)||null;},async retire(issuer){db.retirements.set(tenantId,{issuer,state:'pending'});},async retired(){db.retirements.get(tenantId).state='withdrawn';},
       async lifecycle(state){tx.tenant.state=state;},async lifecycleDone(){tx.tenant.state='deleted';}
     };
     try{if(!tx.tenant)sr2Fail(404,'PCI-SR2-NOT-FOUND');return await fn(tx);}catch(e){Object.assign(db,copy);throw e;}finally{release();}

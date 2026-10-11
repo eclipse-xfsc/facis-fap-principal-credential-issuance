@@ -116,8 +116,8 @@ test('missing upstream contracts fail closed, and publication cannot claim succe
 test('stale publication acknowledgement cannot overwrite a newer desired revision',async()=>{
  const f=fixture();await f.prepared();const old=(await f.api.publication(f.principal())).state.desired;await f.store.transaction(alpha,tx=>tx.dirty());await f.store.transaction(alpha,tx=>tx.publicationResult(old,null));const current=(await f.api.publication(f.principal())).state;assert.equal(current.observed,0);assert.equal(current.desired,old+1);
 });
-test('published tenant deletion waits for retirement; suspension denies issuance',async()=>{
- const f=fixture(),{config}=await f.prepared();await rejected(()=>f.api.lifecycle(f.principal(),'deleting','alpha'),409);await f.api.lifecycle(f.principal(),'suspended','alpha');await rejected(()=>f.api.start(f.principal('principal'),config.id,crypto.randomUUID()),409);
+test('confirmed tenant deletion does not retain public verification routes; suspension denies issuance',async()=>{
+ const f=fixture(),{config}=await f.prepared();await f.api.lifecycle(f.principal(),'suspended','alpha');await rejected(()=>f.api.start(f.principal('principal'),config.id,crypto.randomUUID()),409);await f.api.lifecycle({...f.principal(),provider:true,roles:['provider_admin']},'deleting','alpha');assert.equal(f.store.db.retirements.has(alpha),false);assert.equal(f.store.db.tenants.get(alpha).state,'deleting');
 });
 function png(){function chunk(type,b){const t=Buffer.from(type),n=Buffer.alloc(4),crc=Buffer.alloc(4);n.writeUInt32BE(b.length);crc.writeUInt32BE(sr2Crc(Buffer.concat([t,b])));return Buffer.concat([n,t,b,crc]);}const h=Buffer.alloc(13);h.writeUInt32BE(1);h.writeUInt32BE(1,4);h[8]=8;h[9]=6;return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',h),chunk('tEXt',Buffer.from('unused metadata')),chunk('IDAT',zlib.deflateSync(Buffer.from([0,255,0,0,255]))),chunk('IEND',Buffer.alloc(0))]).toString('base64');}
 test('PNG decoder strips metadata and rejects SVG, corruption, and path injection',async()=>{

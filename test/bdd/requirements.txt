@@ -1,0 +1,5 @@
+# Source of the mandated XFSC BDD Executor. The inherited dependency set must
+# pass the final IP/vulnerability review; it is not silently replaced here.
+git+https://github.com/eclipse-xfsc/bdd-executor@478909cdd735bbab8bb63ce955183713d6bb387b
+playwright==1.55.0
+Pillow==11.3.0
