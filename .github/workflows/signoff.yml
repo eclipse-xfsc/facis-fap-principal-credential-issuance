@@ -1,0 +1,13 @@
+name: Sign-off evidence
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - run: node tools/signoff-gate.mjs docs/release/acceptance.json

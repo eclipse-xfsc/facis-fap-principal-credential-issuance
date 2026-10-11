@@ -1,0 +1,90 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17.4-alpine3.21
+        env:
+          POSTGRES_USER: pci_test
+          POSTGRES_PASSWORD: ephemeral-ci-only
+          POSTGRES_DB: pci_test
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm}
+      - run: npm ci --no-audit --no-fund
+      - run: python3 -m pip install PyYAML==6.0.2
+      - run: npm run test:offline
+      - run: node --test test/live/postgres.test.mjs
+        env:
+          PCI_TEST_DATABASE_URL: postgresql://pci_test:ephemeral-ci-only@localhost:5432/pci_test
+      - run: npm run security:audit
+      - run: git diff --exit-code -- dist
+  participant:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: {go-version: '1.25', cache: false}
+      - run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
+      - run: bash reference/participant-data-repository/generate.sh
+      - run: go vet -tags=generated ./... && go test -race -tags=generated ./... && go build -tags=generated ./cmd/server
+        working-directory: reference/participant-data-repository
+      - name: Preserve generated wire code and resolved Go dependencies
+        uses: actions/upload-artifact@v4
+        with:
+          name: participant-generated
+          path: |
+            reference/participant-data-repository/gen
+            reference/participant-data-repository/wirepb
+            reference/participant-data-repository/go.sum
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: npm}
+      - run: npm ci --no-audit --no-fund
+      - name: Install isolated browser test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pci-browser" --no-audit --no-fund --save-exact playwright@1.62.1
+          "$RUNNER_TEMP/pci-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Browser component and layout regression
+        run: PCI_BROWSER_MODULE="$RUNNER_TEMP/pci-browser/node_modules/playwright/index.mjs" node test/browser/runtime.mjs
+  charts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+        with: {version: v3.17.4}
+      - run: |
+          helm lint deployment/helm/fap-pci --strict
+          helm template pci deployment/helm/fap-pci > /tmp/pci.yaml
+          helm lint deployment/helm/observability --strict --set serverName=telemetry.pci.svc.cluster.local,pciHost=pci.example.com
+          helm template telemetry deployment/helm/observability --set serverName=telemetry.pci.svc.cluster.local,pciHost=pci.example.com > /tmp/observability.yaml
+          helm lint deployment/helm/participant --strict --set image=example.invalid/participant:test,tenantId=alpha,issuer=https://identity.example,audience=participant-data,pciClientDns=pci.example,tlsSecret=tls,dataSecret=data,pciNamespace=pci
+          helm template participant deployment/helm/participant --set image=example.invalid/participant:test,tenantId=alpha,issuer=https://identity.example,audience=participant-data,pciClientDns=pci.example,tlsSecret=tls,dataSecret=data,pciNamespace=pci > /tmp/participant.yaml
+  official-go:
+    uses: eclipse-xfsc/dev-ops/.github/workflows/go-test.yml@880a05d7832796e8ddf71fcde340ef65349f5db6
+    with: {go-version: '1.25', use-docker-compose: false}
+  semantics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '24'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python3 -m pip install PyLD==2.0.4 rdflib==7.1.4 pyshacl==0.30.1
+      - run: python3 test/live/semantic-validation.py
