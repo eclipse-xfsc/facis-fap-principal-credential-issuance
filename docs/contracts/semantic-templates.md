@@ -14,7 +14,7 @@ For linked-data credentials, claim terms are scoped to `credentialSubject.pciCla
 
 Exporting does not change the published credential, its context, signing format or pinned in-flight request. For SD-JWT, the export represents the semantic view of disclosed data. It does not add linked-data signing or advertise additional presentation formats.
 
-The [employee reference files](../../contracts/examples/README.md) remain a standalone synthetic template. Client-provided production templates, identifiers and vocabulary need the client's review; no official FACIS or ETSI semantics are claimed.
+The [employee reference files](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/contracts/examples/README.md) remain a standalone synthetic template. Client-provided production templates, identifiers and vocabulary need the client's review; no official FACIS or ETSI semantics are claimed.
 
 Local tests cover deterministic field mapping, scope collisions, required/type constraints and current tenant/delegation authority. JSON-LD expansion and semantic SHACL engine validation remain unexecuted here. Run them with the approved processor/context versions and retain the result before accepting a production template.
 
