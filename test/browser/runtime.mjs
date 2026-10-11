@@ -10,7 +10,15 @@ const f=fixture(),dispatch=httpHarness(f);await f.prepared();
 const tenant={tenantId:alpha,organizationName:'Alpha',state:'active'},principal=f.principal();
 const pageSource=`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>PCI offline component regression</title><style>${fs.readFileSync('src/styles.css','utf8')}</style></head><body><main id="app"></main><script>${fs.readFileSync('vendor/vue.global.prod.js','utf8')}</script><script>
 const {ref,computed,onMounted}=Vue;const runtime={basePath:''};const pciQrImage=()=>null;
-const request=async(path,options={})=>{const response=await fetch(path,options);const data=await response.json();if(!response.ok){const error=new Error(data.detail);error.code=data.code;throw error;}return data;};
+const request=async(path,options={})=>{const headers={accept:'application/json',...(options.headers||{})};
+if(options.body&&!headers['content-type']){
+  headers['content-type']='application/json';
+}
+const response=await fetch(path,{
+  credentials:'include',
+  ...options,
+  headers
+});const data=await response.json();if(!response.ok){const error=new Error(data.detail);error.code=data.code;throw error;}return data;};
 const api={tenantMembers:async()=>({items:[{subject:'principal',username:'Principal',enabled:true}]})};
 ${fs.readFileSync('src/sr2.js','utf8')}
 Vue.createApp(Sr2Console,{tenant:${JSON.stringify(tenant)},session:${JSON.stringify(principal)}}).mount('#app');</script></body></html>`;
