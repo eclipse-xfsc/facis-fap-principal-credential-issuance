@@ -14,7 +14,7 @@ The examples in current and historical deployment guides are placeholders. Repla
 | `xfsc-orce-operator` | Reserved example operator namespace; deploy PCI into its own dedicated namespace. |
 | Kubernetes context and StorageClass | Select values from the intended cluster; never assume example names exist. |
 
-`scripts/upgrade-artifacts.sh` defaults to `$HOME/fap-pci/deployment-private/pci-rc6-lifecycle.json` and `$HOME/fap-pci/deployment-test-notes`. Override them with `--config` / `--notes`, or `PCI_LIFECYCLE_CONFIG` / `PCI_TEST_NOTES`. The [lifecycle example](../../automation/lifecycle.example.json) is a template; keep its completed copy and credential files outside the source tree.
+`scripts/upgrade-artifacts.sh` defaults to `$HOME/fap-pci/deployment-private/pci-rc6-lifecycle.json` and `$HOME/fap-pci/deployment-test-notes`. Override them with `--config` / `--notes`, or `PCI_LIFECYCLE_CONFIG` / `PCI_TEST_NOTES`. The [lifecycle example](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/automation/lifecycle.example.json) is a template; keep its completed copy and credential files outside the source tree.
 
 ## Software-wallet helper
 
