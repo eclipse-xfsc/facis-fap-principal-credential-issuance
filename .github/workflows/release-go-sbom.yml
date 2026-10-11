@@ -1,0 +1,57 @@
+name: Release Go SBOM
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-go-sbom
+  cancel-in-progress: false
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: v0.5.0-rc.12
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v0.5.0-rc.12
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: reference/participant-data-repository/go.mod
+          cache-dependency-path: reference/participant-data-repository/go.sum
+
+      - name: Verify release and source
+        run: |
+          test "$RELEASE_TAG" = "v$(cat VERSION)"
+          gh release view "$RELEASE_TAG"
+          git rev-parse HEAD > sbom-go-source.txt
+
+      - name: Install pinned SBOM generator
+        run: go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@v1.9.0
+
+      - name: Generate Go module SBOM
+        run: |
+          "$(go env GOPATH)/bin/cyclonedx-gomod" mod \
+            -json -licenses -test -std \
+            -output sbom-go.cdx.json \
+            reference/participant-data-repository
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-go-sbom
+          path: |
+            sbom-go.cdx.json
+            sbom-go-source.txt
+
+      - name: Attach SBOM to existing release
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            sbom-go.cdx.json sbom-go-source.txt --clobber
