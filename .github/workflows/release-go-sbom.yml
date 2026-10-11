@@ -17,6 +17,7 @@ jobs:
       RELEASE_TAG: v0.5.0-rc.12
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_REPO: ${{ github.repository }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,13 +27,30 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: reference/participant-data-repository/go.mod
-          cache-dependency-path: reference/participant-data-repository/go.sum
+          cache: false
 
       - name: Verify release and source
         run: |
           test "$RELEASE_TAG" = "v$(cat VERSION)"
           gh release view "$RELEASE_TAG"
           git rev-parse HEAD > sbom-go-source.txt
+
+      - name: Prepare participant module
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+          bash reference/participant-data-repository/generate.sh
+
+      - name: Verify resolved dependencies
+        working-directory: reference/participant-data-repository
+        run: go list -mod=readonly -json -m all > /dev/null
+
+      - name: Record resolved dependency hashes
+        run: |
+          sha256sum \
+            reference/participant-data-repository/go.mod \
+            reference/participant-data-repository/go.sum \
+            >> sbom-go-source.txt
 
       - name: Install pinned SBOM generator
         run: go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@v1.9.0
