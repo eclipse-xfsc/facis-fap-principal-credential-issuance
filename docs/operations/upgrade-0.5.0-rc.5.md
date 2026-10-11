@@ -16,7 +16,7 @@ Do not replace production state with synthetic acceptance fixtures.
    values; `before: null` explicitly means absent. The tool checks deployment UID,
    exact live applied values and resourceVersion. Missing historical values cannot
    be recovered by guessing. Preserve the private baseline for the uninstall test.
-3. Install the approved mesh revision with the supplied [TLS overlay](../../deployment/prerequisites/all-hop-tls/README.md).
+3. Install the approved mesh revision with the supplied [TLS overlay](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/deployment/prerequisites/all-hop-tls/README.md).
    Set `PCI_MESH_REVISION` during G0 for managed workloads and bootstrap jobs;
    use the UID-bound inventory renderer to enroll ORCE, Gateway and shared stack.
    Record the owner change approval and actual TLS validation. The compatibility
