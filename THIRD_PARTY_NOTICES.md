@@ -6,7 +6,7 @@ This file lists direct third-party software intentionally used by the FACIS FAP 
 |---|---:|---|---|
 | Node-RED | runtime supplied by the existing ORCE installation | Apache-2.0 | Flow runtime |
 | `node-red-contrib-uibuilder` | 7.5.0 minimum/install fallback | Apache-2.0 | ORCE-hosted browser UI |
-| Vue | 3.5.21 | MIT | Browser UI runtime |
+| Vue | 3.5.43 | MIT | Browser UI runtime |
 | `pg` / node-postgres | 8.16.3 | MIT | PostgreSQL client used by ORCE Function nodes |
 | Nodemailer | 10.0.9 | MIT-0 | SMTP verification/invitation mail |
 | `jsonwebtoken` | 9.0.2 | MIT | OIDC ID-token verification |
@@ -37,7 +37,7 @@ This notice is not a substitute for the Eclipse IP process, a complete dependenc
 
 ## Offline SR2 source additions
 
-The Vue 3.5.21 browser runtime is vendored verbatim from the verified 0.3.0 release. Its provenance and SHA-256 are in `vendor/vue-provenance.json`; the MIT notice is in `vendor/vue-LICENSE.txt`. Node versions are in `package-lock.json`. Go dependencies require generated, reviewed sums from the build gate.
+The Vue 3.5.43 browser runtime is vendored from the npm vue package. Its npm integrity and file SHA-256 are recorded in vendor/vue-provenance.json. The MIT notice is in vendor/vue-LICENSE.txt. Node dependencies are recorded in package-lock.json.
 
 QR numeric tables and placement conventions come from ReportLab 4.4.9's locally installed `qrencoder`, credited to Open End AB (2014) and Kazuhiko Arase (2009), under MIT. See `vendor/qr-tables-LICENSE.txt`. The JavaScript encoder and 40-version reference test require no new runtime package. Both notices are copied into `dist/ui/THIRD_PARTY_LICENSES.txt`. Formal Eclipse review is not claimed.
 
