@@ -30,7 +30,7 @@ This correction builds on the complete rc.6 source archive (SHA-256 `20ab593efa9
 
 ## rc.6 input
 
-rc.6 starts from the complete rc.5 source ZIP, SHA-256 `4c535c4e343f91052359247040a359a6c6d4d1751440881c73faf5826ac036ef`. The supplied OCM-WStack 12.3.9 archive has SHA-256 `b7407ebfe8d4fc7920f30eb89ac703a133a89ba9c96da609f0234e0a4c773391`. The [current contract assessment](../contracts/ocm-12.3.9-assessment.json) binds the reviewed package inputs and identifies current upstream-revision and runtime evidence limits. The two normative PDFs are unchanged. Historical review records below remain historical; they do not imply execution against the new release. See [rc.6 changes](release/0.5.0-rc.6.md).
+rc.6 starts from the complete rc.5 source ZIP, SHA-256 `4c535c4e343f91052359247040a359a6c6d4d1751440881c73faf5826ac036ef`. The supplied OCM-WStack 12.3.9 archive has SHA-256 `b7407ebfe8d4fc7920f30eb89ac703a133a89ba9c96da609f0234e0a4c773391`. The [current contract assessment](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/contracts/ocm-12.3.9-assessment.json) binds the reviewed package inputs and identifies current upstream-revision and runtime evidence limits. The two normative PDFs are unchanged. Historical review records below remain historical; they do not imply execution against the new release. See [rc.6 changes](release/0.5.0-rc.6.md).
 
 ## rc.4 input
 
