@@ -25,7 +25,7 @@ names, and DNS must point to the newly allocated PCI Gateway address.
 
 For a first development smoke test the example selects the existing internal
 HTTP/NATS compatibility profile. **That profile does not satisfy the all-hop
-TLS 1.3 requirement.** Use the supplied [TLS overlay and inventory](../../deployment/prerequisites/all-hop-tls/README.md)
+TLS 1.3 requirement.** Use the supplied [TLS overlay and inventory](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/deployment/prerequisites/all-hop-tls/README.md)
 and [transport configuration](transport.md) with the OCM owner for acceptance.
 
 ## Install the shipped artifacts
