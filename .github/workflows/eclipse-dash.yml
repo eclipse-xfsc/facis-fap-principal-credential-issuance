@@ -1,0 +1,157 @@
+name: Eclipse Dash licence scan
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      request_reviews:
+        description: 'Submit unresolved dependencies to Eclipse IP review (committer token required)'
+        required: false
+        type: boolean
+        default: false
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: eclipse-dash-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  licence-scan:
+    name: Licence gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout scanned revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+
+      - name: Prepare evidence directory
+        run: |
+          mkdir -p dash-evidence
+          git rev-parse HEAD > dash-evidence/source-commit.txt
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: reference/participant-data-repository/go.mod
+          cache: false
+
+      - name: Resolve participant Go dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+          bash reference/participant-data-repository/generate.sh
+          cd reference/participant-data-repository
+          go list -mod=readonly -json -m all > ../../dash-evidence/go-modules.json
+          cp go.mod go.sum ../../dash-evidence/
+
+      - name: Resolve Python dependencies without installing them
+        run: |
+          python -m pip install --dry-run --ignore-installed \
+            --report dash-evidence/python-resolved.json \
+            -r test/bdd/requirements.txt \
+            PyLD==2.0.4 rdflib==7.1.4 pyshacl==0.30.1 PyYAML==6.0.2
+
+      - name: Build additional dependency inventory
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          report = json.loads(Path("dash-evidence/python-resolved.json").read_text())
+          identifiers = {"pypi/pypi/-/reportlab/4.4.9"}
+          for item in report["install"]:
+              download = item["download_info"]
+              vcs = download.get("vcs_info")
+              if vcs:
+                  url = urlsplit(download["url"])
+                  if url.hostname != "github.com" or vcs["vcs"] != "git":
+                      raise RuntimeError("Unsupported VCS dependency: " + download["url"])
+                  repository = url.path.strip("/").removesuffix(".git")
+                  if len(repository.split("/")) != 2:
+                      raise RuntimeError("Unexpected GitHub repository path")
+                  identifiers.add("git/github/" + repository + "/" + vcs["commit_id"])
+              else:
+                  metadata = item["metadata"]
+                  name = re.sub(r"[-_.]+", "-", metadata["name"]).lower()
+                  identifiers.add("pypi/pypi/-/" + name + "/" + metadata["version"])
+          Path("dash-evidence/other-dependencies.txt").write_text(
+              "\n".join(sorted(identifiers)) + "\n"
+          )
+          PY
+          test -s package-lock.json
+          test -s dash-evidence/go.sum
+          test -s dash-evidence/other-dependencies.txt
+          cp package-lock.json dash-evidence/
+          sha256sum package-lock.json dash-evidence/go.mod dash-evidence/go.sum \
+            dash-evidence/other-dependencies.txt \
+            > dash-evidence/input-sha256.txt
+
+      - name: Download official Eclipse Dash tool
+        env:
+          DASH_VERSION: 1.1.0
+        run: |
+          curl -fsSL --retry 3 -o dash-licenses.jar \
+            "https://repo.eclipse.org/content/repositories/dash-licenses-releases/org/eclipse/dash/org.eclipse.dash.licenses/${DASH_VERSION}/org.eclipse.dash.licenses-${DASH_VERSION}.jar"
+          unzip -t dash-licenses.jar > /dev/null
+          sha256sum dash-licenses.jar > dash-evidence/tool-sha256.txt
+
+      - name: Scan all inventoried dependencies
+        env:
+          REVIEW_TOKEN: ${{ secrets.GITLAB_API_TOKEN }}
+          REQUEST_REVIEWS: ${{ github.event_name == 'workflow_dispatch' && inputs.request_reviews }}
+          REPOSITORY_URL: https://github.com/${{ github.repository }}
+        run: |
+          args=(-project technology.xfsc -repo "$REPOSITORY_URL")
+          if [ "$REQUEST_REVIEWS" = 'true' ]; then
+            if [ -z "$REVIEW_TOKEN" ]; then
+              echo '::error::Add a committer GitLab API token as the GITLAB_API_TOKEN Actions secret before requesting reviews.'
+              exit 1
+            fi
+            args+=(-review -token "$REVIEW_TOKEN")
+          fi
+          set +e
+          java -jar dash-licenses.jar \
+            package-lock.json dash-evidence/go.sum dash-evidence/other-dependencies.txt \
+            -summary dash-evidence/eclipse-ip-summary.csv "${args[@]}" \
+            2>&1 | tee dash-evidence/scan.log
+          status=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "$status" > dash-evidence/exit-status.txt
+          if [ "$status" -ne 0 ]; then
+            echo '::error::Eclipse Dash did not clear every dependency. Inspect the report for review findings or service errors.'
+            exit 1
+          fi
+          echo 'All inventoried dependencies cleared by Eclipse Dash.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Scope: Node lock, resolved participant Go checksums, BDD/semantic Python dependencies and ReportLab QR provenance.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Externally deployed service images and non-package assets require their own complete inventory and IP evidence.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Preserve scan evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eclipse-ip-scan-${{ github.run_id }}
+          path: dash-evidence/
+          if-no-files-found: error
+          retention-days: 90
