@@ -17,7 +17,7 @@
 | M11 Issuer runtime | Authenticated principal or private correlated native NATS callback | Pinned issuance, participant data exchange, native signing/status and transient presentation verification |
 | M12 Participant integration | Tenant admin and operator-approved host/Secret names | Connector binding, native participant-v1 mTLS gRPC invocation |
 | M13 History/status | Current issuer assignment and configuration scope | Search, safe principal JWT, verified ID/holder, native revoke and explicit unblock |
-| PCI interface | HTTP route normalization and uibuilder socket | UI files and refresh events; server rechecks authority for every operation |
+| PCI interface | HTTP route normalization and uibuilder socket | UI files, normalized commands/results and job events; server rechecks authority for every operation |
 
 The route registry is authoritative for the exact module/action mapping; the table describes responsibilities. Function node messages carry `pciAction`, `pciTransport`, `payload`, and the original HTTP request/response handles. A public body cannot grant `pciInternal`. Gateway request headers are overwritten by the trusted route; membership and routed host must still agree with the requested tenant.
 

@@ -422,6 +422,23 @@
       "responseDefinitions": "openapi.json#/paths/~1api~1v1~1internal~1provisioning~1tenants~1{tenantId}~1status/put/responses"
     },
     {
+      "operationId": "createBrowserBridge",
+      "method": "POST",
+      "path": "/api/v1/auth/bridge",
+      "pathParameters": {},
+      "headers": {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "socketId": "REPLACE_WITH_VALUE"
+      },
+      "expectedSuccess": [
+        "200"
+      ],
+      "responseDefinitions": "openapi.json#/paths/~1api~1v1~1auth~1bridge/post/responses"
+    },
+    {
       "operationId": "config_list",
       "method": "GET",
       "path": "/api/v1/tenants/{tenantId}/credential-configurations",
@@ -1057,8 +1074,8 @@
         "data": {
           "title": "Alpha",
           "description": "Synthetic employee credentials",
-          "accent": "#173c67",
-          "background": "#f5f7fb",
+          "accent": "#005FFF",
+          "background": "#E1E7EF",
           "foreground": "#1f2937",
           "font": "system",
           "layout": "wide",
@@ -1089,8 +1106,8 @@
         "data": {
           "title": "Alpha",
           "description": "Synthetic employee credentials",
-          "accent": "#173c67",
-          "background": "#f5f7fb",
+          "accent": "#005FFF",
+          "background": "#E1E7EF",
           "foreground": "#1f2937",
           "font": "system",
           "layout": "wide",

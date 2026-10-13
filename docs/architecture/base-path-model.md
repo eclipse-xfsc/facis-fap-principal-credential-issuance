@@ -67,7 +67,7 @@ With an empty base path, all existing root URLs remain unchanged.
 
 The browser cannot fetch public configuration until it knows where the API is. It therefore derives an initial prefix only from the served document pathname ending in `/ui/`, then fetches `/api/v1/tenant-registration-config` through that derived prefix. The server returns canonical `orceBasePath`, `uiPath`, and `apiBasePath`. A mismatch fails closed instead of silently using a different path.
 
-The browser never supplies an authoritative tenant host. Host authority remains the server-observed HTTP request or trusted Socket.IO/uibuilder handshake headers inserted by the reverse proxy.
+The browser never supplies an authoritative tenant host. Host authority comes from the server-observed HTTP request and canonical reverse-proxy tenant headers. UIBUILDER commands use a short-lived, socket-bound grant created from that HTTP context. Browser-supplied handshake and header objects are discarded.
 
 ## Envoy behavior
 

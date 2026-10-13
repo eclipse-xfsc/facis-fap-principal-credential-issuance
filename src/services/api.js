@@ -1,28 +1,17 @@
 import { runtime } from "../config/runtime.js";
 import { withBasePath } from "../../shared/public-url.js";
 
-async function parse(response) {
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const error = new Error(body.detail || body.message || `Request failed with status ${response.status}`);
-    error.status = response.status;
-    error.code = body.code;
-    error.correlationId = body.correlation_id;
-    error.retryable = body.retryable === true;
-    throw error;
-  }
-  return body;
-}
+import { sendCommand } from './transport.js';
+import { decodeHttpResponse } from '../state/reducers.js';
 
 export async function request(path, options = {}) {
-  const headers = { accept: "application/json", ...(options.headers || {}) };
-  if (options.body && !headers["content-type"]) headers["content-type"] = "application/json";
+  // Only the cookie/redirect lifecycle uses HTTP. Application reads and writes
+  // travel through the authenticated UIBUILDER contract.
+  if (!path.startsWith('/api/v1/auth/') && path !== '/api/v1/tenant-registration-config') return sendCommand(path, options);
+  const headers = { accept: 'application/json', ...(options.headers || {}) };
+  if (options.body || options.method === 'POST') headers['content-type'] = 'application/json';
   const target = withBasePath(path, runtime.basePath);
-  return parse(await fetch(target, {
-    credentials: "include",
-    ...options,
-    headers,
-  }));
+  return decodeHttpResponse(await fetch(target, {credentials:'include', ...options, headers}));
 }
 
 export const api = {

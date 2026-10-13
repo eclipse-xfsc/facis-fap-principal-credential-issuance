@@ -55,11 +55,12 @@ export function sr2Branding(value) {
   function color(v,fallback){const c=v||fallback;sr2Assert(typeof c==='string' && /^#[a-f0-9]{6}$/i.test(c),'Use a six-digit hex color.');return c;}
   function luminance(hex){const c=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(x=>x<=0.04045?x/12.92:((x+0.055)/1.055)**2.4);return c[0]*0.2126+c[1]*0.7152+c[2]*0.0722;}
   function contrast(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
-  const accent=color(value.accent,'#173c67'),background=color(value.background,'#f5f7fb'),foreground=color(value.foreground,'#1f2937');
+  const accent=color(value.accent,'#005fff'),background=color(value.background,'#e1e7ef'),foreground=color(value.foreground,'#1f2937');
   sr2Assert(contrast(accent,'#ffffff')>=4.5,'Accent must provide at least 4.5:1 contrast with white text.');
   sr2Assert(contrast(foreground,background)>=4.5 && contrast(foreground,'#ffffff')>=4.5,'Text must provide at least 4.5:1 contrast on the page and white cards.');
   const font=value.font||'system',layout=value.layout||'wide',corners=value.corners||'rounded';
-  sr2Assert(['system','serif','mono'].includes(font) && ['wide','focused'].includes(layout) && ['rounded','square'].includes(corners),'Choose a supported page font, width and corner style.');
+  sr2Assert(font==='system' && ['wide','focused'].includes(layout) && corners==='rounded','Use the FACIS sans-serif font and rounded corners.');
+  sr2Assert(accent.toLowerCase()==='#005fff' && background.toLowerCase()==='#e1e7ef' && foreground.toLowerCase()==='#1f2937','Use the shared FACIS blue, gray and text palette.');
   return {title:sr2Text(value.title,100),description:sr2Text(value.description,1000,true),accent,background,foreground,font,layout,corners,footer:sr2Text(value.footer||'',500,true),logoAssetId:value.logoAssetId?sr2Uuid(value.logoAssetId):null};
 }
 export function sr2Configuration(value) {

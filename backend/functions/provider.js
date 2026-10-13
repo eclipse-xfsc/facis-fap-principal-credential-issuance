@@ -27,7 +27,7 @@ return (async () => {
 
   if (action === "provider.registrations.approve") {
     const id = String(params().registrationId || input.registrationId || "");
-    const expectedVersion = msg.pciTransport === "uibuilder" ? Number(input.version) : parseIfMatch();
+    const expectedVersion = parseIfMatch();
     const reason = input.reason === undefined || input.reason === null ? null : String(input.reason).trim().slice(0, 1000);
     const client = await pool.connect();
     let registration;
@@ -87,7 +87,7 @@ Tenant URL: ${uiUrl(tenant.primaryDomain, cfg.orceBasePath)}`,
 
   if (action === "provider.registrations.reject") {
     const id = String(params().registrationId || input.registrationId || "");
-    const expectedVersion = msg.pciTransport === "uibuilder" ? Number(input.version) : parseIfMatch();
+    const expectedVersion = parseIfMatch();
     const reason = String(input.reason || "").trim();
     if (reason.length < 3 || reason.length > 1000) throw pciErrors.validation("A rejection reason between 3 and 1000 characters is required.");
     const client = await pool.connect();

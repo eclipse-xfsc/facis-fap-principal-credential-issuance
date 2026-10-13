@@ -2,7 +2,7 @@
 async function handleSr2(allowedActions) {
   const started=Date.now();
   try {
-    if(msg.pciTransport!=='http')throw new Sr2Error(400,'PCI-SR2-TRANSPORT','Use the authenticated HTTP API.');
+    if(msg.pciTransport!=='http' && !(msg.pciTransport==='uibuilder' && msg.pciBridgeApproved===true))throw new Sr2Error(400,'PCI-SR2-TRANSPORT','Use the authenticated browser bridge or HTTP API.');
     const action=String(msg.pciAction || '');if(!allowedActions.includes(action))throw new Sr2Error(404,'PCI-SR2-NOT-FOUND','Unknown operation.');
     const headers=requestHeaders(), raw=msg.req?.rawHeaders || [], names=new Set();
     for(let i=0;i<raw.length;i+=2){const key=String(raw[i]).toLowerCase();if(['host','x-forwarded-host','x-pci-tenant-id','x-pci-tenant-slug','x-pci-tenant-domain','authorization','cookie','origin','x-pci-public-request'].includes(key)){if(names.has(key))throw pciErrors.invalidTenantContext();names.add(key);}}
@@ -39,6 +39,7 @@ async function handleSr2(allowedActions) {
       const session=await requireSession([],tenantId);if(session.tenantId!==tenantId)throw pciErrors.forbidden();p={...session,host};
     }
     let result,status=200;
+    if(msg.pciTransport==='uibuilder')pciBridgeProgress('processing','Processing request');
     const tag=String(headers['if-match'] || '');const value=/^"[1-9][0-9]*"$/.test(tag)?Number(tag.slice(1,-1)):NaN;const match=Number.isSafeInteger(value)?value:undefined;
     const [group,verb]=action.split('.');
     const kinds={config:'configuration',flow:'flow',metadata:'metadata',branding:'branding',connector:'connector',asset:'asset',settings:'settings'};
@@ -59,7 +60,7 @@ async function handleSr2(allowedActions) {
     else if(action==='issuance.start' || action==='internal.offer-create'){sr2Object(input,['configurationId']);result=await service.start(p,input.configurationId,String(headers['idempotency-key'] || ''));status=201;}
     else if(action==='issuance.get' || action==='internal.offer-get')result=await service.request(p,route.requestId);
     else if(action==='issuance.advance')result=await service.advance(p,route.requestId,input);
-    else if(action==='issuance.offer'){await pciListen();result=await service.offer(p,route.requestId);}
+    else if(action==='issuance.offer'){await pciListen();result=await service.offer(p,route.requestId,msg.pciTransport==='uibuilder'?(stage,label)=>pciBridgeProgress(stage,label):undefined);}
     else if(action==='semantic.export')result=await service.semanticTemplate(p,route.configurationId);
     else if(action==='history.list')result=await service.history(p,route.configurationId,query());
     else if(action==='history.revoke'){sr2Object(input,['requestId','confirmed']);result=await service.revoke(p,route.configurationId,input.requestId,input.confirmed);}
@@ -70,7 +71,7 @@ async function handleSr2(allowedActions) {
     else throw pciErrors.notFound();
     if(['issuance.offer','history.revoke','publication.publish'].includes(action))pciObserve(action.replace('.','_'),'ok',started);
     return emit(status,result,{'cache-control':'no-store',...(result?.item?.version?{etag:`"${result.item.version}"`}:{})});
-  }catch(error){if(['issuance.offer','history.revoke','publication.publish'].includes(msg.pciAction))pciObserve(msg.pciAction.replace('.','_'),'error',started);if(sr2IsError(error))return emitError(new PciError(error.status,error.code,error.status<500?'Check the request':'Service operation failed',error.message,[503,504].includes(error.status)));return emitError(error);}
+  }catch(error){if(['issuance.offer','history.revoke','publication.publish'].includes(msg.pciAction))pciObserve(msg.pciAction.replace('.','_'),'error',started);if(sr2IsError(error))return emitError(Object.assign(new PciError(error.status,error.code,error.status<500?'Check the request':'Service operation failed',error.message,[429,502,503,504].includes(error.status)),error.fields?{fields:error.fields}:{}));return emitError(error);}
 }
 
 async function handleSr2Maintenance() {

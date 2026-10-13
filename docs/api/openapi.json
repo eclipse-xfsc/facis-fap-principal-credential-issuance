@@ -466,8 +466,9 @@
           },
           "accent": {
             "type": "string",
-            "pattern": "^#[a-fA-F0-9]{6}$",
-            "description": "Must meet 4.5:1 contrast against white."
+            "pattern": "^#005[fF]{3}$",
+            "default": "#005FFF",
+            "description": "Shared FACIS primary action color."
           },
           "logoAssetId": {
             "type": "string",
@@ -476,18 +477,18 @@
           },
           "background": {
             "type": "string",
-            "pattern": "^#[a-fA-F0-9]{6}$"
+            "pattern": "^#[eE]1[eE]7[eE][fF]$",
+            "default": "#E1E7EF"
           },
           "foreground": {
             "type": "string",
-            "pattern": "^#[a-fA-F0-9]{6}$"
+            "pattern": "^#1[fF]2937$",
+            "default": "#1F2937"
           },
           "font": {
             "type": "string",
             "enum": [
-              "system",
-              "serif",
-              "mono"
+              "system"
             ]
           },
           "layout": {
@@ -500,8 +501,7 @@
           "corners": {
             "type": "string",
             "enum": [
-              "rounded",
-              "square"
+              "rounded"
             ]
           },
           "footer": {
@@ -2194,6 +2194,75 @@
             }
           }
         ]
+      }
+    },
+    "/api/v1/auth/bridge": {
+      "post": {
+        "summary": "Create a short-lived browser bridge grant",
+        "operationId": "createBrowserBridge",
+        "description": "Same-origin HTTP bootstrap bound to the connected UIBUILDER socket. An existing HttpOnly session is rechecked on each subsequent application command. Anonymous grants expose only public operations.",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "socketId": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{10,128}$"
+                  }
+                },
+                "required": [
+                  "socketId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "In-memory five-minute bridge credential; never persist it.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "minLength": 43,
+                      "maxLength": 43
+                    },
+                    "expiresAt": {
+                      "type": "integer"
+                    },
+                    "sessionId": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "token",
+                    "expiresAt",
+                    "sessionId"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Cross-origin or invalid tenant request"
+          },
+          "429": {
+            "description": "Bridge capacity reached"
+          }
+        }
       }
     },
     "/api/v1/tenants/{tenantId}/credential-configurations": {

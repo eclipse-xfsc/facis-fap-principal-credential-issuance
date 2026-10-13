@@ -28,13 +28,13 @@ export function extendSr2Issuance(api) {
   api.advance=async(p,requestId,input)=>store.transaction(p.tenantId,async tx=>{
     sr2Object(input,['step','consent','values']);const r=await tx.request(sr2Uuid(requestId));await assertOwner(tx,p,r);sr2Correlation(r,{tenantId:p.tenantId,configurationId:r.configurationId,subjectHash:hashSubject(p.tenantId,p.subject)},now());
     sr2Assert(r.state==='journey' && input.step===r.step,'Journey step changed; reload the request.');const {flow}=await pinned(tx,r),step=flow.steps[r.step];sr2Assert(step && step.type!=='offer','Journey is ready for its offer.');
-    if(step.type==='consent')sr2Assert(input.consent===true,'Consent is required.');
-    if(step.type==='input'){const values=sr2Object(input.values || {},step.fields.map(f=>f.name));for(const f of step.fields)if(f.required || Object.hasOwn(values,f.name))sr2Text(values[f.name],2000,!f.required);}
+    if(step.type==='consent' && input.consent!==true){try{sr2Fail(400,'PCI-SR2-VALIDATION','Consent is required.');}catch(error){error.fields={consent:'Consent is required.'};throw error;}}
+    if(step.type==='input'){const values=sr2Object(input.values || {},step.fields.map(f=>f.name));for(const f of step.fields)if(f.required || Object.hasOwn(values,f.name)){try{sr2Text(values[f.name],2000,!f.required);}catch(error){error.fields={[f.name]:'Enter '+f.label+' (up to 2000 characters).'};throw error;}}}
     // Answers remain transient. Persist progress only, never survey text/claims.
     r.step++;await tx.saveRequest(r);return {request:safeRequest(r),flow};
   });
   api.request=async(p,id)=>store.transaction(p.tenantId,async tx=>{const r=await tx.request(sr2Uuid(id));await assertOwner(tx,p,r);return {request:safeRequest(r),flow:(await pinned(tx,r)).flow};});
-  api.offer=async(p,id)=>{
+  api.offer=async(p,id,progress=()=>{})=>{
     const ctx=await store.transaction(p.tenantId,async tx=>{
       const r=await tx.request(sr2Uuid(id));await assertOwner(tx,p,r);sr2Correlation(r,{tenantId:p.tenantId,configurationId:r.configurationId,subjectHash:hashSubject(p.tenantId,p.subject)},now());
       if(r.state!=='journey')sr2Fail(409,'PCI-SR2-REPLAY','An offer has already been prepared; begin a new request if it was lost.');
@@ -44,10 +44,12 @@ export function extendSr2Issuance(api) {
       r.state='preparing';await tx.saveRequest(r);return {r,...pin};
     });
     try {
+      progress('calling-service','Preparing your credential offer');
       const offer=await sr2Deadline(()=>adapters.createOffer({...ctx,principal:p,deadline:Math.min(ctx.r.expiresAt,now()+10000)}),Math.min(ctx.r.expiresAt,now()+10000),now);
       sr2Object(offer,['requestId','tenantId','configurationId','offerUrl']);sr2Assert(offer.requestId===ctx.r.id && offer.tenantId===p.tenantId && offer.configurationId===ctx.r.configurationId,'Offer correlation mismatch.');
       let u;try{u=new URL(offer.offerUrl);}catch{sr2Fail(502,'PCI-SR2-OFFER','Invalid offer response.');}
       sr2Assert(['https:','openid-credential-offer:'].includes(u.protocol) && !u.username && !u.password && offer.offerUrl.length<=16000,'Unsafe offer URL.');
+      progress('confirming','Confirming the offer');
       await store.transaction(p.tenantId,async tx=>{const r=await tx.request(ctx.r.id);await assertOwner(tx,p,r);await connectorAccess(tx,r.connectorId,r.configurationId);const c=await get(tx,'configuration',r.configurationId);sr2Assert(r.state==='preparing' && r.expiresAt>now() && c.state!=='archived' && sr2Eligible(ctx.configuration,await authorize(tx,p,'principal')) && !await tx.blocked(c.id,r.subjectHash),'Offer was cancelled during processing.');r.state='offered';await tx.saveRequest(r);await event(tx,p,'offered',r.configurationId,r);});return {requestId:ctx.r.id,offerUrl:u.href,expiresAt:ctx.r.expiresAt};
     }catch(e){await setState(p,ctx.r.id,'indeterminate','PCI-SR2-OFFER-FAILED');throw e;}
   };

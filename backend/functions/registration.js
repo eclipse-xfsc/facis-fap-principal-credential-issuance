@@ -34,10 +34,10 @@ return (async () => {
     const contactEmail = String(input.contactEmail || "").trim().toLowerCase();
     const requestedSlug = String(input.requestedSlug || "").trim().toLowerCase();
     const requestedMode = String(input.registrationMode || "public");
-    if (!/^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$/.test(organizationIdentifier)) throw pciErrors.validation("organizationIdentifier is invalid.");
-    if (organizationName.length < 2 || organizationName.length > 160) throw pciErrors.validation("organizationName is invalid.");
-    if (contactName.length < 2 || contactName.length > 120) throw pciErrors.validation("contactName is invalid.");
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contactEmail) || contactEmail.length > 254) throw pciErrors.validation("contactEmail is invalid.");
+    if (!/^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$/.test(organizationIdentifier)) throw pciErrors.validation("Check the registration details.", {organizationIdentifier: "Enter a valid organization identifier."});
+    if (organizationName.length < 2 || organizationName.length > 160) throw pciErrors.validation("Check the registration details.", {organizationName: "Enter a valid organization name."});
+    if (contactName.length < 2 || contactName.length > 120) throw pciErrors.validation("Check the registration details.", {contactName: "Enter a valid contact name."});
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contactEmail) || contactEmail.length > 254) throw pciErrors.validation("Check the registration details.", {contactEmail: "Enter a valid email address."});
     if (cfg.registrationMode === "private" && requestedMode !== "private") throw pciErrors.forbidden("Public registration is disabled for this environment.");
     const requestedDomain = buildTenantDomain(requestedSlug);
     const registrationId = crypto.randomUUID();

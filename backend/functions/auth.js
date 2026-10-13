@@ -3,6 +3,8 @@ return (async () => {
   const input = msg.pciTransport === "uibuilder" ? (msg.data || (msg.payload && msg.payload.data) || {}) : parseBody();
   const pool = getPool();
 
+  if (action === "auth.bridge") return pciCreateBridgeGrant();
+
   if (action === "auth.config") {
     const host = routedHost();
     if (!host) throw pciErrors.invalidTenantContext();

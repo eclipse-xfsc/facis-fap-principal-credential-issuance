@@ -113,7 +113,7 @@ const pciErrors = {
   forbidden: (detail = "The caller is not allowed to perform this operation.") => new PciError(403, "PCI-AUTHZ-403-001", "Forbidden", detail),
   unauthorized: () => new PciError(401, "PCI-AUTHN-401-001", "Unauthorized", "Valid Keycloak-backed credentials are required."),
   invalidVerification: () => new PciError(400, "PCI-VERIFY-400-001", "Invalid verification token", "The token is invalid, expired, or already used."),
-  validation: (detail = "One or more input fields are invalid.") => new PciError(400, "PCI-VALIDATION-400-001", "Validation failed", detail),
+  validation: (detail = "One or more input fields are invalid.", fields) => Object.assign(new PciError(400, "PCI-VALIDATION-400-001", "Validation failed", detail), fields ? {fields} : {}),
   invalidTenantContext: () => new PciError(403, "PCI-TENANT-403-001", "Tenant context mismatch", "The routed tenant context does not match the requested host."),
   dependency: (detail) => new PciError(503, "PCI-DEPENDENCY-503-001", "Dependency unavailable", detail, true),
 };
@@ -142,6 +142,7 @@ function problem(error) {
     instance: msg.req ? msg.req.originalUrl || msg.req.url : msg.pciAction || "uibuilder",
     correlation_id: correlationId(),
     retryable: Boolean(e.retryable),
+    ...(e.fields ? {fields:e.fields} : {}),
   };
 }
 function emit(status, payload, headers = {}, topic = "pci:response") {
@@ -150,9 +151,18 @@ function emit(status, payload, headers = {}, topic = "pci:response") {
   msg.payload = payload;
   if (msg.pciTransport === "internal") return [null, null];
   if (msg.pciTransport === "uibuilder") {
-    msg.topic = topic;
-    msg.payload = { response: { status: status >= 400 ? "error" : "success", statusCode: status, ...payload } };
-    return [null, msg];
+    if (msg.pciCommandOwned) {
+      const grant = pciBridgeGrants().get(msg.pciGrantKey);
+      if (grant) {
+        grant.inFlight.delete(msg.pciRequestId);
+        grant.recent.set(msg.pciRequestId, Date.now());
+        while (grant.recent.size > 240) grant.recent.delete(grant.recent.keys().next().value);
+      }
+    }
+    return [null, pciBridgeMessage({type:'result', ok:status < 400, status,
+      data:status < 400 ? payload : null,
+      next:status < 400 && payload?.request ? {step:payload.request.step} : null,
+      errors:status >= 400 ? pciBridgeErrors(payload) : null})];
   }
   return [msg, null];
 }
@@ -169,21 +179,10 @@ function parseBody() {
 }
 function params() { return (msg.req && msg.req.params) || msg.params || {}; }
 function query() { return (msg.req && msg.req.query) || msg.query || {}; }
-function trustedUibuilderHeaders() {
-  const candidates = [
-    msg && msg._uib && msg._uib.handshake && msg._uib.handshake.headers,
-    msg && msg._uib && msg._uib.socket && msg._uib.socket.handshake && msg._uib.socket.handshake.headers,
-    msg && msg._socket && msg._socket.handshake && msg._socket.handshake.headers,
-    msg && msg.socket && msg.socket.handshake && msg.socket.handshake.headers,
-    msg && msg._client && msg._client.handshake && msg._client.handshake.headers,
-  ];
-  return candidates.find((candidate) => candidate && typeof candidate === "object" && !Array.isArray(candidate)) || {};
-}
 function requestHeaders() {
-  // uibuilder messages are browser-controlled except for the server-attached
-  // Socket.IO handshake metadata. Never let a browser-supplied msg.req or
-  // top-level header object outrank that trusted transport context.
-  if (msg.pciTransport === "uibuilder") return trustedUibuilderHeaders();
+  // Only the validated grant contributes authority to a browser command.
+  // Browser-authored req/handshake/header properties are discarded at entry.
+  if (msg.pciTransport === "uibuilder") return pciBridgeRequestHeaders();
   if (msg.req && msg.req.headers) return msg.req.headers;
   return msg.pciTrustedHeaders && typeof msg.pciTrustedHeaders === "object" ? msg.pciTrustedHeaders : {};
 }
@@ -201,7 +200,7 @@ function routedHost() {
 function sessionCookiePath() { return cfg.orceBasePath || "/"; }
 function buildTenantDomain(slug) {
   const value = String(slug || "").trim().toLowerCase();
-  if (!/^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(value)) throw pciErrors.validation("requestedSlug must contain lowercase letters, digits, and internal hyphens only.");
+  if (!/^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(value)) throw pciErrors.validation("Check the tenant slug.", {requestedSlug:"Use lowercase letters, digits, and internal hyphens only (up to 40 characters)."});
   return `${value}-${cfg.tenantHostSuffix}.${cfg.baseDomain}`;
 }
 function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }

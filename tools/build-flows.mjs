@@ -10,7 +10,7 @@ const releaseVersion = (await readFile(path.join(root, "VERSION"), "utf8")).trim
 const sharedUrlSource = await readFile(path.join(root, "shared", "public-url.js"), "utf8");
 const sharedUrl = sharedUrlSource.replace(/^export\s+(?=(?:async\s+)?function|const|let|var|class)/gm, "");
 const commonBase = (await readFile(path.join(root, "backend", "functions", "_common.js"), "utf8")).replaceAll("__FAP_PCI_VERSION__", releaseVersion);
-const common = commonBase+'\n'+await readFile(path.join(root,'backend/functions/_identity.js'),'utf8');
+const common = commonBase+'\n'+await readFile(path.join(root,'backend/functions/_identity.js'),'utf8')+'\n'+await readFile(path.join(root,'backend/functions/_bridge.js'),'utf8');
 const sr2Files = ['domain.js','assets.js','participant-security.js','store.js','adapters.js','wire.js','transport.js','profiles.js','sdjwt.js','linked-data.js','native.js','history.js','semantics.js','service.js','revocation.js','issuance.js','presentation.js','maintenance.js','runtime.js','http.js'];
 let sr2Source = (await Promise.all(sr2Files.map(file => readFile(path.join(root,'backend','sr2',file),'utf8')))).map(source => source.replace(/^export \{.*\} from .*;\s*$/gm,'').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'')).join('\n');
 sr2Source=sr2Source.replaceAll('__PCI_SR2_BUILD_ID__',createHash('sha256').update(sr2Source).digest('hex'));
@@ -136,6 +136,7 @@ const moduleSpecs = [
     info: "Keycloak Authorization Code + PKCE, ID-token verification, tenant-host binding, role enforcement and server-side ORCE sessions.",
     requirements: ["FR-PCI-30", "FR-PCI-33", "FR-PCI-39", "FR-PCI-40", "FR-PCI-69", "FR-PCI-72"],
     routes: [
+      ["auth-bridge", "POST browser bridge session", "post", "/api/v1/auth/bridge", "auth.bridge"],
       ["auth-config", "GET OIDC config", "get", "/api/v1/auth/config", "auth.config"],
       ["auth-exchange", "POST OIDC exchange", "post", "/api/v1/auth/oidc/exchange", "auth.exchange"],
       ["auth-session", "GET session", "get", "/api/v1/auth/session", "auth.session"],
@@ -207,40 +208,21 @@ async function buildBase() {
   const ui = {
     id: id("uibuilder:ui"), type: "uibuilder", z, name: "FAP PCI uibuilder", topic: "", url: "ui", okToGo: true,
     fwdInMessages: false, allowScripts: false, allowStyles: false, copyIndex: true, templateFolder: "blank", extTemplate: "", showfolder: false,
-    reload: false, sourceFolder: "src", deployedVersion: "7.5.0", showMsgUib: false, title: "FACIS FAP PCI", descr: "ORCE/uibuilder tenant management", editurl: "", x: 190, y: 180, wires: [[], []],
+    reload: false, sourceFolder: "src", deployedVersion: "7.5.0", showMsgUib: true, title: "FACIS FAP PCI", descr: "ORCE/uibuilder tenant management", editurl: "", x: 190, y: 180, wires: [[], []],
   };
-  const normalize = {
-    id: id("function:base:normalize"), type: "function", z, name: "Normalize uibuilder request",
-    func: `msg.pciTransport = "uibuilder";
-const body = msg.payload && typeof msg.payload === "object" && !Buffer.isBuffer(msg.payload) ? msg.payload : {};
-const handshakeCandidates = [
-  msg && msg._uib && msg._uib.handshake && msg._uib.handshake.headers,
-  msg && msg._uib && msg._uib.socket && msg._uib.socket.handshake && msg._uib.socket.handshake.headers,
-  msg && msg._socket && msg._socket.handshake && msg._socket.handshake.headers,
-  msg && msg.socket && msg.socket.handshake && msg.socket.handshake.headers,
-  msg && msg._client && msg._client.handshake && msg._client.handshake.headers,
-];
-const trustedHeaders = handshakeCandidates.find((candidate) => candidate && typeof candidate === "object" && !Array.isArray(candidate)) || {};
-const observedHost = trustedHeaders["x-forwarded-host"] || trustedHeaders.host || "";
-// These names can arrive in a browser-authored uibuilder message. Clear them
-// before attaching the server-observed transport context.
-delete msg.pciInternal;
-delete msg.pciObservedHost;
-delete msg.pciTrustedHeaders;
-if (observedHost) msg.pciObservedHost = String(observedHost);
-msg.pciTrustedHeaders = trustedHeaders;
-msg.route = String(msg.route || body.route || "");
-msg.pciAction = String(msg.pciAction || msg.type || body.type || "");
-const candidateData = msg.data && typeof msg.data === "object" ? msg.data : (body.data && typeof body.data === "object" ? body.data : {});
-msg.data = { ...candidateData };
-for (const unsafeKey of ["host", "hostname", "origin", "context", "location", "locationHost", "locationHostname", "publicUrl", "basePath", "orceBasePath"]) delete msg.data[unsafeKey];
-delete msg.host;
-delete msg.hostname;
-delete msg.origin;
-if (msg.route === "status" && msg.pciAction === "subscribe") { msg.route = "platform"; msg.pciAction = "platform.status"; }
-return msg;`,
-    outputs: 1, timeout: "", noerr: 0, initialize: "", finalize: "", libs: [], x: 470, y: 180, wires: [[]],
-  };
+  const browserRoutes = moduleSpecs.flatMap(spec => (spec.routes || []).filter(r =>
+    r[3].startsWith('/api/v1/') && !r[4].startsWith('auth.') && !r[4].startsWith('internal.') &&
+    !['public.asset','asset.get'].includes(r[4])
+  ).map(r => {
+    const params = [];
+    const pattern = '^' + r[3].split('/').map(segment => {
+      if (segment.startsWith(':')) { params.push(segment.slice(1)); return '([^/]+)'; }
+      return segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }).join('/') + '$';
+    return { method:r[2], pattern, params, action:r[4], route:spec.route };
+  }));
+  const normalize = functionNode(z, 'base:normalize', 'Validate and route browser command',
+    `return pciNormalizeCommand(${JSON.stringify(browserRoutes)});`, 470, 180);
   const routeValues = moduleSpecs.map((spec) => spec.route);
   const router = {
     id: id("switch:base:router"), type: "switch", z, name: "Route uibuilder module", property: "route", propertyType: "msg",
@@ -249,6 +231,7 @@ return msg;`,
   };
   ui.wires[0] = [normalize.id];
   normalize.wires[0] = [router.id];
+  normalize.wires[1] = [ui.id];
   nodes.push(ui, normalize, router);
   routeValues.forEach((route, index) => {
     const output = linkOut(z, `base:${route}`, `→ ${route}`, 1040, 100 + index * 45, [id(`link-in:${moduleSpecs[index].key}:uib-in`)]);
