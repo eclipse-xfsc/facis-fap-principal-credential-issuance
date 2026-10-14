@@ -1,7 +1,7 @@
 // Node-RED glue. Runtime state lives on the process-owned pg Pool object;
 // tokens are never written to Node-RED's configurable persistent context.
 function pciRuntime(){
-  const pool=getPool(),buildId='__PCI_SR2_BUILD_ID__';if(pool.pciNative?.buildId===buildId)return pool.pciNative;if(pool.pciNative){pool.pciNative.nats.close();delete pool.pciNative;}
+  const pool=getPool(),buildId='__PCI_SR2_BUILD_ID__';if(pool.pciNative?.buildId===buildId)return pool.pciNative;if(pool.pciNative){pool.pciNative.service?.clearJourneyInputs?.();pool.pciNative.nats.close();delete pool.pciNative;}
   const transport=pciNativeTransport({env:envValue,namespace:cfg.ocmNamespace,services:cfg.ocmServices,readFile:file=>fs.readFileSync(file)});
   const nats=new PciNats({handshakeFirst:envBool('PCI_NATS_TLS_HANDSHAKE_FIRST',false),tls:transport.natsTls,url:envValue('PCI_NATS_URL',`nats://nats.${cfg.infrastructureNamespace}.svc.cluster.local:4222`),user:envValue('PCI_NATS_USER'),password:envValue('PCI_NATS_PASSWORD'),token:envValue('PCI_NATS_TOKEN')});
   const runtime={buildId,nats,transport,subscription:null,connecting:null,metrics:new Map(),nonces:new Map()};

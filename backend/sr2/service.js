@@ -3,6 +3,7 @@ import { Sr2Error, sr2IsError, sr2Assert, sr2Fail, sr2Text, sr2Uuid, sr2Integer,
 import { sr2Png } from './assets.js';
 import { sr2PrincipalStatement } from './history.js';
 import { sr2SemanticTemplate } from './semantics.js';
+import { sr2JourneyBindings } from './journey-input.js';
 
 export function createSr2Service({store, adapters, now=Date.now, pepper, allowedHosts=[], issuerUrl, assetUrl}) {
   const hashSubject=(tenantId,subject)=>crypto.createHmac('sha256',pepper).update(tenantId+'\0'+subject).digest('hex');
@@ -37,7 +38,7 @@ export function createSr2Service({store, adapters, now=Date.now, pepper, allowed
     if(r.kind==='configuration'){
       for(const id of [d.logoAssetId,d.backgroundAssetId].filter(Boolean))await referencedAsset(tx,id,r.id);
       if(d.connectorId){const c=await connectorAccess(tx,d.connectorId,r.id);const cd=c.activeVersion?await tx.version('connector',c.id,c.activeVersion):c.draft;sr2Assert(cd.signingModes.includes(d.signingMode),'Connector does not support the signing mode.');}
-      if(d.flowId){const f=await get(tx,'flow',d.flowId);sr2Assert(f.configurationId===r.id && f.state!=='archived','Flow ownership mismatch.');}
+      if(d.flowId){const f=await get(tx,'flow',d.flowId);sr2Assert(f.configurationId===r.id && f.state!=='archived','Flow ownership mismatch.');sr2JourneyBindings(d,publish && f.activeVersion?await tx.version('flow',f.id,f.activeVersion):f.draft);}
       if(publish){
         const c=d.connectorId?await tx.get('connector',d.connectorId):null,f=d.flowId?await tx.get('flow',d.flowId):null,m=await tx.get('metadata',r.tenantId);
         const missing=[];
@@ -46,6 +47,9 @@ export function createSr2Service({store, adapters, now=Date.now, pepper, allowed
         if(!m?.activeVersion)missing.push('save and activate issuer metadata in Tenant settings');
         if(missing.length)sr2Fail(400,'PCI-CONFIG-PREREQUISITES','Before publishing this configuration: '+missing.join('; ')+'.');
         const md=await tx.version('metadata',m.id,m.activeVersion);sr2Assert(md.profile===d.profile,'Issuer and configuration profiles differ.');}
+    } else if(r.kind==='flow'){
+      const c=await get(tx,'configuration',r.configurationId);sr2JourneyBindings(c.draft,d);
+      if(publish && c.activeVersion)sr2JourneyBindings(await tx.version('configuration',c.id,c.activeVersion),d);
     } else if(r.kind==='connector'){for(const cid of r.draft.configurationIds || [])await get(tx,'configuration',cid);
     } else if(r.kind==='metadata' && publish){for(const c of await tx.list('configuration'))if(c.activeVersion && c.state!=='archived')sr2Assert((await tx.version('configuration',c.id,c.activeVersion)).profile===d.profile,'Archive incompatible published configurations before changing issuer profile.');
     } else if(r.kind==='branding' && d.logoAssetId)await referencedAsset(tx,d.logoAssetId,null);

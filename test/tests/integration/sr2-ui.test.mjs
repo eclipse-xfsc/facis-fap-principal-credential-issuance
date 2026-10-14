@@ -70,3 +70,15 @@ test('refresh restores the server request and step while keeping answers and off
  const again=component();await again.refresh();assert.equal(again.journey.value.request.state,'offered');assert.equal(again.offer.value,null);assert.equal(again.currentStep.value,null);assert.match(again.notice.value,/not stored/);
  assert.equal([...saved.values()].some(value=>/offerUrl|never persist/.test(value)),false);
 });
+
+test('the UI restores lost manual input after restart without storing its value or preparing an offer',async()=>{
+ const f=fixture(),prepared=await f.prepared(),p=f.principal('principal'),http=httpHarness(f,'principal'),saved=new Map();
+ const item=(await f.api.resource(f.principal(),'flow','update',prepared.flow.id,{configurationId:prepared.config.id,data:{...prepared.flow.draft,steps:[prepared.flow.draft.steps[0],{id:'name',type:'input',title:'Full name',text:'',fields:[{name:'name',label:'Full name',required:true}]},prepared.flow.draft.steps.at(-1)]}},prepared.flow.version)).item;await f.publish('flow',item);
+ const props={tenant:{tenantId:alpha,organizationName:'FACIS',state:'active'},session:p};
+ function component(){const {ctx}=vueContext();ctx.onMounted=()=>{};ctx.onUnmounted=()=>{};ctx.window.sessionStorage={getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v)};ctx.request=async(path,options)=>{const r=await http(path,options);if(r.status>=400)throw Object.assign(Error(r.body.detail),{status:r.status,code:r.body.code});return r.body;};ctx.api={};return ctx.component.setup(props);}
+ const ui=component();await ui.start(prepared.config.id);ui.consent.value=true;await ui.next();ui.answers.value={name:'FACIS Private Synthetic Name'};await ui.next();assert.equal(ui.currentStep.value.type,'offer');
+ const {extendSr2Issuance}=await import('../../../backend/sr2/issuance.js');extendSr2Issuance(f.api);await ui.prepareOffer();
+ assert.equal(ui.currentStep.value.type,'input');assert.match(ui.notice.value,/Enter them again/);assert.equal(ui.offer.value,null);assert.deepEqual(f.calls,[]);assert.equal([...saved.values()].some(v=>v.includes('FACIS Private Synthetic Name')),false);
+ ui.answers.value={name:'FACIS Re-entered Name'};await ui.next();await ui.prepareOffer();assert.ok(ui.offer.value?.offerUrl);
+ extendSr2Issuance(f.api);const fresh=component();await fresh.refresh();assert.equal(fresh.journey.value.request.state,'offered');assert.match(fresh.notice.value,/Start a new credential request/);assert.equal(fresh.offer.value,null);
+});

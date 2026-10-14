@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { createPciNativeAdapters } from './native.js';
-import { sr2Assert, sr2Fail, sr2Object, sr2Text, sr2Claims, sr2Hash } from './domain.js';
+import { sr2Assert, sr2Fail, sr2Object, sr2Text, sr2Claims, sr2Hash, sr2ExpectedClaims } from './domain.js';
 
 // An unconfigured adapter is fail-closed. Production uses the source-pinned
 // native adapter with explicit transport and trust dependencies.
@@ -44,6 +44,7 @@ export function sr2VerifyCredential(token,configuration,context,jwks,now=Date.no
   sr2Assert(sr2Hash([...vc.type].sort())===sr2Hash([...configuration.credentialTypes].sort()),'Credential type/configuration mismatch.');
   sr2Assert(vc.issuer===context.issuer || vc.issuer?.id===context.issuer,'Credential issuer mismatch.');
   const cs=vc.credentialSubject;sr2Assert(cs && cs.id===context.subject,'Credential subject binding failed.');const {id,...values}=cs;sr2Claims({subject:id,claims:values},configuration,context.subject);
+  sr2ExpectedClaims(values,context.expectedClaims);
   sr2Assert(sr2Hash(vc.credentialStatus)===sr2Hash(context.status),'Credential status binding failed.');
   if(context.holderBinding)sr2Assert(sr2Hash(claims.cnf)===sr2Hash(context.holderBinding),'Credential holder binding failed.');
   sr2Assert(!Object.hasOwn(claims,'crit'),'Unsupported critical credential extension.');

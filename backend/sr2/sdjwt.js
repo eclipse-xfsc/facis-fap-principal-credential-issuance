@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import {sr2Assert,sr2Hash,sr2Claims,sr2Text} from './domain.js';
+import {sr2Assert,sr2Hash,sr2Claims,sr2Text,sr2ExpectedClaims} from './domain.js';
 import {sr2VerifyJwt} from './adapters.js';
 
 // Only formatting happens here. Every issuer signature is produced by TSA.
@@ -37,6 +37,7 @@ export function sr2VerifySdJwt(credential,configuration,context,jwks,now=Date.no
   sr2Assert(digests.size===0,'Participant issuance must supply all claim disclosures.');
   const claims=Object.fromEntries(configuration.claims.filter(c=>Object.hasOwn(doc,c.name)).map(c=>[c.name,doc[c.name]]));
   sr2Claims({subject:doc.sub,claims},configuration,context.subject);
+  sr2ExpectedClaims(claims,context.expectedClaims);
   sr2Text(doc.jti,1024);sr2Assert(/^[A-Za-z][A-Za-z0-9+.-]*:[^\s]+$/.test(doc.jti),'SD-JWT credential ID must be a URI.');
   return {credentialId:doc.jti};
 }

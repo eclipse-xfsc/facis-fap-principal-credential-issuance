@@ -3,13 +3,19 @@ import crypto from 'node:crypto';
 import { sr2Assert, sr2Fail, sr2Text, sr2Uuid, sr2Object, sr2Integer, sr2Eligible, sr2Claims, sr2OneOf, sr2Correlation, sr2Hash } from './domain.js';
 import { sr2Deadline, sr2Retry } from './adapters.js';
 import { sr2HolderDid } from './history.js';
+import {createSr2JourneyInputs,sr2JourneyBindings,sr2JourneyValues,sr2ParticipantConfiguration} from './journey-input.js';
 
 export function extendSr2Issuance(api) {
   const {store,adapters,now,authorize,get,event,hashSubject,connectorAccess}=api;
+  const inputs=createSr2JourneyInputs(now);
+  api.clearJourneyInputs=()=>inputs.clear();
+  api.pruneJourneyInputs=(tenantId,active=true)=>{inputs.prune();if(!active)inputs.clearTenant(tenantId);};
+  const lifecycle=api.lifecycle;
+  api.lifecycle=async(p,...args)=>{const result=await lifecycle(p,...args);inputs.clearTenant(p.tenantId);return result;};
   const safeRequest=r=>({requestId:r.id,configurationId:r.configurationId,configurationVersion:r.configurationVersion,flowVersion:r.flowVersion,state:r.state,step:r.step,expiresAt:r.expiresAt,errorCode:r.errorCode || null});
-  async function assertOwner(tx,p,r){await authorize(tx,p,'principal');if(!r || r.subjectHash!==hashSubject(p.tenantId,p.subject))sr2Fail(404,'PCI-SR2-NOT-FOUND');}
+  async function assertOwner(tx,p,r){try{await authorize(tx,p,'principal');}catch(error){if(r?.tenantId===p?.tenantId && r.subjectHash===hashSubject(p.tenantId,p.subject))inputs.drop(r);throw error;}if(!r || r.subjectHash!==hashSubject(p.tenantId,p.subject))sr2Fail(404,'PCI-SR2-NOT-FOUND');}
   async function pinned(tx,r){const configuration=await tx.version('configuration',r.configurationId,r.configurationVersion),flow=await tx.version('flow',r.flowId,r.flowVersion),connector=await tx.version('connector',r.connectorId,r.connectorVersion),metadata=await tx.version('metadata',r.tenantId,r.metadataVersion);if(!configuration||!flow||!connector||!metadata)sr2Fail(503,'PCI-SR2-PIN-MISSING','A pinned dependency is unavailable.');return {configuration,flow,connector,metadata};}
-  async function setState(p,id,state,errorCode=null){return store.transaction(p.tenantId,async tx=>{const r=await tx.request(id);if(!r)return;r.state=state;r.errorCode=errorCode;await tx.saveRequest(r);await event(tx,p,state,r.configurationId,r);return r;});}
+  async function setState(p,id,state,errorCode=null){const r=await store.transaction(p.tenantId,async tx=>{const r=await tx.request(id);if(!r)return;r.state=state;r.errorCode=errorCode;await tx.saveRequest(r);await event(tx,p,state,r.configurationId,r);return r;});if(r && state==='indeterminate')inputs.drop(r);return r;}
   api.eligible=async p=>store.transaction(p.tenantId,async tx=>{const principal=await authorize(tx,p,'principal'),items=[];for(const c of await tx.list('configuration'))if(c.state!=='archived' && c.activeVersion){const d=await tx.version('configuration',c.id,c.activeVersion);if(sr2Eligible(d,principal) && !await tx.blocked(c.id,hashSubject(p.tenantId,p.subject)))items.push({id:c.id,name:d.name,description:d.description,format:d.format,version:c.activeVersion});}return {items};});
   api.start=async(p,configurationId,idempotencyKey)=>store.transaction(p.tenantId,async tx=>{
     const principal=await authorize(tx,p,'principal');sr2Uuid(configurationId);sr2Text(idempotencyKey,128);sr2Assert(idempotencyKey.length>=16,'Use an unpredictable idempotency key.');
@@ -21,26 +27,27 @@ export function extendSr2Issuance(api) {
     const flow=await get(tx,'flow',configuration.flowId),connector=await connectorAccess(tx,configuration.connectorId,c.id),metadata=await get(tx,'metadata',p.tenantId);
     sr2Assert(flow.activeVersion && connector.activeVersion && metadata.activeVersion && flow.state!=='archived' && connector.state!=='archived','Published dependencies are required.');
     sr2Assert((await tx.version('connector',connector.id,connector.activeVersion)).signingModes.includes(configuration.signingMode) && (await tx.version('metadata',metadata.id,metadata.activeVersion)).profile===configuration.profile,'Published dependency compatibility changed.');
+    sr2JourneyBindings(configuration,await tx.version('flow',flow.id,flow.activeVersion));
     const settings=await tx.get('settings',p.tenantId);await tx.rate('offers',Math.floor(now()/60000),settings?.draft.ratePerMinute || 30);await tx.rate('configuration:'+c.id,Math.floor(now()/60000),configuration.ratePerMinute);
     const r={id:crypto.randomUUID(),tenantId:p.tenantId,configurationId:c.id,configurationVersion:c.activeVersion,flowId:flow.id,flowVersion:flow.activeVersion,connectorId:connector.id,connectorVersion:connector.activeVersion,metadataVersion:metadata.activeVersion,subjectHash,idempotencyHash:key,state:'journey',step:0,expiresAt:now()+600000,createdAt:now()};
     await tx.bindPrincipal(subjectHash,p.subject);await tx.saveRequest(r);await event(tx,p,'requested',c.id,r);return {request:safeRequest(r),flow:(await pinned(tx,r)).flow};
   });
-  api.advance=async(p,requestId,input)=>store.transaction(p.tenantId,async tx=>{
+  api.advance=async(p,requestId,input)=>{let undo;try{return await store.transaction(p.tenantId,async tx=>{
     sr2Object(input,['step','consent','values']);const r=await tx.request(sr2Uuid(requestId));await assertOwner(tx,p,r);sr2Correlation(r,{tenantId:p.tenantId,configurationId:r.configurationId,subjectHash:hashSubject(p.tenantId,p.subject)},now());
-    sr2Assert(r.state==='journey' && input.step===r.step,'Journey step changed; reload the request.');const {flow}=await pinned(tx,r),step=flow.steps[r.step];sr2Assert(step && step.type!=='offer','Journey is ready for its offer.');
+    sr2Assert(r.state==='journey' && input.step===r.step,'Journey step changed; reload the request.');const {flow,configuration}=await pinned(tx,r),step=flow.steps[r.step],bindings=sr2JourneyBindings(configuration,flow);inputs.assert(r,bindings);sr2Assert(step && step.type!=='offer','Journey is ready for its offer.');
     if(step.type==='consent' && input.consent!==true){try{sr2Fail(400,'PCI-SR2-VALIDATION','Consent is required.');}catch(error){error.fields={consent:'Consent is required.'};throw error;}}
-    if(step.type==='input'){const values=sr2Object(input.values || {},step.fields.map(f=>f.name));for(const f of step.fields)if(f.required || Object.hasOwn(values,f.name)){try{sr2Text(values[f.name],2000,!f.required);}catch(error){error.fields={[f.name]:'Enter '+f.label+' (up to 2000 characters).'};throw error;}}}
-    // Answers remain transient. Persist progress only, never survey text/claims.
-    r.step++;await tx.saveRequest(r);return {request:safeRequest(r),flow};
-  });
-  api.request=async(p,id)=>store.transaction(p.tenantId,async tx=>{const r=await tx.request(sr2Uuid(id));await assertOwner(tx,p,r);return {request:safeRequest(r),flow:(await pinned(tx,r)).flow};});
+    if(step.type==='input'){const values=sr2Object(input.values || {},step.fields.map(f=>f.name));for(const f of step.fields)if(f.required || Object.hasOwn(values,f.name)){try{sr2Text(values[f.name],2000,!f.required);}catch(error){error.fields={[f.name]:'Enter '+f.label+' (up to 2000 characters).'};throw error;}}const mapping=bindings.find(b=>b.step===r.step);if(mapping)undo=inputs.put(r,r.step,sr2JourneyValues(mapping,values));}
+    // Only mapped claims live in bounded process memory. SQL stores progress.
+    r.step++;r.errorCode=null;await tx.saveRequest(r);return {request:safeRequest(r),flow};
+  });}catch(error){undo?.();throw error;}};
+  api.request=async(p,id)=>store.transaction(p.tenantId,async tx=>{const r=await tx.request(sr2Uuid(id));await assertOwner(tx,p,r);const {flow,configuration}=await pinned(tx,r);if(['journey','offered'].includes(r.state) && r.expiresAt>now()){const missing=inputs.missing(r,sr2JourneyBindings(configuration,flow));if(missing){if(r.state==='journey')r.step=missing.step;r.errorCode='PCI-SR2-INPUT-LOST';await tx.saveRequest(r);}}return {request:safeRequest(r),flow};});
   api.offer=async(p,id,progress=()=>{})=>{
     const ctx=await store.transaction(p.tenantId,async tx=>{
       const r=await tx.request(sr2Uuid(id));await assertOwner(tx,p,r);sr2Correlation(r,{tenantId:p.tenantId,configurationId:r.configurationId,subjectHash:hashSubject(p.tenantId,p.subject)},now());
       if(r.state!=='journey')sr2Fail(409,'PCI-SR2-REPLAY','An offer has already been prepared; begin a new request if it was lost.');
       await connectorAccess(tx,r.connectorId,r.configurationId);const c=await get(tx,'configuration',r.configurationId);sr2Assert(c.state!=='archived','Configuration is archived.');const pin=await pinned(tx,r),principal=await authorize(tx,p,'principal');
       sr2Assert(sr2Eligible(pin.configuration,principal) && !await tx.blocked(c.id,r.subjectHash),'Issuance eligibility no longer holds.');
-      sr2Assert(pin.flow.steps[r.step]?.type==='offer','Complete the journey before creating an offer.');await adapters.assertReady(pin);
+      sr2Assert(pin.flow.steps[r.step]?.type==='offer','Complete the journey before creating an offer.');inputs.assert(r,sr2JourneyBindings(pin.configuration,pin.flow));await adapters.assertReady(pin);
       r.state='preparing';await tx.saveRequest(r);return {r,...pin};
     });
     try {
@@ -65,8 +72,10 @@ export function extendSr2Issuance(api) {
       const circuit=await tx.circuit(r.connectorId);
       if(circuit.openUntil>now())sr2Fail(503,'PCI-SR2-CIRCUIT-OPEN','Participant connector is temporarily paused.');
       if(circuit.openUntil){circuit.probe=r.id;circuit.openUntil=now()+pin.connector.timeoutMs+1000;await tx.saveCircuit(r.connectorId,circuit);}
-      r.state='processing';await tx.saveRequest(r);return {r,...pin,tenant:tx.tenant};
+      const bindings=sr2JourneyBindings(pin.configuration,pin.flow),journeyClaims=inputs.read(r,bindings);
+      r.state='processing';await tx.saveRequest(r);return {r,...pin,bindings,journeyClaims,participantConfiguration:sr2ParticipantConfiguration(pin.configuration,bindings),tenant:tx.tenant};
     });
+    inputs.drop(ctx.r);
     const deadline=Math.min(ctx.r.expiresAt,now()+ctx.connector.timeoutMs);
     const transient={...ctx,principal:p,participantJwt,holderBinding,deadline};
     let participantFailed=false,participantSettled=false;
@@ -106,7 +115,11 @@ export function extendSr2Issuance(api) {
       let response=await participantCall(()=>sr2Retry(()=>adapters.getParticipantData(transient),ctx.connector.attempts,deadline,now));
       await settleCircuit('success');
       sr2OneOf(response,ctx.configuration.signingMode,id);await setState(p,id,'participant_data_received');
-      if(ctx.configuration.signingMode==='internal-signing'){sr2Claims(response.unsignedData,ctx.configuration,p.subject);status=await allocate();}
+      if(ctx.configuration.signingMode==='internal-signing'){
+        sr2Claims(response.unsignedData,ctx.participantConfiguration,p.subject);
+        const claims={...response.unsignedData.claims};for(const b of ctx.bindings)for(const f of b.fields)delete claims[f.name];Object.assign(claims,ctx.journeyClaims);
+        response.unsignedData={subject:response.unsignedData.subject,claims};sr2Claims(response.unsignedData,ctx.configuration,p.subject);transient.data=response.unsignedData;status=await allocate();
+      }
       let credential;
       if(ctx.configuration.signingMode==='internal-signing'){credential=await sr2Deadline(()=>adapters.sign({...transient,status,data:response.unsignedData}),deadline,now);await setState(p,id,'signed');}
       else credential=response.signedCredential;
@@ -118,7 +131,7 @@ export function extendSr2Issuance(api) {
       const final=await store.transaction(p.tenantId,async tx=>{await assertOwner(tx,p,await tx.request(id));await connectorAccess(tx,ctx.r.connectorId,ctx.r.configurationId);const c=await get(tx,'configuration',ctx.r.configurationId);sr2Assert(c.state!=='archived' && sr2Eligible(ctx.configuration,await authorize(tx,p,'principal')) && !await tx.blocked(c.id,ctx.r.subjectHash),'Issuance was cancelled during processing.');const r=await tx.request(id);sr2Assert(r.expiresAt>now(),'Request expired.');r.state='issued';r.credentialId=verified.credentialId;r.holderDid=sr2HolderDid(holderBinding);await tx.saveRequest(r);await event(tx,p,'issued',r.configurationId,r);return {credential,format:ctx.configuration.format};});
       response=null;credential=null;return final;
     }catch(e){if(!participantSettled)await settleCircuit(participantFailed?'failure':'neutral');await setState(p,id,'indeterminate','PCI-SR2-ISSUANCE-FAILED');throw e;}
-    finally {transient.participantJwt=undefined;transient.holderBinding=undefined;}
+    finally {inputs.drop(ctx.r);transient.participantJwt=undefined;transient.holderBinding=undefined;transient.data=undefined;transient.journeyClaims=undefined;ctx.journeyClaims=undefined;}
   };
   return extendSr2Revocation(api,pinned);
 }

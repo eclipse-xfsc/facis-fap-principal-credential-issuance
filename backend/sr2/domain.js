@@ -118,6 +118,9 @@ export function sr2Claims(data, configuration, subject) {
   for(const c of configuration.claims) {sr2Assert(!c.required || Object.hasOwn(claims,c.name),'A required claim is absent.'); if(Object.hasOwn(claims,c.name)) sr2Assert(typeof claims[c.name] === c.type && (c.type !== 'string' || claims[c.name].length <= 2000) && (c.type !== 'number' || Number.isFinite(claims[c.name])),'Claim type or size is invalid.');}
   return data;
 }
+export function sr2ExpectedClaims(claims,expected) {
+  if(expected!==undefined)sr2Assert(sr2Hash(claims)===sr2Hash(expected),'Signed claim values differ from the validated issuance data.');
+}
 export function sr2OneOf(response, mode, requestId) {
   sr2Object(response,['requestId','unsignedData','signedCredential']);
   sr2Assert(response.requestId === requestId,'Participant correlation mismatch.');

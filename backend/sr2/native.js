@@ -2,7 +2,7 @@ import {pciLdpContext,pciLdpSubject} from './linked-data.js';
 export {pciLdpContext} from './linked-data.js';
 import {pciSdJwtPayload,sr2VerifySdJwt} from './sdjwt.js';
 import crypto from 'node:crypto';
-import { sr2Assert, sr2Fail, sr2Claims, sr2Hash, sr2Text } from './domain.js';
+import { sr2Assert, sr2Fail, sr2Claims, sr2Hash, sr2Text, sr2ExpectedClaims } from './domain.js';
 import { sr2CommonRequest, sr2VerifyJwt, sr2VerifyCredential } from './adapters.js';
 import { pciEvent, pciReply, pciHttp, pciGrpc } from './wire.js';
 import { sr2TlsMaterial, sr2ResolvedParticipant } from './participant-security.js';
@@ -101,7 +101,7 @@ export function createPciNativeAdapters(options){
   function context(t){return {namespace:o.cryptoNamespace || t.r.tenantId,group:o.cryptoNamespace ? t.r.tenantId : 'default',key:t.configuration.keyRef,did:t.metadata.did,origin:t.metadata.issuer};}
   async function jwk(t,algorithm='ES256'){const c=context(t),result=await native(o.signerUrl,`/v1/jwk/${encodeURIComponent(c.namespace)}/${encodeURIComponent(c.key)}`,{body:{group:c.group,engine:'transit'}});return pciNativeSigningKey(result,{...c,algorithm});}
   async function signedJwt(t,payload,typ='JWT'){const c=context(t),kid=c.did+'#'+c.key;const req={...sr2CommonRequest(t.r.tenantId,t.r.id),namespace:c.namespace,group:c.group,key:c.key,payload:Buffer.from(JSON.stringify(payload)).toString('base64'),header:Buffer.from(JSON.stringify({typ,kid})).toString('base64')};const r=await message(o.signerTopic || 'signer-topic','signer.signToken',req);return Buffer.from(r.token,'base64').toString('utf8');}
-  async function participant(t,method){const material=await sr2TlsMaterial(t.connector,{...t.tenant,namespace:o.namespace},o.readSecret),address=await sr2ResolvedParticipant(t.connector,o.lookup,o.approvedPrivateAddresses || []);return (o.grpc || pciGrpc)(t.connector,material,address,method,{protocolVersion:'participant-v1',tenantId:t.r.tenantId,configurationId:t.r.configurationId,requestId:t.r.id,subject:t.principal.subject,participantSubject:t.participantSubject || t.principal.subject,participantJwt:t.participantJwt,configuration:t.configuration,issuer:t.metadata.did,holderBinding:t.holderBinding,status:t.status?.entry || null,deadline:new Date(t.deadline).toISOString(),signingContext:context(t)},t.deadline);}
+  async function participant(t,method){const material=await sr2TlsMaterial(t.connector,{...t.tenant,namespace:o.namespace},o.readSecret),address=await sr2ResolvedParticipant(t.connector,o.lookup,o.approvedPrivateAddresses || []);return (o.grpc || pciGrpc)(t.connector,material,address,method,{protocolVersion:'participant-v1',tenantId:t.r.tenantId,configurationId:t.r.configurationId,requestId:t.r.id,subject:t.principal.subject,participantSubject:t.participantSubject || t.principal.subject,participantJwt:t.participantJwt,configuration:t.participantConfiguration || t.configuration,issuer:t.metadata.did,holderBinding:t.holderBinding,status:t.status?.entry || null,deadline:new Date(t.deadline).toISOString(),signingContext:context(t)},t.deadline);}
   const api={
     capabilities:()=>({ready:Boolean(nats && o.signerUrl && o.statusUrl && o.wellKnownUrl),adapter:'ocm-esb-12.3.9',profiles:['oid4vci-draft13','oid4vci-1.0'],formats:['jwt_vc_json','ldp_vc','vc+sd-jwt','dc+sd-jwt'],participantProtocol:'participant-v1',emptyCatalogue:o.emptyCatalogue===true,presentationProfiles:['oid4vp-draft13','oid4vp-1.0'],presentationFormats:['jwt_vc_json']}),
     async assertReady(pin){required();sr2Assert(pin.connector.protocolVersion==='participant-v1','Unsupported participant protocol.');await nats.connect?.();},
@@ -159,7 +159,7 @@ export function createPciNativeAdapters(options){
       const signed=await native(o.signerUrl,'/v1/credential/proof',{method:'POST',body:{namespace:c.namespace,group:c.group,key:c.key,credential,format:'ldp_vc',signatureType:'jsonwebsignature2020',nonce:sr2Hash(t.holderBinding),status:false,'x-tenantid':t.r.tenantId,'x-groupid':'','x-origin':c.origin,'x-did':c.did},deadline:t.deadline});return typeof signed==='string'?signed:JSON.stringify(signed);
     },
     async verifySigned(t){
-      const c=context(t),binding={issuer:c.did,subject:t.principal.subject,kid:c.did+'#'+c.key,status:t.status.entry,holderBinding:t.holderBinding};
+      const c=context(t),binding={issuer:c.did,subject:t.principal.subject,kid:c.did+'#'+c.key,status:t.status.entry,holderBinding:t.holderBinding,expectedClaims:t.data?.claims};
       if(t.configuration.format==='jwt_vc_json'||t.configuration.format.includes('sd-jwt')){
         let algorithm;try{algorithm=JSON.parse(Buffer.from(t.credential.split('.')[0],'base64url')).alg;}catch{sr2Fail(400,'PCI-SR2-VALIDATION','Malformed JWT.');}
         const key=await jwk(t,algorithm),keys={keys:[key]};
@@ -171,6 +171,7 @@ export function createPciNativeAdapters(options){
       const doc=JSON.parse(t.credential);sr2Assert((doc.issuer?.id||doc.issuer)===c.did&&sr2Hash(doc.credentialStatus)===sr2Hash(t.status.entry)&&sr2Hash([...doc.type].sort())===sr2Hash([...t.configuration.credentialTypes].sort()),'Credential issuer, type or status mismatch.');
       sr2Assert(sr2Hash(doc['@context'])===sr2Hash(pciLdpContext(t.configuration,c.origin)),'Linked-data context differs from the declared configuration.');
       const {id,pciClaims,...extra}=doc.credentialSubject||{};sr2Assert(!Object.keys(extra).length && id===pciLdpSubject(t.principal.subject),'Linked-data subject mismatch.');sr2Claims({subject:t.principal.subject,claims:pciClaims},t.configuration,t.principal.subject);
+      sr2ExpectedClaims(pciClaims,binding.expectedClaims);
       const proof=Array.isArray(doc.proof)?doc.proof[0]:doc.proof;sr2Assert(proof?.type==='JsonWebSignature2020'&&proof?.challenge===sr2Hash(t.holderBinding),'Linked-data proof suite or holder binding mismatch.');
       sr2Assert(Number.isFinite(Date.parse(doc.expirationDate))&&Date.parse(doc.expirationDate)>clock()&&Number.isFinite(Date.parse(doc.issuanceDate))&&Date.parse(doc.issuanceDate)<=clock(),'Credential lifetime is invalid.');
       sr2Text(doc.id,1024);sr2Assert(/^[A-Za-z][A-Za-z0-9+.-]*:[^\s]+$/.test(doc.id),'Credential ID must be a URI.');return {credentialId:doc.id};
