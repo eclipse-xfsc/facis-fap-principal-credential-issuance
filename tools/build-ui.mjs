@@ -34,6 +34,9 @@ await mkdir(outDir, { recursive: true });
 await writeFile(path.join(outDir, "index.js"), bundle);
 await copyFile(path.join(root, "src", "index.html"), path.join(outDir, "index.html"));
 await copyFile(path.join(root, "src", "styles.css"), path.join(outDir, "index.css"));
+// FACIS project SVG from eclipse-xfsc/facis-fap-iot-ai:
+// services/ai-insight-ui/ui/app/public/facis-logo.svg (Git blob 9a785cfda459f938b140d394b44bcd79fd56297a).
+await copyFile(path.join(root, "src", "assets", "facis-logo.svg"), path.join(outDir, "facis-logo.svg"));
 const vue = await readFile(path.join(root,'vendor','vue.global.prod.js'));
 const provenance = JSON.parse(await readFile(path.join(root,'vendor','vue-provenance.json'),'utf8'));
 if (createHash('sha256').update(vue).digest('hex') !== provenance.sha256) throw new Error('Vendored Vue digest mismatch');

@@ -879,7 +879,7 @@ const App = {
   <div class="app-shell">
     <a class="skip-link" href="#main" @click.prevent="focusMain">Skip to main content</a>
     <header class="topbar">
-      <a class="brand" :href="runtime.uiPath" aria-label="FACIS FAP PCI home"><span class="brand-mark">FP</span><span><strong>FACIS FAP PCI</strong><small>Principal Credential Issuance</small></span></a>
+      <a class="brand" :href="runtime.uiPath" aria-label="FACIS FAP PCI home"><img class="brand-logo" :src="runtime.uiPath+'facis-logo.svg'" width="106" height="40" alt="FACIS"><span><strong>FAP PCI</strong><small>Principal Credential Issuance</small></span></a>
       <nav aria-label="Primary">
         <a v-if="!isTenantHost" href="#/register">Registration</a>
         <a v-if="!isTenantHost" href="#/provider">Provider review</a>

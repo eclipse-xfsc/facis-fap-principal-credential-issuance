@@ -45,7 +45,7 @@ textarea {min-height:88px; resize:vertical}
 .app-shell {width:100%; max-width:1200px; min-height:700px; margin:max(0px,calc((100vh - 764px)/2)) auto; display:grid; grid-template-rows:auto 1fr auto; background:var(--color-surface); border-radius:var(--radius-shell); overflow:hidden; box-shadow:var(--shadow-soft)}
 .topbar {min-height:72px; padding:var(--space-4) var(--space-5); border-bottom:1px solid var(--color-border); display:flex; align-items:center; justify-content:space-between; gap:var(--space-4)}
 .brand {display:flex; align-items:center; gap:var(--space-3); color:var(--color-text); text-decoration:none}
-.brand-mark {width:40px; height:40px; display:grid; place-items:center; background:var(--color-primary); color:var(--color-surface); border-radius:var(--radius-control); font-weight:700}
+.brand-logo {display:block; width:106px; height:40px; object-fit:contain; flex-shrink:0}
 .brand strong,.brand small {display:block}
 .brand small {color:var(--color-muted); font-size:var(--font-help)}
 nav {display:flex; align-items:center; gap:var(--space-4)}
