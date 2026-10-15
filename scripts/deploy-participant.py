@@ -117,7 +117,7 @@ with tempfile.TemporaryDirectory(prefix='pci-participant-') as temporary:
         def openssl(*args): subprocess.run(['openssl',*args],cwd=tmp,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,check=True)
         openssl('req','-x509','-newkey','rsa:2048','-nodes','-days','365','-subj','/CN=PCI participant test CA','-addext','basicConstraints=critical,CA:TRUE','-keyout','ca.key','-out','ca.crt')
         for role,dns,usage in [('server',server,'serverAuth'),('client',client_dns,'clientAuth')]:
-            openssl('req','-new','-newkey','rsa:2048','-nodes','-subj','/CN='+dns,'-keyout',role+'.key','-out',role+'.csr')
+            openssl('req','-new','-newkey','rsa:2048','-nodes','-subj','/CN=PCI participant '+role,'-keyout',role+'.key','-out',role+'.csr')
             (tmp/(role+'.ext')).write_text('basicConstraints=critical,CA:FALSE\nkeyUsage=critical,digitalSignature,keyEncipherment\nextendedKeyUsage='+usage+'\nsubjectAltName=DNS:'+dns+'\n')
             openssl('x509','-req','-in',role+'.csr','-CA','ca.crt','-CAkey','ca.key','-CAcreateserial','-days','90','-extfile',role+'.ext','-out',role+'.crt')
         secret('participant-tls',{'tls.crt':(tmp/'server.crt').read_bytes(),'tls.key':(tmp/'server.key').read_bytes(),'ca.crt':(tmp/'ca.crt').read_bytes()})
@@ -154,5 +154,5 @@ with tempfile.TemporaryDirectory(prefix='pci-participant-') as temporary:
     if any(current_env.get(e['name'])!=e['value'] for e in updated):
         patch_runtime(k+['-n',a.pci_namespace],deployment,a.orce_container,env=updated)
         subprocess.run(k+['-n',a.pci_namespace,'rollout','status','deployment/'+a.orce_deployment,'--timeout=10m'],check=True)
-connector={'name':'Participant test repository','configurationIds':[a.configuration_id],'endpoint':'https://'+server+':9443','serverName':server,'protocolVersion':'participant-v1','tlsSecret':{'name':trust_name},'trustSecret':{'name':trust_name},'jwtIssuer':issuer,'jwtAudience':a.jwt_audience,'jwtScopes':a.jwt_scopes.split(),'signingModes':['internal-signing']+(['participant-signed'] if a.crypto_endpoint or a.ldp_endpoint else []),'timeoutMs':10000,'attempts':1,'ratePerMinute':10,'circuitFailureThreshold':3,'circuitCooldownMs':30000}
+connector={'name':'Participant test repository','configurationIds':[a.configuration_id],'endpoint':'https://'+server+':9443','serverName':server,'protocolVersion':'participant-v1','tlsSecret':{'name':trust_name},'trustSecret':{'name':trust_name},'jwtIssuer':issuer,'jwtAudience':a.jwt_audience,'jwtScopes':a.jwt_scopes.split(),'signingModes':['internal-signing']+(['participant-signed'] if a.crypto_endpoint else []),'timeoutMs':10000,'attempts':1,'ratePerMinute':10,'circuitFailureThreshold':3,'circuitCooldownMs':30000}
 print(json.dumps({'status':'deployed','participantNamespace':namespace,'connector':connector},indent=2))

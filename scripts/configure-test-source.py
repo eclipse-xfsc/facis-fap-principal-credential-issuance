@@ -72,7 +72,7 @@ def main():
             if not out.is_file() or out.read_text().strip()!=token:raise SourceError('PCI-SOURCE-TOKEN-FILE')
             out.chmod(0o600)
         else:
-            with out.open('x',opener=lambda path,flags:os.open(path,flags,0o600)) as f:f.write(token)
+            with open(out,'x',opener=lambda path,flags:os.open(path,flags,0o600)) as f:f.write(token)
         if secret!=existing:command(['replace' if existing else 'create','-f','-'],secret)
         if changed:
             patch['metadata']={'uid':deployment['metadata']['uid'],'resourceVersion':deployment['metadata']['resourceVersion']}

@@ -108,13 +108,13 @@ function publicHandler({profile='oid4vci-1.0',kind='issuer',empty=false,mutate=(
   throw new Error('Unexpected SQL fixture boundary: '+sql);
  }
  const pool={query,connect:async()=>({query,release(){}})};
- const req={method:kind==='credential'?'POST':'GET',headers:{host:tenant.primary_domain,'x-pci-tenant-id':tid,'x-pci-tenant-slug':'alpha','x-pci-tenant-domain':tenant.primary_domain,'content-type':'application/json'},rawHeaders:[],originalUrl:'/pci-orce/.well-known/openid-credential-issuer'};
+ const req={method:['credential','token','nonce'].includes(kind)?'POST':'GET',headers:{host:tenant.primary_domain,'x-pci-tenant-id':tid,'x-pci-tenant-slug':'alpha','x-pci-tenant-domain':tenant.primary_domain,'content-type':'application/json'},rawHeaders:[],originalUrl:'/pci-orce/.well-known/openid-credential-issuer'};
  const msg={pciTransport:'http',req};
  if(kind==='credential')msg.payload=profile==='oid4vci-1.0'?{credential_configuration_id:'alpha_employee_jwt',proofs:{jwt:['synthetic-proof']}}:{format:'jwt_vc_json',credential_definition:{type:['VerifiableCredential','EmployeeCredential']},proof:{proof_type:'jwt',jwt:'synthetic-proof'}};
  const api=sandbox(name,{msg,pg:{Pool:class {constructor(){return pool;}}},global:{get(){},set(){}},node:{error:value=>errors.push(value),warn:value=>errors.push(value)}});
  msg.pciAction='native.'+kind;
  const native=clone(nativePayload ?? captured);mutate(native);const nativeBefore=JSON.stringify(native);
- pool.pciNative={buildId,nats:{close(){}},metrics:new Map(),service:{store:api.createSr2Store(pool)},transport:{urls:{signer:'http://signer.ocm-wstack.svc.cluster.local:8080',wellKnown:'http://well-known-service.ocm-wstack.svc.cluster.local:8080',issuance:'http://issuance-service.ocm-wstack.svc.cluster.local:8080'},http:async(address,options)=>{
+ pool.pciNative={buildId,nats:{close(){}},metrics:new Map(),service:{store:api.createSr2Store(pool)},transport:{urls:{preAuth:'http://pre-authorization-bridge-service.ocm-wstack.svc.cluster.local:8080',signer:'http://signer.ocm-wstack.svc.cluster.local:8080',wellKnown:'http://well-known-service.ocm-wstack.svc.cluster.local:8080',issuance:'http://issuance-service.ocm-wstack.svc.cluster.local:8080'},http:async(address,options)=>{
   calls.push({address,options});const data=kind==='credential'?{credentials:[{credential:'synthetic-credential'}]}:native;
   return {status:200,data,raw:Buffer.from(JSON.stringify(data)),headers:{'content-type':'application/json'}};
  }}};
@@ -141,6 +141,31 @@ for(const profile of ['oid4vci-1.0','oid4vci-draft13']){
   assert.equal(f.errors.length,0);assert.ok(before.includes('synthetic-proof'));
  });
 }
+test('generated token handler supplies the credential endpoint used as the access-token audience',async()=>{
+ const payload={access_token:'synthetic-access-token',token_type:'Bearer',authorization_details:[{type:'openid_credential',credential_configuration_id:'alpha_employee_jwt',credential_identifiers:['request-dataset']}]};
+ const f=publicHandler({kind:'token',nativePayload:payload});
+ f.msg.req.headers['content-type']='application/x-www-form-urlencoded';
+ f.msg.payload={grant_type:'urn:ietf:params:oauth:grant-type:pre-authorized_code','pre-authorized_code':'synthetic-code',client_id:'test-wallet'};
+ await f.api.handlePciNative();assert.equal(f.msg.statusCode,200,JSON.stringify(f.msg.payload));
+ assert.equal(f.calls.length,1);
+ const call=f.calls[0],issuer=bundle.issuer.issuer;
+ assert.equal(call.address,'http://pre-authorization-bridge-service.ocm-wstack.svc.cluster.local:8080/token');
+ assert.equal(call.options.method,'POST');
+ assert.equal(call.options.headers['x-credentialendpoint'],issuer+'/api/credential');
+ assert.equal(call.options.headers['x-audience-url'],issuer);
+ assert.equal(call.options.headers['x-tokenendpoint'],issuer+'/api/auth/token');
+ assert.equal(call.options.headers['x-tenantid'],tid);
+ assert.equal(new URLSearchParams(call.options.body).get('pre-authorized_code'),'synthetic-code');
+ assert.deepEqual(JSON.parse(f.msg.payload.toString()),payload);
+});
+test('generated credential handler preserves an authorized native dataset identifier and issuer proof audience',async()=>{
+ const f=publicHandler({kind:'credential'});
+ f.msg.payload={credential_identifier:'request-dataset',proofs:{jwt:['synthetic-proof']}};
+ await f.api.handlePciNative();assert.equal(f.msg.statusCode,200,JSON.stringify(f.msg.payload));
+ assert.deepEqual(clone(f.calls[0].options.body),{credential_identifier:'request-dataset',proofs:{jwt:['synthetic-proof']}});
+ assert.equal(f.calls[0].options.headers['x-audience-url'],bundle.issuer.issuer);
+ assert.equal(f.calls[0].options.headers['x-credentialendpoint'],bundle.issuer.issuer+'/api/credential');
+});
 test('generated public issuer handler serializes an empty local catalogue without contacting OCM',async()=>{
  const f=publicHandler({empty:true});await f.api.handlePciNative();assert.equal(f.msg.statusCode,200,JSON.stringify(f.msg.payload));
  assert.deepEqual(clone(f.msg.payload.credential_configurations_supported),{});assert.equal(f.calls.length,0);
