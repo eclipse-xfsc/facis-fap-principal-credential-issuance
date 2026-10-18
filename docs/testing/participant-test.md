@@ -44,7 +44,7 @@ This creates a random shared source token, writes a private mode-0600 token file
 
 ## 2. Build the required repository
 
-Go generation/build has not run in the authoring workspace. Execute this gate before deployment, or use the supplied participant CI job in an approved environment:
+The participant CI job in run `38727256710` passed Go/Goa/protobuf generation, vet, race tests and the generated server build. Reproduce those checks for the selected source revision before packaging a participant image:
 
 ```bash
 bash reference/participant-data-repository/generate.sh

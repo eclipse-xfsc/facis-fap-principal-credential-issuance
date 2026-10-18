@@ -176,5 +176,8 @@
     "Real ORCE/Keycloak/Entra/OCM/NATS/participant/PCM deployments",
     "MkDocs build and semantic JSON-LD/SHACL engine validation",
     "npm install/audit and official Eclipse workflows"
-  ]
+  ],
+  "recordType": "historical-validation",
+  "scope": "Neutral-source authoring checks recorded on 12 October 2026. Use validation.json and ci-evidence.json for subsequent CI results.",
+  "currentValidation": "validation.json"
 }

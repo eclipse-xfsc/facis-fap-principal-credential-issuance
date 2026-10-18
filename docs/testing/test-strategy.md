@@ -1,20 +1,23 @@
-# Testing
+# Test strategy
 
-Local source validation, native integration and contractual acceptance are separate gates.
+PCI provides source tests, actual Chromium UI regressions and deployed XFSC Executor scenarios. Each suite records the system it exercises. Current executed results are in [completion](../release/completion.md) and [CI evidence](../release/ci-evidence.json).
 
-| Suite | What it executes | Limit |
-|---|---|---|
-| `npm run test:static` | Generated Function compilation, routes, RBAC, schemas, URL model and repository checks | Source checks, not Kubernetes admission |
-| `npm run test:bdd` | Real domain/journey/deletion/permission code against transactional test doubles | No actual PostgreSQL or OCM |
-| `npm run test:integration` | HTTP wrapper, Vue renderer, JWT/proof crypto, fragmented NATS loopback and real HTTP/2 mTLS gRPC frames | Local servers; no native image/wallet proof |
-| `npm run test:offline` | All above, deterministic build, shell syntax, secret-literal scan, embedded schema identity | Does not silently label missing toolchains PASS |
-| `test/live/postgres.test.mjs` | Actual schema twice, isolated transactions, tenant scoping, immutable snapshots and competing rate limit calls | Requires `PCI_TEST_DATABASE_URL`; never silently skips |
-| Participant CI | Goa/protobuf generation, build, vet and race tests | Must run with Go/protoc; local result NOT RUN |
-| `test/bdd/features/` | Official XFSC Executor plus Playwright on deployed PCI; readiness, GUI, isolation, redeploy and uninstall | Requires private environment/session files; no mocks |
-| Browser job | Isolated Chromium/Vue component, settings layout, narrow viewport, error persistence and presentation tab | Fixture server; not live OCM/Keycloak or accessibility certification |
-| Native wallet pack | Deployed offer/token/credential and both VP profiles, history, revocation, reissuance and two signing modes | Software test wallet; PCM remains separate |
-| Live matrix | Native services, Keycloak/Entra, PCM, formats/status, clouds, privacy and accessibility | Operator/wallet evidence required |
+| Suite | Execution and scope |
+|---|---|
+| `npm run test:static` | Generated Function compilation, routes, RBAC, schemas, URL model and repository checks |
+| `npm run test:bdd` | Domain, journey, deletion and permission behavior with transactional fixtures |
+| `npm run test:integration` | HTTP wrapper, actual Vue component handlers, cryptography, NATS loopback and HTTP/2 mTLS gRPC |
+| `npm run test:offline` | Source suites, deterministic build, shell/Python syntax, G0 manifest generation and documentation checks; 350 tests passed in reviewed CI |
+| PostgreSQL CI | Actual schema reapplication, tenant isolation, immutable versions and concurrent limits; passed |
+| Participant CI | Go/Goa/protobuf generation, vet, race tests and transport build; passed |
+| Browser CI | Actual Chromium UI with synthetic dependency fixtures, desktop/narrow layout, persistent errors and navigation; passed |
+| Semantics CI | Independent JSON-LD and SHACL engines with positive and negative fixtures; passed |
+| `test/bdd/features/` | Official XFSC Executor/Behave plus Playwright against configured deployed services and authenticated sessions |
+| Native wallet pack | Actual offer/token/credential and presentation exchange, history/revocation and signing modes |
+| Device/identity/operations scenarios | PCM, fresh authentication, accessibility, cloud lifecycle, privacy and target-load review using their corresponding environments |
 
-The release retains local BDD-style Node tests and adds the mandatory Executor pack. The former is not relabelled as the latter. All tests produce safe outcomes; browser session files, raw credentials, participant records and tokens must stay outside the evidence repository.
+Run source component tests directly with `node --test test/tests/integration/sr2-ui.test.mjs`. The CI browser job installs its isolated Playwright package and Chromium to run `node test/browser/runtime.mjs`. These suites create local fixtures and use no deployment tenant/session configuration.
 
-Run [live acceptance](live-acceptance.md) before submitting a final receipt. A successful unit suite cannot close a requirement whose criterion requires a real wallet, cloud deployment or external approval.
+The deployed Executor uses `test/bdd/environment.example.json` as a template for private settings. Supply actual tenant/configuration IDs and capture current browser sessions. Runtime and administration scenarios exercise real server authorization and native services. Source fixtures and live environments are identified separately in each report.
+
+Keep cookies, tokens, TLS keys, participant records and raw diagnostic captures outside Git. Store sanitized results with source/runtime versions, image digests and test scope. Follow [completion tests](completion.md), [the walkthrough](acceptance-walkthrough.md), and [deployment review](live-acceptance.md) for the selected suite.

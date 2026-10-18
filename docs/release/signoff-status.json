@@ -1,7 +1,8 @@
 {
   "version": "0.5.0-rc.12",
-  "status": "NOT_READY_FOR_SIGNOFF",
-  "errorCount": 540,
-  "receipt": "acceptance.example.json",
-  "note": "Expected evidence-gate failure: no completed acceptance receipt was supplied. Missing evidence/bindings are not a count of software bugs."
+  "recordType": "review-receipt-procedure",
+  "receiptTemplate": "acceptance.example.json",
+  "command": "node tools/signoff-gate.mjs docs/release/acceptance.json",
+  "procedure": "../testing/live-acceptance.md#receipt",
+  "scope": "A completed receipt supplies reviewer, date, environment, artifact hashes and referenced evidence. This procedure file does not declare a review outcome."
 }

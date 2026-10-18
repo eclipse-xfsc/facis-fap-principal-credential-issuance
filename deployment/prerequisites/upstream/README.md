@@ -1,10 +1,10 @@
 # Native OCM patch bundle
 
-`manifest.json` targets the revisions selected by the supplied OCM-WStack ESB 12.3.9 assessment. The Crypto Provider row now requires commit `0d15633b2a5267a41a22f1baaabc74852d68a0ef`; there is **no fallback** to the older reviewed Crypto revision. Its original file bytes were not retrievable here, so applicability of the privacy patch at that new revision remains NOT_RUN. No source hash or patch result has been invented.
+`manifest.json` targets the revisions selected by the supplied OCM-WStack ESB 12.3.9 assessment. The Crypto Provider row now requires commit `0d15633b2a5267a41a22f1baaabc74852d68a0ef`; there is **no fallback** to the older reviewed Crypto revision. That row uses exact Git-commit binding: the validation tool reads the matching committed source and computes original/result hashes when run against the supplied checkout. Retain the generated receipt with the component build.
 
 The verifier supports reviewed-file hash binding for unchanged rows and exact Git-commit binding for the new Crypto row. The latter requires an owner-provided complete checkout at that exact HEAD, reads the committed file, rejects local edits, verifies the patch SHA-256 and requires zero-fuzz context matching in a temporary copy. It computes original/result hashes in the execution receipt. If patch context differs, stop for owner review/rebase; do not switch revisions or use fuzzy application.
 
-[Current validation status](../../../docs/release/upstream-validation.json) and [historical rc.5 byte evidence](../../../docs/release/upstream-validation-rc5.json) are separate. Run `python3 -B tools/check-upstream-patches.py --source-root /private/reviewed-upstream --report /private/patch-validation.json` from the PCI source root. It changes neither the source package nor upstream checkouts and does not compile or deploy components.
+[Recorded patch validation](../../../docs/release/upstream-validation.json) and [historical rc.5 byte evidence](../../../docs/release/upstream-validation-rc5.json) are separate. Run `python3 -B tools/check-upstream-patches.py --source-root /private/reviewed-upstream --report /private/patch-validation.json` from the PCI source root. It changes neither the source package nor upstream checkouts and does not compile or deploy components.
 
 | Patch | Behavior |
 |---|---|
@@ -22,5 +22,5 @@ The three privacy patches address the listed statements, not every potential sin
 This release supplies `tools/prepare-upstream-builds.py --source-root CHECKOUTS --output
 PRIVATE --build`: current commit/bytes, private clone, patch verification, Go tests,
 vet and build, with a hash-bound receipt. It never pushes, deploys or changes the
-supplied checkout. Image packaging/scanning and runtime canaries remain in the
-owner's approved pipeline. All four complete upstream checkouts must be supplied.
+supplied checkout. Image packaging/scanning and runtime canaries run in the
+component owner's approved pipeline. All four complete upstream checkouts must be supplied.

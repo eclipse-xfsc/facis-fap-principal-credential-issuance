@@ -12,7 +12,7 @@ npm run test:offline
 
 The Node suites cover domain behavior, request/response contracts, real local TLS/mTLS/NATS handshakes, proof crypto, presentation profiles, privacy boundaries, installer ownership and non-interactive automation. The fixture store does not certify PostgreSQL behavior. CI separately runs `test/live/postgres.test.mjs` against PostgreSQL, including additive schema reapplication, immutable versions, history/principal joins and tenant isolation. It also compiles/vets/race-tests generated Go/Goa transport, renders all Helm charts and runs the browser harness.
 
-`test/browser/runtime.mjs` starts an isolated local Vue application and fixture HTTP backend. Its desktop/mobile checks exercise the tenant-settings gap, overflow, typed validation, persistent/dismissible errors and presentation panel. It needs the pinned Playwright package plus its Chromium binary. The `.github/workflows/ci.yml` browser job installs both. It is a component regression, not the live BDD/IdP/OCM test.
+`test/browser/runtime.mjs` starts an isolated local Vue application and fixture HTTP backend. Its desktop/mobile checks exercise the tenant-settings layout, overflow, typed validation, persistent/dismissible errors and presentation panel. It needs the pinned Playwright package plus its Chromium binary. The `.github/workflows/ci.yml` browser job installs both. It is a component regression, not the live BDD/IdP/OCM test.
 
 ## Deployed Executor pack
 
@@ -71,4 +71,4 @@ python3 scripts/privacy-audit.py --canary-file /private/canaries.txt \
 
 The scanner checks literal, JSON-escaped and base64 forms, including buffer boundaries. Missing captures are `INCOMPLETE`; matches are `FAIL`. It prints hashes/status, never matching data. `NO_CANARY_MATCH` applies only to submitted captures and cannot certify GDPR compliance. Encrypted/compressed files must first be exported privately in searchable form.
 
-PCM Mobile, Entra/MFA, EN 301 549, actual upstream images, TLS on every hop, capacity, backup/restore, IONOS/OSC and external IP/public-release reviews still require their real environments. They are not replaced by the software wallet or local fixtures. Complete the [109-row receipt](live-acceptance.md#receipt) only after the matching evidence exists.
+PCM Mobile, fresh identity, accessibility, transport, capacity, backup/restore and cloud scenarios each identify their target environment and test scope. The [review receipt](live-acceptance.md#receipt) links their records to the selected source and image digests. Current automated source results are recorded in [completion](../release/completion.md).

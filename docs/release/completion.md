@@ -1,22 +1,29 @@
-# rc.12 implementation and verification
+# Executed checks and release documentation
 
-rc.12 fixes the native Crypto signer JWK array decoding failure at credential completion. It retains the latest patched rc.11 source and the prior fixes. See [the release record](0.5.0-rc.12.md) and [surgical upgrade](../operations/upgrade-0.5.0-rc.12.md).
+Reviewed source: [`3fef8e3048f3`](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/commit/3fef8e3048f3803b8aecbd99f582a3c4c05295b0), application `0.5.0-rc.12`. Container distribution: `ecofacis/fap-pci:1.0.0`. Results below describe the identified source CI run; they do not relabel that run as a deployment test of the packaged image.
 
-| Executed check | Result |
-|---|---|
-| Complete Node static, BDD-style and integration suite | 302 passed; 0 failed; 0 skipped |
-| New signer regressions | 16 passed in ES modules and generated Node-RED VM code |
-| Cryptographic coverage | JWT VC, both SD-JWT profiles, RS256/PS256 key variants, actual array response, older response forms, tampering and invalid-key rejection |
-| Repeated distribution build | Deterministic |
-| Documentation | 109 requirement/audit rows, 83 technical clauses, 122 API examples and both original specification hashes checked |
-| Shell syntax | All 10 shipped Bash scripts passed |
-| Alpha runner embedded JavaScript syntax | Passed |
-| Embedded SQL identity and potential-secret scan | Passed |
+| Check | Executed result | Record |
+|---|---|---|
+| Node static, BDD-style and integration suites | 350 passed, zero failed or skipped | [CI run 38727256710](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/38727256710) |
+| PostgreSQL | Schema reapplication, isolation and concurrent limits passed | CI `node` job |
+| Go/Goa/protobuf participant | Generation, vet, race tests and server build passed | CI `participant` job |
+| Official Go workflow | Passed | CI `official-go / test` job |
+| Helm | Chart lint and template checks passed | CI `charts` job |
+| Chromium | Component and layout checks passed at 1440 and 390 pixels | CI `browser` job |
+| Semantic engines | JSON-LD and SHACL checks passed | CI `semantics` job |
+| Dependencies | npm production dependency audit passed | CI `node` job |
+| Documentation | Strict build and GitHub Pages publication passed on 18 October 2026 | [Documentation run 39127451730](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/39127451730) |
 
-[validation.json](validation.json) contains exact generated hashes and the NOT_RUN list. Native HTTP/NATS boundaries and database fixtures remain synthetic. Local regressions are not evidence of live issuance, PCM acceptance or complete SRS sign-off. The pinned signer response implementation was read from the official upstream repositories; deployed image build provenance was not independently established here.
+[validation.json](validation.json) records the 350-test result and generated distribution hashes from that CI execution. [ci-evidence.json](ci-evidence.json) lists job IDs and workflow outcomes. The 302-test [neutral report](neutral-validation.json) is a dated historical record, not the current test total.
 
-Standalone inherited Python/G0 YAML/BDD catalogue validators were not rerun for this surgical fix. Historical results are described in earlier release records. Go/Goa/protobuf compilation, server PostgreSQL, Helm/Kubernetes admission, browser/BDD/semantic engines, dependency audits and official workflows still require their corresponding execution environments.
+## Test scope
 
-The complete 101 SRS requirement and 83 technical-clause ledgers are retained, along with the supplementary eight TDR audit groups. [The requirement audit](requirement-audit.md) and [known gaps](../known-gaps.md) distinguish supplied implementation from owner remediation, live validation and governance evidence. The existing acceptance template is intentionally incomplete. The [sign-off gate](signoff-status.json) remains NOT_READY_FOR_SIGNOFF until genuine receipts bind the release artifacts and all required evidence.
+Chromium executes the actual UI against local synthetic dependency fixtures. The deployed XFSC Executor pack uses authenticated sessions and live target services. Physical PCM, fresh identity, accessibility and cloud lifecycle scenarios use their corresponding target-specific procedures and receipts; a source CI result is not substituted for those results. See the [test strategy](../testing/test-strategy.md).
 
-For the operator's Alpha deployment, the next check is one NEW synthetic offer after rc.12 installation, credential endpoint HTTP 200, independent credential verification and both presentation checks. The live test already has the tenant and configuration IDs and prompts only for the fresh offer and session cookie value.
+## Publication and release review
+
+The searchable [documentation site](https://eclipse-xfsc.github.io/facis-fap-principal-credential-issuance/) was published by the linked Documentation run. These documentation changes receive their own build and publication when committed. The Docker Hub container and application version are described in [package 1.0.0](1.0.0.md).
+
+FR-PCI-101 tracks the Eclipse Dash workflow separately: run `38727256204` has conclusion `failure`. It is recorded in the workflow evidence rather than being generalized into a claim that source CI or documentation publication failed.
+
+Use the [implementation catalogue](requirement-audit.md), original [specifications](../specifications/README.md) and [deployment review procedure](../testing/live-acceptance.md) for release review. Historical authoring-environment limits are not current build-status statements.

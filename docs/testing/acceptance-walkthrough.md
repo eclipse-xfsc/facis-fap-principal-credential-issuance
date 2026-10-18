@@ -31,7 +31,7 @@ The XFSC Executor/Behave pack contains runtime/isolation and deployment lifecycl
 
 ```bash
 PCI_BDD_ALLOW_MUTATIONS=1 /private/pci-bdd/bin/behave test/bdd/features \
-  --tags='ux or offer' --junit --junit-directory /private/pci-evidence/ux
+  --tags=ux,offer --junit --junit-directory /private/pci-evidence/ux
 ```
 
 These cases use real APIs through the browser and fail on an upstream error. They do not fabricate wallet import, IdP authentication or accessibility certification. Registration/MFA/Entra/PCM journeys and cross-cloud results require their actual systems; use the matrix above and retain the resulting evidence. Do not enable browser trace/video recording of tokens, offers or credentials in a shared test report.

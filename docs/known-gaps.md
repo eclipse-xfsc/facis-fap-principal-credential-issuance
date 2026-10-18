@@ -1,22 +1,21 @@
-# Outstanding acceptance and owner actions
+# Integration and operating profiles
 
-The rc.6 implementation and local regression evidence do not constitute sign-off. The full [requirement matrix](requirements/traceability.md) distinguishes completed source work from unexecuted acceptance and public delivery. No requirement is waived.
+This page describes PCI configuration and ownership boundaries. Current build results are maintained in [executed checks](release/completion.md); historical authoring-environment limitations are not a list of current software defects.
 
-| Item | Supplied source work | Remaining evidence or owner action |
+| Area | Delivered behavior | Deployment and review procedure |
 |---|---|---|
-| Native payload privacy | PCI memory-only claims/tokens/presentation handling; sanitized stack locations; three revision-bound upstream logging patches (current Crypto patch applicability pending), private-copy build/test preparation and capture scanner | OCM owner builds/reviews/deploys fixes. Scan successful/failed flows across logs, stores, NATS, contexts, traces and backups; address existing retained data |
-| Empty catalogue | Local withdrawal/empty discovery, stale-version rejection, actionable pending state and pinned native patch | Owner tests/deploys patched image, then enables `PCI_OCM_EMPTY_CATALOGUE_SUPPORTED=true`; test first publish and last withdrawal |
-| Protocol profiles | VCI Draft 13/1.0 serializers and native adapters; VP Draft 13/1.0 JWT holder verifier; live software-wallet pack | Execute exact OCM/PCM format matrix. VP LDP/SD-JWT is not advertised; claims of broader verifier format support would require further implementation |
-| TLS | Strict TLS 1.3 public/participant/telemetry and native clients; verified DB/SMTP options | Owner applies the supplied all-hop TLS overlay/G0 mesh profile and demonstrates every-hop TLS 1.3. Compatibility chart plaintext is not an acceptance pass |
-| Builds | Go/Goa/protobuf, SQL migration/history/concurrency, Helm and browser jobs authored | Execute those toolchains and review results; they were unavailable locally |
-| Identity | Tenant-admin versioned provider settings, tenant broker binding, Secret-backed credentials and fresh-authentication scenarios | Real Entra tenant, broker egress and two user cohorts; passkey/MFA/recovery and role removal tests |
-| UX | Layout/branding/errors fixes; browser and Executor scenarios | Execute browser, keyboard, screen reader, zoom/mobile and EN 301 549 review |
-| Lifecycle | Registered participant namespace cleanup, helper mutation journal and guarded uninstall | Deploy/redeploy/upgrade/backup/restore/uninstall on disposable IONOS and OSC installations; confirm owner boundaries |
-| Native formats | Go JWT/SD-JWT/JWS2020 signing through Core gRPC with offline normalization; corrected native SD-JWT and format metadata | Go build/security review and participant/native SD-JWT/linked-data/PCM interoperability; owner fixes for demonstrated upstream failures |
-| Telemetry/capacity | Jaeger/Prometheus/Collector chart and safe instrumentation | Actual ingestion, TLS, absence of payloads, limits under target load, recovery and retention review |
-| Legacy helper restoration | New helper journal plus explicit trusted legacy baseline import and lifecycle integration | Reconcile rc.3 explicit helper env/mounts with original snapshot and operator change records before accepting uninstall |
-| Publication/governance | Pinned official workflow references, artifact hashes, docs build/Pages job, contribution/deployment material | Approved GitHub/Harbor/deployment writes; IP/SBOM scans, ECA/component approvals, tags, release/docs publishing and issue/PR disposition |
+| Runtime package | Docker Hub PCI 1.0.0 package with ORCE filesystem and explicit `/data` embedding | Record digest and application version; retain existing persistent data during upgrades |
+| Source builds | Node, PostgreSQL, generated participant, Helm, Chromium and semantic checks passed in CI | Re-run CI for the release commit and preserve its artifacts |
+| Privacy | PCI handles claims, credentials, proofs and access tokens transiently; persisted history contains controlled references | Review the selected dependency logging/retention profile and use the canary scanner for the actual data path |
+| Catalogue lifecycle | Tenant-bound publication, read-back and configuration withdrawal | Enable empty-catalogue capability only for a native service version supporting it; use the documented compatibility guard otherwise |
+| Transport | Public, participant and telemetry TLS configuration; supplied all-hop profile | Select and record the [transport profile](operations/transport.md) for the environment |
+| Identity | Tenant settings for Keycloak and approved OIDC/Entra brokers, current membership and delegated scopes | Configure the approved organization provider and use the matching fresh-login procedures |
+| Protocols and formats | OID4VCI Draft 13/1.0 adapters; JWT, linked-data and SD-JWT credential paths; holder-bound JWT W3C presentation for both VP profiles | Select supported configuration/profile combinations and use the corresponding wallet tests |
+| UX | FACIS UI, persistent errors, branding, responsive settings and source/browser regression suites | Use source Chromium checks and the deployed Executor for their respective test scopes |
+| Lifecycle | G0, artifact installation, bounded ownership, participant cleanup and guarded uninstall | Use a disposable target for destructive scenarios; preserve database/PVC recovery inputs |
+| Telemetry and capacity | Bounded resources, Prometheus/OTLP integration and payload-safe instrumentation | Configure retention, TLS and target load; inspect runtime dashboards and resource bounds |
+| Shared native services | Version-bound contracts and optional owner-controlled patch/transport profiles | Shared OCM lifecycle and service changes follow the component owner's deployment process |
 
-FR-27/66 deletes the tenant's public routes and DID resolution; FR-14/78 preserves existing credential verification after **configuration archive within a live tenant**. These are separate operations. FR-43 permits a static TLS Secret as its certificate option. FR-81 is issuance history, FR-82 participant signing, FR-83 participant data plus internal signing; rc.3 corrected the earlier mapping.
+Configuration archive preserves verification dependencies inside a live tenant. Full tenant deletion removes its public routes and DID resolution. These operations have different lifecycle semantics.
 
-Source locations/revisions are recorded in `contracts/source-manifest.json` and the [upstream patch manifest](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/deployment/prerequisites/upstream/manifest.json). Source findings must be matched to running image provenance. The broad OCM verifier's storage/unsupported-format behavior is not silently changed by the PCI VP endpoint; the latter calls native TSA and status directly without persisting presentations.
+See [compatibility](compatibility/compatibility-matrix.md), [native contracts](contracts/native-ocm.md), [source provenance](source-baseline.md), [testing](testing/test-strategy.md), and [release workflows](ci-cd.md). The historical filename is retained so existing documentation links continue to resolve.

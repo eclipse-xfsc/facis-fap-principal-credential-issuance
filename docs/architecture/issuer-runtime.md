@@ -1,6 +1,6 @@
 # Issuer runtime and adapter boundary
 
-`createPciNativeAdapters()` is the production adapter for the pinned OCM baseline. An unconfigured adapter fails closed; only local tests inject doubles. Native image/wallet acceptance is still required. See [wire contracts](../contracts/native-ocm.md) and [known gaps](../known-gaps.md).
+`createPciNativeAdapters()` is the production adapter for the pinned OCM baseline. An unconfigured adapter fails closed; only local tests inject doubles. Use [wire contracts](../contracts/native-ocm.md), [operating profiles](../known-gaps.md) and target-specific wallet tests for the selected deployment.
 
 ## Issuance state
 
@@ -14,7 +14,7 @@ Status handles and public entry hashes are unique per tenant and request. A repe
 
 ## Cryptography and participant boundary
 
-The JWT verifier uses Node crypto and trusted public JWKs. It allows RS256/PS256/ES256 only, rejects key-source/critical header extensions, validates signature, issuer, audience, subject, tenant, required scopes and lifetime, and rejects RSA keys below 2048 bits. The local compact JWT VC verifier checks issuer/DID, exact credential types, subject/claim schema, trusted status and optional holder binding. Wallet JWT proofs are verified locally; non-JWT credentials use the native verifier and binding checks. Full format/profile conformance and JSON-LD/SHACL coverage remain open.
+The JWT verifier uses Node crypto and trusted public JWKs. It allows RS256/PS256/ES256 only, rejects key-source/critical header extensions, validates signature, issuer, audience, subject, tenant, required scopes and lifetime, and rejects RSA keys below 2048 bits. The local compact JWT VC verifier checks issuer/DID, exact credential types, subject/claim schema, trusted status and optional holder binding. Wallet JWT proofs are verified locally; non-JWT credentials use the native verifier and binding checks. Independent JSON-LD/SHACL checks passed in the semantics CI job. Format and wallet interoperability tests use the selected native service/profile combination.
 
 The participant-security helper reads only caller-supplied operator-restricted Secret references, validates namespace plus tenant/owner labels, checks client certificate/key pairing and expiry, and enforces TLS 1.3 with server identity verification. It resolves and pins an approved destination, rejecting non-public addresses unless the operator explicitly approves their exact addresses. The native gRPC adapter connects to the pinned address with the original TLS server name. The generated Go participant transport is supplied as a build target and requires its CI compilation gate. Local loopback tests exercise mutual TLS plus wrong CA, hostname, key and expiry failures using ephemeral in-memory material.
 

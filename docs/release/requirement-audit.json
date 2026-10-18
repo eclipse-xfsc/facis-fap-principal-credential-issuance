@@ -1,35 +1,18 @@
 {
   "version": "0.5.0-rc.12",
-  "baseline": "OCM ESB 12.3.9",
-  "signoffReady": false,
-  "zeroRequirementGapsVerified": false,
-  "method": "Requirements retained from both original PDFs; all identifiers, source references, implementation paths and authored checks are traced. Current changed paths have regression tests. Source status is not independent build, deployment, legal or acceptance proof; no unexecuted check is a PASS.",
-  "sourceStatusMeaning": {
-    "DONE": "Implementation delivered; build/live/review obligations may still be pending.",
-    "BLOCKED_OWNER": "Delivered supporting code still requires owner-controlled native/transport remediation.",
-    "EXCLUDED": "Outside this local source delivery; still required by the specification, not waived."
-  },
+  "sourceCommit": "3fef8e3048f3803b8aecbd99f582a3c4c05295b0",
+  "reviewedAt": "2026-10-18",
+  "method": "Source and delivery references retain all normative identifiers. Executed outcomes identify their own run, commit and test scope in the linked validation records. This catalogue does not create an acceptance receipt.",
   "evidence": {
-    "localValidation": "docs/release/validation.json",
-    "nativeContractAssessment": "contracts/ocm-12.3.9-assessment.json",
-    "nativePatchValidation": "docs/release/upstream-validation.json",
+    "validation": "docs/release/validation.json",
+    "workflows": "docs/release/ci-evidence.json",
     "specifications": "docs/specifications/manifest.json",
-    "acceptanceGate": "tools/signoff-gate.mjs"
+    "deploymentReview": "docs/testing/live-acceptance.md"
   },
   "counts": {
     "srs": 101,
     "technicalClauses": 83,
-    "supplementaryGroups": 8,
-    "srsStatuses": {
-      "IMPLEMENTED_ACCEPTANCE_PENDING": 84,
-      "OWNER_REMEDIATION_AND_ACCEPTANCE_PENDING": 1,
-      "REQUIRED_EXTERNAL_DELIVERY_PENDING": 16
-    },
-    "technicalStatuses": {
-      "REQUIRED_EXTERNAL_DELIVERY_PENDING": 11,
-      "IMPLEMENTED_ACCEPTANCE_PENDING": 70,
-      "OWNER_REMEDIATION_AND_ACCEPTANCE_PENDING": 2
-    }
+    "supplementaryGroups": 8
   },
   "srs": [
     {
@@ -39,8 +22,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -50,11 +32,7 @@
         "test/tests/integration/native-adapter.test.mjs",
         "test/tests/bdd/sr2-issuer.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Configure both keys through UI; inspect tenant ownership; sign with Vault and OpenBao in an approved environment.",
-      "note": "Native TSA keys/JWKS use OCM namespace plus tenant group. DID uses real public keys; no substitute signing service."
+      "verificationProcedure": "Configure both keys through UI; inspect tenant ownership; sign with Vault and OpenBao in an approved environment."
     },
     {
       "id": "FR-PCI-02",
@@ -63,8 +41,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -74,11 +51,7 @@
         "test/tests/integration/native-adapter.test.mjs",
         "test/tests/bdd/sr2-issuer.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Public DID document shows the actual issuer key and resolves through the selected universal resolver; deletion/rotation behavior recorded.",
-      "note": "Native TSA keys/JWKS use OCM namespace plus tenant group. DID uses real public keys; no substitute signing service."
+      "verificationProcedure": "Public DID document shows the actual issuer key and resolves through the selected universal resolver; deletion/rotation behavior recorded."
     },
     {
       "id": "FR-PCI-03",
@@ -87,8 +60,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -99,11 +71,7 @@
         "test/tests/integration/native-profiles.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "From outside cluster request the exact tenant credential endpoint and reject a cross-tenant host/header.",
-      "note": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints."
+      "verificationProcedure": "From outside cluster request the exact tenant credential endpoint and reject a cross-tenant host/header."
     },
     {
       "id": "FR-PCI-04",
@@ -112,8 +80,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -124,11 +91,7 @@
         "test/tests/integration/native-profiles.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "External positive and cross-tenant negative API calls using the selected OCM bridge.",
-      "note": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints."
+      "verificationProcedure": "External positive and cross-tenant negative API calls using the selected OCM bridge."
     },
     {
       "id": "FR-PCI-05",
@@ -137,8 +100,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -148,11 +110,7 @@
         "test/tests/integration/native-adapter.test.mjs",
         "test/tests/bdd/sr2-issuer.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Resolve tenant JWKS over HTTPS and match it to configured signing keys and DID.",
-      "note": "Native TSA keys/JWKS use OCM namespace plus tenant group. DID uses real public keys; no substitute signing service."
+      "verificationProcedure": "Resolve tenant JWKS over HTTPS and match it to configured signing keys and DID."
     },
     {
       "id": "FR-PCI-06",
@@ -161,8 +119,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -174,11 +131,7 @@
         "test/tests/integration/sr2-security.test.mjs",
         "test/tests/integration/sr2-ui.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Two users with different scopes; direct API and UI create/edit/delete/flow tests before and after revocation.",
-      "note": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "verificationProcedure": "Two users with different scopes; direct API and UI create/edit/delete/flow tests before and after revocation."
     },
     {
       "id": "FR-PCI-07",
@@ -187,8 +140,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/native.js",
@@ -200,12 +152,7 @@
         "test/tests/bdd/native-completion.test.mjs",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "closure": "Authenticated publish, observed revision, well-known read-back, restart/replay, stale update and unauthorized edit tests.",
-      "note": "Wallet discovery immediately withdraws archived local configurations, returns an authoritative empty catalogue and refuses stale native versions. Maintenance records native empty-catalogue failure as an error until the supplied owner patch is deployed."
+      "verificationProcedure": "Authenticated publish, observed revision, well-known read-back, restart/replay, stale update and unauthorized edit tests."
     },
     {
       "id": "FR-PCI-08",
@@ -214,8 +161,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -227,11 +173,7 @@
         "test/tests/integration/sr2-security.test.mjs",
         "test/tests/integration/sr2-ui.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Delegated issuer performs full CRUD and manages two actual issuance flows.",
-      "note": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "verificationProcedure": "Delegated issuer performs full CRUD and manages two actual issuance flows."
     },
     {
       "id": "FR-PCI-09",
@@ -240,8 +182,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -253,11 +194,7 @@
         "test/tests/integration/sr2-security.test.mjs",
         "test/tests/integration/sr2-ui.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Ordinary principal denied UI and APIs; authorized issuer succeeds, cross-tenant requests denied.",
-      "note": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "verificationProcedure": "Ordinary principal denied UI and APIs; authorized issuer succeeds, cross-tenant requests denied."
     },
     {
       "id": "FR-PCI-10",
@@ -266,8 +203,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/assets.js",
         "src/sr2.js"
@@ -276,11 +212,7 @@
         "test/tests/bdd/sr2-issuer.test.mjs",
         "test/tests/integration/sr2-ui.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Wallet fetches and renders tenant-specific image from actual metadata; old published assets remain resolvable.",
-      "note": "Validated image dimensions/type/size, UI guidance, content-addressed public assets and immutable published references."
+      "verificationProcedure": "Wallet fetches and renders tenant-specific image from actual metadata; old published assets remain resolvable."
     },
     {
       "id": "FR-PCI-11",
@@ -289,8 +221,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -301,11 +232,7 @@
         "test/tests/integration/sr2-ui.test.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Two configuration IDs with distinct multi-step journeys executed in browser and pinned for an in-flight request.",
-      "note": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "verificationProcedure": "Two configuration IDs with distinct multi-step journeys executed in browser and pinned for an in-flight request."
     },
     {
       "id": "FR-PCI-12",
@@ -314,8 +241,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/history.js",
         "backend/sr2/store.js",
@@ -327,11 +253,7 @@
         "test/live/postgres.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Restricted per-configuration UI showing IDs, dates, offered/expired/issued/revoked states and approved principal association; privacy review.",
-      "note": "ID/date/state/principal search, current IAM history statement JWT and verified holder DID; retrieved claims/tokens are not persisted."
+      "verificationProcedure": "Restricted per-configuration UI showing IDs, dates, offered/expired/issued/revoked states and approved principal association; privacy review."
     },
     {
       "id": "FR-PCI-13",
@@ -340,8 +262,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/issuance.js",
         "backend/sr2/native.js",
@@ -355,11 +276,7 @@
         "test/bdd/features/native-wallet.feature",
         "test/tests/integration/rc6-native-contract.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Search by approved ID/date/principal reference, revoke once, verify public credential status, block reissue and audit override.",
-      "note": "Native status revocation always blocks reissuance; only an explicit audited administrator unblock clears it. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "verificationProcedure": "Search by approved ID/date/principal reference, revoke once, verify public credential status, block reissue and audit override."
     },
     {
       "id": "FR-PCI-14",
@@ -368,8 +285,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -382,11 +298,7 @@
         "test/tests/integration/sr2-deletion.test.mjs",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Archive/delete a configuration while old credentials still verify until the agreed validity limit.",
-      "note": "Configuration archive stops new issuance and preserves version/key/status/assets while tenant remains active. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Archive/delete a configuration while old credentials still verify until the agreed validity limit."
     },
     {
       "id": "FR-PCI-15",
@@ -395,8 +307,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -410,11 +321,7 @@
         "test/bdd/features/administration.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Real create/update/delete and standards fixtures read back from well-known endpoints.",
-      "note": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Real create/update/delete and standards fixtures read back from well-known endpoints."
     },
     {
       "id": "FR-PCI-16",
@@ -423,8 +330,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -436,11 +342,7 @@
         "test/tests/integration/sr2-mtls.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Configure each credential connection through UI; real mutual TLS including expired/wrong cert and bounded egress cases.",
-      "note": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol."
+      "verificationProcedure": "Configure each credential connection through UI; real mutual TLS including expired/wrong cert and bounded egress cases."
     },
     {
       "id": "FR-PCI-17",
@@ -449,8 +351,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -464,11 +365,7 @@
         "test/bdd/features/native-wallet.feature",
         "test/tests/integration/rc6-native-contract.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Reviewed exact contract implementation and full native issuance through OCM and PCM.",
-      "note": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "verificationProcedure": "Reviewed exact contract implementation and full native issuance through OCM and PCM."
     },
     {
       "id": "FR-PCI-18",
@@ -477,8 +374,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/native.js",
@@ -490,12 +386,7 @@
         "test/tests/bdd/native-completion.test.mjs",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "closure": "Tenant issuer/config metadata published, observed at native Well-Known, including revision/delete/restart behavior.",
-      "note": "Revision publication and native read-back; empty catalogue guarded until owner-deployed pinned SQL fix is explicitly enabled. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Tenant issuer/config metadata published, observed at native Well-Known, including revision/delete/restart behavior."
     },
     {
       "id": "FR-PCI-19",
@@ -504,8 +395,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/history.js",
         "backend/sr2/store.js",
@@ -517,11 +407,7 @@
         "test/live/postgres.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Sanitized event samples for both modes, per configuration, with audit and GDPR review.",
-      "note": "ID/date/state/principal search, current IAM history statement JWT and verified holder DID; retrieved claims/tokens are not persisted."
+      "verificationProcedure": "Sanitized event samples for both modes, per configuration, with audit and GDPR review."
     },
     {
       "id": "FR-PCI-20",
@@ -530,8 +416,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -548,11 +433,7 @@
         "test/tests/integration/rc5-closure.test.mjs",
         "test/tests/integration/rc6-native-contract.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Participant mock and repository flows with positive/negative token, cert, subject, signature, status cases.",
-      "note": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "verificationProcedure": "Participant mock and repository flows with positive/negative token, cert, subject, signature, status cases."
     },
     {
       "id": "FR-PCI-21",
@@ -561,8 +442,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -573,11 +453,7 @@
         "test/tests/integration/native-profiles.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Actual configured ORCE flow creates short-lived offer; QR scanned by PCM and resolved by OCM.",
-      "note": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints."
+      "verificationProcedure": "Actual configured ORCE flow creates short-lived offer; QR scanned by PCM and resolved by OCM."
     },
     {
       "id": "FR-PCI-22",
@@ -586,8 +462,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -600,12 +475,7 @@
         "reference/participant-data-repository/repository_test.go",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Reviewed Goa design/generated code, Docker image, runtime service and code review.",
-      "note": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending."
+      "verificationProcedure": "Reviewed Goa design/generated code, Docker image, runtime service and code review."
     },
     {
       "id": "FR-PCI-23",
@@ -614,8 +484,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "reference/participant-data-repository/credential"
       ],
@@ -623,13 +492,7 @@
         "reference/participant-data-repository/credential/formats_test.go",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Build and review the reusable JWT/SD-JWT package. Contribute it to the designated XFSC repository through the approved process. VCDM 2.0/ETSI EAA is recommended; full conformity is outside this release scope.",
-      "note": "Reusable JWT/SD-JWT formatter and tests supplied. Approved contribution, build and review remain external; no EAA certification claim."
+      "verificationProcedure": "Build and review the reusable JWT/SD-JWT package. Contribute it to the designated XFSC repository through the approved process. VCDM 2.0/ETSI EAA is recommended; full conformity is outside this release scope."
     },
     {
       "id": "FR-PCI-24",
@@ -638,8 +501,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -652,12 +514,7 @@
         "reference/participant-data-repository/repository_test.go",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Versioned proto, service implementation, interoperable call and reviewed error/metadata semantics.",
-      "note": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending."
+      "verificationProcedure": "Versioned proto, service implementation, interoperable call and reviewed error/metadata semantics."
     },
     {
       "id": "FR-PCI-25",
@@ -666,8 +523,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -678,11 +534,7 @@
         "test/tests/bdd/tenant-foundation.test.mjs",
         "test/bdd/features/registration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Provider browser journey and unauthorized access denial on live environment.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "verificationProcedure": "Provider browser journey and unauthorized access denial on live environment."
     },
     {
       "id": "FR-PCI-26",
@@ -691,8 +543,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -703,11 +554,7 @@
         "test/tests/bdd/tenant-foundation.test.mjs",
         "test/bdd/features/registration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Approved tenant reaches Ready, route and login; compare resources before/after and verify email.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "verificationProcedure": "Approved tenant reaches Ready, route and login; compare resources before/after and verify email."
     },
     {
       "id": "FR-PCI-27",
@@ -716,8 +563,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/sr2/maintenance.js",
@@ -731,11 +577,7 @@
         "test/bdd/features/registration.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation.",
-      "note": "Confirmed tenant deletion removes owned public routes/DID resolution and identity grants, preserving other tenants and shared services. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation."
     },
     {
       "id": "FR-PCI-28",
@@ -744,8 +586,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -756,11 +597,7 @@
         "test/tests/bdd/tenant-foundation.test.mjs",
         "test/bdd/features/registration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Reject a pending request, see retained decision and email, and confirm no tenant resources.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "verificationProcedure": "Reject a pending request, see retained decision and email, and confirm no tenant resources."
     },
     {
       "id": "FR-PCI-29",
@@ -769,8 +606,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -781,11 +617,7 @@
         "test/tests/bdd/tenant-foundation.test.mjs",
         "test/bdd/features/registration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Register, approve, list, duplicate participant rejection, and protected delete in browser.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "verificationProcedure": "Register, approve, list, duplicate participant rejection, and protected delete in browser."
     },
     {
       "id": "FR-PCI-30",
@@ -794,8 +626,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -813,11 +644,7 @@
         "test/bdd/features/runtime.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "After approval, use emailed account, change password/register strong factor, configure tenant and exercise it.",
-      "note": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "After approval, use emailed account, change password/register strong factor, configure tenant and exercise it."
     },
     {
       "id": "FR-PCI-31",
@@ -826,8 +653,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -839,11 +665,7 @@
         "test/browser/runtime.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification.",
-      "note": "Semantic labels, keyboard-native controls, error/live regions, responsive layout and contrast validation; EN 301 549 assessment is manual/external."
+      "verificationProcedure": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification."
     },
     {
       "id": "FR-PCI-32",
@@ -852,8 +674,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -864,11 +685,7 @@
         "test/tests/bdd/tenant-foundation.test.mjs",
         "test/bdd/features/registration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Both modes, forged private registration denial, email verification, provider approval and cluster inventory.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "verificationProcedure": "Both modes, forged private registration denial, email verification, provider approval and cluster inventory."
     },
     {
       "id": "FR-PCI-33",
@@ -877,8 +694,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -890,11 +706,7 @@
         "test/browser/runtime.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification.",
-      "note": "Semantic labels, keyboard-native controls, error/live regions, responsive layout and contrast validation; EN 301 549 assessment is manual/external."
+      "verificationProcedure": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification."
     },
     {
       "id": "FR-PCI-34",
@@ -903,8 +715,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -917,11 +728,7 @@
         "test/bdd/features/administration.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Create/edit/delete with claims/assets/connector, read native metadata and issue from selected backend.",
-      "note": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Create/edit/delete with claims/assets/connector, read native metadata and issue from selected backend."
     },
     {
       "id": "FR-PCI-35",
@@ -930,8 +737,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -941,11 +747,7 @@
         "test/tests/bdd/sr2-issuer.test.mjs",
         "test/tests/integration/sr2-security.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Director versus employee issuance, denial and role-removal propagation across two configurations.",
-      "note": "Eligibility binds current principal roles/entitlements and tenant membership; removed or unauthorized principals are denied."
+      "verificationProcedure": "Director versus employee issuance, denial and role-removal propagation across two configurations."
     },
     {
       "id": "FR-PCI-36",
@@ -954,8 +756,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/issuance.js",
         "backend/sr2/native.js",
@@ -968,11 +769,7 @@
         "test/tests/integration/native-adapter.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Authorized history search and per-record revoke; separate public verifier/status proof and denied reissue.",
-      "note": "Native status revocation always blocks reissuance; only an explicit audited administrator unblock clears it. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "verificationProcedure": "Authorized history search and per-record revoke; separate public verifier/status proof and denied reissue."
     },
     {
       "id": "FR-PCI-37",
@@ -981,8 +778,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -993,11 +789,7 @@
         "test/tests/integration/sr2-ui.test.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Landing→input/consent→offer sequences, tenant branding and error/replay tests.",
-      "note": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "verificationProcedure": "Landing→input/consent→offer sequences, tenant branding and error/replay tests."
     },
     {
       "id": "FR-PCI-38",
@@ -1006,8 +798,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -1018,11 +809,7 @@
         "test/tests/integration/sr2-ui.test.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Demonstrate two changes without code deployment and run both in ORCE.",
-      "note": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "verificationProcedure": "Demonstrate two changes without code deployment and run both in ORCE."
     },
     {
       "id": "FR-PCI-39",
@@ -1031,8 +818,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -1044,11 +830,7 @@
         "test/tests/integration/sr2-mtls.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Real participant TLS handshake, negative trust tests and documented UI/config procedure.",
-      "note": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol."
+      "verificationProcedure": "Real participant TLS handshake, negative trust tests and documented UI/config procedure."
     },
     {
       "id": "FR-PCI-40",
@@ -1057,8 +839,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -1070,11 +851,7 @@
         "test/tests/integration/sr2-mtls.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Observe redacted claims/binding from participant-issued token at repository, reject wrong issuer/audience/scope/subject.",
-      "note": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol."
+      "verificationProcedure": "Observe redacted claims/binding from participant-issued token at repository, reject wrong issuer/audience/scope/subject."
     },
     {
       "id": "FR-PCI-41",
@@ -1083,8 +860,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/issuance.js",
@@ -1094,11 +870,7 @@
         "test/tests/bdd/native-completion.test.mjs",
         "test/live/postgres.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Configure limits in tenant UI, load test, inspect bounded behavior after restart and under two tenants.",
-      "note": "Tenant/configuration rate and concurrency limits plus bounded participant retries/circuit recovery."
+      "verificationProcedure": "Configure limits in tenant UI, load test, inspect bounded behavior after restart and under two tenants."
     },
     {
       "id": "FR-PCI-42",
@@ -1107,8 +879,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/transport.js",
         "backend/sr2/wire.js",
@@ -1120,12 +891,7 @@
         "test/tests/integration/sr2-mtls.test.mjs",
         "test/tests/integration/runtime-memory.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "closure": "TLS 1.3 enforced on PCI Gateway and participant channel; selected in-cluster OCM HTTP/NATS endpoints need OCM-owner TLS/service-mesh deployment and a full endpoint scan.",
-      "note": "External TLS 1.3 and encrypted native client profiles supplied. Actual shared/internal encryption and certificate deployment must be configured/tested by the owner."
+      "verificationProcedure": "TLS 1.3 enforced on PCI Gateway and participant channel; selected in-cluster OCM HTTP/NATS endpoints need OCM-owner TLS/service-mesh deployment and a full endpoint scan."
     },
     {
       "id": "FR-PCI-43",
@@ -1134,8 +900,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "scripts/deploy-observability.py",
@@ -1145,11 +910,7 @@
         "test/tests/static/hardening.test.mjs",
         "tools/check-g0-manifests.py"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Review and demonstrate the supplied static TLS Secret, name coverage, expiry and rotation. The SRS permits static TLS as an alternative to route-specific Let’s Encrypt.",
-      "note": "Static certificate Secret is the allowed SRS alternative; host/key matching and dedicated Gateway TLS policy supplied."
+      "verificationProcedure": "Review and demonstrate the supplied static TLS Secret, name coverage, expiry and rotation. The SRS permits static TLS as an alternative to route-specific Let’s Encrypt."
     },
     {
       "id": "FR-PCI-44",
@@ -1158,8 +919,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -1172,11 +932,7 @@
         "test/tests/integration/keycloak-network-policy.test.mjs",
         "test/bdd/features/runtime.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Live PKCE login and issuance with valid/invalid realm, audience, tenant and disabled member.",
-      "note": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required."
+      "verificationProcedure": "Live PKCE login and issuance with valid/invalid realm, audience, tenant and disabled member."
     },
     {
       "id": "FR-PCI-45",
@@ -1185,8 +941,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -1201,11 +956,7 @@
         "test/tests/integration/keycloak-network-policy.test.mjs",
         "test/bdd/features/runtime.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Document tenant connection, perform Entra login and complete a credential journey.",
-      "note": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "verificationProcedure": "Document tenant connection, perform Entra login and complete a credential journey."
     },
     {
       "id": "FR-PCI-46",
@@ -1214,8 +965,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -1228,11 +978,7 @@
         "test/tests/integration/keycloak-network-policy.test.mjs",
         "test/bdd/features/runtime.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Registration→verification→approval→passkey enrollment and protected admin access in browser.",
-      "note": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required."
+      "verificationProcedure": "Registration→verification→approval→passkey enrollment and protected admin access in browser."
     },
     {
       "id": "FR-PCI-47",
@@ -1241,8 +987,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -1255,11 +1000,7 @@
         "test/tests/integration/keycloak-network-policy.test.mjs",
         "test/bdd/features/runtime.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "IdP role/group mapping guide and live permission change reflected in issuance.",
-      "note": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required."
+      "verificationProcedure": "IdP role/group mapping guide and live permission change reflected in issuance."
     },
     {
       "id": "FR-PCI-48",
@@ -1268,8 +1009,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "BLOCKED_OWNER",
-      "acceptanceStatus": "OWNER_REMEDIATION_AND_ACCEPTANCE_PENDING",
+      "responsibility": "BLOCKED_OWNER",
       "implementation": [
         "backend/sr2/issuance.js",
         "backend/sr2/presentation.js",
@@ -1284,12 +1024,7 @@
         "test/tests/integration/release-automation.test.mjs",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "closure": "Owner reviews/builds/deploys exact native logging patches; execute successful/failed real-path canary scans across all retained sinks and record remediation/retention evidence.",
-      "note": "PCI transient handling, safe errors and native patch proposals are delivered. End-to-end privacy still requires owner-deployed native log fixes and actual retention/sink review. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. Current Crypto 2.3.7 patch applicability/build is NOT_RUN; exact new commit protection prevents a downgrade."
+      "verificationProcedure": "Owner reviews/builds/deploys exact native logging patches; execute successful/failed real-path canary scans across all retained sinks and record remediation/retention evidence."
     },
     {
       "id": "FR-PCI-49",
@@ -1298,8 +1033,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1",
         "automation/flows/pci-deployment.json",
@@ -1316,11 +1050,7 @@
         "test/tests/integration/rc5-closure.test.mjs",
         "test/tests/integration/rc6-apply.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Clean second cluster from a locked release, rollback/restore, full credential issuance.",
-      "note": "Non-interactive deploy/upgrade/artifact import and guarded uninstall through open-source tools and operator ORCE context. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. Helm ownership migration is per-object and checked against release/namespace and live UID/resourceVersion; fresh and unpatched legacy cluster tests remain pending."
+      "verificationProcedure": "Clean second cluster from a locked release, rollback/restore, full credential issuance."
     },
     {
       "id": "FR-PCI-50",
@@ -1329,8 +1059,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/functions/_k8s.js",
@@ -1341,11 +1070,7 @@
         "test/tests/static/security-host-authority.test.mjs",
         "test/tests/bdd/tenant-foundation.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Effective Envoy route dumps; forged header, direct Service, cross-host and multi-tenant tests.",
-      "note": "Dedicated Gateway, trusted route headers, tenant host routing and bounded reconciliation ownership."
+      "verificationProcedure": "Effective Envoy route dumps; forged header, direct Service, cross-host and multi-tenant tests."
     },
     {
       "id": "FR-PCI-51",
@@ -1354,8 +1079,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1365,12 +1089,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Maintainer-merged PRs with release SHA and deployment integration; separate repository alone is insufficient.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Maintainer-merged PRs with release SHA and deployment integration; separate repository alone is insufficient."
     },
     {
       "id": "FR-PCI-52",
@@ -1379,8 +1098,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1",
         "automation/flows/pci-deployment.json",
@@ -1395,11 +1113,7 @@
         "test/bdd/features/lifecycle.feature",
         "test/tests/integration/rc6-apply.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Published architecture/deployment choices, license inventory and second-cluster portability test.",
-      "note": "Non-interactive deploy/upgrade/artifact import and guarded uninstall through open-source tools and operator ORCE context. Helm ownership migration is per-object and checked against release/namespace and live UID/resourceVersion; fresh and unpatched legacy cluster tests remain pending."
+      "verificationProcedure": "Published architecture/deployment choices, license inventory and second-cluster portability test."
     },
     {
       "id": "FR-PCI-53",
@@ -1408,8 +1122,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "deployment/helm",
@@ -1419,11 +1132,7 @@
         "tools/check-g0-manifests.py",
         "test/tests/integration/release-automation.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Limits and storage/CPU/memory sizing guide, load test, safe scale/restore demonstration.",
-      "note": "Resources on supplied workloads/jobs and preserved-or-bounded ORCE resources. Single-replica requirement documented; actual target load remains acceptance."
+      "verificationProcedure": "Limits and storage/CPU/memory sizing guide, load test, safe scale/restore demonstration."
     },
     {
       "id": "FR-PCI-54",
@@ -1432,8 +1141,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "mkdocs.yml",
         ".github/workflows/docs.yml",
@@ -1446,12 +1154,7 @@
         "docs build workflow",
         "tools/check-documentation.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Versioned public support page with working navigation, FAQ, install/troubleshooting guides and link check.",
-      "note": "Searchable docs, product/spec/model/node/API artifacts and opt-in Pages publisher supplied; public hosting/review remains excluded."
+      "verificationProcedure": "Versioned public support page with working navigation, FAQ, install/troubleshooting guides and link check."
     },
     {
       "id": "FR-PCI-55",
@@ -1460,8 +1163,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "deployment/helm/observability",
         "scripts/deploy-observability.py",
@@ -1472,11 +1174,7 @@
         ".github/workflows/ci.yml",
         "docs/operations/observability.md"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
-      "note": "Private bounded TLS Jaeger/Prometheus/OTel deployment and body-free instrumentation; actual ingestion/retention remains live evidence."
+      "verificationProcedure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim."
     },
     {
       "id": "FR-PCI-56",
@@ -1485,8 +1183,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "deployment/helm/observability",
         "scripts/deploy-observability.py",
@@ -1497,11 +1194,7 @@
         ".github/workflows/ci.yml",
         "docs/operations/observability.md"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
-      "note": "Private bounded TLS Jaeger/Prometheus/OTel deployment and body-free instrumentation; actual ingestion/retention remains live evidence."
+      "verificationProcedure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim."
     },
     {
       "id": "FR-PCI-57",
@@ -1510,8 +1203,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "deployment/helm/observability",
         "scripts/deploy-observability.py",
@@ -1522,11 +1214,7 @@
         ".github/workflows/ci.yml",
         "docs/operations/observability.md"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
-      "note": "Private bounded TLS Jaeger/Prometheus/OTel deployment and body-free instrumentation; actual ingestion/retention remains live evidence."
+      "verificationProcedure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim."
     },
     {
       "id": "FR-PCI-58",
@@ -1535,8 +1223,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/status.js",
         "backend/sr2/runtime.js",
@@ -1547,11 +1234,7 @@
         "test/tests/integration/sr2-http.test.mjs",
         "test/bdd/features/runtime.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Native outage injection, stable health states and sanitized log samples.",
-      "note": "Health/readiness, stable structured problems/correlation references, safe diagnostics and metrics."
+      "verificationProcedure": "Native outage injection, stable health states and sanitized log samples."
     },
     {
       "id": "FR-PCI-59",
@@ -1560,8 +1243,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -1574,11 +1256,7 @@
         "test/browser/runtime.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Tenant admin changes all relevant pages through one coherent low-code interface.",
-      "note": "Single Vue/uibuilder framework with editable branding palette/type/width/corners/footer and tenant layout."
+      "verificationProcedure": "Tenant admin changes all relevant pages through one coherent low-code interface."
     },
     {
       "id": "FR-PCI-60",
@@ -1587,8 +1265,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -1601,11 +1278,7 @@
         "test/browser/runtime.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Visual comparison, immediate theme edit across two tenants and responsive browser check.",
-      "note": "Single Vue/uibuilder framework with editable branding palette/type/width/corners/footer and tenant layout."
+      "verificationProcedure": "Visual comparison, immediate theme edit across two tenants and responsive browser check."
     },
     {
       "id": "FR-PCI-61",
@@ -1614,8 +1287,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd",
         "test/live/wallet.mjs",
@@ -1627,11 +1299,7 @@
         ".github/workflows/ci.yml",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run supplied XFSC Executor browser/runtime/lifecycle cases on a synthetic tenant. Complete real registration/IdP/PCM and accessibility evidence from the walkthrough; no browser or wallet execution was available here.",
-      "note": "Executable official Executor/Playwright pack plus native wallet/registration/lifecycle cases; actual run and human accessibility review remain outstanding. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Run supplied XFSC Executor browser/runtime/lifecycle cases on a synthetic tenant. Complete real registration/IdP/PCM and accessibility evidence from the walkthrough; no browser or wallet execution was available here."
     },
     {
       "id": "FR-PCI-62",
@@ -1640,8 +1308,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/profiles.js",
         "backend/sr2/presentation.js",
@@ -1656,11 +1323,7 @@
         "test/bdd/features/native-wallet.feature",
         "test/tests/integration/rc6-native-contract.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Draft 13 and 1.0 issuance serializers implemented; OID4VP profiles and native non-JWT conformance require upstream work. See UP-02/03.",
-      "note": "Draft 13 and 1.0 VCI/VP surfaces; VP format explicitly JWT W3C with holder binding, native issuer signature and status checks. PCM/conformance not claimed. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "verificationProcedure": "Draft 13 and 1.0 issuance serializers implemented; OID4VP profiles and native non-JWT conformance require upstream work. See UP-02/03."
     },
     {
       "id": "FR-PCI-63",
@@ -1669,8 +1332,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -1688,12 +1350,7 @@
         "test/bdd/features/native-wallet.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Notification and data request contract, both modes with participant and internal signing, interoperable wire tests.",
-      "note": "Every participant-signed format now uses official Core gRPC Sign. LDP uses offline URDNA2015 and detached ES256 JWS2020; Go/Core/native interoperability validation remains unexecuted."
+      "verificationProcedure": "Notification and data request contract, both modes with participant and internal signing, interoperable wire tests."
     },
     {
       "id": "FR-PCI-64",
@@ -1702,8 +1359,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
@@ -1713,12 +1369,7 @@
         "test/tests/static/hardening.test.mjs",
         "workflow review"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Restore official remote workflows in every code repo; successful runs tied to release SHA.",
-      "note": "Official remote test/build/IP/SBOM references and source gates supplied; external workflow runs are not fabricated."
+      "verificationProcedure": "Restore official remote workflows in every code repo; successful runs tied to release SHA."
     },
     {
       "id": "FR-PCI-65",
@@ -1727,8 +1378,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -1739,11 +1389,7 @@
         "test/tests/bdd/tenant-foundation.test.mjs",
         "test/bdd/features/registration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "BDD report with mail and DB/cluster state.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "verificationProcedure": "BDD report with mail and DB/cluster state."
     },
     {
       "id": "FR-PCI-66",
@@ -1752,8 +1398,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/sr2/maintenance.js",
@@ -1767,11 +1412,7 @@
         "test/bdd/features/registration.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation.",
-      "note": "Confirmed tenant deletion removes owned public routes/DID resolution and identity grants, preserving other tenants and shared services. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation."
     },
     {
       "id": "FR-PCI-67",
@@ -1780,8 +1421,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -1792,11 +1432,7 @@
         "test/tests/bdd/tenant-foundation.test.mjs",
         "test/bdd/features/registration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Review audit, no premature resources, final Ready tenant.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "verificationProcedure": "Review audit, no premature resources, final Ready tenant."
     },
     {
       "id": "FR-PCI-68",
@@ -1805,8 +1441,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -1819,11 +1454,7 @@
         "test/bdd/features/registration.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Rejection BDD, Mailpit/SMTP evidence and resource inventory.",
-      "note": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Rejection BDD, Mailpit/SMTP evidence and resource inventory."
     },
     {
       "id": "FR-PCI-69",
@@ -1832,8 +1463,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -1848,11 +1478,7 @@
         "test/tests/integration/keycloak-network-policy.test.mjs",
         "test/bdd/features/runtime.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Principal browser authentication and eligible/denied issuance choices.",
-      "note": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "verificationProcedure": "Principal browser authentication and eligible/denied issuance choices."
     },
     {
       "id": "FR-PCI-70",
@@ -1861,8 +1487,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/functions/_k8s.js",
@@ -1873,11 +1498,7 @@
         "test/tests/static/security-host-authority.test.mjs",
         "test/tests/bdd/tenant-foundation.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Alpha/Beta login, isolation and route test.",
-      "note": "Dedicated Gateway, trusted route headers, tenant host routing and bounded reconciliation ownership."
+      "verificationProcedure": "Alpha/Beta login, isolation and route test."
     },
     {
       "id": "FR-PCI-71",
@@ -1886,8 +1507,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -1900,11 +1520,7 @@
         "test/browser/runtime.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Two independently branded live landing pages.",
-      "note": "Single Vue/uibuilder framework with editable branding palette/type/width/corners/footer and tenant layout."
+      "verificationProcedure": "Two independently branded live landing pages."
     },
     {
       "id": "FR-PCI-72",
@@ -1913,8 +1529,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -1926,11 +1541,7 @@
         "test/tests/integration/sr2-security.test.mjs",
         "test/tests/integration/sr2-ui.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Grant/revoke by one tenant admin for two real users and scoped operations.",
-      "note": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "verificationProcedure": "Grant/revoke by one tenant admin for two real users and scoped operations."
     },
     {
       "id": "FR-PCI-73",
@@ -1939,8 +1550,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1950,12 +1560,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Compatible license scan and adjudication.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Compatible license scan and adjudication."
     },
     {
       "id": "FR-PCI-74",
@@ -1964,8 +1569,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1975,12 +1579,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Merged XFSC deployment PR.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Merged XFSC deployment PR."
     },
     {
       "id": "FR-PCI-75",
@@ -1989,8 +1588,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2000,12 +1598,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Tagged release with cluster image/flow/UI/G0 SHA record.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Tagged release with cluster image/flow/UI/G0 SHA record."
     },
     {
       "id": "FR-PCI-76",
@@ -2014,8 +1607,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -2026,11 +1618,7 @@
         "test/tests/integration/sr2-ui.test.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "UI/Well-Known creation demonstration.",
-      "note": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths."
+      "verificationProcedure": "UI/Well-Known creation demonstration."
     },
     {
       "id": "FR-PCI-77",
@@ -2039,8 +1627,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -2053,11 +1640,7 @@
         "test/bdd/features/administration.feature",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Versioned edit, metadata read-back and in-flight request proof.",
-      "note": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Versioned edit, metadata read-back and in-flight request proof."
     },
     {
       "id": "FR-PCI-78",
@@ -2066,8 +1649,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -2079,11 +1661,7 @@
         "test/tests/integration/sr2-deletion.test.mjs",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Old credential verifier check after deletion.",
-      "note": "Configuration archive stops new issuance and preserves version/key/status/assets while tenant remains active. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Old credential verifier check after deletion."
     },
     {
       "id": "FR-PCI-79",
@@ -2092,8 +1670,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/assets.js",
         "src/sr2.js",
@@ -2104,11 +1681,7 @@
         "test/tests/integration/sr2-ui.test.mjs",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Wallet-resolved logo and image processing record.",
-      "note": "Validated image dimensions/type/size, UI guidance, content-addressed public assets and immutable published references. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "verificationProcedure": "Wallet-resolved logo and image processing record."
     },
     {
       "id": "FR-PCI-80",
@@ -2117,8 +1690,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -2129,11 +1701,7 @@
         "test/tests/integration/sr2-ui.test.mjs",
         "test/bdd/features/administration.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Two live journey definitions and executions.",
-      "note": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "verificationProcedure": "Two live journey definitions and executions."
     },
     {
       "id": "FR-PCI-81",
@@ -2142,8 +1710,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/history.js",
         "backend/sr2/store.js",
@@ -2157,11 +1724,7 @@
         "test/live/postgres.test.mjs",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Search a real issued credential ID, inspect issuance/status/history and authorized principal statement, revoke it through the native status service, and record current state.",
-      "note": "ID/date/state/principal search, current IAM history statement JWT and verified holder DID; retrieved claims/tokens are not persisted. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "verificationProcedure": "Search a real issued credential ID, inspect issuance/status/history and authorized principal statement, revoke it through the native status service, and record current state."
     },
     {
       "id": "FR-PCI-82",
@@ -2170,8 +1733,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -2187,12 +1749,7 @@
         "test/tests/integration/rc5-closure.test.mjs",
         "test/tests/integration/rc6-native-contract.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Participant repository signs through Crypto Provider Core; independently verify the real credential, import it in PCM and record history/status.",
-      "note": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "verificationProcedure": "Participant repository signs through Crypto Provider Core; independently verify the real credential, import it in PCM and record history/status."
     },
     {
       "id": "FR-PCI-83",
@@ -2201,8 +1758,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -2218,12 +1774,7 @@
         "test/tests/integration/rc5-closure.test.mjs",
         "test/tests/integration/rc6-native-contract.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Participant repository returns unsigned credential data; native OCM signs it. Independently verify, import in PCM and record history/status.",
-      "note": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "verificationProcedure": "Participant repository returns unsigned credential data; native OCM signs it. Independently verify, import in PCM and record history/status."
     },
     {
       "id": "FR-PCI-84",
@@ -2232,8 +1783,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2243,12 +1793,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Official M2 scan report.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Official M2 scan report."
     },
     {
       "id": "FR-PCI-85",
@@ -2257,8 +1802,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2268,12 +1812,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Merged source/chart change in XFSC deployment.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Merged source/chart change in XFSC deployment."
     },
     {
       "id": "FR-PCI-86",
@@ -2282,8 +1821,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2293,12 +1831,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Immutable tag and live digest/version trace.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Immutable tag and live digest/version trace."
     },
     {
       "id": "FR-PCI-87",
@@ -2307,8 +1840,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2",
         "src/sr2.js",
@@ -2321,11 +1853,7 @@
         "test/bdd/features/native-wallet.feature",
         "test/tests/integration/presentation.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Two full issuance journeys imported in PCM with verification.",
-      "note": "Two tenants, profiles and signing modes represented by executable native cases; actual multiple-principal PCM import remains manual acceptance. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "verificationProcedure": "Two full issuance journeys imported in PCM with verification."
     },
     {
       "id": "FR-PCI-88",
@@ -2334,8 +1862,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2",
         "src/sr2.js",
@@ -2348,11 +1875,7 @@
         "test/bdd/features/native-wallet.feature",
         "test/tests/integration/presentation.test.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Two tenant and principal matrices in wallet, isolation results.",
-      "note": "Two tenants, profiles and signing modes represented by executable native cases; actual multiple-principal PCM import remains manual acceptance. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "verificationProcedure": "Two tenant and principal matrices in wallet, isolation results."
     },
     {
       "id": "FR-PCI-89",
@@ -2361,8 +1884,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2372,12 +1894,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Immutable release and deployed digest record.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Immutable release and deployed digest record."
     },
     {
       "id": "FR-PCI-90",
@@ -2386,8 +1903,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2397,12 +1913,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Official scan and findings closure.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Official scan and findings closure."
     },
     {
       "id": "FR-PCI-91",
@@ -2411,8 +1922,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1",
         "scripts/lifecycle.py",
@@ -2423,11 +1933,7 @@
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Clean-install and credential import/verify evidence on another cluster.",
-      "note": "Parameterized deployment and native/lifecycle suite can target either approved cloud; second-cluster execution remains outstanding."
+      "verificationProcedure": "Clean-install and credential import/verify evidence on another cluster."
     },
     {
       "id": "FR-PCI-92",
@@ -2436,8 +1942,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2447,12 +1952,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Merged XFSC deployment changes.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Merged XFSC deployment changes."
     },
     {
       "id": "FR-PCI-93",
@@ -2461,8 +1961,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2472,12 +1971,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Matching source/chart/image tags and notes.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Matching source/chart/image tags and notes."
     },
     {
       "id": "FR-PCI-94",
@@ -2486,8 +1980,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2497,12 +1990,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Official scan result.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Official scan result."
     },
     {
       "id": "FR-PCI-95",
@@ -2511,8 +1999,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2522,12 +2009,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Tags/releases, chart/image digests and registry records.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Tags/releases, chart/image digests and registry records."
     },
     {
       "id": "FR-PCI-96",
@@ -2536,8 +2018,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "mkdocs.yml",
         ".github/workflows/docs.yml",
@@ -2550,12 +2031,7 @@
         "docs build workflow",
         "tools/check-documentation.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Reviewed, versioned and published documentation set.",
-      "note": "Searchable docs, product/spec/model/node/API artifacts and opt-in Pages publisher supplied; public hosting/review remains excluded."
+      "verificationProcedure": "Reviewed, versioned and published documentation set."
     },
     {
       "id": "FR-PCI-97",
@@ -2564,8 +2040,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2575,12 +2050,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Scan for every code repo and dependency with zero unapproved conflicts.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Scan for every code repo and dependency with zero unapproved conflicts."
     },
     {
       "id": "FR-PCI-98",
@@ -2589,19 +2059,14 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/security/compliance-roadmap.md"
       ],
       "checks": [
         "Client review"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Component-level compliance delta, tasks/owners/effort and explicit noncertification statement.",
-      "note": "Component roadmap and certification boundaries documented; regulator/client approval not implied."
+      "verificationProcedure": "Component-level compliance delta, tasks/owners/effort and explicit noncertification statement."
     },
     {
       "id": "FR-PCI-99",
@@ -2610,8 +2075,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2621,12 +2085,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Timestamped inventory and disposition/closure of each issue/PR.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Timestamped inventory and disposition/closure of each issue/PR."
     },
     {
       "id": "FR-PCI-100",
@@ -2635,8 +2094,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
@@ -2646,12 +2104,7 @@
         "test/tests/static/hardening.test.mjs",
         "workflow review"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Repo workflow review.",
-      "note": "Official remote test/build/IP/SBOM references and source gates supplied; external workflow runs are not fabricated."
+      "verificationProcedure": "Repo workflow review."
     },
     {
       "id": "FR-PCI-101",
@@ -2660,8 +2113,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2671,12 +2123,7 @@
         "tools/signoff-gate.mjs",
         "test/tests/integration/signoff-gate.test.mjs"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Green action logs and immutable artifact provenance.",
-      "note": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "verificationProcedure": "Green action logs and immutable artifact provenance."
     }
   ],
   "technical": [
@@ -2689,17 +2136,12 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client records the selected process and real delivery history.",
-      "note": null
+      "verificationProcedure": "Client records the selected process and real delivery history."
     },
     {
       "id": "TDC-002",
@@ -2710,20 +2152,14 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md",
         "THIRD_PARTY_NOTICES.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Approve dependency/IP evidence and publish the licensed release.",
-      "note": null
+      "verificationProcedure": "Approve dependency/IP evidence and publish the licensed release."
     },
     {
       "id": "TDC-003",
@@ -2734,17 +2170,12 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/ux/ux-concept.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Record the actual presentation/approval history; do not backdate it.",
-      "note": null
+      "verificationProcedure": "Record the actual presentation/approval history; do not backdate it."
     },
     {
       "id": "TDC-004",
@@ -2755,18 +2186,13 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client approves the structure in the authoritative project plan.",
-      "note": null
+      "verificationProcedure": "Client approves the structure in the authoritative project plan."
     },
     {
       "id": "TDC-005",
@@ -2777,18 +2203,13 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "docs/requirements/traceability.md",
         "docs/release/0.5.0-rc.4.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Actual presenters retain attendance, dates and progress decisions.",
-      "note": null
+      "verificationProcedure": "Actual presenters retain attendance, dates and progress decisions."
     },
     {
       "id": "TDC-006",
@@ -2799,19 +2220,13 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Execute the delivered packs and present actual milestone outcomes.",
-      "note": null
+      "verificationProcedure": "Execute the delivered packs and present actual milestone outcomes."
     },
     {
       "id": "TDC-007",
@@ -2822,19 +2237,14 @@
         "page": 2,
         "section": "ORCE"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions",
         "backend/sr2",
         "dist/fap-pci-flow.json"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Execute deployed native issuance and tenant operations.",
-      "note": null
+      "verificationProcedure": "Execute deployed native issuance and tenant operations."
     },
     {
       "id": "TDC-008",
@@ -2845,18 +2255,13 @@
         "page": 2,
         "section": "ORCE"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "tools/build-flows.mjs",
         "docs/architecture/orce-nodes.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Inspect imported functions and run them in the target ORCE.",
-      "note": null
+      "verificationProcedure": "Inspect imported functions and run them in the target ORCE."
     },
     {
       "id": "TDC-009",
@@ -2867,18 +2272,13 @@
         "page": 2,
         "section": "ORCE"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/flows",
         "docs/operations/automation.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run deploy, upgrade and uninstall from the separate operator ORCE.",
-      "note": null
+      "verificationProcedure": "Run deploy, upgrade and uninstall from the separate operator ORCE."
     },
     {
       "id": "TDC-010",
@@ -2889,18 +2289,13 @@
         "page": 2,
         "section": "ORCE"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/sr2/service.js",
         "src/sr2.js"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Configure multiple journeys and connectors without source edits.",
-      "note": null
+      "verificationProcedure": "Configure multiple journeys and connectors without source edits."
     },
     {
       "id": "TDC-011",
@@ -2911,18 +2306,13 @@
         "page": 2,
         "section": "Deployment on Kubernetes"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/deploy.sh",
         "automation/stage1/ground-zero.sh"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Complete the IONOS deployment and test receipt.",
-      "note": null
+      "verificationProcedure": "Complete the IONOS deployment and test receipt."
     },
     {
       "id": "TDC-012",
@@ -2933,18 +2323,13 @@
         "page": 2,
         "section": "Deployment on Kubernetes"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/deploy.sh",
         "docs/testing/live-acceptance.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Complete the OSC deployment and test receipt.",
-      "note": null
+      "verificationProcedure": "Complete the OSC deployment and test receipt."
     },
     {
       "id": "TDC-013",
@@ -2955,19 +2340,13 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "deployment/helm"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION",
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Render/lint the charts and execute cluster admission/deployment.",
-      "note": null
+      "verificationProcedure": "Render/lint the charts and execute cluster admission/deployment."
     },
     {
       "id": "TDC-014",
@@ -2978,18 +2357,13 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/stage1/install.sh"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Upgrade with existing PVCs, sessions and configurations, then verify.",
-      "note": null
+      "verificationProcedure": "Upgrade with existing PVCs, sessions and configurations, then verify."
     },
     {
       "id": "TDC-015",
@@ -3000,19 +2374,14 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/uninstall.sh",
         "automation/stage1/restore-runtime.mjs",
         "scripts/import-legacy-baseline.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run on a disposable installation; preserve unrelated edits and data. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
-      "note": null
+      "verificationProcedure": "Run on a disposable installation; preserve unrelated edits and data. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
       "id": "TDC-016",
@@ -3023,18 +2392,13 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions/_k8s.js",
         "automation/stage1/ground-zero.sh"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Review live ownership, limits, routes and tenant header isolation.",
-      "note": null
+      "verificationProcedure": "Review live ownership, limits, routes and tenant header isolation."
     },
     {
       "id": "TDC-017",
@@ -3045,18 +2409,13 @@
         "page": 2,
         "section": "Helm charts"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "deployment/helm",
         ".github/workflows/release.yml"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Publish reviewed chart artifacts alongside each approved release.",
-      "note": null
+      "verificationProcedure": "Publish reviewed chart artifacts alongside each approved release."
     },
     {
       "id": "TDC-018",
@@ -3067,18 +2426,13 @@
         "page": 2,
         "section": "Keycloak"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/reconcile.js"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Inspect realm/client settings and login flows in deployed Keycloak.",
-      "note": null
+      "verificationProcedure": "Inspect realm/client settings and login flows in deployed Keycloak."
     },
     {
       "id": "TDC-019",
@@ -3089,18 +2443,13 @@
         "page": 2,
         "section": "Keycloak"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/_common.js"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Verify Secret reuse, mounts, rotation and current service authority.",
-      "note": null
+      "verificationProcedure": "Verify Secret reuse, mounts, rotation and current service authority."
     },
     {
       "id": "TDC-020",
@@ -3111,18 +2460,13 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Project lead supplies the designated repository and accepts these files.",
-      "note": null
+      "verificationProcedure": "Project lead supplies the designated repository and accepts these files."
     },
     {
       "id": "TDC-021",
@@ -3133,19 +2477,13 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Execute actual workflows and retain dependency/IP results.",
-      "note": null
+      "verificationProcedure": "Execute actual workflows and retain dependency/IP results."
     },
     {
       "id": "TDC-022",
@@ -3156,17 +2494,12 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Project participants attest to repository authority; no repository was created here.",
-      "note": null
+      "verificationProcedure": "Project participants attest to repository authority; no repository was created here."
     },
     {
       "id": "TDC-023",
@@ -3177,18 +2510,12 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Actual daily history is required and cannot be manufactured retrospectively.",
-      "note": null
+      "verificationProcedure": "Actual daily history is required and cannot be manufactured retrospectively."
     },
     {
       "id": "TDC-024",
@@ -3199,18 +2526,13 @@
         "page": 2,
         "section": "Apache License"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client/IP reviewer approves the final licensed scope.",
-      "note": null
+      "verificationProcedure": "Client/IP reviewer approves the final licensed scope."
     },
     {
       "id": "TDC-025",
@@ -3221,20 +2543,14 @@
         "page": 3,
         "section": "FOSS"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "package-lock.json",
         "reference/participant-data-repository/go.mod"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Resolve Go sums and full SBOM, scan transitive dependencies and approve licenses.",
-      "note": null
+      "verificationProcedure": "Resolve Go sums and full SBOM, scan transitive dependencies and approve licenses."
     },
     {
       "id": "TDC-026",
@@ -3245,18 +2561,13 @@
         "page": 3,
         "section": "FOSS"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client records any exception assessment; no approval is implied.",
-      "note": null
+      "verificationProcedure": "Client records any exception assessment; no approval is implied."
     },
     {
       "id": "TDC-027",
@@ -3267,18 +2578,13 @@
         "page": 3,
         "section": "FOSS"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "contracts/source-manifest.json"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client approves the inventoried dependencies and reused source.",
-      "note": null
+      "verificationProcedure": "Client approves the inventoried dependencies and reused source."
     },
     {
       "id": "TDC-028",
@@ -3289,19 +2595,13 @@
         "page": 3,
         "section": "FOSS"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/compatibility/compatibility-matrix.md",
         "contracts/source-manifest.json"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Verify deployed revisions and record client approval of the compatibility matrix.",
-      "note": null
+      "verificationProcedure": "Verify deployed revisions and record client approval of the compatibility matrix."
     },
     {
       "id": "TDC-029",
@@ -3312,18 +2612,13 @@
         "page": 3,
         "section": "XFSC reuse"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/architecture/architecture.md",
         "docs/contracts/native-ocm.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review boundaries: PCI orchestration reuses native keys/signing/offers/metadata/status.",
-      "note": null
+      "verificationProcedure": "Review boundaries: PCI orchestration reuses native keys/signing/offers/metadata/status."
     },
     {
       "id": "TDC-030",
@@ -3334,18 +2629,12 @@
         "page": 3,
         "section": "Contributor agreement"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Each actual contributor completes the required onboarding and agreement.",
-      "note": null
+      "verificationProcedure": "Each actual contributor completes the required onboarding and agreement."
     },
     {
       "id": "TDC-031",
@@ -3356,18 +2645,13 @@
         "page": 3,
         "section": "Runtime environments"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/preflight.sh",
         "docs/compatibility/compatibility-matrix.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Validate the selected supported version; the documented supported range is narrower than the minimum.",
-      "note": null
+      "verificationProcedure": "Validate the selected supported version; the documented supported range is narrower than the minimum."
     },
     {
       "id": "TDC-032",
@@ -3378,19 +2662,14 @@
         "page": 3,
         "section": "Runtime environments"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/deploy.sh",
         "deployment/helm",
         "tools/build-flows.mjs"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Confirm the supplied Kubernetes/ORCE topology in the running environment.",
-      "note": null
+      "verificationProcedure": "Confirm the supplied Kubernetes/ORCE topology in the running environment."
     },
     {
       "id": "TDC-033",
@@ -3401,18 +2680,13 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "backend/functions",
         "backend/sr2"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Load the generated functions into the approved ORCE Node.js runtime.",
-      "note": null
+      "verificationProcedure": "Load the generated functions into the approved ORCE Node.js runtime."
     },
     {
       "id": "TDC-034",
@@ -3423,19 +2697,14 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "src",
         "backend/sr2/domain.js",
         "docs/api/openapi.json"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run the browser and UI acceptance pack.",
-      "note": null
+      "verificationProcedure": "Run the browser and UI acceptance pack."
     },
     {
       "id": "TDC-035",
@@ -3446,19 +2715,14 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/deploy.sh",
         "scripts/uninstall.sh",
         "scripts/preflight.sh"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Execute Bash entrypoints and supplemental Python orchestration in the operator environment.",
-      "note": null
+      "verificationProcedure": "Execute Bash entrypoints and supplemental Python orchestration in the operator environment."
     },
     {
       "id": "TDC-036",
@@ -3469,19 +2733,13 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "deployment/helm",
         "automation/stage1/ground-zero.sh"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION",
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Helm lint/render and live admission remain required.",
-      "note": null
+      "verificationProcedure": "Helm lint/render and live admission remain required."
     },
     {
       "id": "TDC-037",
@@ -3492,17 +2750,12 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "reference/participant-data-repository"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Generate Goa/protobuf, run vet/race tests and compile the participant service.",
-      "note": null
+      "verificationProcedure": "Generate Goa/protobuf, run vet/race tests and compile the participant service."
     },
     {
       "id": "TDC-038",
@@ -3513,20 +2766,13 @@
         "page": 3,
         "section": "Mandated component dependencies"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/known-gaps.md",
         "deployment/prerequisites/upstream"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "closure": "Deliver the written findings through the client's approved process; owners review/build/deploy their component fixes.",
-      "note": null
+      "verificationProcedure": "Deliver the written findings through the client's approved process; owners review/build/deploy their component fixes."
     },
     {
       "id": "TDC-039",
@@ -3537,19 +2783,13 @@
         "page": 3,
         "section": "Documentation"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Project lead reviews governance, releases and contributor records.",
-      "note": null
+      "verificationProcedure": "Project lead reviews governance, releases and contributor records."
     },
     {
       "id": "TDC-040",
@@ -3560,18 +2800,13 @@
         "page": 3,
         "section": "Documentation"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/source-baseline.md",
         "docs/architecture/architecture.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Confirm the selected reference and PCI-specific adaptations with the client.",
-      "note": null
+      "verificationProcedure": "Confirm the selected reference and PCI-specific adaptations with the client."
     },
     {
       "id": "TDC-041",
@@ -3582,18 +2817,13 @@
         "page": 3,
         "section": "Documentation"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Actual project-plan and submission dates are required; no backdated submission.",
-      "note": null
+      "verificationProcedure": "Actual project-plan and submission dates are required; no backdated submission."
     },
     {
       "id": "TDC-042",
@@ -3604,19 +2834,14 @@
         "page": 3,
         "section": "Local Repo"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "README.md",
         "docs/product.adoc",
         "docs/architecture/architecture.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review the product scope against the source specifications.",
-      "note": null
+      "verificationProcedure": "Review the product scope against the source specifications."
     },
     {
       "id": "TDC-043",
@@ -3627,20 +2852,14 @@
         "page": 3,
         "section": "Local Repo"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "README.md",
         "reference/participant-data-repository/Dockerfile",
         "docs/testing/participant-test.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Build the mandated participant image; approve its digest. PCI remains imported flows/UI.",
-      "note": null
+      "verificationProcedure": "Build the mandated participant image; approve its digest. PCI remains imported flows/UI."
     },
     {
       "id": "TDC-044",
@@ -3651,18 +2870,13 @@
         "page": 3,
         "section": "Local Repo"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/operations/deployment.md",
         "docs/operations/upgrade-0.5.0-rc.4.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Execute the documented deployment/upgrade against the actual environment.",
-      "note": null
+      "verificationProcedure": "Execute the documented deployment/upgrade against the actual environment."
     },
     {
       "id": "TDC-045",
@@ -3673,19 +2887,14 @@
         "page": 4,
         "section": "Local Repo"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/requirements/traceability.md",
         "docs/known-gaps.md",
         "docs/release/0.5.0-rc.4.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client reviews implementation decisions and unresolved dependencies; source specifications are unchanged.",
-      "note": null
+      "verificationProcedure": "Client reviews implementation decisions and unresolved dependencies; source specifications are unchanged."
     },
     {
       "id": "TDC-046",
@@ -3696,18 +2905,13 @@
         "page": 4,
         "section": "Local Repo"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "docs/architecture/issuer-runtime.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review node inputs/outputs and trust boundaries.",
-      "note": null
+      "verificationProcedure": "Review node inputs/outputs and trust boundaries."
     },
     {
       "id": "TDC-047",
@@ -3718,8 +2922,7 @@
         "page": 4,
         "section": "Local Repo"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd",
         "LICENSE.txt",
@@ -3727,11 +2930,7 @@
         "contracts/source-manifest.json"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review the complete tested dependency inventory before release.",
-      "note": null
+      "verificationProcedure": "Review the complete tested dependency inventory before release."
     },
     {
       "id": "TDC-048",
@@ -3742,20 +2941,14 @@
         "page": 4,
         "section": "General Principles"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "README.md",
         "docs/specifications",
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Import into the designated repository; no nested independent Git projects are supplied.",
-      "note": null
+      "verificationProcedure": "Import into the designated repository; no nested independent Git projects are supplied."
     },
     {
       "id": "TDC-049",
@@ -3766,18 +2959,12 @@
         "page": 4,
         "section": "Repository Creation"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client/project leads supply the official destination and naming.",
-      "note": null
+      "verificationProcedure": "Client/project leads supply the official destination and naming."
     },
     {
       "id": "TDC-050",
@@ -3788,18 +2975,12 @@
         "page": 4,
         "section": "Contributor Onboarding"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Actual contributors complete and retain onboarding records.",
-      "note": null
+      "verificationProcedure": "Actual contributors complete and retain onboarding records."
     },
     {
       "id": "TDC-051",
@@ -3810,19 +2991,13 @@
         "page": 4,
         "section": "Documentation Generator"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "mkdocs.yml",
         ".github/workflows/docs.yml"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Run strict MkDocs build and publish the reviewed site.",
-      "note": null
+      "verificationProcedure": "Run strict MkDocs build and publish the reviewed site."
     },
     {
       "id": "TDC-052",
@@ -3833,17 +3008,12 @@
         "page": 4,
         "section": "Product Documentation"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/product.adoc"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client reviews the product document in its accepted documentation format.",
-      "note": null
+      "verificationProcedure": "Client reviews the product document in its accepted documentation format."
     },
     {
       "id": "TDC-053",
@@ -3854,18 +3024,13 @@
         "page": 4,
         "section": "Architecture Modelling"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/architecture/components.puml",
         "docs/architecture/issuance.puml"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review/render the delivered UML sources and confirm the client's model format.",
-      "note": null
+      "verificationProcedure": "Review/render the delivered UML sources and confirm the client's model format."
     },
     {
       "id": "TDC-054",
@@ -3876,19 +3041,14 @@
         "page": 4,
         "section": "APIs"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/api/openapi.json",
         "docs/api/examples.json",
         "tools/check-documentation.mjs"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Execute API examples with private real sessions and validate deployed responses.",
-      "note": null
+      "verificationProcedure": "Execute API examples with private real sessions and validate deployed responses."
     },
     {
       "id": "TDC-055",
@@ -3899,18 +3059,13 @@
         "page": 4,
         "section": "Node-RED hooks"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "backend/sr2/routes.json"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review imported nodes and configured external modules.",
-      "note": null
+      "verificationProcedure": "Review imported nodes and configured external modules."
     },
     {
       "id": "TDC-056",
@@ -3921,8 +3076,7 @@
         "page": 4,
         "section": "Semantic templates"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "contracts/examples",
         "backend/sr2/semantics.js",
@@ -3931,12 +3085,7 @@
         "test/live/semantic-validation.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Run a semantic processor and SHACL validator; client approves production vocabulary/template profiles. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
-      "note": null
+      "verificationProcedure": "Run a semantic processor and SHACL validator; client approves production vocabulary/template profiles. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
       "id": "TDC-057",
@@ -3947,18 +3096,13 @@
         "page": 4,
         "section": "Client templates"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "contracts/examples",
         "docs/contracts/semantic-templates.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Replace synthetic reference vocabulary when the client provides its approved templates.",
-      "note": null
+      "verificationProcedure": "Replace synthetic reference vocabulary when the client provides its approved templates."
     },
     {
       "id": "TDC-058",
@@ -3969,19 +3113,14 @@
         "page": 4,
         "section": "README"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "README.md",
         "docs/operations/deployment.md",
         "docs/operations/transport.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client reviews the documented installation choices.",
-      "note": null
+      "verificationProcedure": "Client reviews the documented installation choices."
     },
     {
       "id": "TDC-059",
@@ -3992,18 +3131,13 @@
         "page": 5,
         "section": "README"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "README.md",
         "docs/architecture/components.puml"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review the rendered diagram with the client.",
-      "note": null
+      "verificationProcedure": "Review the rendered diagram with the client."
     },
     {
       "id": "TDC-060",
@@ -4014,20 +3148,14 @@
         "page": 6,
         "section": "FOSS Repository Workflows"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
         "docs/ci-cd.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Run workflows, capture resolved nested versions and review actual findings.",
-      "note": null
+      "verificationProcedure": "Run workflows, capture resolved nested versions and review actual findings."
     },
     {
       "id": "TDC-061",
@@ -4038,19 +3166,14 @@
         "page": 6,
         "section": "FOSS Repository README"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md",
         "SECURITY.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client must name the maintainer and approved contact; no identity or mailbox is invented.",
-      "note": null
+      "verificationProcedure": "Client must name the maintainer and approved contact; no identity or mailbox is invented."
     },
     {
       "id": "TDC-062",
@@ -4061,18 +3184,13 @@
         "page": 6,
         "section": "FOSS Repository Contributing"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "CONTRIBUTING.md",
         "SECURITY.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Client finalizes these processes for the designated project.",
-      "note": null
+      "verificationProcedure": "Client finalizes these processes for the designated project."
     },
     {
       "id": "TDC-063",
@@ -4083,18 +3201,13 @@
         "page": 6,
         "section": "FOSS Repository License"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "IP reviewer approves final software and third-party notices.",
-      "note": null
+      "verificationProcedure": "IP reviewer approves final software and third-party notices."
     },
     {
       "id": "TDC-064",
@@ -4105,17 +3218,12 @@
         "page": 6,
         "section": "FOSS Repository Code of Conduct"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "CODE_OF_CONDUCT.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Principal approves the existing code-of-conduct text.",
-      "note": null
+      "verificationProcedure": "Principal approves the existing code-of-conduct text."
     },
     {
       "id": "TDC-065",
@@ -4126,20 +3234,14 @@
         "page": 6,
         "section": "FOSS Repository Docs"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs",
         "mkdocs.yml",
         ".github/workflows/docs.yml"
       ],
       "checks": [],
-      "remainingActions": [
-        "BUILD_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Review the generated documentation and explicitly publish it.",
-      "note": null
+      "verificationProcedure": "Review the generated documentation and explicitly publish it."
     },
     {
       "id": "TDC-066",
@@ -4150,19 +3252,14 @@
         "page": 6,
         "section": "FOSS Repository CI and APIs"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/ci-cd.md",
         "docs/api/README.md",
         "docs/api/openapi.json"
       ],
       "checks": [],
-      "remainingActions": [
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Review exact workflow inputs and API response contracts.",
-      "note": null
+      "verificationProcedure": "Review exact workflow inputs and API response contracts."
     },
     {
       "id": "TDC-067",
@@ -4173,8 +3270,7 @@
         "page": 6,
         "section": "ORCE Automation QA"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/pci-deployment.json",
@@ -4182,11 +3278,7 @@
         "scripts/reconcile-participant-ownership.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run all three operations with pre-provisioned private inputs and inspect outcomes. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
-      "note": null
+      "verificationProcedure": "Run all three operations with pre-provisioned private inputs and inspect outcomes. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
       "id": "TDC-068",
@@ -4197,19 +3289,14 @@
         "page": 6,
         "section": "ORCE Automation QA"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/lifecycle.js",
         "backend/functions/_common.js"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Inspect safe structured outcomes across actual success/failure executions.",
-      "note": null
+      "verificationProcedure": "Inspect safe structured outcomes across actual success/failure executions."
     },
     {
       "id": "TDC-069",
@@ -4220,18 +3307,13 @@
         "page": 6,
         "section": "ORCE Automation QA"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/lifecycle.js"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Confirm phase/code/detail/nextStep/exitCode without child payload leakage.",
-      "note": null
+      "verificationProcedure": "Confirm phase/code/detail/nextStep/exitCode without child payload leakage."
     },
     {
       "id": "TDC-070",
@@ -4242,8 +3324,7 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "sourceStatus": "BLOCKED_OWNER",
-      "acceptanceStatus": "OWNER_REMEDIATION_AND_ACCEPTANCE_PENDING",
+      "responsibility": "BLOCKED_OWNER",
       "implementation": [
         "docs/operations/transport.md",
         "backend/sr2/transport.js",
@@ -4252,12 +3333,7 @@
         "tools/prepare-all-hop-tls.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT",
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Platform owners must encrypt compatibility ORCE/database/mail and shared native links. Client flags alone do not close this requirement. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
-      "note": null
+      "verificationProcedure": "Platform owners must encrypt compatibility ORCE/database/mail and shared native links. Client flags alone do not close this requirement. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
       "id": "TDC-071",
@@ -4268,8 +3344,7 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "sourceStatus": "BLOCKED_OWNER",
-      "acceptanceStatus": "OWNER_REMEDIATION_AND_ACCEPTANCE_PENDING",
+      "responsibility": "BLOCKED_OWNER",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "docs/privacy/data-handling.md",
@@ -4278,12 +3353,7 @@
         "tools/prepare-upstream-builds.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT",
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Deploy owner-approved upstream log fixes and inspect every real payload sink. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
-      "note": null
+      "verificationProcedure": "Deploy owner-approved upstream log fixes and inspect every real payload sink. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
       "id": "TDC-072",
@@ -4294,19 +3364,14 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/_k8s.js",
         "tools/check-g0-manifests.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Validate Kubernetes admission, controllers, ownership and readiness on both clouds.",
-      "note": null
+      "verificationProcedure": "Validate Kubernetes admission, controllers, ownership and readiness on both clouds."
     },
     {
       "id": "TDC-073",
@@ -4317,18 +3382,13 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "scripts/preflight.sh",
         "backend/functions/status.js"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Demonstrate Keycloak, native TSA/status/metadata/NATS and trust connectivity.",
-      "note": null
+      "verificationProcedure": "Demonstrate Keycloak, native TSA/status/metadata/NATS and trust connectivity."
     },
     {
       "id": "TDC-074",
@@ -4339,18 +3399,13 @@
         "page": 6,
         "section": "BDD Suite"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run the official Executor against an approved disposable installation.",
-      "note": null
+      "verificationProcedure": "Run the official Executor against an approved disposable installation."
     },
     {
       "id": "TDC-075",
@@ -4361,18 +3416,13 @@
         "page": 6,
         "section": "BDD Suite"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run the delivered negative parameter case and retain its safe result.",
-      "note": null
+      "verificationProcedure": "Run the delivered negative parameter case and retain its safe result."
     },
     {
       "id": "TDC-076",
@@ -4383,18 +3433,13 @@
         "page": 7,
         "section": "BDD Suite"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Prove repeated deployment preserves identities and unrelated resources.",
-      "note": null
+      "verificationProcedure": "Prove repeated deployment preserves identities and unrelated resources."
     },
     {
       "id": "TDC-077",
@@ -4405,18 +3450,13 @@
         "page": 7,
         "section": "BDD Suite"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Prove owned removal, retained PVCs and unrelated-resource preservation.",
-      "note": null
+      "verificationProcedure": "Prove owned removal, retained PVCs and unrelated-resource preservation."
     },
     {
       "id": "TDC-078",
@@ -4427,8 +3467,7 @@
         "page": 7,
         "section": "BDD Suite"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd/features",
         "test/live/wallet.mjs",
@@ -4436,11 +3475,7 @@
         "test/bdd/features/native-wallet.feature"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run real authentication, permissions, native issuance and failure cases. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
-      "note": null
+      "verificationProcedure": "Run real authentication, permissions, native issuance and failure cases. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
       "id": "TDC-079",
@@ -4451,19 +3486,14 @@
         "page": 7,
         "section": "BDD packs"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md",
         ".github/workflows/release.yml"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION"
-      ],
-      "closure": "Publish the reviewed pack and actual BDD results with each release.",
-      "note": null
+      "verificationProcedure": "Publish the reviewed pack and actual BDD results with each release."
     },
     {
       "id": "TDC-080",
@@ -4474,18 +3504,13 @@
         "page": 7,
         "section": "QA hosting"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/testing/live-acceptance.md",
         "test/bdd"
       ],
       "checks": [],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Collect real IONOS/OSC receipts with all mandated services and PCM.",
-      "note": null
+      "verificationProcedure": "Collect real IONOS/OSC receipts with all mandated services and PCM."
     },
     {
       "id": "TDC-081",
@@ -4496,20 +3521,14 @@
         "page": 7,
         "section": "DevOps tools"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md",
         ".github/workflows",
         "docs/ci-cd.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Project team records actual issue/branch/review/release use.",
-      "note": null
+      "verificationProcedure": "Project team records actual issue/branch/review/release use."
     },
     {
       "id": "TDC-082",
@@ -4520,8 +3539,7 @@
         "page": 7,
         "section": "Release artifacts"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "deployment/helm",
         "reference/participant-data-repository/Dockerfile",
@@ -4529,12 +3547,7 @@
         "test/bdd"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
-      "closure": "Build/scan/publish the mandated participant image and charts; attach executed BDD reports.",
-      "note": null
+      "verificationProcedure": "Build/scan/publish the mandated participant image and charts; attach executed BDD reports."
     },
     {
       "id": "TDC-083",
@@ -4545,19 +3558,13 @@
         "page": 7,
         "section": "DevOps tools"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "deployment/argocd/participant-application.example.yaml",
         "docs/operations/argocd.md"
       ],
       "checks": [],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Client supplies approved repository/ArgoCD destination and performs deployment integration.",
-      "note": null
+      "verificationProcedure": "Client supplies approved repository/ArgoCD destination and performs deployment integration."
     }
   ],
   "supplementaryGroups": [
@@ -4568,8 +3575,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "BLOCKED_OWNER",
-      "acceptanceStatus": "OWNER_REMEDIATION_AND_ACCEPTANCE_PENDING",
+      "responsibility": "BLOCKED_OWNER",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4585,12 +3591,7 @@
         "tools/signoff-gate.mjs",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "closure": "Run native issuance and lifecycle acceptance on both clouds.",
-      "note": "Kubernetes/ORCE deployment and strict client TLS are supplied. All-hop TLS and unchanged native payload sinks require owner-controlled runtime changes; client flags alone cannot close them."
+      "verificationProcedure": "Run native issuance and lifecycle acceptance on both clouds."
     },
     {
       "id": "TDR-02",
@@ -4599,8 +3600,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4616,11 +3616,7 @@
         "tools/signoff-gate.mjs",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Run G0/Helm twice, upgrade and uninstall; preserve original ORCE/OCM.",
-      "note": "Non-interactive ORCE automation, Helm prerequisites, reversible import and guarded uninstall supplied."
+      "verificationProcedure": "Run G0/Helm twice, upgrade and uninstall; preserve original ORCE/OCM."
     },
     {
       "id": "TDR-03",
@@ -4629,8 +3625,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4646,12 +3641,7 @@
         "tools/signoff-gate.mjs",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Designated repository, real commits, ECA onboarding and client reviews.",
-      "note": "Governance instructions supplied; actual repository/daily commits/ECA/history cannot be created by local development."
+      "verificationProcedure": "Designated repository, real commits, ECA onboarding and client reviews."
     },
     {
       "id": "TDR-04",
@@ -4660,8 +3650,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4677,13 +3666,7 @@
         "tools/signoff-gate.mjs",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Scan Node, Go, container and vendored assets; record client approvals.",
-      "note": "Licenses/notices and remote scans supplied; component approval and official IP review remain external."
+      "verificationProcedure": "Scan Node, Go, container and vendored assets; record client approvals."
     },
     {
       "id": "TDR-05",
@@ -4692,8 +3675,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4709,11 +3691,7 @@
         "tools/signoff-gate.mjs",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Official Executor plus native/wallet UX cases, demonstration and reviewer.",
-      "note": "Executable BDD and milestone scenario pack supplied; actual demonstration/review requires the deployed environment."
+      "verificationProcedure": "Official Executor plus native/wallet UX cases, demonstration and reviewer."
     },
     {
       "id": "TDR-06",
@@ -4722,8 +3700,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4744,13 +3721,7 @@
         "test/tests/integration/semantics.test.mjs",
         "tools/check-documentation.mjs"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Publish MkDocs; review OpenAPI, protobuf and format/context/shape coverage.",
-      "note": "Original specifications, editable UML, AsciiDoc, MkDocs, all REST examples, node specs and per-configuration semantic template export are supplied. Production vocabulary approval and semantic-engine execution remain open."
+      "verificationProcedure": "Publish MkDocs; review OpenAPI, protobuf and format/context/shape coverage."
     },
     {
       "id": "TDR-07",
@@ -4759,8 +3730,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "EXCLUDED",
-      "acceptanceStatus": "REQUIRED_EXTERNAL_DELIVERY_PENDING",
+      "responsibility": "EXCLUDED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4776,12 +3746,7 @@
         "tools/signoff-gate.mjs",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "closure": "Immutable Harbor images and charts; merged deployment changes.",
-      "note": "Chart/image workflows and integration material supplied; registry publication and approved deployment merges are excluded."
+      "verificationProcedure": "Immutable Harbor images and charts; merged deployment changes."
     },
     {
       "id": "TDR-08",
@@ -4790,8 +3755,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "sourceStatus": "DONE",
-      "acceptanceStatus": "IMPLEMENTED_ACCEPTANCE_PENDING",
+      "responsibility": "DONE",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -4807,11 +3771,7 @@
         "tools/signoff-gate.mjs",
         ".github/workflows/ci.yml"
       ],
-      "remainingActions": [
-        "MANUAL_VALIDATION"
-      ],
-      "closure": "Review source provenance, generated code and validation limits.",
-      "note": "Supplemental source-delivery disclosure, not a numbered or mandatory clause invented for the supplied Technical Development Requirements."
+      "verificationProcedure": "Review source provenance, generated code and validation limits."
     }
   ]
 }

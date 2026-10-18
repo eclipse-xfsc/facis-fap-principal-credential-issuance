@@ -1,0 +1,63 @@
+{
+  "reviewDate": "2026-10-18",
+  "sourceCommit": "3fef8e3048f3803b8aecbd99f582a3c4c05295b0",
+  "ci": {
+    "id": 38727256710,
+    "url": "https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/38727256710",
+    "conclusion": "success",
+    "executedAt": "2026-10-15",
+    "jobs": [
+      {
+        "id": 116396078794,
+        "name": "participant",
+        "conclusion": "success"
+      },
+      {
+        "id": 116396079119,
+        "name": "charts",
+        "conclusion": "success"
+      },
+      {
+        "id": 116396079244,
+        "name": "official-go / test",
+        "conclusion": "success"
+      },
+      {
+        "id": 116396079274,
+        "name": "browser",
+        "conclusion": "success"
+      },
+      {
+        "id": 116396079391,
+        "name": "semantics",
+        "conclusion": "success"
+      },
+      {
+        "id": 116396079493,
+        "name": "node",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "documentation": {
+    "id": 39127451730,
+    "url": "https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/39127451730",
+    "conclusion": "success",
+    "executedAt": "2026-10-18",
+    "publishedUrl": "https://eclipse-xfsc.github.io/facis-fap-principal-credential-issuance/"
+  },
+  "eclipseDash": {
+    "id": 38727256204,
+    "url": "https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/38727256204",
+    "conclusion": "failure",
+    "requirement": "FR-PCI-101"
+  },
+  "browser": {
+    "status": "PASS",
+    "widths": [
+      1440,
+      390
+    ],
+    "scope": "Actual Chromium UI with synthetic native/identity fixtures"
+  }
+}

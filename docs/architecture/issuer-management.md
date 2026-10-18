@@ -1,6 +1,6 @@
 # Issuer management
 
-This is an integration candidate. Native OCM publication/issuance adapters are wired against pinned official source. A local publish activates a version; observed native metadata read-back and live wallet evidence are separate checks.
+This document describes the delivered PCI issuer implementation. Native OCM publication/issuance adapters are wired against pinned official source. A local publish activates a version; observed native metadata read-back and live wallet evidence are separate checks.
 
 ## Runtime and ownership
 

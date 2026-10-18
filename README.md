@@ -1,31 +1,19 @@
-# Current release: 0.5.0-rc.12
-
-PCI now decodes the native signer’s single-key JWK array and selects the configured key by algorithm before verifying the credential. This fixes the live credential-completion Algorithm/key mismatch failure. Earlier public JWKS, discovery, VM, metadata and Bash installer fixes are retained. See [docs/release/0.5.0-rc.12.md](docs/release/0.5.0-rc.12.md).
-
-This neutral source revision replaces operator-specific identities and deployment values with documented examples. The wallet helper requires explicit target inputs. See [neutral configuration](docs/operations/neutral-configuration.md) and [revision validation](docs/release/neutral-validation.json).
-
 # FACIS Principal Credential Issuance
 
-**0.5.0-rc.12 — integration candidate.** PCI runs inside an existing XFSC ORCE instance with one Vue/uibuilder UI. It manages tenant onboarding, delegated issuer administration, credential configurations, request journeys and issuance history. Native OCM services handle offers, signing, metadata and status; a participant-owned Go/Goa service supplies credential data over mTLS gRPC.
+FAP PCI runs inside XFSC ORCE and provides tenant onboarding, delegated issuer administration, credential configurations, issuance journeys, wallet offers, presentation verification and issuance history. The UI uses Vue and uibuilder. Native OCM services supply issuer, signer, Well-Known and status operations; the participant-owned Go/Goa service supplies credential data over mTLS gRPC.
 
-This iteration targets OCM-WStack ESB 12.3.9: updated Crypto verification headers, independent status checks before credential delivery, strict presentation status verdicts, and bounded Helm-to-G0 ownership migration. It retains the rc.5 functionality and records the new source/build/live acceptance boundary. See [rc.6 changes](docs/release/0.5.0-rc.6.md) and [executed checks and remaining gates](docs/release/completion.md).
+## Releases and documentation
 
-```mermaid
-flowchart TD
-  Registration["Verified registration"] --> Decision{"Provider decision"}
-  Decision -->|Approve| Tenant["Tenant and IAM provisioning"]
-  Decision -->|Reject| Rejected["No tenant provisioned"]
-  Tenant --> Configure["Administrator configures issuer and delegates"]
-  Configure --> Journey["Principal completes issuance journey"]
-  Journey --> Native["Participant data and native OCM issuance"]
-  Native --> Wallet["Wallet imports credential"]
-  Wallet --> Presentation["Principal presents credential"]
-  Native --> History["Issuer reviews history and revokes"]
-  History --> Presentation
-```
+| Distribution | Reference |
+|---|---|
+| Packaged PCI container | [`ecofacis/fap-pci:1.0.0`](https://hub.docker.com/r/ecofacis/fap-pci/tags?name=1.0.0) |
+| Application source version | `0.5.0-rc.12`, as recorded in `VERSION` and `package.json` |
+| Packaging base | `ecofacis/xfsc-orce:2.0.15` |
+| Published documentation | [FAP PCI documentation](https://eclipse-xfsc.github.io/facis-fap-principal-credential-issuance/) |
 
-The [requirement matrix](docs/requirements/traceability.md) distinguishes delivered development from remaining build/live acceptance and public delivery. PCM, Entra, both clouds, accessibility, upstream image remediation and all-hop TLS still need real evidence. This is an integration candidate, not a sign-off declaration.
-## Build and check
+The container captures the ORCE filesystem and explicitly includes `/data`, covering PCI flows, UI/configuration and installed dependencies. Container packaging and application versions identify different release units. An older base image tag on an existing deployment does not identify the version of hot-installed PCI artifacts. See [container use and provenance](docs/operations/container-image.md) and the [1.0.0 packaging record](docs/release/1.0.0.md).
+
+## Build and checks
 
 ```bash
 npm ci
@@ -33,35 +21,31 @@ python3 -m pip install PyYAML==6.0.2
 npm run test:offline
 ```
 
-Node.js 20+, Python 3/PyYAML and OpenSSL are required. The checked-in distribution is reproducible from source. Tests use real local cryptography and HTTP/2 mTLS, plus clearly identified database/upstream doubles. They do not replace cluster or wallet tests. See [validation](docs/release/validation.json).
+Use Node.js 20 or newer, Python 3, OpenSSL and the pinned dependencies. [CI results](docs/release/completion.md) record 350 passing Node tests plus successful PostgreSQL, Go/Goa/protobuf, Helm, Chromium and semantic checks for the reviewed source commit. The [test strategy](docs/testing/test-strategy.md) explains each suite and its fixtures. Deployment-specific tests use private target configuration and sessions.
 
-## Deploy
+## Install and operate
 
-For an already prepared PCI instance, use the [rc.12 artifact upgrade](docs/operations/upgrade-0.5.0-rc.12.md). For a new install read [deployment](docs/operations/deployment.md) and the [initial rc.6 setup](docs/operations/deploy-0.5.0-rc.6.md), then run `scripts/preflight.sh` and `scripts/deploy.sh` with the documented arguments. Helm 3.17+, Kubernetes 1.33–1.36, an existing ORCE instance and the selected OCM ESB 12.3.9 deployment are required. Replace all example hosts, paths and cluster values with the selected deployment's inputs.
+1. Read [deployment](docs/operations/deployment.md) or the [container guide](docs/operations/container-image.md).
+2. Prepare the approved ORCE/OCM environment with G0, or use the [lifecycle runner](docs/operations/automation.md).
+3. Configure [issuer metadata, keys and connectors](docs/operations/issuer-runbook.md) and [organization sign-in](docs/operations/identity.md).
+4. Follow [participant setup](docs/testing/participant-test.md) and the [test walkthrough](docs/testing/acceptance-walkthrough.md).
+5. Use the [operations runbook](docs/operations/runbook.md) for recovery, maintenance and uninstall.
 
-The ORCE import surface stays:
-
-- `dist/fap-pci-flow.json`
-- `dist/ground-zero.sh`
-- `dist/ui/`
-
-For one non-interactive entrypoint use the [release runner or operator ORCE flow](docs/operations/automation.md). G0 prepares infrastructure. Import the flow and copy UI files afterwards; use a modified-flows deployment, not an ORCE restart. The participant service is a separate participant-owned reference, packaged under `reference/participant-data-repository/` with its chart under `deployment/helm/participant/`.
+The source artifact interface is `dist/fap-pci-flow.json`, `dist/ground-zero.sh` and `dist/ui/`. For an existing instance, use the [artifact upgrade](docs/operations/upgrade-0.5.0-rc.12.md). Import PCI flows through the established modified-flows deployment and retain the instance's persistent data. The [operating profiles](docs/known-gaps.md) describe dependency ownership, transport, supported formats and retention.
 
 ## Source layout
 
 | Path | Purpose |
 |---|---|
-| `backend/functions/` | ORCE registration, IAM, tenancy and reconciliation |
-| `backend/sr2/` | Issuer domain, native adapters, transport and persistence |
+| `backend/functions/`, `backend/sr2/` | Registration, IAM, reconciliation, issuer domain and native adapters |
 | `src/`, `shared/` | UI and public URL model |
-| `automation/stage1/`, `scripts/` | G0, import, deployment, diagnostics and uninstall |
-| `deployment/` | Helm charts and operator-owned prerequisite examples |
-| `contracts/` | Protobuf, source pins and message contract records |
-| `test/`, `.github/workflows/` | Offline tests, live PostgreSQL/BDD packs and CI |
-| `docs/` | Architecture, operations, requirements and acceptance |
+| `automation/`, `scripts/` | Prerequisites, artifact installation, lifecycle and diagnostics |
+| `deployment/` | Helm charts and infrastructure profiles |
+| `reference/participant-data-repository/` | Go/Goa participant service |
+| `contracts/`, `docs/api/` | Protobuf, native contracts, REST schemas and examples |
+| `test/`, `.github/workflows/` | Automated checks and deployment test packs |
+| `docs/` | Product, architecture, operations, specifications and source traceability |
 
-Test with the [participant setup](docs/testing/participant-test.md) and [ordered acceptance walkthrough](docs/testing/acceptance-walkthrough.md). See [rc.6 changes](docs/release/0.5.0-rc.6.md). Start with [issuer setup](docs/operations/issuer-runbook.md), [live acceptance](docs/testing/live-acceptance.md), and the [101-requirement matrix](docs/requirements/traceability.md). `mkdocs build` creates searchable documentation. No credentials, generated participant data, dependency directories or historical source archives are included.
+The [101 SRS entries](docs/requirements/traceability.md) and [83 technical clauses](docs/requirements/technical-clauses.md) link implementation and verification procedures to the original specifications. Current [validation](docs/release/validation.json) and [workflow evidence](docs/release/ci-evidence.json) identify executed checks by commit and run. Release-specific test receipts are maintained separately from the source catalogue.
 
-Application source is Apache-2.0. Original specifications and vendored dependencies retain their notices. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
-
-Maintainer/contact assignment is pending the client's confirmation through the XFSC project leads. Use the designated project's issue process in [CONTRIBUTING.md](CONTRIBUTING.md), or [SECURITY.md](SECURITY.md) for sensitive reports. This candidate does not invent an official contact identity or mailbox.
+Application source is Apache-2.0. Original specifications and dependencies retain their notices. See [licences](THIRD_PARTY_NOTICES.md), [contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md). Use the repository issue process for project questions; keep credentials, participant records and private deployment files outside Git.

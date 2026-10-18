@@ -1,6 +1,6 @@
 # Threat model — SR2
 
-| Threat | Source control | Remaining proof |
+| Threat | Implemented control | Operational verification |
 |---|---|---|
 | Spoofed or conflicting tenant identity | Exact routed host plus canonical UUID/slug/domain; duplicate security-header rejection; session tenant and enabled DB member | Effective Envoy/backend network boundary |
 | Stale/global issuer role | Current tenant/configuration assignment on every operation, immediate revocation, no role-only access | Keycloak role changes and real concurrent sessions |
@@ -18,4 +18,4 @@
 
 M1 is status-only. The removed `harden-rbac.sh` is not part of this release and must not be invoked. G0 performs schema/infrastructure preparation before hot installation of the flow/UI; the runtime does not bootstrap cluster controllers. OCM lifecycle mutation remains forbidden. Built-in Node crypto/TLS/PNG/QR code adds no runtime npm dependency.
 
-The system is not production-certified from these tests. Native adapters are wired against pinned source. G0 restricts direct ORCE ingress to the PCI Gateway; independently managed permissive NetworkPolicies can still add another path and must be reviewed. Approved egress, identity, TLS and retention policies still need live evidence.
+The system is not production-certified from these tests. Native adapters are wired against pinned source. G0 restricts direct ORCE ingress to the PCI Gateway; independently managed permissive NetworkPolicies can still add another path and must be reviewed. Inspect approved egress, identity, TLS and retention policies for each deployed environment and retain the corresponding review record.

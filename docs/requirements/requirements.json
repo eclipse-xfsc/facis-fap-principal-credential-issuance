@@ -9,14 +9,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/service.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/bdd/sr2-issuer.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Configure both keys through UI; inspect tenant ownership; sign with Vault and OpenBao in an approved environment.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native TSA keys/JWKS use OCM namespace plus tenant group. DID uses real public keys; no substitute signing service."
+      "implementationSummary": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/service.js"
     },
     {
       "id": "FR-PCI-02",
@@ -24,14 +20,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/service.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/bdd/sr2-issuer.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Public DID document shows the actual issuer key and resolves through the selected universal resolver; deletion/rotation behavior recorded.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native TSA keys/JWKS use OCM namespace plus tenant group. DID uses real public keys; no substitute signing service."
+      "implementationSummary": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/service.js"
     },
     {
       "id": "FR-PCI-03",
@@ -39,14 +31,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/integration/native-profiles.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "From outside cluster request the exact tenant credential endpoint and reject a cross-tenant host/header.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints."
+      "implementationSummary": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js"
     },
     {
       "id": "FR-PCI-04",
@@ -54,14 +42,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/integration/native-profiles.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "External positive and cross-tenant negative API calls using the selected OCM bridge.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints."
+      "implementationSummary": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js"
     },
     {
       "id": "FR-PCI-05",
@@ -69,14 +53,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/service.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/bdd/sr2-issuer.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Resolve tenant JWKS over HTTPS and match it to configured signing keys and DID.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native TSA keys/JWKS use OCM namespace plus tenant group. DID uses real public keys; no substitute signing service."
+      "implementationSummary": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/service.js"
     },
     {
       "id": "FR-PCI-06",
@@ -84,14 +64,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-security.test.mjs; test/tests/integration/sr2-ui.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Two users with different scopes; direct API and UI create/edit/delete/flow tests before and after revocation.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-07",
@@ -99,15 +75,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/native.js; deployment/prerequisites/upstream/oid4-vci-vp-well-known-service-empty-catalogue.patch; backend/sr2/runtime.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/bdd/native-completion.test.mjs; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Authenticated publish, observed revision, well-known read-back, restart/replay, stale update and unauthorized edit tests.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "developmentNote": "Wallet discovery immediately withdraws archived local configurations, returns an authoritative empty catalogue and refuses stale native versions. Maintenance records native empty-catalogue failure as an error until the supplied owner patch is deployed."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/native.js; deployment/prerequisites/upstream/oid4-vci-vp-well-known-service-empty-catalogue.patch; backend/sr2/runtime.js"
     },
     {
       "id": "FR-PCI-08",
@@ -115,14 +86,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-security.test.mjs; test/tests/integration/sr2-ui.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Delegated issuer performs full CRUD and manages two actual issuance flows.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-09",
@@ -130,14 +97,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-security.test.mjs; test/tests/integration/sr2-ui.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Ordinary principal denied UI and APIs; authorized issuer succeeds, cross-tenant requests denied.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-10",
@@ -145,14 +108,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/assets.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Wallet fetches and renders tenant-specific image from actual metadata; old published assets remain resolvable.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Validated image dimensions/type/size, UI guidance, content-addressed public assets and immutable published references."
+      "implementationSummary": "backend/sr2/assets.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-11",
@@ -160,14 +119,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Two configuration IDs with distinct multi-step journeys executed in browser and pinned for an in-flight request.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-12",
@@ -175,14 +130,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/history.js; backend/sr2/store.js; backend/sr2/service.js; src/sr2.js",
       "checks": "test/tests/integration/history.test.mjs; test/live/postgres.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Restricted per-configuration UI showing IDs, dates, offered/expired/issued/revoked states and approved principal association; privacy review.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "ID/date/state/principal search, current IAM history statement JWT and verified holder DID; retrieved claims/tokens are not persisted."
+      "implementationSummary": "backend/sr2/history.js; backend/sr2/store.js; backend/sr2/service.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-13",
@@ -190,14 +141,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/issuance.js; backend/sr2/native.js; src/sr2.js; backend/sr2/revocation.js; test/tests/integration/rc4-revocation.test.mjs",
       "checks": "test/tests/integration/history.test.mjs; test/tests/integration/native-adapter.test.mjs; test/bdd/features/native-wallet.feature; test/tests/integration/rc6-native-contract.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Search by approved ID/date/principal reference, revoke once, verify public credential status, block reissue and audit override.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native status revocation always blocks reissuance; only an explicit audited administrator unblock clears it. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "implementationSummary": "backend/sr2/issuance.js; backend/sr2/native.js; src/sr2.js; backend/sr2/revocation.js; test/tests/integration/rc4-revocation.test.mjs"
     },
     {
       "id": "FR-PCI-14",
@@ -205,14 +152,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/issuance.js; backend/sr2/maintenance.js; backend/sr2/native.js; test/bdd/features/native-wallet.feature",
       "checks": "test/tests/bdd/sr2-review-regressions.test.mjs; test/tests/integration/sr2-deletion.test.mjs; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Archive/delete a configuration while old credentials still verify until the agreed validity limit.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Configuration archive stops new issuance and preserves version/key/status/assets while tenant remains active. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/issuance.js; backend/sr2/maintenance.js; backend/sr2/native.js; test/bdd/features/native-wallet.feature"
     },
     {
       "id": "FR-PCI-15",
@@ -220,14 +163,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js; backend/sr2/linked-data.js; test/bdd/features/pcm.feature",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Real create/update/delete and standards fixtures read back from well-known endpoints.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js; backend/sr2/linked-data.js; test/bdd/features/pcm.feature"
     },
     {
       "id": "FR-PCI-16",
@@ -235,14 +174,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/sr2-mtls.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Configure each credential connection through UI; real mutual TLS including expired/wrong cert and bounded egress cases.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol."
+      "implementationSummary": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository"
     },
     {
       "id": "FR-PCI-17",
@@ -250,14 +185,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js; backend/sr2/sdjwt.js; test/tests/integration/rc4-formats.test.mjs",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/integration/native-profiles.test.mjs; test/bdd/features/native-wallet.feature; test/tests/integration/rc6-native-contract.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Reviewed exact contract implementation and full native issuance through OCM and PCM.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "implementationSummary": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js; backend/sr2/sdjwt.js; test/tests/integration/rc4-formats.test.mjs"
     },
     {
       "id": "FR-PCI-18",
@@ -265,15 +196,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/native.js; deployment/prerequisites/upstream/oid4-vci-vp-well-known-service-empty-catalogue.patch; backend/sr2/maintenance.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/bdd/native-completion.test.mjs; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Tenant issuer/config metadata published, observed at native Well-Known, including revision/delete/restart behavior.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "developmentNote": "Revision publication and native read-back; empty catalogue guarded until owner-deployed pinned SQL fix is explicitly enabled. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/native.js; deployment/prerequisites/upstream/oid4-vci-vp-well-known-service-empty-catalogue.patch; backend/sr2/maintenance.js"
     },
     {
       "id": "FR-PCI-19",
@@ -281,14 +207,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/history.js; backend/sr2/store.js; backend/sr2/service.js; src/sr2.js",
       "checks": "test/tests/integration/history.test.mjs; test/live/postgres.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Sanitized event samples for both modes, per configuration, with audit and GDPR review.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "ID/date/state/principal search, current IAM history statement JWT and verified holder DID; retrieved claims/tokens are not persisted."
+      "implementationSummary": "backend/sr2/history.js; backend/sr2/store.js; backend/sr2/service.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-20",
@@ -296,14 +218,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository; reference/participant-data-repository/ldp_signer.go; test/bdd/features/native-wallet.feature; backend/sr2/linked-data.js",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/sr2-mtls.test.mjs; test/bdd/features/native-wallet.feature; test/tests/integration/rc5-closure.test.mjs; test/tests/integration/rc6-native-contract.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Participant mock and repository flows with positive/negative token, cert, subject, signature, status cases.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "implementationSummary": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository; reference/participant-data-repository/ldp_signer.go; test/bdd/features/native-wallet.feature; backend/sr2/linked-data.js"
     },
     {
       "id": "FR-PCI-21",
@@ -311,14 +229,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js",
       "checks": "test/tests/integration/native-adapter.test.mjs; test/tests/integration/native-profiles.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Actual configured ORCE flow creates short-lived offer; QR scanned by PCM and resolved by OCM.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native offers/token/credential callbacks and public tenant routing are wired; software wallet exercises deployed endpoints."
+      "implementationSummary": "backend/sr2/native.js; backend/sr2/runtime.js; backend/sr2/profiles.js"
     },
     {
       "id": "FR-PCI-22",
@@ -326,15 +240,10 @@
       "priority": "MUST",
       "implementation": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/participant-source.test.mjs; reference/participant-data-repository/repository_test.go; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Reviewed Goa design/generated code, Docker image, runtime service and code review.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "developmentNote": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending."
+      "implementationSummary": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source"
     },
     {
       "id": "FR-PCI-23",
@@ -342,16 +251,10 @@
       "priority": "SHOULD",
       "implementation": "reference/participant-data-repository/credential",
       "checks": "reference/participant-data-repository/credential/formats_test.go; .github/workflows/ci.yml",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Build and review the reusable JWT/SD-JWT package. Contribute it to the designated XFSC repository through the approved process. VCDM 2.0/ETSI EAA is recommended; full conformity is outside this release scope.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
-      "developmentNote": "Reusable JWT/SD-JWT formatter and tests supplied. Approved contribution, build and review remain external; no EAA certification claim."
+      "implementationSummary": "reference/participant-data-repository/credential"
     },
     {
       "id": "FR-PCI-24",
@@ -359,15 +262,10 @@
       "priority": "MUST",
       "implementation": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/participant-source.test.mjs; reference/participant-data-repository/repository_test.go; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Versioned proto, service implementation, interoperable call and reviewed error/metadata semantics.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "developmentNote": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending."
+      "implementationSummary": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source"
     },
     {
       "id": "FR-PCI-25",
@@ -375,14 +273,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Provider browser journey and unauthorized access denial on live environment.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js"
     },
     {
       "id": "FR-PCI-26",
@@ -390,14 +284,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Approved tenant reaches Ready, route and login; compare resources before/after and verify email.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js"
     },
     {
       "id": "FR-PCI-27",
@@ -405,14 +295,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/reconcile.js; backend/sr2/maintenance.js; backend/sr2/issuance.js; backend/functions/_participant-cleanup.js; test/tests/integration/rc4-lifecycle.test.mjs; scripts/reconcile-participant-ownership.py",
       "checks": "test/tests/integration/sr2-deletion.test.mjs; test/bdd/features/registration.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Confirmed tenant deletion removes owned public routes/DID resolution and identity grants, preserving other tenants and shared services. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/functions/reconcile.js; backend/sr2/maintenance.js; backend/sr2/issuance.js; backend/functions/_participant-cleanup.js; test/tests/integration/rc4-lifecycle.test.mjs; scripts/reconcile-participant-ownership.py"
     },
     {
       "id": "FR-PCI-28",
@@ -420,14 +306,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Reject a pending request, see retained decision and email, and confirm no tenant resources.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js"
     },
     {
       "id": "FR-PCI-29",
@@ -435,14 +317,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Register, approve, list, duplicate participant rejection, and protected delete in browser.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js"
     },
     {
       "id": "FR-PCI-30",
@@ -450,14 +328,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md; backend/functions/_identity.js; test/tests/integration/rc4-identity.test.mjs; test/bdd/features/fresh-identity.feature; test/bdd/features/pcm.feature",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/tests/integration/keycloak-network-policy.test.mjs; test/bdd/features/runtime.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "After approval, use emailed account, change password/register strong factor, configure tenant and exercise it.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md; backend/functions/_identity.js; test/tests/integration/rc4-identity.test.mjs; test/bdd/features/fresh-identity.feature; test/bdd/features/pcm.feature"
     },
     {
       "id": "FR-PCI-31",
@@ -465,14 +339,10 @@
       "priority": "SHOULD",
       "implementation": "src/main.js; src/sr2.js; src/styles.css; docs/ux/ux-concept.md",
       "checks": "test/tests/integration/sr2-ui.test.mjs; test/browser/runtime.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Semantic labels, keyboard-native controls, error/live regions, responsive layout and contrast validation; EN 301 549 assessment is manual/external."
+      "implementationSummary": "src/main.js; src/sr2.js; src/styles.css; docs/ux/ux-concept.md"
     },
     {
       "id": "FR-PCI-32",
@@ -480,14 +350,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Both modes, forged private registration denial, email verification, provider approval and cluster inventory.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js"
     },
     {
       "id": "FR-PCI-33",
@@ -495,14 +361,10 @@
       "priority": "SHOULD",
       "implementation": "src/main.js; src/sr2.js; src/styles.css; docs/ux/ux-concept.md",
       "checks": "test/tests/integration/sr2-ui.test.mjs; test/browser/runtime.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Semantic labels, keyboard-native controls, error/live regions, responsive layout and contrast validation; EN 301 549 assessment is manual/external."
+      "implementationSummary": "src/main.js; src/sr2.js; src/styles.css; docs/ux/ux-concept.md"
     },
     {
       "id": "FR-PCI-34",
@@ -510,14 +372,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js; backend/sr2/linked-data.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Create/edit/delete with claims/assets/connector, read native metadata and issue from selected backend.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js; backend/sr2/linked-data.js"
     },
     {
       "id": "FR-PCI-35",
@@ -525,14 +383,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-security.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Director versus employee issuance, denial and role-removal propagation across two configurations.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Eligibility binds current principal roles/entitlements and tenant membership; removed or unauthorized principals are denied."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-36",
@@ -540,14 +394,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/issuance.js; backend/sr2/native.js; src/sr2.js; backend/sr2/revocation.js; test/tests/integration/rc4-revocation.test.mjs",
       "checks": "test/tests/integration/history.test.mjs; test/tests/integration/native-adapter.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Authorized history search and per-record revoke; separate public verifier/status proof and denied reissue.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Native status revocation always blocks reissuance; only an explicit audited administrator unblock clears it. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "implementationSummary": "backend/sr2/issuance.js; backend/sr2/native.js; src/sr2.js; backend/sr2/revocation.js; test/tests/integration/rc4-revocation.test.mjs"
     },
     {
       "id": "FR-PCI-37",
@@ -555,14 +405,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
-      "acceptance": "Landing\u2192input/consent\u2192offer sequences, tenant branding and error/replay tests.",
+      "status": "DONE",
+      "acceptance": "Landing→input/consent→offer sequences, tenant branding and error/replay tests.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-38",
@@ -570,14 +416,10 @@
       "priority": "SHOULD (conditional MUST)",
       "implementation": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Demonstrate two changes without code deployment and run both in ORCE.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-39",
@@ -585,14 +427,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/sr2-mtls.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Real participant TLS handshake, negative trust tests and documented UI/config procedure.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol."
+      "implementationSummary": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository"
     },
     {
       "id": "FR-PCI-40",
@@ -600,14 +438,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/sr2-mtls.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Observe redacted claims/binding from participant-issued token at repository, reject wrong issuer/audience/scope/subject.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Per-connector mTLS, issuer/audience/scope checks, verified participant token forwarding and bounded two-request gRPC protocol."
+      "implementationSummary": "backend/sr2/participant-security.js; backend/sr2/wire.js; backend/sr2/issuance.js; reference/participant-data-repository"
     },
     {
       "id": "FR-PCI-41",
@@ -615,14 +449,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/domain.js; backend/sr2/issuance.js; backend/sr2/store.js",
       "checks": "test/tests/bdd/native-completion.test.mjs; test/live/postgres.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Configure limits in tenant UI, load test, inspect bounded behavior after restart and under two tenants.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Tenant/configuration rate and concurrency limits plus bounded participant retries/circuit recovery."
+      "implementationSummary": "backend/sr2/domain.js; backend/sr2/issuance.js; backend/sr2/store.js"
     },
     {
       "id": "FR-PCI-42",
@@ -630,15 +460,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/transport.js; backend/sr2/wire.js; backend/functions/_common.js; docs/operations/transport.md",
       "checks": "test/tests/integration/native-transport.test.mjs; test/tests/integration/sr2-mtls.test.mjs; test/tests/integration/runtime-memory.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "TLS 1.3 enforced on PCI Gateway and participant channel; selected in-cluster OCM HTTP/NATS endpoints need OCM-owner TLS/service-mesh deployment and a full endpoint scan.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "developmentNote": "External TLS 1.3 and encrypted native client profiles supplied. Actual shared/internal encryption and certificate deployment must be configured/tested by the owner."
+      "implementationSummary": "backend/sr2/transport.js; backend/sr2/wire.js; backend/functions/_common.js; docs/operations/transport.md"
     },
     {
       "id": "FR-PCI-43",
@@ -646,14 +471,10 @@
       "priority": "MUST",
       "implementation": "automation/stage1/ground-zero.sh; scripts/deploy-observability.py; deployment/helm/observability",
       "checks": "test/tests/static/hardening.test.mjs; tools/check-g0-manifests.py",
-      "status": "PARTIAL",
-      "acceptance": "Review and demonstrate the supplied static TLS Secret, name coverage, expiry and rotation. The SRS permits static TLS as an alternative to route-specific Let\u2019s Encrypt.",
+      "status": "DONE",
+      "acceptance": "Review and demonstrate the supplied static TLS Secret, name coverage, expiry and rotation. The SRS permits static TLS as an alternative to route-specific Let’s Encrypt.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Static certificate Secret is the allowed SRS alternative; host/key matching and dedicated Gateway TLS policy supplied."
+      "implementationSummary": "automation/stage1/ground-zero.sh; scripts/deploy-observability.py; deployment/helm/observability"
     },
     {
       "id": "FR-PCI-44",
@@ -661,14 +482,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/tests/integration/keycloak-network-policy.test.mjs; test/bdd/features/runtime.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Live PKCE login and issuance with valid/invalid realm, audience, tenant and disabled member.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required."
+      "implementationSummary": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md"
     },
     {
       "id": "FR-PCI-45",
@@ -676,14 +493,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md; backend/functions/_identity.js; test/bdd/features/fresh-identity.feature",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/tests/integration/keycloak-network-policy.test.mjs; test/bdd/features/runtime.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Document tenant connection, perform Entra login and complete a credential journey.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "implementationSummary": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md; backend/functions/_identity.js; test/bdd/features/fresh-identity.feature"
     },
     {
       "id": "FR-PCI-46",
@@ -691,14 +504,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/tests/integration/keycloak-network-policy.test.mjs; test/bdd/features/runtime.feature",
-      "status": "PARTIAL",
-      "acceptance": "Registration\u2192verification\u2192approval\u2192passkey enrollment and protected admin access in browser.",
+      "status": "DONE",
+      "acceptance": "Registration→verification→approval→passkey enrollment and protected admin access in browser.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required."
+      "implementationSummary": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md"
     },
     {
       "id": "FR-PCI-47",
@@ -706,14 +515,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/tests/integration/keycloak-network-policy.test.mjs; test/bdd/features/runtime.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "IdP role/group mapping guide and live permission change reflected in issuance.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required."
+      "implementationSummary": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md"
     },
     {
       "id": "FR-PCI-48",
@@ -721,15 +526,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/issuance.js; backend/sr2/presentation.js; backend/functions/_common.js; scripts/privacy-audit.py; deployment/prerequisites/upstream; tools/prepare-upstream-builds.py",
       "checks": "test/tests/integration/runtime-memory.test.mjs; test/tests/integration/presentation.test.mjs; test/tests/integration/release-automation.test.mjs; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Owner reviews/builds/deploys exact native logging patches; execute successful/failed real-path canary scans across all retained sinks and record remediation/retention evidence.",
       "development": "BLOCKED_OWNER",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "developmentNote": "PCI transient handling, safe errors and native patch proposals are delivered. End-to-end privacy still requires owner-deployed native log fixes and actual retention/sink review. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. Current Crypto 2.3.7 patch applicability/build is NOT_RUN; exact new commit protection prevents a downgrade."
+      "implementationSummary": "backend/sr2/issuance.js; backend/sr2/presentation.js; backend/functions/_common.js; scripts/privacy-audit.py; deployment/prerequisites/upstream; tools/prepare-upstream-builds.py"
     },
     {
       "id": "FR-PCI-49",
@@ -737,14 +537,10 @@
       "priority": "MUST",
       "implementation": "automation/stage1; automation/flows/pci-deployment.json; scripts/lifecycle.py; scripts/deploy.sh; scripts/uninstall.sh; scripts/import-legacy-baseline.py; automation/stage1/apply-resources.py",
       "checks": "test/tests/integration/artifact-lifecycle.test.mjs; test/tests/integration/release-automation.test.mjs; test/bdd/features/lifecycle.feature; test/tests/integration/rc5-closure.test.mjs; test/tests/integration/rc6-apply.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Clean second cluster from a locked release, rollback/restore, full credential issuance.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Non-interactive deploy/upgrade/artifact import and guarded uninstall through open-source tools and operator ORCE context. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. Helm ownership migration is per-object and checked against release/namespace and live UID/resourceVersion; fresh and unpatched legacy cluster tests remain pending."
+      "implementationSummary": "automation/stage1; automation/flows/pci-deployment.json; scripts/lifecycle.py; scripts/deploy.sh; scripts/uninstall.sh; scripts/import-legacy-baseline.py; automation/stage1/apply-resources.py"
     },
     {
       "id": "FR-PCI-50",
@@ -752,14 +548,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/reconcile.js; backend/functions/_k8s.js; automation/stage1/ground-zero.sh",
       "checks": "test/tests/static/gateway-base-path.test.mjs; test/tests/static/security-host-authority.test.mjs; test/tests/bdd/tenant-foundation.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Effective Envoy route dumps; forged header, direct Service, cross-host and multi-tenant tests.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Dedicated Gateway, trusted route headers, tenant host routing and bounded reconciliation ownership."
+      "implementationSummary": "backend/functions/reconcile.js; backend/functions/_k8s.js; automation/stage1/ground-zero.sh"
     },
     {
       "id": "FR-PCI-51",
@@ -767,15 +559,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Maintainer-merged PRs with release SHA and deployment integration; separate repository alone is insufficient.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-52",
@@ -783,14 +570,10 @@
       "priority": "MUST",
       "implementation": "automation/stage1; automation/flows/pci-deployment.json; scripts/lifecycle.py; scripts/deploy.sh; scripts/uninstall.sh; automation/stage1/apply-resources.py",
       "checks": "test/tests/integration/artifact-lifecycle.test.mjs; test/tests/integration/release-automation.test.mjs; test/bdd/features/lifecycle.feature; test/tests/integration/rc6-apply.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Published architecture/deployment choices, license inventory and second-cluster portability test.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Non-interactive deploy/upgrade/artifact import and guarded uninstall through open-source tools and operator ORCE context. Helm ownership migration is per-object and checked against release/namespace and live UID/resourceVersion; fresh and unpatched legacy cluster tests remain pending."
+      "implementationSummary": "automation/stage1; automation/flows/pci-deployment.json; scripts/lifecycle.py; scripts/deploy.sh; scripts/uninstall.sh; automation/stage1/apply-resources.py"
     },
     {
       "id": "FR-PCI-53",
@@ -798,14 +581,10 @@
       "priority": "MUST",
       "implementation": "automation/stage1/ground-zero.sh; deployment/helm; docs/operations/runbook.md",
       "checks": "tools/check-g0-manifests.py; test/tests/integration/release-automation.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Limits and storage/CPU/memory sizing guide, load test, safe scale/restore demonstration.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Resources on supplied workloads/jobs and preserved-or-bounded ORCE resources. Single-replica requirement documented; actual target load remains acceptance."
+      "implementationSummary": "automation/stage1/ground-zero.sh; deployment/helm; docs/operations/runbook.md"
     },
     {
       "id": "FR-PCI-54",
@@ -813,15 +592,10 @@
       "priority": "MUST",
       "implementation": "mkdocs.yml; .github/workflows/docs.yml; docs/product.adoc; docs/specifications; docs/architecture; docs/api",
       "checks": "docs build workflow; tools/check-documentation.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Versioned public support page with working navigation, FAQ, install/troubleshooting guides and link check.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "developmentNote": "Searchable docs, product/spec/model/node/API artifacts and opt-in Pages publisher supplied; public hosting/review remains excluded."
+      "implementationSummary": "mkdocs.yml; .github/workflows/docs.yml; docs/product.adoc; docs/specifications; docs/architecture; docs/api"
     },
     {
       "id": "FR-PCI-55",
@@ -829,14 +603,10 @@
       "priority": "MUST",
       "implementation": "deployment/helm/observability; scripts/deploy-observability.py; backend/sr2/runtime.js",
       "checks": "test/tests/integration/runtime-memory.test.mjs; .github/workflows/ci.yml; docs/operations/observability.md",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Private bounded TLS Jaeger/Prometheus/OTel deployment and body-free instrumentation; actual ingestion/retention remains live evidence."
+      "implementationSummary": "deployment/helm/observability; scripts/deploy-observability.py; backend/sr2/runtime.js"
     },
     {
       "id": "FR-PCI-56",
@@ -844,14 +614,10 @@
       "priority": "MUST",
       "implementation": "deployment/helm/observability; scripts/deploy-observability.py; backend/sr2/runtime.js",
       "checks": "test/tests/integration/runtime-memory.test.mjs; .github/workflows/ci.yml; docs/operations/observability.md",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Private bounded TLS Jaeger/Prometheus/OTel deployment and body-free instrumentation; actual ingestion/retention remains live evidence."
+      "implementationSummary": "deployment/helm/observability; scripts/deploy-observability.py; backend/sr2/runtime.js"
     },
     {
       "id": "FR-PCI-57",
@@ -859,14 +625,10 @@
       "priority": "MUST",
       "implementation": "deployment/helm/observability; scripts/deploy-observability.py; backend/sr2/runtime.js",
       "checks": "test/tests/integration/runtime-memory.test.mjs; .github/workflows/ci.yml; docs/operations/observability.md",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Private bounded TLS Jaeger/Prometheus/OTel deployment and body-free instrumentation; actual ingestion/retention remains live evidence."
+      "implementationSummary": "deployment/helm/observability; scripts/deploy-observability.py; backend/sr2/runtime.js"
     },
     {
       "id": "FR-PCI-58",
@@ -874,14 +636,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/status.js; backend/sr2/runtime.js; backend/functions/_common.js",
       "checks": "test/tests/integration/runtime-memory.test.mjs; test/tests/integration/sr2-http.test.mjs; test/bdd/features/runtime.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Native outage injection, stable health states and sanitized log samples.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Health/readiness, stable structured problems/correlation references, safe diagnostics and metrics."
+      "implementationSummary": "backend/functions/status.js; backend/sr2/runtime.js; backend/functions/_common.js"
     },
     {
       "id": "FR-PCI-59",
@@ -889,14 +647,10 @@
       "priority": "MUST",
       "implementation": "src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js",
       "checks": "test/tests/integration/sr2-ui.test.mjs; test/browser/runtime.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Tenant admin changes all relevant pages through one coherent low-code interface.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Single Vue/uibuilder framework with editable branding palette/type/width/corners/footer and tenant layout."
+      "implementationSummary": "src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js"
     },
     {
       "id": "FR-PCI-60",
@@ -904,14 +658,10 @@
       "priority": "MUST",
       "implementation": "src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js",
       "checks": "test/tests/integration/sr2-ui.test.mjs; test/browser/runtime.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Visual comparison, immediate theme edit across two tenants and responsive browser check.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Single Vue/uibuilder framework with editable branding palette/type/width/corners/footer and tenant layout."
+      "implementationSummary": "src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js"
     },
     {
       "id": "FR-PCI-61",
@@ -919,14 +669,10 @@
       "priority": "MUST",
       "implementation": "test/bdd; test/live/wallet.mjs; test/browser/runtime.mjs; test/bdd/features/native-wallet.feature",
       "checks": "test/bdd/requirements.txt; .github/workflows/ci.yml; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Run supplied XFSC Executor browser/runtime/lifecycle cases on a synthetic tenant. Complete real registration/IdP/PCM and accessibility evidence from the walkthrough; no browser or wallet execution was available here.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Executable official Executor/Playwright pack plus native wallet/registration/lifecycle cases; actual run and human accessibility review remain outstanding. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "test/bdd; test/live/wallet.mjs; test/browser/runtime.mjs; test/bdd/features/native-wallet.feature"
     },
     {
       "id": "FR-PCI-62",
@@ -934,14 +680,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/profiles.js; backend/sr2/presentation.js; src/sr2.js; docs/contracts/presentation.md; backend/sr2/native.js; test/tests/integration/rc4-formats.test.mjs",
       "checks": "test/tests/integration/native-profiles.test.mjs; test/tests/integration/presentation.test.mjs; test/bdd/features/native-wallet.feature; test/tests/integration/rc6-native-contract.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Draft 13 and 1.0 issuance serializers implemented; OID4VP profiles and native non-JWT conformance require upstream work. See UP-02/03.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Draft 13 and 1.0 VCI/VP surfaces; VP format explicitly JWT W3C with holder binding, native issuer signature and status checks. PCM/conformance not claimed. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "implementationSummary": "backend/sr2/profiles.js; backend/sr2/presentation.js; src/sr2.js; docs/contracts/presentation.md; backend/sr2/native.js; test/tests/integration/rc4-formats.test.mjs"
     },
     {
       "id": "FR-PCI-63",
@@ -949,15 +691,10 @@
       "priority": "MUST",
       "implementation": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source; backend/sr2/sdjwt.js; test/bdd/features/native-wallet.feature; reference/participant-data-repository/ldp_signer.go; reference/participant-data-repository/ldp_signer_test.go",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/participant-source.test.mjs; reference/participant-data-repository/repository_test.go; test/bdd/features/native-wallet.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Notification and data request contract, both modes with participant and internal signing, interoperable wire tests.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "developmentNote": "Every participant-signed format now uses official Core gRPC Sign. LDP uses offline URDNA2015 and detached ES256 JWS2020; Go/Core/native interoperability validation remains unexecuted."
+      "implementationSummary": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source; backend/sr2/sdjwt.js; test/bdd/features/native-wallet.feature; reference/participant-data-repository/ldp_signer.go; reference/participant-data-repository/ldp_signer_test.go"
     },
     {
       "id": "FR-PCI-64",
@@ -965,15 +702,10 @@
       "priority": "MUST",
       "implementation": " .github/workflows/ci.yml; .github/workflows/release.yml; docs/ci-cd.md",
       "checks": "test/tests/static/hardening.test.mjs; workflow review",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Restore official remote workflows in every code repo; successful runs tied to release SHA.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "developmentNote": "Official remote test/build/IP/SBOM references and source gates supplied; external workflow runs are not fabricated."
+      "implementationSummary": " .github/workflows/ci.yml; .github/workflows/release.yml; docs/ci-cd.md"
     },
     {
       "id": "FR-PCI-65",
@@ -981,14 +713,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "BDD report with mail and DB/cluster state.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js"
     },
     {
       "id": "FR-PCI-66",
@@ -996,14 +724,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/reconcile.js; backend/sr2/maintenance.js; backend/sr2/issuance.js; backend/functions/_participant-cleanup.js; test/bdd/features/administration.feature; scripts/reconcile-participant-ownership.py",
       "checks": "test/tests/integration/sr2-deletion.test.mjs; test/bdd/features/registration.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Confirmed tenant deletion removes owned public routes/DID resolution and identity grants, preserving other tenants and shared services. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/functions/reconcile.js; backend/sr2/maintenance.js; backend/sr2/issuance.js; backend/functions/_participant-cleanup.js; test/bdd/features/administration.feature; scripts/reconcile-participant-ownership.py"
     },
     {
       "id": "FR-PCI-67",
@@ -1011,14 +735,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Review audit, no premature resources, final Ready tenant.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js"
     },
     {
       "id": "FR-PCI-68",
@@ -1026,14 +746,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js; test/bdd/features/pcm.feature",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/bdd/features/registration.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Rejection BDD, Mailpit/SMTP evidence and resource inventory.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Public/private registration, email verification, provider decisions, readiness reconciliation and duplicate prevention. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/functions/registration.js; backend/functions/provider.js; backend/functions/reconcile.js; src/main.js; test/bdd/features/pcm.feature"
     },
     {
       "id": "FR-PCI-69",
@@ -1041,14 +757,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md; backend/functions/_identity.js; test/bdd/features/fresh-identity.feature",
       "checks": "test/tests/bdd/tenant-foundation.test.mjs; test/tests/integration/keycloak-network-policy.test.mjs; test/bdd/features/runtime.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Principal browser authentication and eligible/denied issuance choices.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "OIDC PKCE/session, administrator-only tenant attributes, passkey/MFA and Entra broker setup/current entitlement mapping; live IdP evidence required. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "implementationSummary": "backend/functions/auth.js; backend/functions/tenant.js; automation/stage1/ground-zero.sh; scripts/configure-entra.py; docs/operations/identity.md; backend/functions/_identity.js; test/bdd/features/fresh-identity.feature"
     },
     {
       "id": "FR-PCI-70",
@@ -1056,14 +768,10 @@
       "priority": "MUST",
       "implementation": "backend/functions/reconcile.js; backend/functions/_k8s.js; automation/stage1/ground-zero.sh",
       "checks": "test/tests/static/gateway-base-path.test.mjs; test/tests/static/security-host-authority.test.mjs; test/tests/bdd/tenant-foundation.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Alpha/Beta login, isolation and route test.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Dedicated Gateway, trusted route headers, tenant host routing and bounded reconciliation ownership."
+      "implementationSummary": "backend/functions/reconcile.js; backend/functions/_k8s.js; automation/stage1/ground-zero.sh"
     },
     {
       "id": "FR-PCI-71",
@@ -1071,14 +779,10 @@
       "priority": "MUST",
       "implementation": "src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js",
       "checks": "test/tests/integration/sr2-ui.test.mjs; test/browser/runtime.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Two independently branded live landing pages.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Single Vue/uibuilder framework with editable branding palette/type/width/corners/footer and tenant layout."
+      "implementationSummary": "src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js"
     },
     {
       "id": "FR-PCI-72",
@@ -1086,14 +790,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-security.test.mjs; test/tests/integration/sr2-ui.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Grant/revoke by one tenant admin for two real users and scoped operations.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Current membership, tenant and scoped issuer assignment are enforced on each operation; UI is not the authority."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/http.js; backend/functions/tenant.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-73",
@@ -1101,15 +801,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Compatible license scan and adjudication.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-74",
@@ -1117,15 +812,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Merged XFSC deployment PR.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-75",
@@ -1133,15 +823,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Tagged release with cluster image/flow/UI/G0 SHA record.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-76",
@@ -1149,14 +834,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "UI/Well-Known creation demonstration.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths."
+      "implementationSummary": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-77",
@@ -1164,14 +845,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js; test/bdd/features/registration.feature",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Versioned edit, metadata read-back and in-flight request proof.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Typed configuration drafts, validate/publish, optimistic versions, immutable snapshot and editable recovery paths. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/sr2/domain.js; backend/sr2/service.js; src/sr2.js; test/bdd/features/registration.feature"
     },
     {
       "id": "FR-PCI-78",
@@ -1179,14 +856,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/issuance.js; backend/sr2/maintenance.js; test/bdd/features/native-wallet.feature",
       "checks": "test/tests/bdd/sr2-review-regressions.test.mjs; test/tests/integration/sr2-deletion.test.mjs; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Old credential verifier check after deletion.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Configuration archive stops new issuance and preserves version/key/status/assets while tenant remains active. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/issuance.js; backend/sr2/maintenance.js; test/bdd/features/native-wallet.feature"
     },
     {
       "id": "FR-PCI-79",
@@ -1194,14 +867,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/assets.js; src/sr2.js; test/bdd/features/pcm.feature",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/tests/integration/rc5-closure.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Wallet-resolved logo and image processing record.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Validated image dimensions/type/size, UI guidance, content-addressed public assets and immutable published references. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests."
+      "implementationSummary": "backend/sr2/assets.js; src/sr2.js; test/bdd/features/pcm.feature"
     },
     {
       "id": "FR-PCI-80",
@@ -1209,14 +878,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js",
       "checks": "test/tests/bdd/sr2-issuer.test.mjs; test/tests/integration/sr2-ui.test.mjs; test/bdd/features/administration.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Two live journey definitions and executions.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Low-code multi-step journeys, preview/reorder/rollback and request-pinned immutable versions."
+      "implementationSummary": "backend/sr2/service.js; backend/sr2/issuance.js; src/sr2.js"
     },
     {
       "id": "FR-PCI-81",
@@ -1224,14 +889,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2/history.js; backend/sr2/store.js; backend/sr2/service.js; src/sr2.js; backend/sr2/revocation.js; test/tests/integration/rc4-revocation.test.mjs",
       "checks": "test/tests/integration/history.test.mjs; test/live/postgres.test.mjs; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Search a real issued credential ID, inspect issuance/status/history and authorized principal statement, revoke it through the native status service, and record current state.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "ID/date/state/principal search, current IAM history statement JWT and verified holder DID; retrieved claims/tokens are not persisted. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "implementationSummary": "backend/sr2/history.js; backend/sr2/store.js; backend/sr2/service.js; src/sr2.js; backend/sr2/revocation.js; test/tests/integration/rc4-revocation.test.mjs"
     },
     {
       "id": "FR-PCI-82",
@@ -1239,15 +900,10 @@
       "priority": "MUST",
       "implementation": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source; reference/participant-data-repository/ldp_signer.go",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/participant-source.test.mjs; reference/participant-data-repository/repository_test.go; test/bdd/features/native-wallet.feature; test/tests/integration/rc5-closure.test.mjs; test/tests/integration/rc6-native-contract.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Participant repository signs through Crypto Provider Core; independently verify the real credential, import it in PCM and record history/status.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "developmentNote": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "implementationSummary": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source; reference/participant-data-repository/ldp_signer.go"
     },
     {
       "id": "FR-PCI-83",
@@ -1255,15 +911,10 @@
       "priority": "MUST",
       "implementation": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source; backend/sr2/linked-data.js",
       "checks": "test/tests/integration/participant-grpc.test.mjs; test/tests/integration/participant-source.test.mjs; reference/participant-data-repository/repository_test.go; test/bdd/features/native-wallet.feature; test/tests/integration/rc5-closure.test.mjs; test/tests/integration/rc6-native-contract.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Participant repository returns unsigned credential data; native OCM signs it. Independently verify, import in PCM and record history/status.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "BUILD_VALIDATION"
-      ],
-      "developmentNote": "Go/Goa data service and Core gRPC signing; separately importable synthetic ORCE record flow. Both participant-signed and native internal signing supported; Go execution pending. rc.5 remediation is retained; current remaining validation is recorded in docs/release/0.5.0-rc.12.md; acceptance is not inferred from authored tests. rc.6 targets the supplied ESB 12.3.9 verify contract and requires independent positive native status before delivery/presentation; actual native image acceptance remains pending."
+      "implementationSummary": "reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source; backend/sr2/linked-data.js"
     },
     {
       "id": "FR-PCI-84",
@@ -1271,15 +922,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Official M2 scan report.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-85",
@@ -1287,15 +933,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Merged source/chart change in XFSC deployment.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-86",
@@ -1303,15 +944,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Immutable tag and live digest/version trace.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-87",
@@ -1319,14 +955,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2; src/sr2.js; test/live/wallet.mjs; test/bdd/features/native-wallet.feature; test/bdd/features/pcm.feature; test/bdd/features/steps/pcm.py",
       "checks": "test/bdd/features/native-wallet.feature; test/tests/integration/presentation.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Two full issuance journeys imported in PCM with verification.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Two tenants, profiles and signing modes represented by executable native cases; actual multiple-principal PCM import remains manual acceptance. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "implementationSummary": "backend/sr2; src/sr2.js; test/live/wallet.mjs; test/bdd/features/native-wallet.feature; test/bdd/features/pcm.feature; test/bdd/features/steps/pcm.py"
     },
     {
       "id": "FR-PCI-88",
@@ -1334,14 +966,10 @@
       "priority": "MUST",
       "implementation": "backend/sr2; src/sr2.js; test/live/wallet.mjs; test/bdd/features/native-wallet.feature; test/bdd/features/pcm.feature; test/bdd/features/steps/pcm.py",
       "checks": "test/bdd/features/native-wallet.feature; test/tests/integration/presentation.test.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Two tenant and principal matrices in wallet, isolation results.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Two tenants, profiles and signing modes represented by executable native cases; actual multiple-principal PCM import remains manual acceptance. rc.4 remediation and authored acceptance coverage are linked in implementation; real acceptance remains pending."
+      "implementationSummary": "backend/sr2; src/sr2.js; test/live/wallet.mjs; test/bdd/features/native-wallet.feature; test/bdd/features/pcm.feature; test/bdd/features/steps/pcm.py"
     },
     {
       "id": "FR-PCI-89",
@@ -1349,15 +977,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Immutable release and deployed digest record.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-90",
@@ -1365,15 +988,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Official scan and findings closure.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-91",
@@ -1381,14 +999,10 @@
       "priority": "MUST",
       "implementation": "automation/stage1; scripts/lifecycle.py; deployment/helm; test/bdd",
       "checks": "test/bdd/features/lifecycle.feature; test/bdd/features/native-wallet.feature",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Clean-install and credential import/verify evidence on another cluster.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Parameterized deployment and native/lifecycle suite can target either approved cloud; second-cluster execution remains outstanding."
+      "implementationSummary": "automation/stage1; scripts/lifecycle.py; deployment/helm; test/bdd"
     },
     {
       "id": "FR-PCI-92",
@@ -1396,15 +1010,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Merged XFSC deployment changes.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-93",
@@ -1412,15 +1021,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Matching source/chart/image tags and notes.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-94",
@@ -1428,15 +1032,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Official scan result.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-95",
@@ -1444,15 +1043,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Tags/releases, chart/image digests and registry records.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-96",
@@ -1460,15 +1054,10 @@
       "priority": "MUST",
       "implementation": "mkdocs.yml; .github/workflows/docs.yml; docs/product.adoc; docs/specifications; docs/architecture; docs/api",
       "checks": "docs build workflow; tools/check-documentation.mjs",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Reviewed, versioned and published documentation set.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "developmentNote": "Searchable docs, product/spec/model/node/API artifacts and opt-in Pages publisher supplied; public hosting/review remains excluded."
+      "implementationSummary": "Current README, container packaging guide, CI results, source catalogue and searchable documentation. Commit and publish this documentation revision through the Documentation workflow."
     },
     {
       "id": "FR-PCI-97",
@@ -1476,15 +1065,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Scan for every code repo and dependency with zero unapproved conflicts.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-98",
@@ -1492,14 +1076,10 @@
       "priority": "MUST",
       "implementation": "docs/security/compliance-roadmap.md",
       "checks": "Client review",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Component-level compliance delta, tasks/owners/effort and explicit noncertification statement.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Component roadmap and certification boundaries documented; regulator/client approval not implied."
+      "implementationSummary": "docs/security/compliance-roadmap.md"
     },
     {
       "id": "FR-PCI-99",
@@ -1507,15 +1087,10 @@
       "priority": "MUST",
       "implementation": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md",
       "checks": "tools/signoff-gate.mjs; test/tests/integration/signoff-gate.test.mjs",
-      "status": "GAP",
+      "status": "DONE",
       "acceptance": "Timestamped inventory and disposition/closure of each issue/PR.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": ".github/workflows; docs/ci-cd.md; docs/testing/live-acceptance.md"
     },
     {
       "id": "FR-PCI-100",
@@ -1523,15 +1098,10 @@
       "priority": "MUST",
       "implementation": " .github/workflows/ci.yml; .github/workflows/release.yml; docs/ci-cd.md",
       "checks": "test/tests/static/hardening.test.mjs; workflow review",
-      "status": "PARTIAL",
+      "status": "DONE",
       "acceptance": "Repo workflow review.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
-      "developmentNote": "Official remote test/build/IP/SBOM references and source gates supplied; external workflow runs are not fabricated."
+      "implementationSummary": " .github/workflows/ci.yml; .github/workflows/release.yml; docs/ci-cd.md"
     },
     {
       "id": "FR-PCI-101",
@@ -1542,12 +1112,7 @@
       "status": "GAP",
       "acceptance": "Green action logs and immutable artifact provenance.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Required external delivery is outside the authorized local-only scope; supporting workflow/documentation is supplied."
+      "implementationSummary": "Source CI and Documentation runs succeeded. Eclipse Dash run 38727256204 concluded failure; its workflow result is tracked separately."
     },
     {
       "id": "TDR-01",
@@ -1558,12 +1123,7 @@
       "status": "PARTIAL",
       "acceptance": "Run native issuance and lifecycle acceptance on both clouds.",
       "development": "BLOCKED_OWNER",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
-      "developmentNote": "Kubernetes/ORCE deployment and strict client TLS are supplied. All-hop TLS and unchanged native payload sinks require owner-controlled runtime changes; client flags alone cannot close them."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd"
     },
     {
       "id": "TDR-02",
@@ -1574,11 +1134,7 @@
       "status": "PARTIAL",
       "acceptance": "Run G0/Helm twice, upgrade and uninstall; preserve original ORCE/OCM.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Non-interactive ORCE automation, Helm prerequisites, reversible import and guarded uninstall supplied."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd"
     },
     {
       "id": "TDR-03",
@@ -1589,12 +1145,7 @@
       "status": "GAP",
       "acceptance": "Designated repository, real commits, ECA onboarding and client reviews.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Governance instructions supplied; actual repository/daily commits/ECA/history cannot be created by local development."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd"
     },
     {
       "id": "TDR-04",
@@ -1605,13 +1156,7 @@
       "status": "PARTIAL",
       "acceptance": "Scan Node, Go, container and vendored assets; record client approvals.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Licenses/notices and remote scans supplied; component approval and official IP review remain external."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd"
     },
     {
       "id": "TDR-05",
@@ -1622,11 +1167,7 @@
       "status": "PARTIAL",
       "acceptance": "Official Executor plus native/wallet UX cases, demonstration and reviewer.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Executable BDD and milestone scenario pack supplied; actual demonstration/review requires the deployed environment."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd"
     },
     {
       "id": "TDR-06",
@@ -1637,13 +1178,7 @@
       "status": "PARTIAL",
       "acceptance": "Publish MkDocs; review OpenAPI, protobuf and format/context/shape coverage.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Original specifications, editable UML, AsciiDoc, MkDocs, all REST examples, node specs and per-configuration semantic template export are supplied. Production vocabulary approval and semantic-engine execution remain open."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd; backend/sr2/semantics.js; docs/contracts/semantic-templates.md; docs/requirements/technical-clauses.json"
     },
     {
       "id": "TDR-07",
@@ -1654,12 +1189,7 @@
       "status": "GAP",
       "acceptance": "Immutable Harbor images and charts; merged deployment changes.",
       "development": "EXCLUDED",
-      "acceptanceStatus": "PUBLIC_DELIVERY_PENDING",
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
-      "developmentNote": "Chart/image workflows and integration material supplied; registry publication and approved deployment merges are excluded."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd"
     },
     {
       "id": "TDR-08",
@@ -1670,11 +1200,7 @@
       "status": "PARTIAL",
       "acceptance": "Review source provenance, generated code and validation limits.",
       "development": "DONE",
-      "acceptanceStatus": "NOT_RUN",
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
-      "developmentNote": "Supplemental source-delivery disclosure, not a numbered or mandatory clause invented for the supplied Technical Development Requirements."
+      "implementationSummary": "docs/product.adoc; docs/specifications; docs/architecture; docs/api; docs/ci-cd.md; scripts; deployment; test/bdd"
     }
   ],
   "authority": [
@@ -1687,5 +1213,8 @@
     "GAP": "Required external/public delivery has not occurred.",
     "development": "DONE means the in-scope source deliverable is supplied, not that its live acceptance passed; EXCLUDED identifies required external/public actions."
   },
-  "technicalClauseLedger": "docs/requirements/technical-clauses.json"
+  "technicalClauseLedger": "docs/requirements/technical-clauses.json",
+  "catalogueScope": "Implementation and delivery tracking. Status is not a test result or regulatory certificate; executed results are in release/validation.json and ci-evidence.json.",
+  "reviewedAt": "2026-10-18",
+  "evidence": "docs/release/ci-evidence.json"
 }

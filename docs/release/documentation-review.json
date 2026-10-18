@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-18",
+  "baselineCommit": "3fef8e3048f3803b8aecbd99f582a3c4c05295b0",
+  "scope": "Documentation refresh and documentation generators; runtime distribution unchanged.",
+  "localSourceTests": {
+    "tests": 350,
+    "passed": 350,
+    "failed": 0,
+    "skipped": 0
+  },
+  "documentationChecks": {
+    "srsRequirements": 101,
+    "supplementaryGroups": 8,
+    "technicalClauses": 83,
+    "apiExamples": 123,
+    "navigationTargets": 46,
+    "relativeLinks": "PASS"
+  },
+  "originalSpecifications": {
+    "changed": false,
+    "technicalPdfSha256": "Checked against original manifest",
+    "srsPdf": "Original tracked path/blob and manifest retained; binary transport prevented a new local SHA-256 check."
+  },
+  "strictSiteBuild": {
+    "command": "python3 -m mkdocs build --strict",
+    "executionEnvironment": "Run in the complete checkout or the Documentation workflow; MkDocs dependencies were unavailable in this review environment."
+  },
+  "container": {
+    "image": "ecofacis/fap-pci:1.0.0",
+    "metadataCheck": "Registry lookup was inaccessible in the review environment; the documented pull/inspect commands capture the actual digest on the release host."
+  },
+  "inventory": "Run node tools/refresh-release-inventory.mjs after combining this package with other local changes."
+}

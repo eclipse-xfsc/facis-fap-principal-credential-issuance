@@ -1,6 +1,6 @@
 # Live acceptance and sign-off
 
-Run on synthetic data first. Resolve [upstream blockers](../known-gaps.md) before personal data testing. Record exact PCI build hashes, native images/digests, OCM ESB version, Kubernetes/Helm versions, environment and reviewer.
+Run on synthetic data first. Select the approved [operating profiles](../known-gaps.md) before personal data testing. Record exact PCI build hashes, native images/digests, OCM ESB version, Kubernetes/Helm versions, environment and reviewer.
 
 ## Automated gates
 

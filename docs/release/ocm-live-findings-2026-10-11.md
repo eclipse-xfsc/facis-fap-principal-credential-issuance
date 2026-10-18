@@ -1,5 +1,7 @@
 # OCM deployment and native-service live findings
 
+> Historical operational observations from 11 October 2026. This record describes the configuration inspected on that date; current PCI source checks and ownership profiles are documented in [completion](completion.md) and [operating profiles](../known-gaps.md).
+
 These are operator-reported observations from the development cluster on 2026-10-11. They are not repaired by the PCI artifact upgrade. Canonical OCM deployer/service remediation and recovery tests remain pending.
 
 | Finding | Recorded development repair / required upstream work |

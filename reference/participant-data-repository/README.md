@@ -2,7 +2,7 @@
 
 Go/Goa service for the PCI two-call protocol. The service verifies the participant access token, then returns configured claims or a participant-signed credential. Participant signing uses the official Crypto Provider Core v2 gRPC `Sign` operation; no private signing key is copied into PCI.
 
-**Build status:** source delivered; Go/Goa/protobuf compilation and image execution were not available in the authoring environment. The `participant` CI job is a required gate. Do not treat the Node loopback gRPC test as a Go build result.
+**Build verification:** CI run `38727256710` passed Go/Goa/protobuf generation, `go vet`, race tests and the generated server build. The official Go workflow also passed. [Current results](../../docs/release/completion.md) distinguish source compilation from deployment tests of a participant image.
 
 ## Build
 
@@ -20,7 +20,7 @@ go build -tags=generated ./cmd/server
 The authored transport entrypoint is `cmd/server/main.go.in`. Generation materializes it after Goa/protobuf output exists, so clean-checkout `go mod tidy` does not try to fetch missing local generated packages. The `generated` tag includes that entrypoint for the full service build. The participant CI job always generates and compiles the complete service. The Dockerfile builds from repository root:
 
 ```bash
-docker build -f reference/participant-data-repository/Dockerfile -t <registry>/pci-participant:0.5.0-rc.2 .
+docker build -f reference/participant-data-repository/Dockerfile -t <registry>/pci-participant:0.5.0-rc.12 .
 ```
 
 ## Configure

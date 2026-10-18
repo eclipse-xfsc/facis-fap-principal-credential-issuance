@@ -51,7 +51,7 @@ The `.example.com` URL and UUID placeholders must be replaced. The helper fails 
 
 Expect POST /pci-orce/api/credential HTTP 200 followed by public JWKS verification and two authenticated OpenID4VP presentation checks. PASS means this software-wallet case completed. The result is saved as `rc12-alpha-wallet-result.log` under `PCI_TEST_NOTES` or `$HOME/fap-pci/deployment-test-notes`. If a later step fails, the log identifies it. Do not reuse a consumed offer or replay an uncertain credential request. This helper does not establish PCM or complete requirement acceptance.
 
-For a remaining callback failure, retrieve sanitized callback events from the selected PCI namespace and deployment:
+For callback diagnostics, retrieve sanitized events from the selected PCI namespace and deployment:
 
 ```bash
 kubectl -n xfsc-orce-pci-orce logs deployment/xfsc-orce \

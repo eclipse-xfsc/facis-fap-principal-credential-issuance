@@ -2,97 +2,97 @@
 
 TDC identifiers are local audit keys for unnumbered provisions, not identifiers assigned by the source document. Page numbers are printed PDF pages. TDR group references retain compatibility with the earlier grouped audit.
 
-Each row is a separate acceptance obligation. DONE refers to source work; EXCLUDED is a real process/public action without a software substitute; BLOCKED_OWNER requires owner-controlled runtime changes. The final receipt must account for every clause, in addition to the 101 FRs and retained audit groups. Client dates, presentations, approvals and public actions are never manufactured.
+Each provision links to its source implementation or responsible project/platform process and its verification procedure. Responsibility is not an acceptance verdict. Current source/toolchain execution is recorded in [completion](../release/completion.md); deployment and review records use the [receipt procedure](../testing/live-acceptance.md#receipt).
 
-| Local audit ID | PDF page / section | Provision | Development | Remaining action |
-|---|---|---|---|---|
-| TDC-001 | 2 / Scope Management | Use the preferred Kanban or Scrum development process | EXCLUDED | EXTERNAL_REVIEW |
-| TDC-002 | 2 / Scope Management | Release scoped software under Apache 2.0 | DONE | EXTERNAL_REVIEW, GIT_PUBLIC_ACTION |
-| TDC-003 | 2 / Scope Management | Present the UX concept before implementation | DONE | EXTERNAL_REVIEW |
-| TDC-004 | 2 / Scope Management | Include repository structure in the project plan | DONE | EXTERNAL_REVIEW |
-| TDC-005 | 2 / Scope Management | Present progress every two weeks | EXCLUDED | EXTERNAL_REVIEW |
-| TDC-006 | 2 / Scope Management | Use BDD tests in milestone presentations | DONE | MANUAL_VALIDATION, EXTERNAL_REVIEW |
-| TDC-007 | 2 / ORCE | Use ORCE for service orchestration | DONE | MANUAL_VALIDATION |
-| TDC-008 | 2 / ORCE | Use ORCE for Builder Node orchestration | DONE | MANUAL_VALIDATION |
-| TDC-009 | 2 / ORCE | Use ORCE for applicable deployment workflows | DONE | MANUAL_VALIDATION |
-| TDC-010 | 2 / ORCE | Use low-code integration | DONE | MANUAL_VALIDATION |
-| TDC-011 | 2 / Deployment on Kubernetes | Deploy on IONOS Cloud Kubernetes | DONE | MANUAL_VALIDATION |
-| TDC-012 | 2 / Deployment on Kubernetes | Deploy on T-Systems Open Sovereign Cloud Kubernetes | DONE | MANUAL_VALIDATION |
-| TDC-013 | 2 / Kubernetes and Helm | Automate deployment with Kubernetes and Helm | DONE | BUILD_VALIDATION, MANUAL_VALIDATION |
-| TDC-014 | 2 / Kubernetes and Helm | Automate updates with Kubernetes and Helm | DONE | MANUAL_VALIDATION |
-| TDC-015 | 2 / Kubernetes and Helm | Automate uninstall with Kubernetes and Helm | DONE | MANUAL_VALIDATION |
-| TDC-016 | 2 / Kubernetes and Helm | Manage resources and ingress | DONE | MANUAL_VALIDATION |
-| TDC-017 | 2 / Helm charts | Deliver charts with each release | DONE | GIT_PUBLIC_ACTION |
-| TDC-018 | 2 / Keycloak | Provision realms and clients | DONE | MANUAL_VALIDATION |
-| TDC-019 | 2 / Keycloak | Manage service credentials | DONE | MANUAL_VALIDATION |
-| TDC-020 | 2 / Repository rules | Keep all code, schemas, charts and scripts in the client-designated repository | EXCLUDED | GIT_PUBLIC_ACTION |
-| TDC-021 | 2 / Repository rules | Run GitHub Actions with security checks | DONE | GIT_PUBLIC_ACTION, BUILD_VALIDATION |
-| TDC-022 | 2 / Repository rules | Do not create parallel private repositories | EXCLUDED | EXTERNAL_REVIEW |
-| TDC-023 | 2 / Repository rules | Commit work to the client repository daily | EXCLUDED | GIT_PUBLIC_ACTION, EXTERNAL_REVIEW |
-| TDC-024 | 2 / Apache License | Include Apache license text and SPDX identity | DONE | EXTERNAL_REVIEW |
-| TDC-025 | 3 / FOSS | Use only Apache-compatible FOSS and approved licenses | DONE | BUILD_VALIDATION, EXTERNAL_REVIEW |
-| TDC-026 | 3 / FOSS | Inform the client in writing about planned license exceptions | EXCLUDED | EXTERNAL_REVIEW |
-| TDC-027 | 3 / FOSS | Obtain client confirmation of existing FOSS content | DONE | EXTERNAL_REVIEW |
-| TDC-028 | 3 / FOSS | Assess and obtain approval of API and component versions | DONE | MANUAL_VALIDATION, EXTERNAL_REVIEW |
-| TDC-029 | 3 / XFSC reuse | Avoid redundant XFSC functions | DONE | EXTERNAL_REVIEW |
-| TDC-030 | 3 / Contributor agreement | Comply with Eclipse Contributor Agreement 3.1.0 or higher | EXCLUDED | EXTERNAL_REVIEW, GIT_PUBLIC_ACTION |
-| TDC-031 | 3 / Runtime environments | Use Kubernetes 1.29 or higher | DONE | MANUAL_VALIDATION |
-| TDC-032 | 3 / Runtime environments | Use Helm deployments and ORCE Builder runtime without Docker Compose | DONE | MANUAL_VALIDATION |
-| TDC-033 | 3 / Programming Languages | Use Node.js for Builder logic | DONE | MANUAL_VALIDATION |
-| TDC-034 | 3 / Programming Languages | Use HTML, JavaScript and JSON schemas for ORCE UI nodes | DONE | MANUAL_VALIDATION |
-| TDC-035 | 3 / Programming Languages | Supply Bash automation under scripts | DONE | MANUAL_VALIDATION |
-| TDC-036 | 3 / Programming Languages | Use YAML for charts and Kubernetes manifests | DONE | BUILD_VALIDATION, MANUAL_VALIDATION |
-| TDC-037 | 3 / Programming Languages | Use Go for backend services | DONE | BUILD_VALIDATION |
-| TDC-038 | 3 / Mandated component dependencies | Report upstream issues in writing and obtain approval for additional work | DONE | EXTERNAL_REVIEW, GIT_PUBLIC_ACTION, OWNER_CONFIGURATION_OR_DEPLOYMENT |
-| TDC-039 | 3 / Documentation | Follow the Eclipse Handbook | EXCLUDED | EXTERNAL_REVIEW, GIT_PUBLIC_ACTION |
-| TDC-040 | 3 / Documentation | Use FAP Partner Onboarding as reference | DONE | EXTERNAL_REVIEW |
-| TDC-041 | 3 / Documentation | Submit BDD documentation within one month of project-plan approval | DONE | EXTERNAL_REVIEW |
-| TDC-042 | 3 / Local Repo | Document high-level behavior | DONE | EXTERNAL_REVIEW |
-| TDC-043 | 3 / Local Repo | Document packaging and container boundaries | DONE | BUILD_VALIDATION, EXTERNAL_REVIEW |
-| TDC-044 | 3 / Local Repo | Document deployment and preconditions | DONE | MANUAL_VALIDATION |
-| TDC-045 | 4 / Local Repo | Document changes and additions to source specifications | DONE | EXTERNAL_REVIEW |
-| TDC-046 | 4 / Local Repo | Document orchestrated flow breakdown | DONE | EXTERNAL_REVIEW |
-| TDC-047 | 4 / Local Repo | Include BDD, licenses, dependencies and external OSS references | DONE | EXTERNAL_REVIEW |
-| TDC-048 | 4 / General Principles | Use one monorepo, one history and unified concepts/specifications/source | DONE | GIT_PUBLIC_ACTION, EXTERNAL_REVIEW |
-| TDC-049 | 4 / Repository Creation | Have project leads create the main repository via the client | EXCLUDED | GIT_PUBLIC_ACTION, EXTERNAL_REVIEW |
-| TDC-050 | 4 / Contributor Onboarding | Complete XFSC contributor onboarding | EXCLUDED | GIT_PUBLIC_ACTION, EXTERNAL_REVIEW |
-| TDC-051 | 4 / Documentation Generator | Supply a MkDocs or ReadTheDocs documentation build | DONE | BUILD_VALIDATION, GIT_PUBLIC_ACTION |
-| TDC-052 | 4 / Product Documentation | Supply AsciiDoc product documentation | DONE | EXTERNAL_REVIEW |
-| TDC-053 | 4 / Architecture Modelling | Supply editable architecture models | DONE | EXTERNAL_REVIEW |
-| TDC-054 | 4 / APIs | Define every REST endpoint and provide examples | DONE | MANUAL_VALIDATION |
-| TDC-055 | 4 / Node-RED hooks | Describe orchestration node contracts | DONE | EXTERNAL_REVIEW |
-| TDC-056 | 4 / Semantic templates | Supply JSON-LD contexts and SHACL shapes for templates/data | DONE | BUILD_VALIDATION, EXTERNAL_REVIEW |
-| TDC-057 | 4 / Client templates | Reconcile client-supplied template examples | DONE | EXTERNAL_REVIEW |
-| TDC-058 | 4 / README | Provide overview, setup, environment/configuration and documentation links | DONE | EXTERNAL_REVIEW |
-| TDC-059 | 5 / README | Include an understandable use-case diagram | DONE | EXTERNAL_REVIEW |
-| TDC-060 | 6 / FOSS Repository Workflows | Reference official XFSC Dash scanner and build workflows | DONE | GIT_PUBLIC_ACTION, BUILD_VALIDATION |
-| TDC-061 | 6 / FOSS Repository README | Confirm responsible contributor/contact information | DONE | EXTERNAL_REVIEW |
-| TDC-062 | 6 / FOSS Repository Contributing | Document contributor, release and issue-reporting processes | DONE | EXTERNAL_REVIEW |
-| TDC-063 | 6 / FOSS Repository License | Include license terms | DONE | EXTERNAL_REVIEW |
-| TDC-064 | 6 / FOSS Repository Code of Conduct | Finalize the code of conduct with the Principal | DONE | EXTERNAL_REVIEW |
-| TDC-065 | 6 / FOSS Repository Docs | Host specifications/models and documentation on GitHub Pages | DONE | BUILD_VALIDATION, GIT_PUBLIC_ACTION |
-| TDC-066 | 6 / FOSS Repository CI and APIs | Document CI/CD and OpenAPI | DONE | EXTERNAL_REVIEW |
-| TDC-067 | 6 / ORCE Automation QA | Run deploy/redeploy/uninstall with zero manual intervention after inputs | DONE | MANUAL_VALIDATION |
-| TDC-068 | 6 / ORCE Automation QA | Use structured JSON automation/runtime logs | DONE | MANUAL_VALIDATION |
-| TDC-069 | 6 / ORCE Automation QA | Expose machine-readable errors in ORCE context | DONE | MANUAL_VALIDATION |
-| TDC-070 | 6 / Runtime Validation | Enforce TLS 1.3 for every endpoint and hop | BLOCKED_OWNER | OWNER_CONFIGURATION_OR_DEPLOYMENT, MANUAL_VALIDATION |
-| TDC-071 | 6 / Runtime Validation | Store secrets in Kubernetes Secrets and keep them out of logs | BLOCKED_OWNER | OWNER_CONFIGURATION_OR_DEPLOYMENT, MANUAL_VALIDATION |
-| TDC-072 | 6 / Runtime Validation | Create namespaces, ingress/routes, services and deployments correctly | DONE | MANUAL_VALIDATION |
-| TDC-073 | 6 / Runtime Validation | Reach identity and trust dependencies | DONE | MANUAL_VALIDATION |
-| TDC-074 | 6 / BDD Suite | Execute successful deployment scenario | DONE | MANUAL_VALIDATION |
-| TDC-075 | 6 / BDD Suite | Execute invalid parameter scenario | DONE | MANUAL_VALIDATION |
-| TDC-076 | 7 / BDD Suite | Execute idempotent redeployment scenario | DONE | MANUAL_VALIDATION |
-| TDC-077 | 7 / BDD Suite | Execute uninstall scenario | DONE | MANUAL_VALIDATION |
-| TDC-078 | 7 / BDD Suite | Execute identity/policy/token/integration validation scenarios | DONE | MANUAL_VALIDATION |
-| TDC-079 | 7 / BDD packs | Deliver BDD packs with every release | DONE | GIT_PUBLIC_ACTION |
-| TDC-080 | 7 / QA hosting | Test Keycloak, OCM, PCM Mobile, TSA, OpenBao and ORCE on both clouds | DONE | MANUAL_VALIDATION |
-| TDC-081 | 7 / DevOps tools | Use Git, GitFlow, GitHub Actions and Jira | EXCLUDED | GIT_PUBLIC_ACTION, EXTERNAL_REVIEW |
-| TDC-082 | 7 / Release artifacts | Deliver Helm repository artifacts, OCI images and BDD reports | DONE | GIT_PUBLIC_ACTION, BUILD_VALIDATION |
-| TDC-083 | 7 / DevOps tools | Integrate approved deployment with ArgoCD | DONE | GIT_PUBLIC_ACTION, MANUAL_VALIDATION |
+| Local audit ID | PDF page / section | Provision | Implementation responsibility |
+|---|---|---|---|
+| TDC-001 | 2 / Scope Management | Use the preferred Kanban or Scrum development process | Project process or delivery |
+| TDC-002 | 2 / Scope Management | Release scoped software under Apache 2.0 | PCI source |
+| TDC-003 | 2 / Scope Management | Present the UX concept before implementation | PCI source |
+| TDC-004 | 2 / Scope Management | Include repository structure in the project plan | PCI source |
+| TDC-005 | 2 / Scope Management | Present progress every two weeks | Project process or delivery |
+| TDC-006 | 2 / Scope Management | Use BDD tests in milestone presentations | PCI source |
+| TDC-007 | 2 / ORCE | Use ORCE for service orchestration | PCI source |
+| TDC-008 | 2 / ORCE | Use ORCE for Builder Node orchestration | PCI source |
+| TDC-009 | 2 / ORCE | Use ORCE for applicable deployment workflows | PCI source |
+| TDC-010 | 2 / ORCE | Use low-code integration | PCI source |
+| TDC-011 | 2 / Deployment on Kubernetes | Deploy on IONOS Cloud Kubernetes | PCI source |
+| TDC-012 | 2 / Deployment on Kubernetes | Deploy on T-Systems Open Sovereign Cloud Kubernetes | PCI source |
+| TDC-013 | 2 / Kubernetes and Helm | Automate deployment with Kubernetes and Helm | PCI source |
+| TDC-014 | 2 / Kubernetes and Helm | Automate updates with Kubernetes and Helm | PCI source |
+| TDC-015 | 2 / Kubernetes and Helm | Automate uninstall with Kubernetes and Helm | PCI source |
+| TDC-016 | 2 / Kubernetes and Helm | Manage resources and ingress | PCI source |
+| TDC-017 | 2 / Helm charts | Deliver charts with each release | PCI source |
+| TDC-018 | 2 / Keycloak | Provision realms and clients | PCI source |
+| TDC-019 | 2 / Keycloak | Manage service credentials | PCI source |
+| TDC-020 | 2 / Repository rules | Keep all code, schemas, charts and scripts in the client-designated repository | Project process or delivery |
+| TDC-021 | 2 / Repository rules | Run GitHub Actions with security checks | PCI source |
+| TDC-022 | 2 / Repository rules | Do not create parallel private repositories | Project process or delivery |
+| TDC-023 | 2 / Repository rules | Commit work to the client repository daily | Project process or delivery |
+| TDC-024 | 2 / Apache License | Include Apache license text and SPDX identity | PCI source |
+| TDC-025 | 3 / FOSS | Use only Apache-compatible FOSS and approved licenses | PCI source |
+| TDC-026 | 3 / FOSS | Inform the client in writing about planned license exceptions | Project process or delivery |
+| TDC-027 | 3 / FOSS | Obtain client confirmation of existing FOSS content | PCI source |
+| TDC-028 | 3 / FOSS | Assess and obtain approval of API and component versions | PCI source |
+| TDC-029 | 3 / XFSC reuse | Avoid redundant XFSC functions | PCI source |
+| TDC-030 | 3 / Contributor agreement | Comply with Eclipse Contributor Agreement 3.1.0 or higher | Project process or delivery |
+| TDC-031 | 3 / Runtime environments | Use Kubernetes 1.29 or higher | PCI source |
+| TDC-032 | 3 / Runtime environments | Use Helm deployments and ORCE Builder runtime without Docker Compose | PCI source |
+| TDC-033 | 3 / Programming Languages | Use Node.js for Builder logic | PCI source |
+| TDC-034 | 3 / Programming Languages | Use HTML, JavaScript and JSON schemas for ORCE UI nodes | PCI source |
+| TDC-035 | 3 / Programming Languages | Supply Bash automation under scripts | PCI source |
+| TDC-036 | 3 / Programming Languages | Use YAML for charts and Kubernetes manifests | PCI source |
+| TDC-037 | 3 / Programming Languages | Use Go for backend services | PCI source |
+| TDC-038 | 3 / Mandated component dependencies | Report upstream issues in writing and obtain approval for additional work | PCI source |
+| TDC-039 | 3 / Documentation | Follow the Eclipse Handbook | Project process or delivery |
+| TDC-040 | 3 / Documentation | Use FAP Partner Onboarding as reference | PCI source |
+| TDC-041 | 3 / Documentation | Submit BDD documentation within one month of project-plan approval | PCI source |
+| TDC-042 | 3 / Local Repo | Document high-level behavior | PCI source |
+| TDC-043 | 3 / Local Repo | Document packaging and container boundaries | PCI source |
+| TDC-044 | 3 / Local Repo | Document deployment and preconditions | PCI source |
+| TDC-045 | 4 / Local Repo | Document changes and additions to source specifications | PCI source |
+| TDC-046 | 4 / Local Repo | Document orchestrated flow breakdown | PCI source |
+| TDC-047 | 4 / Local Repo | Include BDD, licenses, dependencies and external OSS references | PCI source |
+| TDC-048 | 4 / General Principles | Use one monorepo, one history and unified concepts/specifications/source | PCI source |
+| TDC-049 | 4 / Repository Creation | Have project leads create the main repository via the client | Project process or delivery |
+| TDC-050 | 4 / Contributor Onboarding | Complete XFSC contributor onboarding | Project process or delivery |
+| TDC-051 | 4 / Documentation Generator | Supply a MkDocs or ReadTheDocs documentation build | PCI source |
+| TDC-052 | 4 / Product Documentation | Supply AsciiDoc product documentation | PCI source |
+| TDC-053 | 4 / Architecture Modelling | Supply editable architecture models | PCI source |
+| TDC-054 | 4 / APIs | Define every REST endpoint and provide examples | PCI source |
+| TDC-055 | 4 / Node-RED hooks | Describe orchestration node contracts | PCI source |
+| TDC-056 | 4 / Semantic templates | Supply JSON-LD contexts and SHACL shapes for templates/data | PCI source |
+| TDC-057 | 4 / Client templates | Reconcile client-supplied template examples | PCI source |
+| TDC-058 | 4 / README | Provide overview, setup, environment/configuration and documentation links | PCI source |
+| TDC-059 | 5 / README | Include an understandable use-case diagram | PCI source |
+| TDC-060 | 6 / FOSS Repository Workflows | Reference official XFSC Dash scanner and build workflows | PCI source |
+| TDC-061 | 6 / FOSS Repository README | Confirm responsible contributor/contact information | PCI source |
+| TDC-062 | 6 / FOSS Repository Contributing | Document contributor, release and issue-reporting processes | PCI source |
+| TDC-063 | 6 / FOSS Repository License | Include license terms | PCI source |
+| TDC-064 | 6 / FOSS Repository Code of Conduct | Finalize the code of conduct with the Principal | PCI source |
+| TDC-065 | 6 / FOSS Repository Docs | Host specifications/models and documentation on GitHub Pages | PCI source |
+| TDC-066 | 6 / FOSS Repository CI and APIs | Document CI/CD and OpenAPI | PCI source |
+| TDC-067 | 6 / ORCE Automation QA | Run deploy/redeploy/uninstall with zero manual intervention after inputs | PCI source |
+| TDC-068 | 6 / ORCE Automation QA | Use structured JSON automation/runtime logs | PCI source |
+| TDC-069 | 6 / ORCE Automation QA | Expose machine-readable errors in ORCE context | PCI source |
+| TDC-070 | 6 / Runtime Validation | Enforce TLS 1.3 for every endpoint and hop | Shared component or platform profile |
+| TDC-071 | 6 / Runtime Validation | Store secrets in Kubernetes Secrets and keep them out of logs | Shared component or platform profile |
+| TDC-072 | 6 / Runtime Validation | Create namespaces, ingress/routes, services and deployments correctly | PCI source |
+| TDC-073 | 6 / Runtime Validation | Reach identity and trust dependencies | PCI source |
+| TDC-074 | 6 / BDD Suite | Execute successful deployment scenario | PCI source |
+| TDC-075 | 6 / BDD Suite | Execute invalid parameter scenario | PCI source |
+| TDC-076 | 7 / BDD Suite | Execute idempotent redeployment scenario | PCI source |
+| TDC-077 | 7 / BDD Suite | Execute uninstall scenario | PCI source |
+| TDC-078 | 7 / BDD Suite | Execute identity/policy/token/integration validation scenarios | PCI source |
+| TDC-079 | 7 / BDD packs | Deliver BDD packs with every release | PCI source |
+| TDC-080 | 7 / QA hosting | Test Keycloak, OCM, PCM Mobile, TSA, OpenBao and ORCE on both clouds | PCI source |
+| TDC-081 | 7 / DevOps tools | Use Git, GitFlow, GitHub Actions and Jira | Project process or delivery |
+| TDC-082 | 7 / Release artifacts | Deliver Helm repository artifacts, OCI images and BDD reports | PCI source |
+| TDC-083 | 7 / DevOps tools | Integrate approved deployment with ArgoCD | PCI source |
 
-## Evidence and closure
+## Source references and verification
 
-| ID | Delivered source | Required closure |
+| ID | Implementation | Verification procedure |
 |---|---|---|
 | TDC-001 | `CONTRIBUTING.md` | Client records the selected process and real delivery history. |
 | TDC-002 | `LICENSE.txt`; `NOTICE.md`; `THIRD_PARTY_NOTICES.md` | Approve dependency/IP evidence and publish the licensed release. |
@@ -178,4 +178,4 @@ Each row is a separate acceptance obligation. DONE refers to source work; EXCLUD
 | TDC-082 | `deployment/helm`; `reference/participant-data-repository/Dockerfile`; `.github/workflows/release.yml`; `test/bdd` | Build/scan/publish the mandated participant image and charts; attach executed BDD reports. |
 | TDC-083 | `deployment/argocd/participant-application.example.yaml`; `docs/operations/argocd.md` | Client supplies approved repository/ArgoCD destination and performs deployment integration. |
 
-[Original documents](../specifications/README.md) · [SRS and group matrix](traceability.md) · [Receipt procedure](../testing/live-acceptance.md)
+[Original specifications](../specifications/README.md) · [SRS catalogue](traceability.md) · [Structured technical catalogue](technical-clauses.json)

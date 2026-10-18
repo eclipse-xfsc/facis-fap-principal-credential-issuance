@@ -1,6 +1,6 @@
 # Issuer setup and first credential
 
-Start with a synthetic participant record and `jwt_vc_json`. The native non-JWT paths remain subject to the upstream defects in [known gaps](../known-gaps.md).
+Start with a synthetic participant record and `jwt_vc_json`, then exercise the other configured formats with their native/wallet test cases. [Operating profiles](../known-gaps.md) describe catalogue, format and dependency behavior.
 
 1. Register and verify a tenant, approve it as provider, and wait for identity, route and DNS conditions. Use the exact `<slug>-pci.<domain>` record. Test emails are captured in Mailpit; they are not delivered to the recipient's inbox in Mailpit mode.
 2. Complete first-login password change and TOTP; enroll a passkey from Keycloak Account Console. Invite a principal and, where needed, a scoped issuer administrator.

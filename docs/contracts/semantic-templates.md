@@ -16,7 +16,7 @@ Exporting does not change the published credential, its context, signing format 
 
 The [employee reference files](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/main/contracts/examples/README.md) remain a standalone synthetic template. Client-provided production templates, identifiers and vocabulary need the client's review; no official FACIS or ETSI semantics are claimed.
 
-Local tests cover deterministic field mapping, scope collisions, required/type constraints and current tenant/delegation authority. JSON-LD expansion and semantic SHACL engine validation remain unexecuted here. Run them with the approved processor/context versions and retain the result before accepting a production template.
+Local tests cover deterministic field mapping, scope collisions, required/type constraints and current tenant/delegation authority. The semantics CI job also passed independent JSON-LD expansion and positive/negative SHACL engine checks. Record the selected template and processor/context versions when reviewing a production vocabulary.
 
 rc.5 LDP metadata, internal signing, participant Core signing and the exported
 example use the identical context and configuration-specific vocabulary. The

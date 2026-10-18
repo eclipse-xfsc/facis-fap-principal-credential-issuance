@@ -15,9 +15,6 @@
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Client records the selected process and real delivery history."
     },
     {
@@ -35,10 +32,6 @@
         "NOTICE.md",
         "THIRD_PARTY_NOTICES.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION"
-      ],
       "closure": "Approve dependency/IP evidence and publish the licensed release."
     },
     {
@@ -53,9 +46,6 @@
       "development": "DONE",
       "implementation": [
         "docs/ux/ux-concept.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Record the actual presentation/approval history; do not backdate it."
     },
@@ -73,9 +63,6 @@
         "README.md",
         "CONTRIBUTING.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Client approves the structure in the authoritative project plan."
     },
     {
@@ -92,9 +79,6 @@
         "docs/requirements/traceability.md",
         "docs/release/0.5.0-rc.4.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Actual presenters retain attendance, dates and progress decisions."
     },
     {
@@ -110,10 +94,6 @@
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Execute the delivered packs and present actual milestone outcomes."
     },
@@ -132,9 +112,6 @@
         "backend/sr2",
         "dist/fap-pci-flow.json"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Execute deployed native issuance and tenant operations."
     },
     {
@@ -150,9 +127,6 @@
       "implementation": [
         "tools/build-flows.mjs",
         "docs/architecture/orce-nodes.md"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Inspect imported functions and run them in the target ORCE."
     },
@@ -170,9 +144,6 @@
         "automation/flows",
         "docs/operations/automation.md"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Run deploy, upgrade and uninstall from the separate operator ORCE."
     },
     {
@@ -188,9 +159,6 @@
       "implementation": [
         "backend/sr2/service.js",
         "src/sr2.js"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Configure multiple journeys and connectors without source edits."
     },
@@ -208,9 +176,6 @@
         "scripts/deploy.sh",
         "automation/stage1/ground-zero.sh"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Complete the IONOS deployment and test receipt."
     },
     {
@@ -226,9 +191,6 @@
       "implementation": [
         "scripts/deploy.sh",
         "docs/testing/live-acceptance.md"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Complete the OSC deployment and test receipt."
     },
@@ -246,10 +208,6 @@
         "automation/stage1/ground-zero.sh",
         "deployment/helm"
       ],
-      "remainingActionType": [
-        "BUILD_VALIDATION",
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Render/lint the charts and execute cluster admission/deployment."
     },
     {
@@ -265,9 +223,6 @@
       "implementation": [
         "scripts/lifecycle.py",
         "automation/stage1/install.sh"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Upgrade with existing PVCs, sessions and configurations, then verify."
     },
@@ -286,9 +241,6 @@
         "automation/stage1/restore-runtime.mjs",
         "scripts/import-legacy-baseline.py"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Run on a disposable installation; preserve unrelated edits and data. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
@@ -304,9 +256,6 @@
       "implementation": [
         "backend/functions/_k8s.js",
         "automation/stage1/ground-zero.sh"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Review live ownership, limits, routes and tenant header isolation."
     },
@@ -324,9 +273,6 @@
         "deployment/helm",
         ".github/workflows/release.yml"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION"
-      ],
       "closure": "Publish reviewed chart artifacts alongside each approved release."
     },
     {
@@ -342,9 +288,6 @@
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/reconcile.js"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Inspect realm/client settings and login flows in deployed Keycloak."
     },
@@ -362,9 +305,6 @@
         "automation/stage1/ground-zero.sh",
         "backend/functions/_common.js"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Verify Secret reuse, mounts, rotation and current service authority."
     },
     {
@@ -380,9 +320,6 @@
       "implementation": [
         "README.md",
         "CONTRIBUTING.md"
-      ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION"
       ],
       "closure": "Project lead supplies the designated repository and accepts these files."
     },
@@ -400,10 +337,6 @@
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
       "closure": "Execute actual workflows and retain dependency/IP results."
     },
     {
@@ -418,9 +351,6 @@
       "development": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Project participants attest to repository authority; no repository was created here."
     },
@@ -437,10 +367,6 @@
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Actual daily history is required and cannot be manufactured retrospectively."
     },
     {
@@ -456,9 +382,6 @@
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Client/IP reviewer approves the final licensed scope."
     },
@@ -477,10 +400,6 @@
         "package-lock.json",
         "reference/participant-data-repository/go.mod"
       ],
-      "remainingActionType": [
-        "BUILD_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Resolve Go sums and full SBOM, scan transitive dependencies and approve licenses."
     },
     {
@@ -496,9 +415,6 @@
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "CONTRIBUTING.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Client records any exception assessment; no approval is implied."
     },
@@ -516,9 +432,6 @@
         "THIRD_PARTY_NOTICES.md",
         "contracts/source-manifest.json"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Client approves the inventoried dependencies and reused source."
     },
     {
@@ -534,10 +447,6 @@
       "implementation": [
         "docs/compatibility/compatibility-matrix.md",
         "contracts/source-manifest.json"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION",
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Verify deployed revisions and record client approval of the compatibility matrix."
     },
@@ -555,9 +464,6 @@
         "docs/architecture/architecture.md",
         "docs/contracts/native-ocm.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Review boundaries: PCI orchestration reuses native keys/signing/offers/metadata/status."
     },
     {
@@ -572,10 +478,6 @@
       "development": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION"
       ],
       "closure": "Each actual contributor completes the required onboarding and agreement."
     },
@@ -592,9 +494,6 @@
       "implementation": [
         "scripts/preflight.sh",
         "docs/compatibility/compatibility-matrix.md"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Validate the selected supported version; the documented supported range is narrower than the minimum."
     },
@@ -613,9 +512,6 @@
         "deployment/helm",
         "tools/build-flows.mjs"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Confirm the supplied Kubernetes/ORCE topology in the running environment."
     },
     {
@@ -631,9 +527,6 @@
       "implementation": [
         "backend/functions",
         "backend/sr2"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Load the generated functions into the approved ORCE Node.js runtime."
     },
@@ -652,9 +545,6 @@
         "backend/sr2/domain.js",
         "docs/api/openapi.json"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Run the browser and UI acceptance pack."
     },
     {
@@ -672,9 +562,6 @@
         "scripts/uninstall.sh",
         "scripts/preflight.sh"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Execute Bash entrypoints and supplemental Python orchestration in the operator environment."
     },
     {
@@ -691,10 +578,6 @@
         "deployment/helm",
         "automation/stage1/ground-zero.sh"
       ],
-      "remainingActionType": [
-        "BUILD_VALIDATION",
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Helm lint/render and live admission remain required."
     },
     {
@@ -709,9 +592,6 @@
       "development": "DONE",
       "implementation": [
         "reference/participant-data-repository"
-      ],
-      "remainingActionType": [
-        "BUILD_VALIDATION"
       ],
       "closure": "Generate Goa/protobuf, run vet/race tests and compile the participant service."
     },
@@ -729,11 +609,6 @@
         "docs/known-gaps.md",
         "deployment/prerequisites/upstream"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION",
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT"
-      ],
       "closure": "Deliver the written findings through the client's approved process; owners review/build/deploy their component fixes."
     },
     {
@@ -749,10 +624,6 @@
       "implementation": [
         "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW",
-        "GIT_PUBLIC_ACTION"
       ],
       "closure": "Project lead reviews governance, releases and contributor records."
     },
@@ -770,9 +641,6 @@
         "docs/source-baseline.md",
         "docs/architecture/architecture.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Confirm the selected reference and PCI-specific adaptations with the client."
     },
     {
@@ -788,9 +656,6 @@
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Actual project-plan and submission dates are required; no backdated submission."
     },
@@ -809,9 +674,6 @@
         "docs/product.adoc",
         "docs/architecture/architecture.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Review the product scope against the source specifications."
     },
     {
@@ -829,10 +691,6 @@
         "reference/participant-data-repository/Dockerfile",
         "docs/testing/participant-test.md"
       ],
-      "remainingActionType": [
-        "BUILD_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Build the mandated participant image; approve its digest. PCI remains imported flows/UI."
     },
     {
@@ -848,9 +706,6 @@
       "implementation": [
         "docs/operations/deployment.md",
         "docs/operations/upgrade-0.5.0-rc.4.md"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Execute the documented deployment/upgrade against the actual environment."
     },
@@ -869,9 +724,6 @@
         "docs/known-gaps.md",
         "docs/release/0.5.0-rc.4.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Client reviews implementation decisions and unresolved dependencies; source specifications are unchanged."
     },
     {
@@ -887,9 +739,6 @@
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "docs/architecture/issuer-runtime.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Review node inputs/outputs and trust boundaries."
     },
@@ -909,9 +758,6 @@
         "THIRD_PARTY_NOTICES.md",
         "contracts/source-manifest.json"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Review the complete tested dependency inventory before release."
     },
     {
@@ -929,10 +775,6 @@
         "docs/specifications",
         "CONTRIBUTING.md"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Import into the designated repository; no nested independent Git projects are supplied."
     },
     {
@@ -948,10 +790,6 @@
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Client/project leads supply the official destination and naming."
     },
     {
@@ -966,10 +804,6 @@
       "development": "EXCLUDED",
       "implementation": [
         "CONTRIBUTING.md"
-      ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Actual contributors complete and retain onboarding records."
     },
@@ -987,10 +821,6 @@
         "mkdocs.yml",
         ".github/workflows/docs.yml"
       ],
-      "remainingActionType": [
-        "BUILD_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
       "closure": "Run strict MkDocs build and publish the reviewed site."
     },
     {
@@ -1005,9 +835,6 @@
       "development": "DONE",
       "implementation": [
         "docs/product.adoc"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Client reviews the product document in its accepted documentation format."
     },
@@ -1024,9 +851,6 @@
       "implementation": [
         "docs/architecture/components.puml",
         "docs/architecture/issuance.puml"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Review/render the delivered UML sources and confirm the client's model format."
     },
@@ -1045,9 +869,6 @@
         "docs/api/examples.json",
         "tools/check-documentation.mjs"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Execute API examples with private real sessions and validate deployed responses."
     },
     {
@@ -1063,9 +884,6 @@
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "backend/sr2/routes.json"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Review imported nodes and configured external modules."
     },
@@ -1086,10 +904,6 @@
         "backend/sr2/linked-data.js",
         "test/live/semantic-validation.py"
       ],
-      "remainingActionType": [
-        "BUILD_VALIDATION",
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Run a semantic processor and SHACL validator; client approves production vocabulary/template profiles. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
@@ -1105,9 +919,6 @@
       "implementation": [
         "contracts/examples",
         "docs/contracts/semantic-templates.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Replace synthetic reference vocabulary when the client provides its approved templates."
     },
@@ -1126,9 +937,6 @@
         "docs/operations/deployment.md",
         "docs/operations/transport.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Client reviews the documented installation choices."
     },
     {
@@ -1144,9 +952,6 @@
       "implementation": [
         "README.md",
         "docs/architecture/components.puml"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Review the rendered diagram with the client."
     },
@@ -1165,10 +970,6 @@
         ".github/workflows/release.yml",
         "docs/ci-cd.md"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
       "closure": "Run workflows, capture resolved nested versions and review actual findings."
     },
     {
@@ -1186,9 +987,6 @@
         "CONTRIBUTING.md",
         "SECURITY.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "Client must name the maintainer and approved contact; no identity or mailbox is invented."
     },
     {
@@ -1204,9 +1002,6 @@
       "implementation": [
         "CONTRIBUTING.md",
         "SECURITY.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Client finalizes these processes for the designated project."
     },
@@ -1224,9 +1019,6 @@
         "LICENSE.txt",
         "NOTICE.md"
       ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
-      ],
       "closure": "IP reviewer approves final software and third-party notices."
     },
     {
@@ -1241,9 +1033,6 @@
       "development": "DONE",
       "implementation": [
         "CODE_OF_CONDUCT.md"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Principal approves the existing code-of-conduct text."
     },
@@ -1262,10 +1051,6 @@
         "mkdocs.yml",
         ".github/workflows/docs.yml"
       ],
-      "remainingActionType": [
-        "BUILD_VALIDATION",
-        "GIT_PUBLIC_ACTION"
-      ],
       "closure": "Review the generated documentation and explicitly publish it."
     },
     {
@@ -1282,9 +1067,6 @@
         "docs/ci-cd.md",
         "docs/api/README.md",
         "docs/api/openapi.json"
-      ],
-      "remainingActionType": [
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Review exact workflow inputs and API response contracts."
     },
@@ -1304,9 +1086,6 @@
         "scripts/import-legacy-baseline.py",
         "scripts/reconcile-participant-ownership.py"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Run all three operations with pre-provisioned private inputs and inspect outcomes. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
@@ -1324,9 +1103,6 @@
         "automation/flows/lifecycle.js",
         "backend/functions/_common.js"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Inspect safe structured outcomes across actual success/failure executions."
     },
     {
@@ -1342,9 +1118,6 @@
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/lifecycle.js"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Confirm phase/code/detail/nextStep/exitCode without child payload leakage."
     },
@@ -1365,10 +1138,6 @@
         "deployment/prerequisites/all-hop-tls/mesh.yaml",
         "tools/prepare-all-hop-tls.py"
       ],
-      "remainingActionType": [
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT",
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Platform owners must encrypt compatibility ORCE/database/mail and shared native links. Client flags alone do not close this requirement. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
@@ -1388,10 +1157,6 @@
         "deployment/prerequisites/upstream",
         "tools/prepare-upstream-builds.py"
       ],
-      "remainingActionType": [
-        "OWNER_CONFIGURATION_OR_DEPLOYMENT",
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Deploy owner-approved upstream log fixes and inspect every real payload sink. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
@@ -1409,9 +1174,6 @@
         "backend/functions/_k8s.js",
         "tools/check-g0-manifests.py"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Validate Kubernetes admission, controllers, ownership and readiness on both clouds."
     },
     {
@@ -1427,9 +1189,6 @@
       "implementation": [
         "scripts/preflight.sh",
         "backend/functions/status.js"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Demonstrate Keycloak, native TSA/status/metadata/NATS and trust connectivity."
     },
@@ -1447,9 +1206,6 @@
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Run the official Executor against an approved disposable installation."
     },
     {
@@ -1465,9 +1221,6 @@
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Run the delivered negative parameter case and retain its safe result."
     },
@@ -1485,9 +1238,6 @@
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Prove repeated deployment preserves identities and unrelated resources."
     },
     {
@@ -1503,9 +1253,6 @@
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Prove owned removal, retained PVCs and unrelated-resource preservation."
     },
@@ -1525,9 +1272,6 @@
         "test/bdd/features/pcm.feature",
         "test/bdd/features/native-wallet.feature"
       ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Run real authentication, permissions, native issuance and failure cases. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
     },
     {
@@ -1545,9 +1289,6 @@
         "docs/testing/completion.md",
         ".github/workflows/release.yml"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION"
-      ],
       "closure": "Publish the reviewed pack and actual BDD results with each release."
     },
     {
@@ -1563,9 +1304,6 @@
       "implementation": [
         "docs/testing/live-acceptance.md",
         "test/bdd"
-      ],
-      "remainingActionType": [
-        "MANUAL_VALIDATION"
       ],
       "closure": "Collect real IONOS/OSC receipts with all mandated services and PCM."
     },
@@ -1583,10 +1321,6 @@
         "CONTRIBUTING.md",
         ".github/workflows",
         "docs/ci-cd.md"
-      ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "EXTERNAL_REVIEW"
       ],
       "closure": "Project team records actual issue/branch/review/release use."
     },
@@ -1606,10 +1340,6 @@
         ".github/workflows/release.yml",
         "test/bdd"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "BUILD_VALIDATION"
-      ],
       "closure": "Build/scan/publish the mandated participant image and charts; attach executed BDD reports."
     },
     {
@@ -1626,11 +1356,9 @@
         "deployment/argocd/participant-application.example.yaml",
         "docs/operations/argocd.md"
       ],
-      "remainingActionType": [
-        "GIT_PUBLIC_ACTION",
-        "MANUAL_VALIDATION"
-      ],
       "closure": "Client supplies approved repository/ArgoCD destination and performs deployment integration."
     }
-  ]
+  ],
+  "catalogueScope": "Individual source provisions, implementation references and verification procedures. The development field classifies source/owner/process responsibility at the baseline, not an executed acceptance result.",
+  "evidence": "docs/release/ci-evidence.json"
 }

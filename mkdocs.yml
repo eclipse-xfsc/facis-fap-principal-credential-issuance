@@ -6,6 +6,8 @@ plugins: [search]
 nav:
   - Overview: README.md
   - Neutral configuration: operations/neutral-configuration.md
+  - Container image: operations/container-image.md
+  - Container package 1.0.0: release/1.0.0.md
   - Deploy: operations/deployment.md
   - Fresh cluster and upgrade: operations/deploy-0.5.0-rc.6.md
   - Automation: operations/automation.md
@@ -27,8 +29,8 @@ nav:
   - Release rc.7: release/0.5.0-rc.7.md
   - Upgrade rc.6 to rc.7: operations/upgrade-0.5.0-rc.7.md
   - Release rc.6: release/0.5.0-rc.6.md
-  - Current requirement audit: release/requirement-audit.md
-  - Completion evidence: release/completion.md
+  - Implementation catalogue: release/requirement-audit.md
+  - Executed checks: release/completion.md
   - Neutral revision validation: release/neutral-revision.md
   - Issuer setup: operations/issuer-runbook.md
   - Identity: operations/identity.md
@@ -45,7 +47,7 @@ nav:
   - Live acceptance: testing/live-acceptance.md
   - Requirements: requirements/traceability.md
   - Technical clauses: requirements/technical-clauses.md
-  - Upstream blockers: known-gaps.md
+  - Operating profiles: known-gaps.md
   - Compliance roadmap: security/compliance-roadmap.md
   - CI and releases: ci-cd.md
 markdown_extensions: [tables, fenced_code]

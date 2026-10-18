@@ -1,5 +1,7 @@
 # Deployment and upgrade
 
+The packaged runtime is [`ecofacis/fap-pci:1.0.0`](https://hub.docker.com/r/ecofacis/fap-pci). Read the [container guide](container-image.md) for its ORCE base, embedded `/data`, digest capture and persistent-volume initialization. The steps below describe source/G0 installation and artifact upgrades.
+
 Domains, mailbox addresses, private file paths, contexts and StorageClasses in this guide are examples. Supply target deployment values as described in [neutral configuration](neutral-configuration.md).
 
 PCI uses one active ORCE replica. PostgreSQL stores configuration and safe history; live access tokens, wallet offers and proof nonces stay in process memory. A restart invalidates pending offers and requires affected users to sign in again. Do not enable HPA or multiple ORCE replicas without a reviewed privacy-preserving coordination design.

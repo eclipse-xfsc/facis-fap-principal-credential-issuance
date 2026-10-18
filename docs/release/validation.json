@@ -1,8 +1,8 @@
 {
   "version": "0.5.0-rc.12",
-  "node": "v24.19.0",
-  "tests": 302,
-  "passed": 302,
+  "node": "v24.21.0",
+  "tests": 350,
+  "passed": 350,
   "failed": 0,
   "skipped": 0,
   "deterministic": true,
@@ -16,9 +16,9 @@
     "documentation": "PASS",
     "requirements": 109,
     "technicalClauses": 83,
-    "apiExamples": 122,
+    "apiExamples": 123,
     "specifications": 2,
-    "markdownFiles": 82,
+    "markdownFiles": 83,
     "navigation": {
       "status": "PASS",
       "targets": 44
@@ -32,28 +32,66 @@
   },
   "pythonSyntax": {
     "status": "PASS",
-    "files": 27
+    "files": 28
   },
   "shellSyntax": "PASS",
   "secretLiteralScan": "PASS",
   "dist": {
-    "dist/fap-pci-flow.json": "b8153d6be6b52e5dab1c9d83b34d9c0685a9842e3f7b652390aeeb35ce649dde",
+    "dist/fap-pci-flow.json": "036d18769f0e7ec742514e218b797279cc8755d03ef92f1847d4b6a49a1b31e3",
     "dist/ground-zero.sh": "b975aaab95d46b681899ec210cbd5199c047cbea1f8907c4267d0c96840fc21e",
-    "dist/ui/THIRD_PARTY_LICENSES.txt": "3f181fdf62771671ce536a57e88ce8fab23295651f89b186a113131384217058",
-    "dist/ui/index.css": "a606224857e30270584a07e69e4cdeacd6313c2cbdd110484e51b9f1ae895b63",
-    "dist/ui/index.html": "1469398ad9ed84e0979044c4ce6c0f941f550ef22334701862d18382aec7faba",
-    "dist/ui/index.js": "b4bcadf8c034388d96904a55c4f58742f88cecb6127d72e3c28547b8ba0fda94",
-    "dist/ui/vue.global.prod.js": "4a715c2f7bdc8a3309c2f82bc3291f33f8f4d8e7ab02a7d4b6588b5f7650f772"
+    "dist/ui/THIRD_PARTY_LICENSES.txt": "9b11e73114749d0c6ee4f124dbeb5eb5f228e3ae9827d22b9689c6f90c494d84",
+    "dist/ui/facis-logo.svg": "b687fac556aabac7f59a0659a8862d6a8a830da9a0b36387b7ffdf7a8f2b3206",
+    "dist/ui/index.css": "af9b5415dd75f6a7e262ac51cce30ecfe7ceb3d79174407c0f53e29a8b3a35cf",
+    "dist/ui/index.html": "37ca2ac47c66c4c5757046cb7bc7c5b0b3ddfebc7849b37b6dbb34ea4911461f",
+    "dist/ui/index.js": "b9c50de19c862e33f63f4acee40bf0c26333cdeedd27ee969b1dbe26cabd1f2e",
+    "dist/ui/vue.global.prod.js": "b72394052eef1eeda1752db3758ce1be6f88016903f22e5241cc732ea307478e"
   },
   "notRun": [
-    "PostgreSQL server migration/concurrency",
-    "Go/Goa/protobuf compile and race tests",
-    "Helm lint/template and Kubernetes/ArgoCD admission",
-    "XFSC BDD Executor, Chromium browser and accessibility",
-    "Real ORCE/Keycloak/Entra/OCM/NATS/participant/PCM deployments",
-    "MkDocs build and semantic JSON-LD/SHACL engine validation",
-    "npm install/audit and official Eclipse workflows"
+    "Deployed XFSC BDD Executor scenarios",
+    "Independent accessibility assessment",
+    "Live identity, wallet, cloud lifecycle and whole-stack retention scenarios in this CI run"
   ],
-  "revision": "neutral-source",
-  "newSignerRegressions": 16
+  "sourceCommit": "3fef8e3048f3803b8aecbd99f582a3c4c05295b0",
+  "executedAt": "2026-10-15",
+  "scope": "Executed offline suite in the linked GitHub CI run. Separate jobs are recorded in ciChecks; deployment test receipts identify their own targets.",
+  "ciRun": "https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/38727256710",
+  "ciChecks": [
+    {
+      "id": 116396078794,
+      "name": "participant",
+      "conclusion": "success"
+    },
+    {
+      "id": 116396079119,
+      "name": "charts",
+      "conclusion": "success"
+    },
+    {
+      "id": 116396079244,
+      "name": "official-go / test",
+      "conclusion": "success"
+    },
+    {
+      "id": 116396079274,
+      "name": "browser",
+      "conclusion": "success"
+    },
+    {
+      "id": 116396079391,
+      "name": "semantics",
+      "conclusion": "success"
+    },
+    {
+      "id": 116396079493,
+      "name": "node",
+      "conclusion": "success"
+    }
+  ],
+  "documentationPublication": {
+    "id": 39127451730,
+    "url": "https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/39127451730",
+    "conclusion": "success",
+    "executedAt": "2026-10-18",
+    "publishedUrl": "https://eclipse-xfsc.github.io/facis-fap-principal-credential-issuance/"
+  }
 }
