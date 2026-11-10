@@ -27,6 +27,6 @@ test("uibuilder overwrites the socket identity and routes commands through grant
   const normalizer=baseFlow.find(node=>node.type==='function' && node.name==='Validate and route browser command');
   assert.ok(normalizer);
   assert.match(normalizer.func,/return pciNormalizeCommand\(/);
-  assert.match(normalizer.func,/msg = \{ _socketId: socketId/);
+  assert.match(normalizer.func,/msg\s*=\s*\{\s*_socketId:\s*socketId/);
   assert.doesNotMatch(normalizer.func,/handshakeCandidates|trustedUibuilderHeaders/);
 });
