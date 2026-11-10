@@ -13,10 +13,64 @@ def synthetic(context):
     context.draft_name = 'BDD employee ' + context.suffix
 
 
+BRIDGE_OBSERVER = r'''({suffix, method}) => {
+    const client = window.uibuilder;
+    if (!client?.send || !client?.onChange) throw Error('UIBUILDER is unavailable');
+    if (!window.__pciBddObserver) {
+        const observer = {pending: null};
+        const original = client.send;
+        client.send = function (...args) {
+            const command = args[0]?.payload, pending = observer.pending;
+            if (pending && !pending.requestId && command?.type === 'command'
+                && command.action === 'request' && command.payload?.method === pending.method
+                && command.payload.path?.split('?')[0].endsWith(pending.suffix)) {
+                pending.requestId = command.requestId;
+            }
+            return original.apply(this, args);
+        };
+        client.onChange('msg', message => {
+            const result = message?.payload, pending = observer.pending;
+            if (pending?.requestId && result?.requestId === pending.requestId
+                && result.version === 1 && result.action === 'request'
+                && result.type === 'result' && typeof result.ok === 'boolean') {
+                pending.result = result;
+            }
+        });
+        window.__pciBddObserver = observer;
+    }
+    window.__pciBddObserver.pending = {suffix, method};
+}'''
+
+
+class UiResult:
+    def __init__(self, envelope):
+        self.status = envelope['status']
+        if envelope['ok']:
+            self.body = envelope['data']
+        else:
+            errors = envelope.get('errors', {})
+            self.body = next((errors[k] for k in ['field', 'action', 'integration', 'system'] if errors.get(k)), {})
+
+    def json(self):
+        return self.body
+
+
+def observe_ui_action(page, click, suffix, method='POST'):
+    # Observe the actual UI command/result. Never synthesize a server result or
+    # retain bridge grants. HTTP response events do not cover UIBUILDER actions.
+    page.evaluate(BRIDGE_OBSERVER, {'suffix': suffix, 'method': method})
+    try:
+        click()
+        page.wait_for_function('!!window.__pciBddObserver?.pending?.result', timeout=125000)
+        envelope = page.evaluate('window.__pciBddObserver.pending.result')
+        return UiResult(envelope)
+    finally:
+        page.evaluate('if (window.__pciBddObserver) window.__pciBddObserver.pending = null')
+
+
 def action(context, name, suffix, method='POST'):
-    with context.page.expect_response(lambda r: r.request.method == method and r.url.split('?')[0].endswith(suffix)) as pending:
-        context.page.get_by_role('button', name=name, exact=True).click()
-    return pending.value
+    return observe_ui_action(context.page,
+        lambda: context.page.get_by_role('button', name=name, exact=True).click(), suffix, method)
 
 
 @when('I create a synthetic configuration draft in the UI')
@@ -87,20 +141,26 @@ def publish(c):
 @when('I open tenant settings at desktop and narrow widths')
 def layout(c):
     c.page.get_by_role('button', name='Tenant settings', exact=True).click()
-    c.layout_gaps = []
+    c.settings_widths = []
     for width in [1440, 390]:
         c.page.set_viewport_size({'width': width, 'height': 1000})
-        keys = c.page.locator('section.card').filter(has=c.page.get_by_role('heading', name='Signing keys', exact=True))
-        branding = c.page.locator('section.card').filter(has=c.page.get_by_role('heading', name='Tenant branding', exact=True))
-        expect(branding).to_be_visible()
-        first, second = keys.bounding_box(), branding.bounding_box()
-        c.layout_gaps.append(second['y'] - first['y'] - first['height'])
+        tasks = c.page.get_by_role('navigation', name='Tenant settings tasks', exact=True)
+        tasks.get_by_role('button', name='Branding', exact=True).click()
+        expect(c.page.get_by_role('heading', name='Tenant branding', exact=True)).to_be_visible()
+        expect(c.page.get_by_label('Content width', exact=True)).to_be_visible()
+        expect(c.page.get_by_role('button', name='Activate branding', exact=True)).to_be_visible()
         assert c.page.evaluate('document.documentElement.scrollWidth <= window.innerWidth + 2'), 'Horizontal overflow at width ' + str(width)
+        tasks.get_by_role('button', name='Signing keys', exact=True).click()
+        expect(c.page.get_by_role('heading', name='Signing keys', exact=True)).to_be_visible()
+        expect(c.page.get_by_label('Key name', exact=True)).to_be_visible()
+        expect(c.page.get_by_role('heading', name='Tenant branding', exact=True)).to_have_count(0)
+        assert c.page.evaluate('document.documentElement.scrollWidth <= window.innerWidth + 2'), 'Horizontal overflow at width ' + str(width)
+        c.settings_widths.append(width)
 
 
-@then('branding follows signing keys at both widths')
+@then('branding and signing-key panels are usable without horizontal overflow')
 def layout_result(c):
-    assert all(0 <= gap <= 40 for gap in c.layout_gaps), 'Unexpected blank row between signing keys and branding'
+    assert c.settings_widths == [1440, 390], 'Both viewport widths must be tested'
 
 
 @when('I save a connector with an invalid protocol version')
@@ -172,11 +232,22 @@ def offer(c):
 
 @when('I grant the prepared ordinary principal issuer access in the UI')
 def grant_ui(c):
-    c.grant_case=c.settings['delegationCase'];c.page.get_by_role('button',name='Access & members',exact=True).click()
+    c.grant_case=c.settings['delegationCase']
+    assert principal_access(c) in [403,404], 'Use an ordinary test principal without existing issuer access'
+    c.page.get_by_role('button',name='Access & members',exact=True).click()
     c.page.get_by_label('Enabled member',exact=True).select_option(c.grant_case['subject'])
     c.page.get_by_label('Scope',exact=True).select_option(c.grant_case['configurationId'])
-    with c.page.expect_response(lambda r:r.request.method=='POST' and r.url.endswith('/administrators')) as pending:c.page.get_by_role('button',name='Assign issuer capability',exact=True).click()
-    assert pending.value.status==200;c.granted=pending.value.json()['item']
+    result=action(c,'Assign issuer capability','/administrators')
+    assert result.status==200;c.granted=result.json()['item']
+    c.grant_revoked=False
+    def cleanup_grant():
+        if c.grant_revoked:return
+        from urllib.parse import urlsplit
+        admin=c.settings['sessions']['alphaAdmin'];base=admin['url'].rstrip('/')
+        with c.browser.new_context(storage_state=admin['stateFile']) as browser:
+            result=browser.request.delete(base+'/api/v1/tenants/'+c.grant_case['tenantId']+'/administrators/'+c.granted['id'],headers={'Origin':'https://'+urlsplit(base).netloc})
+            assert result.status in [200,404], 'Revoke the temporary BDD assignment in Access & members'
+    c.add_cleanup(cleanup_grant)
 
 def principal_access(c):
     fixture=c.settings['sessions'][c.grant_case['session']]
@@ -191,8 +262,9 @@ def revoke_ui(c):
     row=c.page.locator('li[data-assignment-id="'+c.granted['id']+'"]')
     # Assignment rows expose stable IDs for a precise revocation target.
     c.page.once('dialog',lambda dialog:dialog.accept())
-    with c.page.expect_response(lambda r:r.request.method=='DELETE' and r.url.endswith('/administrators/'+c.granted['id'])) as pending:row.get_by_role('button',name='Revoke',exact=True).click()
-    assert pending.value.status==200
+    result=observe_ui_action(c.page,lambda:row.get_by_role('button',name='Revoke',exact=True).click(),'/administrators/'+c.granted['id'],'DELETE')
+    assert result.status==200
+    c.grant_revoked=True
 
 @then('the same principal session immediately loses administration')
 def revoked(c):assert principal_access(c) in [403,404],'Stale session retained delegated authority'

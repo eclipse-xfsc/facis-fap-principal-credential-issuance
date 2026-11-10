@@ -94,7 +94,7 @@ for(const profile of ['oid4vci-1.0','oid4vci-draft13']){
 // and native HTTP/NATS boundary objects are fixtures; helper code is unchanged.
 function publicHandler({profile='oid4vci-1.0',kind='issuer',empty=false,mutate=()=>{},nativePayload}={}){
  const name='M11_PCI-IssuerRuntime',generated=flows.find(n=>n.name===name&&n.type==='function');
- const buildId=generated.func.match(/buildId='([a-f0-9]+)'/)[1];
+ const buildId=generated.func.match(/buildId\s*=\s*'([a-f0-9]+)'/)[1];
  const tenant={tenant_id:tid,tenant_slug:'alpha',primary_domain:'alpha-pci.example.com',state:'active'};
  const metadata={...bundle.issuer,profile,did:'did:web:alpha-pci.example.com',tokenKeyRef:'preauth'};
  const queryLog=[],calls=[],errors=[];

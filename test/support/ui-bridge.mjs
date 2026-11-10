@@ -10,7 +10,7 @@ export function bridgeHarness() {
   const flows=JSON.parse(fs.readFileSync('dist/fap-pci-flow.json','utf8'));
   const f=fixture(), events=[], logs=[], sessions=new Map();
   const normalizer=flows.find(n=>n.name==='Validate and route browser command');
-  const buildId=flows.find(n=>n.name==='M11_PCI-IssuerRuntime').func.match(/buildId='([a-f0-9]+)'/)[1];
+  const buildId=flows.find(n=>n.name==='M11_PCI-IssuerRuntime').func.match(/buildId\s*=\s*'([a-f0-9]+)'/)[1];
   const pool={pciNative:{buildId,service:f.api,adapters:f.adapters,nats:{ready:true},subscription:true,metrics:new Map()},async query(sql,args){
     if(sql.includes('FROM tenants WHERE primary_domain='))return {rows:[...f.store.db.tenants.values()].filter(t=>t.primary_domain===args[0]&&!['deleted','deleting'].includes(t.state))};
     if(sql.includes('FROM auth_sessions WHERE token_hash='))return {rows:sessions.has(args[0])?[sessions.get(args[0])]:[]};

@@ -45,6 +45,7 @@ nav:
   - API: api/README.md
   - Tests: testing/test-strategy.md
   - Live acceptance: testing/live-acceptance.md
+  - Deployed UX tests: testing/ux-bdd-runbook.md
   - Requirements: requirements/traceability.md
   - Technical clauses: requirements/technical-clauses.md
   - Operating profiles: known-gaps.md
