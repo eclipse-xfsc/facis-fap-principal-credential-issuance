@@ -1,3 +1,4 @@
+import { stripModuleSyntax } from '../../../tools/lib/module-source.mjs';
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
 import { fixture,alpha } from '../../support/sr2-fixture.mjs';
 import { httpHarness } from '../../support/sr2-http.mjs';
@@ -12,12 +13,12 @@ function vueContext(){
  const ctx={Document:class {},ShadowRoot:class {},pciQrImage,console:{warn:(...args)=>messages.push(args.join(' ')),error:(...args)=>messages.push(args.join(' ')),log(){}},document,crypto,URL,URLSearchParams,TextEncoder,setTimeout,clearTimeout,window:{location:{origin:'https://alpha-pci.example.com'},confirm:()=>true,prompt:()=>null},runtime:{basePath:''}};
  vm.createContext(ctx);vm.runInContext(fs.readFileSync('vendor/vue.global.prod.js','utf8'),ctx);Object.assign(ctx,{ref:ctx.Vue.ref,computed:ctx.Vue.computed,onMounted:ctx.Vue.onMounted,onUnmounted:ctx.Vue.onUnmounted,reactive:ctx.Vue.reactive});
  ctx.onBridgeReconnect=()=>()=>{};
- for(const file of ['src/state/store.js','src/state/reducers.js','src/components/feedback.js'])vm.runInContext(fs.readFileSync(file,'utf8').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,''),ctx);
- vm.runInContext(fs.readFileSync('src/sr2.js','utf8')+'\nglobalThis.component=Sr2Console;',ctx);return {ctx,messages};
+ for(const file of ['src/state/store.js','src/state/reducers.js','src/components/feedback.js'])vm.runInContext(stripModuleSyntax(fs.readFileSync(file,'utf8'), file),ctx);
+ vm.runInContext(stripModuleSyntax(fs.readFileSync('src/sr2.js','utf8'), 'src/sr2.js')+'\nglobalThis.component=Sr2Console;',ctx);return {ctx,messages};
 }
 test('both Vue templates compile offline using the pinned runtime',()=>{
  const {ctx}=vueContext();assert.equal(typeof ctx.Vue.compile(ctx.component.template),'function');
- const main=fs.readFileSync('src/main.js','utf8').replace(/^import.*;\s*$/gm,'').replace('createApp(App).mount("#app");','globalThis.rootComponent=App;');vm.runInContext(main,ctx);assert.equal(typeof ctx.Vue.compile(ctx.rootComponent.template),'function');
+ const main=stripModuleSyntax(fs.readFileSync('src/main.js','utf8'), 'src/main.js').replace('createApp(App).mount("#app");','globalThis.rootComponent=App;');vm.runInContext(main,ctx);assert.equal(typeof ctx.Vue.compile(ctx.rootComponent.template),'function');
 });
 test('issuer component executes create/edit/preview and grant/revoke handlers against the real HTTP wrapper',async()=>{
  const {ctx,messages}=vueContext(),f=fixture(),http=httpHarness(f);ctx.request=async(path,options)=>{if(path.endsWith('/identity-provider'))return {item:{version:1,state:'active',mode:'keycloak',displayName:'Account',issuer:'',clientId:'',audience:'',scopes:'openid profile email'},redirectUri:'https://identity.example.com/broker'};const r=await http(path,options);if(r.status>=400)throw new Error(r.body.detail);return r.body;};ctx.api={tenantMembers:async()=>({items:[{subject:'issuer',username:'Issuer',enabled:true},{subject:'principal',username:'Principal',enabled:true}]})};

@@ -1,8 +1,7 @@
-return (async () => {
+return (async() => {
   const action = String(msg.pciAction || msg.type || "");
-  const input = msg.pciTransport === "uibuilder" ? (msg.data || (msg.payload && msg.payload.data) || {}) : parseBody();
+  const input = msg.pciTransport === "uibuilder" ? (msg.data || (msg.payload && msg.payload.data) || {}): parseBody();
   const pool = getPool();
-
   function requireInternalService() {
     if (!cfg.internalServiceToken) throw pciErrors.forbidden("The compatibility provisioner API is disabled.");
     const supplied = bearerToken();
@@ -10,18 +9,34 @@ return (async () => {
     const b = Buffer.from(cfg.internalServiceToken);
     if (!supplied || a.length !== b.length || !crypto.timingSafeEqual(a, b)) throw pciErrors.unauthorized();
   }
-
   function nowCondition(type, status, reason, message, generation) {
-    return { type, status, reason, message, observedGeneration: Number(generation), lastTransitionTime: new Date().toISOString() };
+    return {
+      type,
+      status,
+      reason,
+      message,
+      observedGeneration: Number(generation),
+      lastTransitionTime: new Date().toISOString()
+    };
   }
-
   function tenantHeaderFilter(tenant) {
     return {
       type: "RequestHeaderModifier",
       requestHeaderModifier: {
         remove: [
-          "X-NAMESPACE", "X-DID", "X-ISSUERKID", "X-KEY", "X-GROUP", "X-GROUPID",
-          "X-TYPE", "X-ENGINE", "X-Issuer", "X-JWKS-URL", "X-TOKENENDPOINT", "x-audience-url", "x-signerkey",
+          "X-NAMESPACE",
+          "X-DID",
+          "X-ISSUERKID",
+          "X-KEY",
+          "X-GROUP",
+          "X-GROUPID",
+          "X-TYPE",
+          "X-ENGINE",
+          "X-Issuer",
+          "X-JWKS-URL",
+          "X-TOKENENDPOINT",
+          "x-audience-url",
+          "x-signerkey",
         ],
         set: [
           { name: "X-PCI-Public-Request", value: "1" },
@@ -32,32 +47,65 @@ return (async () => {
       },
     };
   }
-
-  function tenantPublicRules(tenant,retired=false){
-    const base=cfg.orceBasePath,filter=tenantHeaderFilter(tenant),backendRefs=[{group:'',kind:'Service',name:cfg.orceService,port:cfg.orceServicePort}];
-    const exact=[['/.well-known/did.json',base+'/.well-known/did.json'],['/.well-known/jwks.json',base+'/.well-known/jwks.json']];
-    if(!retired)exact.push(['/.well-known/openid-credential-issuer'+base,base+'/.well-known/openid-credential-issuer'],['/.well-known/oauth-authorization-server'+base,base+'/.well-known/openid-configuration']);
-    if(retired)for(const suffix of ['/.well-known/did.json','/.well-known/jwks.json'])if(base)exact.push([base+suffix,base+suffix]);
-    const rules=Array.from(new Map(exact.map(x=>[x[0],x])).values()).map(([match,target])=>({matches:[{path:{type:'Exact',value:match}}],filters:[filter,...(match!==target?[{type:'URLRewrite',urlRewrite:{path:{type:'ReplaceFullPath',replaceFullPath:target}}}]:[])],backendRefs}));
-    if(retired)rules.push({matches:[{path:{type:'PathPrefix',value:base+'/v1/tenants/'+tenant.tenant_id+'/status'}}],filters:[filter],backendRefs});
+  function tenantPublicRules(tenant, retired = false) {
+    const base = cfg.orceBasePath,
+    filter = tenantHeaderFilter(tenant),
+    backendRefs = [{ group: '', kind: 'Service', name: cfg.orceService, port: cfg.orceServicePort }];
+    const exact = [
+      ['/.well-known/did.json', base + '/.well-known/did.json'],
+      ['/.well-known/jwks.json', base + '/.well-known/jwks.json']
+    ];
+    if (!retired) exact.push([
+      '/.well-known/openid-credential-issuer' + base,
+      base + '/.well-known/openid-credential-issuer'
+    ], ['/.well-known/oauth-authorization-server' + base, base + '/.well-known/openid-configuration']);
+    if (retired) for (const suffix of ['/.well-known/did.json', '/.well-known/jwks.json']) if (base) exact.push([base + suffix, base +
+      suffix]);
+    const rules = Array.from(new Map(exact.map(x => [x[0], x])).values()).map(([match, target]) => ({
+      matches: [{ path: { type: 'Exact', value: match } }],
+      filters: [
+        filter,
+        ...(match !== target ? [{ type: 'URLRewrite', urlRewrite: { path: { type: 'ReplaceFullPath', replaceFullPath: target } } }]: [])
+      ],
+      backendRefs
+    }));
+    if (retired) rules.push({
+      matches: [{ path: { type: 'PathPrefix', value: base + '/v1/tenants/' + tenant.tenant_id + '/status' } }],
+      filters: [filter],
+      backendRefs
+    });
     return rules;
   }
-
   async function ensureTenantClientRedirect(tenant) {
     const encodedRealm = encodeURIComponent(cfg.keycloak.realm);
-    const clients = await keycloakAdmin("GET", `/admin/realms/${encodedRealm}/clients?clientId=${encodeURIComponent(cfg.keycloak.uiClientId)}`);
-    const client = Array.isArray(clients) ? clients.find((candidate) => candidate.clientId === cfg.keycloak.uiClientId) : null;
-    if (!client || !client.id) throw new Error(`Keycloak client ${cfg.keycloak.uiClientId} does not exist; initialize platform infrastructure first.`);
-    const tenantDomains = (await pool.query("SELECT primary_domain FROM tenants WHERE state NOT IN ('deleted','deleting','suspended') ORDER BY primary_domain")).rows.map((row) => row.primary_domain);
-    const redirectUris = Array.from(new Set([uiUrl(cfg.mainHost, cfg.orceBasePath), ...tenantDomains.map((host) => uiUrl(host, cfg.orceBasePath))]));
+    const clients = await keycloakAdmin("GET",
+      `/admin/realms/${encodedRealm}/clients?clientId=${encodeURIComponent(cfg.keycloak.uiClientId)}`);
+    const client = Array.isArray(clients) ? clients.find((candidate) => candidate.clientId === cfg.keycloak.uiClientId): null;
+    if (!client || !client.id) throw new Error(
+      `Keycloak client ${cfg.keycloak.uiClientId} does not exist; initialize platform infrastructure first.`);
+    const tenantDomains = (await pool.query(
+      "SELECT primary_domain FROM tenants WHERE state NOT IN ('deleted','deleting','suspended') ORDER BY primary_domain")).rows.map(
+      (row) => row.primary_domain);
+    const redirectUris = Array.from(new Set([
+      uiUrl(cfg.mainHost, cfg.orceBasePath),
+      ...tenantDomains.map((host) => uiUrl(host, cfg.orceBasePath))
+    ]));
     const webOrigins = Array.from(new Set([publicOrigin(cfg.mainHost), ...tenantDomains.map((host) => publicOrigin(host))]));
-    const attributes = { ...(client.attributes || {}), "pkce.code.challenge.method": "S256", "post.logout.redirect.uris": redirectUris.join("##") };
-    await keycloakAdmin("PUT", `/admin/realms/${encodedRealm}/clients/${encodeURIComponent(client.id)}`, { ...client, redirectUris, webOrigins, attributes });
-    return { redirect: uiUrl(tenant.primary_domain, cfg.orceBasePath), origin: publicOrigin(tenant.primary_domain) };
+    const attributes = {
+      ...(client.attributes || {}),
+      "pkce.code.challenge.method": "S256",
+      "post.logout.redirect.uris": redirectUris.join("##")
+    };
+    await keycloakAdmin("PUT", `/admin/realms/${encodedRealm}/clients/${encodeURIComponent(client.id)}`,
+      { ...client, redirectUris, webOrigins, attributes });
+    return {
+      redirect: uiUrl(tenant.primary_domain, cfg.orceBasePath),
+      origin: publicOrigin(tenant.primary_domain)
+    };
   }
-
   async function ensureContactAdministrator(tenant, registration) {
-    const existing = await pool.query("SELECT * FROM tenant_members WHERE tenant_id=$1 AND lower(email)=lower($2) LIMIT 1", [tenant.tenant_id, registration.contact_email]);
+    const existing = await pool.query("SELECT * FROM tenant_members WHERE tenant_id=$1 AND lower(email)=lower($2) LIMIT 1", [tenant
+      .tenant_id, registration.contact_email]);
     const parts = String(registration.contact_name || "").trim().split(/\s+/);
     const firstName = parts.shift() || registration.contact_name;
     const lastName = parts.join(" ") || "Administrator";
@@ -73,62 +121,88 @@ return (async () => {
       emailVerified: true,
       sendActionsEmail: !existing.rows[0],
     });
-    await pool.query(
-      `INSERT INTO tenant_members(tenant_id,keycloak_subject,username,email,first_name,last_name,roles,enabled,invited_by,invited_at,updated_at)
+    await pool.query(`INSERT INTO tenant_members(tenant_id,keycloak_subject,username,email,first_name,last_name,roles,enabled,invited_by,invited_at,updated_at)
        VALUES($1,$2,$3,$4,$5,$6,$7::jsonb,true,'fap-pci-reconciler',now(),now())
        ON CONFLICT(tenant_id,keycloak_subject) DO UPDATE SET username=EXCLUDED.username,email=EXCLUDED.email,
-       first_name=EXCLUDED.first_name,last_name=EXCLUDED.last_name,roles=EXCLUDED.roles,enabled=true,updated_at=now()`,
-      [tenant.tenant_id, user.id, user.username, user.email, firstName, lastName, JSON.stringify(user.roles)],
-    );
+       first_name=EXCLUDED.first_name,last_name=EXCLUDED.last_name,roles=EXCLUDED.roles,enabled=true,updated_at=now()`, [
+      tenant.tenant_id,
+      user.id,
+      user.username,
+      user.email,
+      firstName,
+      lastName,
+      JSON.stringify(user.roles)
+    ],);
     return user;
   }
-
   async function deleteTenantResources(tenant) {
     // Preflight route, tenant registry and explicitly registered helper resources.
     // Preflight all ownership before deleting anything; Kubernetes UID and
     // resourceVersion preconditions prevent object replacement races.
     const resources = [];
-    const targets=[['gateway.networking.k8s.io/v1','HTTPRoute',`pci-tenant-${tenant.tenant_slug}`],['v1','ConfigMap',`pci-tenant-${tenant.tenant_slug}`]];
-    const connectors=(await pool.query("SELECT document FROM pci_issuer_resources WHERE tenant_id=$1 AND kind='connector'",[tenant.tenant_id])).rows;
-    const secrets=new Set(connectors.flatMap(({document})=>[document.draft?.tlsSecret?.name,document.draft?.trustSecret?.name]).filter(Boolean));
-    for(const name of secrets){targets.push(['v1','Secret',name]);}
-    for (const [version,kind,name] of targets) {
-      const object = await k8sGet(version,kind,name,cfg.orceNamespace);
+    const targets = [
+      ['gateway.networking.k8s.io/v1', 'HTTPRoute', `pci-tenant-${tenant.tenant_slug}`],
+      ['v1', 'ConfigMap', `pci-tenant-${tenant.tenant_slug}`]
+    ];
+    const connectors = (await pool.query("SELECT document FROM pci_issuer_resources WHERE tenant_id=$1 AND kind='connector'", [tenant
+      .tenant_id])).rows;
+    const secrets = new Set(connectors.flatMap(({ document }) => [document.draft?.tlsSecret?.name, document.draft?.trustSecret?.name])
+      .filter(Boolean));
+    for (const name of secrets) {
+      targets.push(['v1', 'Secret', name]);
+    }
+    for (const [version, kind, name] of targets) {
+      const object = await k8sGet(version, kind, name, cfg.orceNamespace);
       if (!object) continue;
-      const m=object.metadata, l=m.labels || {};
-      if (l['app.kubernetes.io/managed-by']!=='fap-pci-orce' || l['xfsc.org/pci-tenant-id']!==String(tenant.tenant_id) || l['xfsc.org/pci-owner-uid']!==String(tenant.owner_uid) || !m.uid || !m.resourceVersion) throw new Error('PCI-TENANT-OWNER-MISMATCH');
-      assertK8sMutationAllowed(object,cfg.orceNamespace);
+      const m = object.metadata,
+      l = m.labels || {};
+      if (l['app.kubernetes.io/managed-by'] !== 'fap-pci-orce' || l['xfsc.org/pci-tenant-id'] !== String(tenant.tenant_id) ||
+      l['xfsc.org/pci-owner-uid'] !== String(tenant.owner_uid) || !m.uid || !m.resourceVersion) throw new Error(
+        'PCI-TENANT-OWNER-MISMATCH');
+      assertK8sMutationAllowed(object, cfg.orceNamespace);
       resources.push(object);
     }
-    const parent=resources.find(object=>object.kind==='ConfigMap');
-    for(const secret of resources.filter(object=>object.kind==='Secret'))if(!parent || !(secret.metadata.ownerReferences || []).some(owner=>owner.kind==='ConfigMap' && owner.uid===parent.metadata.uid && owner.blockOwnerDeletion===true))throw new Error('PCI-PARTICIPANT-TRUST-OWNER');
-    if(!await pciDeleteParticipant(tenant,parent))return mapTenant(tenant);
+    const parent = resources.find(object => object.kind === 'ConfigMap');
+    for (const secret of resources.filter(object => object.kind === 'Secret')) if (!parent || !(secret.metadata.ownerReferences ||
+    []).some(owner => owner.kind === 'ConfigMap' && owner.uid === parent.metadata.uid && owner.blockOwnerDeletion ===
+      true)) throw new Error('PCI-PARTICIPANT-TRUST-OWNER');
+    if (!await pciDeleteParticipant(tenant, parent)) return mapTenant(tenant);
     await pciIdentityDelete(tenant);
     // Foreground deletion of the tenant ConfigMap collects its Secrets and
     // narrowly scoped grants. The runtime never needs permission to edit RBAC.
-    for (const object of resources.filter(object=>object.kind!=='Secret')) {
-      const descriptor=await k8sDescriptor(object.apiVersion,object.kind);
-      const path=k8sCollectionPath(descriptor,cfg.orceNamespace)+'/'+encodeURIComponent(object.metadata.name);
-      await k8sExpect('DELETE',path,{headers:{'content-type':'application/json'},body:JSON.stringify({apiVersion:'v1',kind:'DeleteOptions',preconditions:{uid:object.metadata.uid,resourceVersion:object.metadata.resourceVersion},propagationPolicy:'Foreground'})},[200,202,404]);
+    for (const object of resources.filter(object => object.kind !== 'Secret')) {
+      const descriptor = await k8sDescriptor(object.apiVersion, object.kind);
+      const path = k8sCollectionPath(descriptor, cfg.orceNamespace) + '/' + encodeURIComponent(object.metadata.name);
+      await k8sExpect('DELETE', path, {
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          apiVersion: 'v1',
+          kind: 'DeleteOptions',
+          preconditions: { uid: object.metadata.uid, resourceVersion: object.metadata.resourceVersion },
+          propagationPolicy: 'Foreground'
+        })
+      }, [200, 202, 404]);
     }
-    for (const object of resources.filter(object=>object.kind!=='Secret')) if (await k8sGet(object.apiVersion,object.kind,object.metadata.name,cfg.orceNamespace)) return mapTenant(tenant);
-    const users=(await pool.query('SELECT keycloak_subject FROM tenant_members WHERE tenant_id=$1',[tenant.tenant_id])).rows;
+    for (const object of resources.filter(object => object.kind !== 'Secret')) if (await k8sGet(object.apiVersion, object.kind, object
+      .metadata.name, cfg.orceNamespace)) return mapTenant(tenant);
+    const users = (await pool.query('SELECT keycloak_subject FROM tenant_members WHERE tenant_id=$1', [tenant.tenant_id])).rows;
     for (const row of users) {
-      const path=`/admin/realms/${encodeURIComponent(cfg.keycloak.realm)}/users/${encodeURIComponent(row.keycloak_subject)}`;
-      const response=await keycloakAdminRaw('GET',path);
-      if(response.status===404)continue;
-      if(response.status!==200)throw new Error('PCI-TENANT-IDENTITY-READ');
-      const user=JSON.parse(response.text);
-      if(String(keycloakAttributeValue(user,'tenant_id'))!==String(tenant.tenant_id))throw new Error('PCI-TENANT-IDENTITY-OWNER');
-      const deleted=await keycloakAdminRaw('DELETE',path);
-      if(![204,404].includes(deleted.status))throw new Error('PCI-TENANT-IDENTITY-DELETE');
+      const path = `/admin/realms/${encodeURIComponent(cfg.keycloak.realm)}/users/${encodeURIComponent(row.keycloak_subject)}`;
+      const response = await keycloakAdminRaw('GET', path);
+      if (response.status === 404) continue;
+      if (response.status !== 200) throw new Error('PCI-TENANT-IDENTITY-READ');
+      const user = JSON.parse(response.text);
+      if (String(keycloakAttributeValue(user, 'tenant_id')) !== String(tenant.tenant_id)) throw new Error('PCI-TENANT-IDENTITY-OWNER');
+      const deleted = await keycloakAdminRaw('DELETE', path);
+      if (![204, 404].includes(deleted.status)) throw new Error('PCI-TENANT-IDENTITY-DELETE');
     }
     await ensureTenantClientRedirect(tenant);
-    await pool.query('UPDATE tenant_members SET enabled=false,updated_at=now() WHERE tenant_id=$1',[tenant.tenant_id]);
-    const updated=(await pool.query("UPDATE tenants SET state='deleted',observed_generation=desired_generation,identity_state='deleted',conditions='[]'::jsonb,updated_at=now() WHERE tenant_id=$1 AND state='deleting' RETURNING *",[tenant.tenant_id])).rows[0];
+    await pool.query('UPDATE tenant_members SET enabled=false,updated_at=now() WHERE tenant_id=$1', [tenant.tenant_id]);
+    const updated = (await pool.query(
+      "UPDATE tenants SET state='deleted',observed_generation=desired_generation,identity_state='deleted',conditions='[]'::jsonb,updated_at=now() WHERE tenant_id=$1 AND state='deleting' RETURNING *",
+      [tenant.tenant_id])).rows[0];
     return mapTenant(updated || tenant);
   }
-
   async function reconcileTenant(tenant) {
     const lockName = `tenant-reconcile:${tenant.tenant_id}`;
     const lockToken = acquireGlobalLock(lockName, 300000);
@@ -137,114 +211,134 @@ return (async () => {
     try {
       await lease.query('BEGIN');
       await lease.query("SET LOCAL lock_timeout='5s'");
-      await lease.query('SELECT pg_advisory_xact_lock(hashtext($1))', ['pci:'+tenant.tenant_id]);
-      tenant = (await pool.query('SELECT * FROM tenants WHERE tenant_id=$1',[tenant.tenant_id])).rows[0];
+      await lease.query('SELECT pg_advisory_xact_lock(hashtext($1))', ['pci:' + tenant.tenant_id]);
+      tenant = (await pool.query('SELECT * FROM tenants WHERE tenant_id=$1', [tenant.tenant_id])).rows[0];
       if (tenant.state === 'deleting') return await deleteTenantResources(tenant);
-      if (!['active','provisioning','failed'].includes(tenant.state)) return mapTenant(tenant);
+      if (!['active', 'provisioning', 'failed'].includes(tenant.state)) return mapTenant(tenant);
       const generation = Number(tenant.desired_generation);
-    const conditions = [];
-    if (!tenant.tenant_id || !tenant.owner_uid || buildTenantDomain(tenant.tenant_slug) !== tenant.primary_domain) throw new Error("Tenant desired state is invalid.");
-    conditions.push(nowCondition("Validated", "True", "TenantDesiredStateValid", "Tenant desired state passed ORCE validation.", generation));
-
-    const registration = (await pool.query("SELECT * FROM tenant_registrations WHERE registration_id=$1", [tenant.registration_id])).rows[0];
-    if (!registration || registration.state !== "approved" || !registration.email_verified_at) throw new Error("Tenant registration is not approved and email-verified.");
-
-    await ensureTenantClientRedirect(tenant);
-    const contactUser = await ensureContactAdministrator(tenant, registration);
-    conditions.push(nowCondition("IdentityReady", "True", "KeycloakTenantIdentityReady", `Keycloak tenant administrator ${contactUser.username} is assigned.`, generation));
-
-    const labels = {
-      "app.kubernetes.io/managed-by": "fap-pci-orce",
-      "app.kubernetes.io/part-of": "fap-pci",
-      "app.kubernetes.io/instance": "fap-pci",
-      "xfsc.org/pci-tenant-id": String(tenant.tenant_id),
-      "xfsc.org/pci-owner-uid": String(tenant.owner_uid),
-      "xfsc.org/pci-generation": String(generation),
-    };
-    await k8sApply({
-      apiVersion: "v1",
-      kind: "ConfigMap",
-      metadata: { name: `pci-tenant-${tenant.tenant_slug}`, namespace: cfg.orceNamespace, labels },
-      data: {
-        tenant_id: String(tenant.tenant_id),
-        tenant_slug: String(tenant.tenant_slug),
-        owner_uid: String(tenant.owner_uid),
-        organization_identifier: String(tenant.organization_identifier),
-        organization_name: String(tenant.organization_name),
-        primary_domain: String(tenant.primary_domain),
-        orce_base_path: cfg.orceBasePath,
-        ui_path: cfg.publicUiPath,
-        public_ui_url: uiUrl(tenant.primary_domain, cfg.orceBasePath),
-        public_api_url: publicUrl(tenant.primary_domain, "/api/v1/", cfg.orceBasePath),
-        desired_generation: String(generation),
-        ocm_namespace: cfg.ocmNamespace,
-        ocm_credential_issuance_service: cfg.ocmServices.credentialIssuance,
-        ocm_well_known_service: cfg.ocmServices.wellKnown,
-        ocm_preauth_service: cfg.ocmServices.preAuth,
-        ocm_signer_service: cfg.ocmServices.signer,
-        integration_state: "reserved-for-issuer-integration",
-      },
-    }, cfg.orceNamespace);
-    conditions.push(nowCondition("ConfigurationReady", "True", "TenantConfigApplied", "Tenant-owned configuration is present in the ORCE namespace.", generation));
-
-    const headerFilter = tenantHeaderFilter(tenant);
-    const backend = [{ group: "", kind: "Service", name: cfg.orceService, port: cfg.orceServicePort, weight: 1 }];
-    await k8sApply({
-      apiVersion: "gateway.networking.k8s.io/v1",
-      kind: "HTTPRoute",
-      metadata: { name: `pci-tenant-${tenant.tenant_slug}`, namespace: cfg.orceNamespace, labels },
-      spec: {
-        parentRefs: [{ group: "gateway.networking.k8s.io", kind: "Gateway", name: cfg.gatewayName, namespace: cfg.infrastructureNamespace, sectionName: cfg.gatewayListenerName }],
-        hostnames: [tenant.primary_domain],
-        rules: [
-          ...tenantPublicRules(tenant),
-          ...Array.from(new Set(cfg.orceBasePath ? [cfg.orceBasePath, `${cfg.orceBasePath}/`] : ["/"])).map((entryPath) => ({
-            matches: [{ path: { type: "Exact", value: entryPath } }],
-            filters: [headerFilter, { type: "URLRewrite", urlRewrite: { path: { type: "ReplaceFullPath", replaceFullPath: cfg.publicUiPath } } }],
-            backendRefs: backend,
-          })),
-          {
-            matches: [{ path: { type: "PathPrefix", value: cfg.orceBasePath || "/" } }],
-            filters: [headerFilter],
-            backendRefs: backend,
-          },
-        ],
-      },
-    }, cfg.orceNamespace);
-    conditions.push(nowCondition("RouteApplied", "True", "HTTPRouteApplied", "The tenant HTTPRoute was applied with server-derived tenant headers.", generation));
-
-    const route = await waitFor(`tenant route ${tenant.tenant_slug}`, async () => {
-      const candidate = await k8sGet("gateway.networking.k8s.io/v1", "HTTPRoute", `pci-tenant-${tenant.tenant_slug}`, cfg.orceNamespace);
-      const accepted = routeCondition(candidate, "Accepted");
-      const resolved = routeCondition(candidate, "ResolvedRefs");
-      return candidate && accepted && accepted.status === "True" && resolved && resolved.status === "True" ? candidate : null;
-    }, 180, 3000);
-    void route;
-    conditions.push(nowCondition("RouteAccepted", "True", "GatewayAccepted", "Envoy accepted the tenant route and resolved its ORCE Service reference.", generation));
-
-    const gateway = await k8sGet("gateway.networking.k8s.io/v1", "Gateway", cfg.gatewayName, cfg.infrastructureNamespace);
-    const address = gatewayAddress(gateway);
-    const dnsReady = await dnsMatchesHost(tenant.primary_domain, address);
-    conditions.push(nowCondition("DNSReady", dnsReady ? "True" : "False", dnsReady ? "DNSMatchesGateway" : "ManualDNSRequired", dnsReady ? "Tenant DNS resolves to the PCI Envoy Gateway." : `Create a DNS record for ${tenant.primary_domain} pointing to ${address}.`, generation));
-    conditions.push(nowCondition("Ready", dnsReady ? "True" : "False", dnsReady ? "TenantRuntimeReady" : "TenantDNSPending", dnsReady ? "The ORCE/uibuilder tenant runtime is ready." : "The tenant route is ready but activation is waiting for manual DNS.", generation));
-
-    const previousState = tenant.state;
-    const newState = dnsReady ? "active" : "provisioning";
-    const updated = (await pool.query(
-      `UPDATE tenants SET state=$2,observed_generation=$3,conditions=$4::jsonb,identity_state='ready',updated_at=now()
-       WHERE tenant_id=$1 RETURNING *`,
-      [tenant.tenant_id, newState, generation, JSON.stringify(conditions)],
-    )).rows[0];
-    if (newState === "active" && previousState !== "active") {
-      await pool.query(`INSERT INTO audit_events(event_type,actor,registration_id,tenant_id,safe_metadata) VALUES('tenant.activated','fap-pci-reconciler',$1,$2,$3::jsonb)`, [tenant.registration_id, tenant.tenant_id, JSON.stringify({ domain: tenant.primary_domain })]);
-      try {
-        await sendMail({
-          to: registration.contact_email,
-          subject: "FAP PCI tenant activated",
-          text: `The tenant ${tenant.organization_name} is active at ${uiUrl(tenant.primary_domain, cfg.orceBasePath)}. Sign in with Keycloak and complete the required first-login actions.`,
-        });
-      } catch (error) { node.warn(JSON.stringify({event:"pci.tenant.notification.failed",code:"PCI-TENANT-NOTIFICATION-FAILED"})); }
-    }
+      const conditions = [];
+      if (!tenant.tenant_id || !tenant.owner_uid || buildTenantDomain(tenant.tenant_slug) !== tenant.primary_domain) throw new Error(
+        "Tenant desired state is invalid.");
+      conditions.push(nowCondition("Validated", "True", "TenantDesiredStateValid", "Tenant desired state passed ORCE validation.",
+        generation));
+      const registration = (await pool.query("SELECT * FROM tenant_registrations WHERE registration_id=$1", [tenant.registration_id])
+        ).rows[0];
+      if (!registration || registration.state !== "approved" || !registration.email_verified_at) throw new Error(
+        "Tenant registration is not approved and email-verified.");
+      await ensureTenantClientRedirect(tenant);
+      const contactUser = await ensureContactAdministrator(tenant, registration);
+      conditions.push(nowCondition("IdentityReady", "True", "KeycloakTenantIdentityReady",
+        `Keycloak tenant administrator ${contactUser.username} is assigned.`, generation));
+      const labels = {
+        "app.kubernetes.io/managed-by": "fap-pci-orce",
+        "app.kubernetes.io/part-of": "fap-pci",
+        "app.kubernetes.io/instance": "fap-pci",
+        "xfsc.org/pci-tenant-id": String(tenant.tenant_id),
+        "xfsc.org/pci-owner-uid": String(tenant.owner_uid),
+        "xfsc.org/pci-generation": String(generation),
+      };
+      await k8sApply({
+        apiVersion: "v1",
+        kind: "ConfigMap",
+        metadata: { name: `pci-tenant-${tenant.tenant_slug}`, namespace: cfg.orceNamespace, labels },
+        data: {
+          tenant_id: String(tenant.tenant_id),
+          tenant_slug: String(tenant.tenant_slug),
+          owner_uid: String(tenant.owner_uid),
+          organization_identifier: String(tenant.organization_identifier),
+          organization_name: String(tenant.organization_name),
+          primary_domain: String(tenant.primary_domain),
+          orce_base_path: cfg.orceBasePath,
+          ui_path: cfg.publicUiPath,
+          public_ui_url: uiUrl(tenant.primary_domain, cfg.orceBasePath),
+          public_api_url: publicUrl(tenant.primary_domain, "/api/v1/", cfg.orceBasePath),
+          desired_generation: String(generation),
+          ocm_namespace: cfg.ocmNamespace,
+          ocm_credential_issuance_service: cfg.ocmServices.credentialIssuance,
+          ocm_well_known_service: cfg.ocmServices.wellKnown,
+          ocm_preauth_service: cfg.ocmServices.preAuth,
+          ocm_signer_service: cfg.ocmServices.signer,
+          integration_state: "reserved-for-issuer-integration",
+        },
+      }, cfg.orceNamespace);
+      conditions.push(nowCondition("ConfigurationReady", "True", "TenantConfigApplied",
+        "Tenant-owned configuration is present in the ORCE namespace.", generation));
+      const headerFilter = tenantHeaderFilter(tenant);
+      const backend = [{ group: "", kind: "Service", name: cfg.orceService, port: cfg.orceServicePort, weight: 1 }];
+      await k8sApply({
+        apiVersion: "gateway.networking.k8s.io/v1",
+        kind: "HTTPRoute",
+        metadata: { name: `pci-tenant-${tenant.tenant_slug}`, namespace: cfg.orceNamespace, labels },
+        spec: {
+          parentRefs: [
+            {
+              group: "gateway.networking.k8s.io",
+              kind: "Gateway",
+              name: cfg.gatewayName,
+              namespace: cfg.infrastructureNamespace,
+              sectionName: cfg.gatewayListenerName
+            }
+          ],
+          hostnames: [tenant.primary_domain],
+          rules: [
+            ...tenantPublicRules(tenant),
+            ...Array.from(new Set(cfg.orceBasePath ? [cfg.orceBasePath, `${cfg.orceBasePath}/`]: ["/"])).map((entryPath) => ({
+              matches: [{ path: { type: "Exact", value: entryPath } }],
+              filters: [
+                headerFilter,
+                {
+                  type: "URLRewrite",
+                  urlRewrite: { path: { type: "ReplaceFullPath", replaceFullPath: cfg.publicUiPath } }
+                }
+              ],
+              backendRefs: backend,
+            })),
+            {
+              matches: [{ path: { type: "PathPrefix", value: cfg.orceBasePath || "/" } }],
+              filters: [headerFilter],
+              backendRefs: backend,
+            },
+          ],
+        },
+      }, cfg.orceNamespace);
+      conditions.push(nowCondition("RouteApplied", "True", "HTTPRouteApplied",
+        "The tenant HTTPRoute was applied with server-derived tenant headers.", generation));
+      const route = await waitFor(`tenant route ${tenant.tenant_slug}`, async() => {
+        const candidate = await k8sGet("gateway.networking.k8s.io/v1", "HTTPRoute", `pci-tenant-${tenant.tenant_slug}`, cfg.orceNamespace);
+        const accepted = routeCondition(candidate, "Accepted");
+        const resolved = routeCondition(candidate, "ResolvedRefs");
+        return candidate && accepted && accepted.status === "True" && resolved && resolved.status === "True" ? candidate: null;
+      }, 180, 3000);
+      void route;
+      conditions.push(nowCondition("RouteAccepted", "True", "GatewayAccepted",
+        "Envoy accepted the tenant route and resolved its ORCE Service reference.", generation));
+      const gateway = await k8sGet("gateway.networking.k8s.io/v1", "Gateway", cfg.gatewayName, cfg.infrastructureNamespace);
+      const address = gatewayAddress(gateway);
+      const dnsReady = await dnsMatchesHost(tenant.primary_domain, address);
+      conditions.push(nowCondition("DNSReady", dnsReady ? "True": "False", dnsReady ? "DNSMatchesGateway": "ManualDNSRequired", dnsReady ?
+        "Tenant DNS resolves to the PCI Envoy Gateway.": `Create a DNS record for ${tenant.primary_domain} pointing to ${address}.`,
+        generation));
+      conditions.push(nowCondition("Ready", dnsReady ? "True": "False", dnsReady ? "TenantRuntimeReady": "TenantDNSPending", dnsReady ?
+        "The ORCE/uibuilder tenant runtime is ready.": "The tenant route is ready but activation is waiting for manual DNS.", generation));
+      const previousState = tenant.state;
+      const newState = dnsReady ? "active": "provisioning";
+      const updated = (await pool.query(
+        `UPDATE tenants SET state=$2,observed_generation=$3,conditions=$4::jsonb,identity_state='ready',updated_at=now()
+       WHERE tenant_id=$1 RETURNING *`, [tenant.tenant_id, newState, generation, JSON.stringify(conditions)],)).rows[0];
+      if (newState === "active" && previousState !== "active") {
+        await pool.query(
+          `INSERT INTO audit_events(event_type,actor,registration_id,tenant_id,safe_metadata) VALUES('tenant.activated','fap-pci-reconciler',$1,$2,$3::jsonb)`,
+          [tenant.registration_id, tenant.tenant_id, JSON.stringify({ domain: tenant.primary_domain })]);
+        try {
+          await sendMail({
+            to: registration.contact_email,
+            subject: "FAP PCI tenant activated",
+            text: `The tenant ${tenant.organization_name} is active at ${uiUrl(tenant.primary_domain, cfg.orceBasePath)}. Sign in with Keycloak and complete the required first-login actions.`,
+          });
+        } catch (error) {
+          node.warn(JSON.stringify({ event: "pci.tenant.notification.failed", code: "PCI-TENANT-NOTIFICATION-FAILED" }));
+        }
+      }
       return mapTenant(updated);
     } finally {
       await lease.query("COMMIT").catch(() => {});
@@ -252,64 +346,88 @@ return (async () => {
       releaseGlobalLock(lockName, lockToken);
     }
   }
-
   async function markFailed(tenant, error) {
-    const status=Number(error.kubernetesStatus || error.status || 0);
-    const code=status===422?'PCI-TENANT-RESOURCE-INVALID':status===403?'PCI-TENANT-ACCESS-DENIED':error.code && /^PCI-[A-Z0-9-]+$/.test(error.code)?error.code:'PCI-TENANT-RECONCILIATION-FAILED';
-    node.warn(JSON.stringify({event:'pci.tenant.failed',tenantId:tenant.tenant_id,generation:Number(tenant.desired_generation),code,status}));
-
-    const condition = nowCondition("Error", "True", "ReconciliationFailed", code+"; see the matching operator event.", tenant.desired_generation);
-    const existing = Array.isArray(tenant.conditions) ? tenant.conditions.filter((item) => item.type !== "Error" && item.type !== "Ready") : [];
-    const conditions = [...existing, condition, nowCondition("Ready", "False", "ReconciliationFailed", "Tenant reconciliation has not completed.", tenant.desired_generation)];
-    const row = (await pool.query("UPDATE tenants SET state=CASE WHEN state='deleting' THEN 'deleting' WHEN state='suspended' THEN 'suspended' ELSE 'failed' END,conditions=$2::jsonb,updated_at=now() WHERE tenant_id=$1 RETURNING *", [tenant.tenant_id, JSON.stringify(conditions)])).rows[0];
+    const status = Number(error.kubernetesStatus || error.status || 0);
+    const code = status === 422 ? 'PCI-TENANT-RESOURCE-INVALID': status === 403 ? 'PCI-TENANT-ACCESS-DENIED': error.code &&
+    /^PCI-[A-Z0-9-]+$/.test(error.code) ? error.code: 'PCI-TENANT-RECONCILIATION-FAILED';
+    node.warn(JSON.stringify({
+      event: 'pci.tenant.failed',
+      tenantId: tenant.tenant_id,
+      generation: Number(tenant.desired_generation),
+      code,
+      status
+    }));
+    const condition = nowCondition("Error", "True", "ReconciliationFailed", code + "; see the matching operator event.", tenant
+      .desired_generation);
+    const existing = Array.isArray(tenant.conditions) ? tenant.conditions.filter((item) => item.type !== "Error" &&
+    item.type !== "Ready"): [];
+    const conditions = [
+      ...existing,
+      condition,
+      nowCondition("Ready", "False", "ReconciliationFailed", "Tenant reconciliation has not completed.", tenant.desired_generation)
+    ];
+    const row = (await pool.query(
+      "UPDATE tenants SET state=CASE WHEN state='deleting' THEN 'deleting' WHEN state='suspended' THEN 'suspended' ELSE 'failed' END,conditions=$2::jsonb,updated_at=now() WHERE tenant_id=$1 RETURNING *",
+      [tenant.tenant_id, JSON.stringify(conditions)])).rows[0];
     return mapTenant(row);
   }
-
   if (action === "internal.provisioning.list") {
     requireInternalService();
     const limit = Math.min(100, Math.max(1, Number(query().limit || 20)));
     const result = await pool.query(
-      `SELECT * FROM tenants WHERE state IN ('provisioning','failed','deleting') ORDER BY updated_at ASC LIMIT $1`,
-      [limit],
-    );
+      `SELECT * FROM tenants WHERE state IN ('provisioning','failed','deleting') ORDER BY updated_at ASC LIMIT $1`, [limit],);
     return emit(200, { items: result.rows.map(mapTenant), total: result.rowCount });
   }
-
   if (action === "internal.provisioning.status") {
     requireInternalService();
     const tenantId = String(params().tenantId || input.tenantId || "");
     const state = String(input.state || "");
     const generation = Number(input.observedGeneration);
-    const conditions = Array.isArray(input.conditions) ? input.conditions : [];
-    if (!tenantId || !["provisioning", "active", "failed", "suspended"].includes(state) || !Number.isInteger(generation) || generation < 0) throw pciErrors.validation("Provisioning status update is invalid.");
-    const row = (await pool.query("UPDATE tenants SET state=$2,observed_generation=$3,conditions=$4::jsonb,updated_at=now() WHERE tenant_id=$1 AND state NOT IN ('deleting','deleted','suspended') RETURNING *", [tenantId, state, generation, JSON.stringify(conditions)])).rows[0];
+    const conditions = Array.isArray(input.conditions) ? input.conditions: [];
+    if (!tenantId || !["provisioning", "active", "failed", "suspended"].includes(state) || !Number.isInteger(generation) ||
+    generation < 0) throw pciErrors.validation("Provisioning status update is invalid.");
+    const row = (await pool.query(
+      "UPDATE tenants SET state=$2,observed_generation=$3,conditions=$4::jsonb,updated_at=now() WHERE tenant_id=$1 AND state NOT IN ('deleting','deleted','suspended') RETURNING *",
+      [tenantId, state, generation, JSON.stringify(conditions)])).rows[0];
     if (!row) throw pciErrors.notFound("Tenant not found.");
     return emit(200, { tenant: mapTenant(row) });
   }
-
   if (action === "tenant.reconcile.one") {
-    if (!msg.pciInternal) { if (routedHost() !== cfg.mainHost) throw pciErrors.forbidden(); await requireSession(["provider_admin"]); }
+    if (!msg.pciInternal) {
+      if (routedHost() !== cfg.mainHost) throw pciErrors.forbidden();
+      await requireSession(["provider_admin"]);
+    }
     const tenantId = String(params().tenantId || input.tenantId || "");
     const tenant = (await pool.query("SELECT * FROM tenants WHERE tenant_id=$1", [tenantId])).rows[0];
     if (!tenant) throw pciErrors.notFound("Tenant not found.");
-    try { return emit(200, { tenant: await reconcileTenant(tenant) }, {}, "pci:tenant-updated"); }
-    catch (error) { return emit(200, { tenant: await markFailed(tenant, error) }, {}, "pci:tenant-updated"); }
+    try {
+      return emit(200, { tenant: await reconcileTenant(tenant) }, {}, "pci:tenant-updated");
+    } catch (error) {
+      return emit(200, { tenant: await markFailed(tenant, error) }, {}, "pci:tenant-updated");
+    }
   }
-
   if (action === "tenant.reconcile.all") {
-    if (!msg.pciInternal) { if (routedHost() !== cfg.mainHost) throw pciErrors.forbidden(); await requireSession(["provider_admin"]); }
+    if (!msg.pciInternal) {
+      if (routedHost() !== cfg.mainHost) throw pciErrors.forbidden();
+      await requireSession(["provider_admin"]);
+    }
     const result = await pool.query(
-      `SELECT * FROM tenants WHERE state IN ('provisioning','failed','active','deleting') ORDER BY updated_at ASC LIMIT 100`,
-    );
+      `SELECT * FROM tenants WHERE state IN ('provisioning','failed','active','deleting') ORDER BY updated_at ASC LIMIT 100`,);
     const items = [];
     for (const tenant of result.rows) {
-      try { items.push(await reconcileTenant(tenant)); }
-      catch (error) { items.push(await markFailed(tenant, error)); }
+      try {
+        items.push(await reconcileTenant(tenant));
+      } catch (error) {
+        items.push(await markFailed(tenant, error));
+      }
     }
-    node.status({ fill: items.some((item) => item.state === "failed") ? "yellow" : "green", shape: "dot", text: `${items.length} tenant(s) reconciled` });
+    node.status({
+      fill: items.some((item) => item.state === "failed") ? "yellow": "green",
+      shape: "dot",
+      text: `${items.length} tenant(s) reconciled`
+    });
     return emit(200, { items, total: items.length }, {}, "pci:tenant-updated");
   }
-
   throw pciErrors.notFound("Unknown reconciliation action.");
 })().catch((error) => {
   node.status({ fill: "red", shape: "ring", text: "PCI-RECONCILIATION-FAILED" });

@@ -1,22 +1,50 @@
+import { stripModuleSyntax } from "./lib/module-source.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-
 const root = process.cwd();
 const outDir = path.join(root, ".build");
 await mkdir(outDir, { recursive: true });
 const releaseVersion = (await readFile(path.join(root, "VERSION"), "utf8")).trim();
-
 const sharedUrlSource = await readFile(path.join(root, "shared", "public-url.js"), "utf8");
-const sharedUrl = sharedUrlSource.replace(/^export\s+(?=(?:async\s+)?function|const|let|var|class)/gm, "");
-const commonBase = (await readFile(path.join(root, "backend", "functions", "_common.js"), "utf8")).replaceAll("__FAP_PCI_VERSION__", releaseVersion);
-const common = commonBase+'\n'+await readFile(path.join(root,'backend/functions/_identity.js'),'utf8')+'\n'+await readFile(path.join(root,'backend/functions/_bridge.js'),'utf8');
-const sr2Files = ['domain.js','journey-input.js','assets.js','participant-security.js','store.js','adapters.js','wire.js','transport.js','profiles.js','sdjwt.js','linked-data.js','native.js','history.js','semantics.js','service.js','revocation.js','issuance.js','presentation.js','maintenance.js','runtime.js','http.js'];
-let sr2Source = (await Promise.all(sr2Files.map(file => readFile(path.join(root,'backend','sr2',file),'utf8')))).map(source => source.replace(/^export \{.*\} from .*;\s*$/gm,'').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'')).join('\n');
-sr2Source=sr2Source.replaceAll('__PCI_SR2_BUILD_ID__',createHash('sha256').update(sr2Source).digest('hex'));
-const sr2Specs = JSON.parse(await readFile(path.join(root,'backend','sr2','routes.json'),'utf8'));
-const k8s = await readFile(path.join(root, "backend", "functions", "_k8s.js"), "utf8")+"\n"+await readFile(path.join(root,"backend/functions/_participant-cleanup.js"),"utf8");
-
+const sharedUrl = stripModuleSyntax(sharedUrlSource, "shared/public-url.js");
+const commonBase = (await readFile(path.join(root, "backend", "functions", "_common.js"), "utf8")).replaceAll("__FAP_PCI_VERSION__",
+  releaseVersion);
+const common = commonBase + '\n' + await readFile(path.join(root, 'backend/functions/_identity.js'), 'utf8') + '\n' + await readFile(path
+  .join(root, 'backend/functions/_bridge.js'), 'utf8');
+const sr2Files = [
+  'domain.js',
+  'journey-input.js',
+  'assets.js',
+  'participant-security.js',
+  'store.js',
+  'adapter-contracts.js',
+  'native-keys.js',
+  'linked-data.js',
+  'native-metadata.js',
+  'sdjwt.js',
+  'wire.js',
+  'native.js',
+  'adapters.js',
+  'transport.js',
+  'profiles.js',
+  'history.js',
+  'semantics.js',
+  'service-policy.js',
+  'service.js',
+  'revocation.js',
+  'issuance.js',
+  'presentation.js',
+  'maintenance.js',
+  'runtime.js',
+  'http.js'
+];
+let sr2Source = (await Promise.all(sr2Files.map(async file => stripModuleSyntax(await readFile(path.join(root, 'backend', 'sr2', file),
+  'utf8'), file)))).join('\n');
+sr2Source = sr2Source.replaceAll('__PCI_SR2_BUILD_ID__', createHash('sha256').update(sr2Source).digest('hex'));
+const sr2Specs = JSON.parse(await readFile(path.join(root, 'backend', 'sr2', 'routes.json'), 'utf8'));
+const k8s = await readFile(path.join(root, "backend", "functions", "_k8s.js"), "utf8") + "\n" + await readFile(path.join(root,
+  "backend/functions/_participant-cleanup.js"), "utf8");
 function id(name) {
   return createHash("sha256").update(`fap-pci:${name}`).digest("hex").slice(0, 16);
 }
@@ -45,14 +73,36 @@ const libs = [
 ];
 function functionNode(z, key, name, source, x, y, includeK8s = false) {
   return {
-    id: id(`function:${key}`), type: "function", z, name,
+    id: id(`function:${key}`),
+    type: "function",
+    z,
+    name,
     func: `const { URL, URLSearchParams } = url;\n${sharedUrl}\n${common}\n${includeK8s ? `${k8s}\n` : ""}${source}`,
-    outputs: 2, timeout: "0", noerr: 0, initialize: "", finalize: "", libs,
-    x, y, wires: [[], []],
+    outputs: 2,
+    timeout: "0",
+    noerr: 0,
+    initialize: "",
+    finalize: "",
+    libs,
+    x,
+    y,
+    wires: [[], []],
   };
 }
 function httpIn(z, key, name, method, url, x, y) {
-  return { id: id(`http-in:${key}`), type: "http in", z, name, url, method, upload: false, swaggerDoc: "", x, y, wires: [[]] };
+  return {
+    id: id(`http-in:${key}`),
+    type: "http in",
+    z,
+    name,
+    url,
+    method,
+    upload: false,
+    swaggerDoc: "",
+    x,
+    y,
+    wires: [[]]
+  };
 }
 function actionChange(z, key, action, transport, x, y, internal = false) {
   const rules = [
@@ -60,10 +110,34 @@ function actionChange(z, key, action, transport, x, y, internal = false) {
     { t: "set", p: "pciTransport", pt: "msg", to: transport, tot: "str" },
   ];
   if (internal) rules.push({ t: "set", p: "pciInternal", pt: "msg", to: "true", tot: "bool" });
-  return { id: id(`change:${key}`), type: "change", z, name: action, rules, action: "", property: "", from: "", to: "", reg: false, x, y, wires: [[]] };
+  return {
+    id: id(`change:${key}`),
+    type: "change",
+    z,
+    name: action,
+    rules,
+    action: "",
+    property: "",
+    from: "",
+    to: "",
+    reg: false,
+    x,
+    y,
+    wires: [[]]
+  };
 }
 function httpResponse(z, key, x, y) {
-  return { id: id(`http-response:${key}`), type: "http response", z, name: "HTTP response", statusCode: "", headers: {}, x, y, wires: [] };
+  return {
+    id: id(`http-response:${key}`),
+    type: "http response",
+    z,
+    name: "HTTP response",
+    statusCode: "",
+    headers: {},
+    x,
+    y,
+    wires: []
+  };
 }
 function linkIn(z, key, name, x, y, links = []) {
   return { id: id(`link-in:${key}`), type: "link in", z, name, links, x, y, wires: [[]] };
@@ -72,67 +146,191 @@ function linkOut(z, key, name, x, y, links = []) {
   return { id: id(`link-out:${key}`), type: "link out", z, name, mode: "link", links, x, y, wires: [] };
 }
 function inject(z, key, name, onceDelay, repeat, x, y) {
-  return { id: id(`inject:${key}`), type: "inject", z, name, props: [{ p: "payload" }, { p: "topic", vt: "str" }], repeat: String(repeat || ""), crontab: "", once: true, onceDelay: String(onceDelay), topic: "", payload: "", payloadType: "date", x, y, wires: [[]] };
+  return {
+    id: id(`inject:${key}`),
+    type: "inject",
+    z,
+    name,
+    props: [{ p: "payload" }, { p: "topic", vt: "str" }],
+    repeat: String(repeat || ""),
+    crontab: "",
+    once: true,
+    onceDelay: String(onceDelay),
+    topic: "",
+    payload: "",
+    payloadType: "date",
+    x,
+    y,
+    wires: [[]]
+  };
 }
 function wire(nodesById, from, output, ...targets) {
   nodesById[from].wires[output] = targets;
 }
-function indexNodes(nodes) { return Object.fromEntries(nodes.map((node) => [node.id, node])); }
-
+function indexNodes(nodes) {
+  return Object.fromEntries(nodes.map((node) => [node.id, node]));
+}
 const moduleSpecs = [
   ...sr2Specs,
   {
-    key: "infrastructure", label: "M1_PCI-Infrastructure", route: "platform", file: "M1_PCI-Infrastructure_flow.json",
-    functionFile: "infrastructure.js", includeK8s: true,
+    key: "infrastructure",
+    label: "M1_PCI-Infrastructure",
+    route: "platform",
+    file: "M1_PCI-Infrastructure_flow.json",
+    functionFile: "infrastructure.js",
+    includeK8s: true,
     info: "Status-only view of the platform prepared by ground-zero. M1 performs no cluster, database, mail, Keycloak, Gateway, or OCM mutations.",
     requirements: ["FR-PCI-25", "FR-PCI-26", "FR-PCI-49", "FR-PCI-50", "FR-PCI-58", "FR-PCI-65", "FR-PCI-67"],
     routes: [
       ["platform-status", "GET platform status", "get", "/api/v1/platform/status", "platform.status"],
-      ["platform-initialize", "POST initialize platform", "post", "/api/v1/platform/initialize", "platform.initialize"],
+      [
+        "platform-initialize",
+        "POST initialize platform",
+        "post",
+        "/api/v1/platform/initialize",
+        "platform.initialize"
+      ],
     ],
     injects: [],
   },
   {
-    key: "registration", label: "M2_PCI-TenantRegistration", route: "registration", file: "M2_PCI-TenantRegistration_flow.json",
-    functionFile: "registration.js", includeK8s: false,
+    key: "registration",
+    label: "M2_PCI-TenantRegistration",
+    route: "registration",
+    file: "M2_PCI-TenantRegistration_flow.json",
+    functionFile: "registration.js",
+    includeK8s: false,
     info: "Public/private tenant registration, single-use email verification, resend, state transitions, audit and SMTP delivery.",
-    requirements: ["FR-PCI-25", "FR-PCI-26", "FR-PCI-28", "FR-PCI-31", "FR-PCI-32", "FR-PCI-65", "FR-PCI-67", "FR-PCI-68"],
+    requirements: [
+      "FR-PCI-25",
+      "FR-PCI-26",
+      "FR-PCI-28",
+      "FR-PCI-31",
+      "FR-PCI-32",
+      "FR-PCI-65",
+      "FR-PCI-67",
+      "FR-PCI-68"
+    ],
     routes: [
-      ["registration-config", "GET registration config", "get", "/api/v1/tenant-registration-config", "registration.config"],
-      ["registration-create", "POST tenant registration", "post", "/api/v1/tenant-registrations", "registration.create"],
-      ["registration-verify", "POST verify registration", "post", "/api/v1/tenant-registrations/:registrationId/verify-email", "registration.verify"],
-      ["registration-resend", "POST resend verification", "post", "/api/v1/tenant-registrations/:registrationId/resend-verification", "registration.resend"],
+      [
+        "registration-config",
+        "GET registration config",
+        "get",
+        "/api/v1/tenant-registration-config",
+        "registration.config"
+      ],
+      [
+        "registration-create",
+        "POST tenant registration",
+        "post",
+        "/api/v1/tenant-registrations",
+        "registration.create"
+      ],
+      [
+        "registration-verify",
+        "POST verify registration",
+        "post",
+        "/api/v1/tenant-registrations/:registrationId/verify-email",
+        "registration.verify"
+      ],
+      [
+        "registration-resend",
+        "POST resend verification",
+        "post",
+        "/api/v1/tenant-registrations/:registrationId/resend-verification",
+        "registration.resend"
+      ],
     ],
   },
   {
-    key: "provider", label: "M3_PCI-ProviderAdministration", route: "provider", file: "M3_PCI-ProviderAdministration_flow.json",
-    functionFile: "provider.js", includeK8s: false,
+    key: "provider",
+    label: "M3_PCI-ProviderAdministration",
+    route: "provider",
+    file: "M3_PCI-ProviderAdministration_flow.json",
+    functionFile: "provider.js",
+    includeK8s: false,
     info: "Keycloak-protected provider review, optimistic approval/rejection, desired tenant creation, tenant listing and reconciliation status.",
     requirements: ["FR-PCI-25", "FR-PCI-26", "FR-PCI-28", "FR-PCI-29", "FR-PCI-65", "FR-PCI-67", "FR-PCI-68"],
     routes: [
-      ["provider-registration-list", "GET registrations", "get", "/api/v1/provider/tenant-registrations", "provider.registrations.list"],
-      ["provider-registration-get", "GET registration", "get", "/api/v1/provider/tenant-registrations/:registrationId", "provider.registrations.get"],
-      ["provider-registration-approve", "POST approve", "post", "/api/v1/provider/tenant-registrations/:registrationId/approve", "provider.registrations.approve"],
-      ["provider-registration-reject", "POST reject", "post", "/api/v1/provider/tenant-registrations/:registrationId/reject", "provider.registrations.reject"],
+      [
+        "provider-registration-list",
+        "GET registrations",
+        "get",
+        "/api/v1/provider/tenant-registrations",
+        "provider.registrations.list"
+      ],
+      [
+        "provider-registration-get",
+        "GET registration",
+        "get",
+        "/api/v1/provider/tenant-registrations/:registrationId",
+        "provider.registrations.get"
+      ],
+      [
+        "provider-registration-approve",
+        "POST approve",
+        "post",
+        "/api/v1/provider/tenant-registrations/:registrationId/approve",
+        "provider.registrations.approve"
+      ],
+      [
+        "provider-registration-reject",
+        "POST reject",
+        "post",
+        "/api/v1/provider/tenant-registrations/:registrationId/reject",
+        "provider.registrations.reject"
+      ],
       ["provider-tenants", "GET tenants", "get", "/api/v1/provider/tenants", "provider.tenants.list"],
-      ["provider-tenant-reconciliation", "GET tenant reconciliation", "get", "/api/v1/provider/tenants/:tenantId/reconciliation", "provider.tenant.reconciliation"],
+      [
+        "provider-tenant-reconciliation",
+        "GET tenant reconciliation",
+        "get",
+        "/api/v1/provider/tenants/:tenantId/reconciliation",
+        "provider.tenant.reconciliation"
+      ],
     ],
   },
   {
-    key: "reconcile", label: "M4_PCI-TenantReconciliation", route: "reconcile", file: "M4_PCI-TenantReconciliation_flow.json",
-    functionFile: "reconcile.js", includeK8s: true,
+    key: "reconcile",
+    label: "M4_PCI-TenantReconciliation",
+    route: "reconcile",
+    file: "M4_PCI-TenantReconciliation_flow.json",
+    functionFile: "reconcile.js",
+    includeK8s: true,
     info: "ORCE in-cluster ServiceAccount desired-state reconciliation for Keycloak tenant identity, ConfigMaps, exact tenant subdomain HTTPRoutes, DNS readiness, and compatibility provisioner endpoints.",
     requirements: ["FR-PCI-03", "FR-PCI-26", "FR-PCI-50", "FR-PCI-67", "FR-PCI-69", "FR-PCI-70"],
     routes: [
-      ["internal-provisioning-list", "GET desired tenants", "get", "/api/v1/internal/provisioning/tenants", "internal.provisioning.list"],
-      ["internal-provisioning-status", "PUT tenant status", "put", "/api/v1/internal/provisioning/tenants/:tenantId/status", "internal.provisioning.status"],
-      ["provider-reconcile-tenant", "POST reconcile tenant", "post", "/api/v1/provider/tenants/:tenantId/reconcile", "tenant.reconcile.one"],
+      [
+        "internal-provisioning-list",
+        "GET desired tenants",
+        "get",
+        "/api/v1/internal/provisioning/tenants",
+        "internal.provisioning.list"
+      ],
+      [
+        "internal-provisioning-status",
+        "PUT tenant status",
+        "put",
+        "/api/v1/internal/provisioning/tenants/:tenantId/status",
+        "internal.provisioning.status"
+      ],
+      [
+        "provider-reconcile-tenant",
+        "POST reconcile tenant",
+        "post",
+        "/api/v1/provider/tenants/:tenantId/reconcile",
+        "tenant.reconcile.one"
+      ],
     ],
     injects: [["tenant-periodic", "Reconcile all tenants", 25, 20, "tenant.reconcile.all"]],
   },
   {
-    key: "auth", label: "M5_PCI-Auth", route: "auth", file: "M5_PCI-Auth_flow.json",
-    functionFile: "auth.js", includeK8s: false,
+    key: "auth",
+    label: "M5_PCI-Auth",
+    route: "auth",
+    file: "M5_PCI-Auth_flow.json",
+    functionFile: "auth.js",
+    includeK8s: false,
     info: "Keycloak Authorization Code + PKCE, ID-token verification, tenant-host binding, role enforcement and server-side ORCE sessions.",
     requirements: ["FR-PCI-30", "FR-PCI-33", "FR-PCI-39", "FR-PCI-40", "FR-PCI-69", "FR-PCI-72"],
     routes: [
@@ -144,41 +342,67 @@ const moduleSpecs = [
     ],
   },
   {
-    key: "email", label: "M6_PCI-Email", route: "email", file: "M6_PCI-Email_flow.json",
-    functionFile: "email.js", includeK8s: false,
+    key: "email",
+    label: "M6_PCI-Email",
+    route: "email",
+    file: "M6_PCI-Email_flow.json",
+    functionFile: "email.js",
+    includeK8s: false,
     info: "SMTP/Mailpit verification, test delivery and bounded email outbox retry.",
     requirements: ["FR-PCI-28", "FR-PCI-32", "FR-PCI-58", "FR-PCI-65", "FR-PCI-68"],
     routes: [["email-test", "POST email test", "post", "/api/v1/provider/email/test", "email.test"]],
     injects: [["email-retry", "Retry email outbox", 45, 300, "email.retry"]],
   },
   {
-    key: "tenant", label: "M7_PCI-TenantAccess", route: "tenant", file: "M7_PCI-TenantAccess_flow.json",
-    functionFile: "tenant.js", includeK8s: false,
+    key: "tenant",
+    label: "M7_PCI-TenantAccess",
+    route: "tenant",
+    file: "M7_PCI-TenantAccess_flow.json",
+    functionFile: "tenant.js",
+    includeK8s: false,
     info: "Trusted tenant-host resolution, participant/principal Keycloak sessions, participant administrator member invitations and tenant profile access.",
     requirements: ["FR-PCI-29", "FR-PCI-30", "FR-PCI-33", "FR-PCI-39", "FR-PCI-69", "FR-PCI-70", "FR-PCI-72"],
     routes: [
-      ["tenant-runtime", "GET tenant context", "get", "/api/v1/runtime/tenant-context", "tenant.runtime"],
+      [
+        "tenant-runtime",
+        "GET tenant context",
+        "get",
+        "/api/v1/runtime/tenant-context",
+        "tenant.runtime"
+      ],
       ["tenant-profile", "GET tenant profile", "get", "/api/v1/tenant/profile", "tenant.profile"],
-      ["tenant-members-list", "GET tenant members", "get", "/api/v1/tenants/:tenantId/members", "tenant.members.list"],
-      ["tenant-members-invite", "POST tenant member", "post", "/api/v1/tenants/:tenantId/members", "tenant.members.invite"],
+      [
+        "tenant-members-list",
+        "GET tenant members",
+        "get",
+        "/api/v1/tenants/:tenantId/members",
+        "tenant.members.list"
+      ],
+      [
+        "tenant-members-invite",
+        "POST tenant member",
+        "post",
+        "/api/v1/tenants/:tenantId/members",
+        "tenant.members.invite"
+      ],
     ],
   },
 ];
-
 async function buildModule(spec) {
   const z = id(`tab:${spec.key}`);
-  const moduleSource = (spec.sr2 ? sr2Source + "\n" : "") + await readFile(path.join(root, "backend", "functions", spec.functionFile), "utf8");
+  const moduleSource = (spec.sr2 ? sr2Source + "\n": "") + await readFile(path.join(root, "backend", "functions", spec.functionFile),
+    "utf8");
   const nodes = [tab(spec.key, spec.label, spec.info), comment(z, spec.key, `══ ${spec.label} ══`, spec.info)];
   const inNode = linkIn(z, `${spec.key}:uib-in`, `${spec.route}-in`, 120, 130, [id(`link-out:base:${spec.route}`)]);
   const fnNode = functionNode(z, spec.key, spec.label, moduleSource, 920, 300, spec.includeK8s);
   const outNode = linkOut(z, `${spec.key}:uib-out`, "→ uibuilder response", 1380, 500, [id("link-in:base:response")]);
-  if(spec.key==='issuer-runtime')fnNode.finalize='const states=pg.Pool[Symbol.for("xfsc.fap-pci.process-state.v1")];for(const state of states?.values() || []){const pool=state.poolHolder?.pool;if(pool?.pciNative){pool.pciNative.service?.clearJourneyInputs?.();pool.pciNative.nats.close();delete pool.pciNative;}}';
+  if (spec.key === 'issuer-runtime') fnNode.finalize =
+    'const states=pg.Pool[Symbol.for("xfsc.fap-pci.process-state.v1")];for(const state of states?.values() || []){const pool=state.poolHolder?.pool;if(pool?.pciNative){pool.pciNative.service?.clearJourneyInputs?.();pool.pciNative.nats.close();delete pool.pciNative;}}';
   const response = httpResponse(z, spec.key, 1390, 240);
   nodes.push(inNode, fnNode, outNode, response);
   inNode.wires[0] = [fnNode.id];
   fnNode.wires[0] = [response.id];
   fnNode.wires[1] = [outNode.id];
-
   let y = 180;
   for (const [key, name, method, url, action] of spec.routes || []) {
     const incoming = httpIn(z, `${spec.key}:${key}`, name, method, url, 150, y);
@@ -199,35 +423,70 @@ async function buildModule(spec) {
   }
   return nodes;
 }
-
 async function buildBase() {
   const z = id("tab:base");
   const openapiDocument = JSON.parse(await readFile(path.join(root, "docs", "api", "openapi.json"), "utf8"));
   const statusSource = `const PCI_OPENAPI_DOCUMENT = ${JSON.stringify(openapiDocument)};\n${await readFile(path.join(root, "backend", "functions", "status.js"), "utf8")}`;
-  const nodes = [tab("base", "PCI_Interface", "Shared uibuilder interface plus public health, readiness, metrics and OpenAPI routes."), comment(z, "base", "══ FAP PCI uibuilder interface ══", "The uibuilder node remains Node-RED-relative at ui. Externally it is served at {PCI_ORCE_BASE_PATH}/ui/. HTTP In routes likewise remain relative to Node-RED httpNodeRoot; public URL generation uses PCI_ORCE_BASE_PATH without changing the route contract.")];
+  const nodes = [
+    tab("base", "PCI_Interface", "Shared uibuilder interface plus public health, readiness, metrics and OpenAPI routes."),
+    comment(z, "base", "══ FAP PCI uibuilder interface ══",
+      "The uibuilder node remains Node-RED-relative at ui. Externally it is served at {PCI_ORCE_BASE_PATH}/ui/. HTTP In routes likewise remain relative to Node-RED httpNodeRoot; public URL generation uses PCI_ORCE_BASE_PATH without changing the route contract.")
+  ];
   const ui = {
-    id: id("uibuilder:ui"), type: "uibuilder", z, name: "FAP PCI uibuilder", topic: "", url: "ui", okToGo: true,
-    fwdInMessages: false, allowScripts: false, allowStyles: false, copyIndex: true, templateFolder: "blank", extTemplate: "", showfolder: false,
-    reload: false, sourceFolder: "src", deployedVersion: "7.5.0", showMsgUib: true, title: "FACIS FAP PCI", descr: "ORCE/uibuilder tenant management", editurl: "", x: 190, y: 180, wires: [[], []],
+    id: id("uibuilder:ui"),
+    type: "uibuilder",
+    z,
+    name: "FAP PCI uibuilder",
+    topic: "",
+    url: "ui",
+    okToGo: true,
+    fwdInMessages: false,
+    allowScripts: false,
+    allowStyles: false,
+    copyIndex: true,
+    templateFolder: "blank",
+    extTemplate: "",
+    showfolder: false,
+    reload: false,
+    sourceFolder: "src",
+    deployedVersion: "7.5.0",
+    showMsgUib: true,
+    title: "FACIS FAP PCI",
+    descr: "ORCE/uibuilder tenant management",
+    editurl: "",
+    x: 190,
+    y: 180,
+    wires: [[], []],
   };
-  const browserRoutes = moduleSpecs.flatMap(spec => (spec.routes || []).filter(r =>
-    r[3].startsWith('/api/v1/') && !r[4].startsWith('auth.') && !r[4].startsWith('internal.') &&
-    !['public.asset','asset.get'].includes(r[4])
-  ).map(r => {
+  const browserRoutes = moduleSpecs.flatMap(spec => (spec.routes || []).filter(r => r[3].startsWith('/api/v1/') &&
+  !r[4].startsWith('auth.') && !r[4].startsWith('internal.') && !['public.asset', 'asset.get'].includes(r[4])).map(r => {
     const params = [];
     const pattern = '^' + r[3].split('/').map(segment => {
-      if (segment.startsWith(':')) { params.push(segment.slice(1)); return '([^/]+)'; }
+      if (segment.startsWith(':')) {
+        params.push(segment.slice(1));
+        return '([^/]+)';
+      }
       return segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }).join('/') + '$';
-    return { method:r[2], pattern, params, action:r[4], route:spec.route };
+    return { method: r[2], pattern, params, action: r[4], route: spec.route };
   }));
   const normalize = functionNode(z, 'base:normalize', 'Validate and route browser command',
     `return pciNormalizeCommand(${JSON.stringify(browserRoutes)});`, 470, 180);
   const routeValues = moduleSpecs.map((spec) => spec.route);
   const router = {
-    id: id("switch:base:router"), type: "switch", z, name: "Route uibuilder module", property: "route", propertyType: "msg",
-    rules: [...routeValues.map((value) => ({ t: "eq", v: value, vt: "str" })), { t: "else" }], checkall: "false", repair: false,
-    outputs: routeValues.length + 1, x: 750, y: 180, wires: Array.from({ length: routeValues.length + 1 }, () => []),
+    id: id("switch:base:router"),
+    type: "switch",
+    z,
+    name: "Route uibuilder module",
+    property: "route",
+    propertyType: "msg",
+    rules: [...routeValues.map((value) => ({ t: "eq", v: value, vt: "str" })), { t: "else" }],
+    checkall: "false",
+    repair: false,
+    outputs: routeValues.length + 1,
+    x: 750,
+    y: 180,
+    wires: Array.from({ length: routeValues.length + 1 }, () => []),
   };
   ui.wires[0] = [normalize.id];
   normalize.wires[0] = [router.id];
@@ -239,15 +498,28 @@ async function buildBase() {
     nodes.push(output);
   });
   const fallback = {
-    id: id("function:base:fallback"), type: "function", z, name: "Unknown UI route", func: `msg.topic="pci:error"; msg.payload={response:{status:"error",statusCode:404,code:"PCI-RESOURCE-404-001",detail:"Unknown uibuilder route."}}; return msg;`, outputs: 1, timeout: "", noerr: 0, initialize: "", finalize: "", libs: [], x: 1050, y: 100 + routeValues.length * 45, wires: [[]],
+    id: id("function:base:fallback"),
+    type: "function",
+    z,
+    name: "Unknown UI route",
+    func: `msg.topic="pci:error"; msg.payload={response:{status:"error",statusCode:404,code:"PCI-RESOURCE-404-001",detail:"Unknown uibuilder route."}}; return msg;`,
+    outputs: 1,
+    timeout: "",
+    noerr: 0,
+    initialize: "",
+    finalize: "",
+    libs: [],
+    x: 1050,
+    y: 100 + routeValues.length * 45,
+    wires: [[]],
   };
   router.wires[routeValues.length] = [fallback.id];
   nodes.push(fallback);
-  const responseIn = linkIn(z, "base:response", "module-response-in", 1040, 520, moduleSpecs.map((spec) => id(`link-out:${spec.key}:uib-out`)));
+  const responseIn = linkIn(z, "base:response", "module-response-in", 1040, 520, moduleSpecs.map((spec) => id(
+    `link-out:${spec.key}:uib-out`)));
   responseIn.wires[0] = [ui.id];
   fallback.wires[0] = [ui.id];
   nodes.push(responseIn);
-
   const statusFn = functionNode(z, "base-status", "Health / readiness / metrics", statusSource, 910, 720, true);
   const statusResponse = httpResponse(z, "base-status", 1300, 720);
   statusFn.wires[0] = [statusResponse.id];
@@ -269,11 +541,9 @@ async function buildBase() {
   }
   return nodes;
 }
-
 const baseNodes = await buildBase();
 const moduleNodes = [];
 for (const spec of moduleSpecs) moduleNodes.push(...await buildModule(spec));
-
 await writeFile(path.join(outDir, "fap-pci-flow.json"), `${JSON.stringify([...baseNodes, ...moduleNodes], null, 2)}
 `);
 console.log(`[build:flows] wrote canonical flow to ${path.join(outDir, "fap-pci-flow.json")}`);
