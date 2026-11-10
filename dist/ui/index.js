@@ -10,24 +10,20 @@ const { createApp, computed, onMounted, onUnmounted, ref, reactive } = Vue;
  * PCI_ORCE_BASE_PATH is a path prefix, never a URL. All external URLs are HTTPS.
  */
 const SAFE_BASE_SEGMENT = /^[A-Za-z0-9._~-]+$/;
-
 function rejectUrlLikePath(raw, label) {
   if (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(raw)) throw new Error(`${label} must be a path prefix, not a URL`);
   if (raw.startsWith("//")) throw new Error(`${label} must not be protocol-relative`);
   if (/[?#\\]/.test(raw)) throw new Error(`${label} must not contain query strings, fragments, or backslashes`);
   if (/\s|[\u0000-\u001F\u007F]/.test(raw)) throw new Error(`${label} must not contain whitespace or control characters`);
 }
-
 function normalizeBasePath(value = "") {
   const raw = String(value ?? "").trim();
   if (raw === "" || raw === "/") return "";
   rejectUrlLikePath(raw, "PCI_ORCE_BASE_PATH");
-
-  const withLeadingSlash = raw.startsWith("/") ? raw : `/${raw}`;
+  const withLeadingSlash = raw.startsWith("/") ? raw: `/${raw}`;
   const normalized = withLeadingSlash.replace(/\/+$/, "");
   if (!normalized || normalized === "/") return "";
   if (normalized.includes("//")) throw new Error("PCI_ORCE_BASE_PATH must not contain empty path segments");
-
   const segments = normalized.slice(1).split("/");
   for (const segment of segments) {
     if (!segment || segment === "." || segment === "..") throw new Error("PCI_ORCE_BASE_PATH must not contain dot segments");
@@ -36,44 +32,43 @@ function normalizeBasePath(value = "") {
   }
   return normalized;
 }
-
-
 function splitApplicationReference(value = "/") {
   const raw = String(value ?? "").trim();
   if (!raw) return { pathname: "/", suffix: "" };
   if (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(raw)) throw new Error("application path must not be a URL");
   if (raw.startsWith("//")) throw new Error("application path must not be protocol-relative");
-  if (/\\|\s|[\u0000-\u001F\u007F]/.test(raw)) throw new Error("application path must not contain backslashes, whitespace, or control characters");
+  if (/\\|\s|[\u0000-\u001F\u007F]/.test(raw)) throw new Error(
+    "application path must not contain backslashes, whitespace, or control characters");
   const queryIndex = raw.indexOf("?");
   const fragmentIndex = raw.indexOf("#");
   const indexes = [queryIndex, fragmentIndex].filter((index) => index >= 0);
-  const boundary = indexes.length ? Math.min(...indexes) : raw.length;
+  const boundary = indexes.length ? Math.min(...indexes): raw.length;
   return { pathname: raw.slice(0, boundary) || "/", suffix: raw.slice(boundary) };
 }
-
 function normalizeApplicationPath(value = "/") {
   const raw = String(value ?? "").trim();
   if (!raw) return "/";
   rejectUrlLikePath(raw, "application path");
-
-  const withLeadingSlash = raw.startsWith("/") ? raw : `/${raw}`;
+  const withLeadingSlash = raw.startsWith("/") ? raw: `/${raw}`;
   if (withLeadingSlash === "/") return "/";
   if (withLeadingSlash.includes("//")) throw new Error("application path must not contain empty path segments");
-
   const trailingSlash = withLeadingSlash.endsWith("/");
-  const body = trailingSlash ? withLeadingSlash.slice(0, -1) : withLeadingSlash;
+  const body = trailingSlash ? withLeadingSlash.slice(0, - 1): withLeadingSlash;
   const segments = body.slice(1).split("/");
   for (const segment of segments) {
     if (!segment) throw new Error("application path must not contain empty path segments");
     let decoded;
-    try { decoded = decodeURIComponent(segment); } catch { throw new Error("application path contains invalid percent encoding"); }
+    try {
+      decoded = decodeURIComponent(segment);
+    } catch {
+      throw new Error("application path contains invalid percent encoding");
+    }
     if (decoded === "." || decoded === ".." || decoded.includes("/") || decoded.includes("\\")) {
       throw new Error("application path must not contain encoded or literal traversal segments");
     }
   }
   return `${body}${trailingSlash ? "/" : ""}`;
 }
-
 function withBasePath(path, basePath = "") {
   const base = normalizeBasePath(basePath);
   const { pathname, suffix } = splitApplicationReference(path);
@@ -85,40 +80,33 @@ function withBasePath(path, basePath = "") {
   else prefixed = `${base}${applicationPath}`;
   return `${prefixed}${suffix}`;
 }
-
 function normalizePublicHost(value) {
   const raw = String(value ?? "").trim().toLowerCase().replace(/\.$/, "");
   if (!raw) throw new Error("public host is required");
   if (/^[A-Za-z][A-Za-z0-9+.-]*:/.test(raw) || raw.startsWith("//") || /[/?#@\\\s]/.test(raw)) {
     throw new Error("public host must be a hostname, not a URL");
   }
-
   const match = /^(.*?)(?::([0-9]{1,5}))?$/.exec(raw);
-  const hostname = match ? match[1] : "";
-  const port = match && match[2] ? Number(match[2]) : null;
+  const hostname = match ? match[1]: "";
+  const port = match && match[2] ? Number(match[2]): null;
   const validDns = /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(hostname);
   if (!validDns || (port !== null && (port < 1 || port > 65535))) throw new Error("public host is invalid");
-  return port === null ? hostname : `${hostname}:${port}`;
+  return port === null ? hostname: `${hostname}:${port}`;
 }
-
 function publicOrigin(host) {
   return `https://${normalizePublicHost(host)}`;
 }
-
 function publicUrl(host, path = "/", basePath = "") {
   return `${publicOrigin(host)}${withBasePath(path, basePath)}`;
 }
-
 function uiPath(basePath = "") {
   return withBasePath("/ui/", basePath);
 }
-
 function apiPath(path = "/", basePath = "") {
   const suffix = normalizeApplicationPath(path);
-  const apiRelative = suffix === "/" ? "/api/v1/" : `/api/v1${suffix}`;
+  const apiRelative = suffix === "/" ? "/api/v1/": `/api/v1${suffix}`;
   return withBasePath(apiRelative, basePath);
 }
-
 function uiUrl(host, basePath = "") {
   return publicUrl(host, "/ui/", basePath);
 }
@@ -132,9 +120,7 @@ function inferBasePathFromUiLocation(pathname) {
   if (!match) throw new Error(`The PCI UI must be served from /ui/ under the configured ORCE base path; received ${value || "<empty>"}`);
   return normalizeBasePath(match[1]);
 }
-
 const inferredBasePath = inferBasePathFromUiLocation(window.location.pathname);
-
 const runtime = {
   basePath: inferredBasePath,
   uiPath: uiPath(inferredBasePath),
@@ -142,11 +128,8 @@ const runtime = {
   configured: false,
   version: "0.5.0-rc.12",
 };
-
 function applyPublicConfiguration(configuration) {
-  const configuredBasePath = normalizeBasePath(configuration && configuration.orceBasePath !== undefined
-    ? configuration.orceBasePath
-    : "");
+  const configuredBasePath = normalizeBasePath(configuration && configuration.orceBasePath !== undefined ? configuration.orceBasePath: "");
   if (configuredBasePath !== runtime.basePath) {
     throw new Error(`Public base-path mismatch: browser resolved ${runtime.basePath || "/"}, server configured ${configuredBasePath || "/"}`);
   }
@@ -162,18 +145,13 @@ function applyPublicConfiguration(configuration) {
 
 // ---- src/utils/pkce.js ----
 function base64Url(bytes) {
-  return btoa(String.fromCharCode(...new Uint8Array(bytes)))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+  return btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
-
 function randomUrlSafe(size = 32) {
   const bytes = new Uint8Array(size);
   crypto.getRandomValues(bytes);
   return base64Url(bytes);
 }
-
 async function sha256UrlSafe(value) {
   return base64Url(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)));
 }
@@ -188,60 +166,96 @@ const store = reactive({
   ui: { busy: false, jobs: {}, pending: 0, notice: '' },
   errors: { global: null },
   live: { connected: false, restoring: false },
-  get tenant() { return this.model.tenant; },
-  set tenant(value) { this.model.tenant = value; },
-  get platform() { return this.model.platform; },
-  set platform(value) { this.model.platform = value; },
-  get busy() { return this.ui.busy; },
-  set busy(value) { this.ui.busy = value; },
+  get tenant() {
+    return this.model.tenant;
+  },
+  set tenant(value) {
+    this.model.tenant = value;
+  },
+  get platform() {
+    return this.model.platform;
+  },
+  set platform(value) {
+    this.model.platform = value;
+  },
+  get busy() {
+    return this.ui.busy;
+  },
+  set busy(value) {
+    this.ui.busy = value;
+  },
 });
 
 
 // ---- src/state/reducers.js ----
 
 function normalizeUiError(error) {
-  return { category: error?.category || (error?.status >= 502 ? 'integration' : 'system'),
+  return {
+    category: error?.category || (error?.status >= 502 ? 'integration': 'system'),
     message: error?.message || 'The operation could not be completed.',
-    code: error?.code || 'PCI-UI-ERROR', reference: error?.correlationId || error?.reference || '',
-    status: error?.status, retryable: error?.retryable === true, fields: error?.fields || {} };
+    code: error?.code || 'PCI-UI-ERROR',
+    reference: error?.correlationId || error?.reference || '',
+    status: error?.status,
+    retryable: error?.retryable === true,
+    fields: error?.fields || {}
+  };
 }
-
 function responseError(problem, status) {
   const error = new Error(problem?.detail || problem?.message || `Request failed with status ${status}`);
-  return Object.assign(error, { status, code: problem?.code, correlationId: problem?.correlation_id || problem?.reference,
-    retryable: problem?.retryable === true, fields: problem?.fields || {},
-    category: problem?.category || (Object.keys(problem?.fields || {}).length ? 'field' : status >= 502 ? 'integration' : status >= 500 ? 'system' : 'action') });
+  return Object.assign(error, {
+    status,
+    code: problem?.code,
+    correlationId: problem?.correlation_id || problem?.reference,
+    retryable: problem?.retryable === true,
+    fields: problem?.fields || {},
+    category: problem?.category || (Object.keys(problem?.fields || {}).length ? 'field': status >= 502 ? 'integration': status >= 500 ?
+      'system': 'action')
+  });
 }
-
 async function decodeHttpResponse(response) {
   if (response.status === 204 && response.ok) return null;
   let body;
-  try { body = await response.json(); }
-  catch { throw responseError({code:'PCI-UI-PROTOCOL', detail:'The server returned an unreadable response. Refresh to check the operation before retrying.'}, 502); }
-  if (!body || typeof body !== 'object' || Array.isArray(body)) throw responseError({code:'PCI-UI-PROTOCOL',detail:'The server returned an invalid response.'}, 502);
+  try {
+    body = await response.json();
+  } catch {
+    throw responseError({
+      code: 'PCI-UI-PROTOCOL',
+      detail: 'The server returned an unreadable response. Refresh to check the operation before retrying.'
+    }, 502);
+  }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) throw responseError(
+    { code: 'PCI-UI-PROTOCOL', detail: 'The server returned an invalid response.' }, 502);
   if (!response.ok) throw responseError(body, response.status);
   return body;
 }
-
 // All application results/events enter here, including job updates. Business
 // results are returned to the view model; secrets are never cached or persisted.
 function reduceUiMessage(envelope, pending) {
-  if (!envelope || envelope.version !== 1 || !pending || envelope.requestId !== pending.requestId || envelope.action !== pending.action) return null;
+  if (!envelope || envelope.version !== 1 || !pending || envelope.requestId !== pending.requestId || envelope.action !== pending
+    .action) return null;
   if (envelope.type === 'event' && envelope.event === 'jobProgress') {
     const data = envelope.data;
     if (!data || data.jobId !== envelope.requestId || typeof data.label !== 'string') return null;
-    store.ui.jobs[envelope.requestId] = {stage:data.stage, label:data.label, progress:Number.isFinite(data.progress) ? Math.max(0,Math.min(100,data.progress)) : null};
+    store.ui.jobs[envelope.requestId] = {
+      stage: data.stage,
+      label: data.label,
+      progress: Number.isFinite(data.progress) ? Math.max(0, Math.min(100, data.progress)): null
+    };
     return { event: true };
   }
   if (envelope.type !== 'result' || typeof envelope.ok !== 'boolean') return null;
   delete store.ui.jobs[envelope.requestId];
   if (!envelope.ok) {
     const errors = envelope.errors;
-    if (!errors || !['field','action','integration','system'].some(key => errors[key])) return {error:responseError({code:'PCI-UI-PROTOCOL',detail:'The server returned an incomplete error response.'},502)};
+    if (!errors || !['field', 'action', 'integration', 'system'].some(key => errors[key])) return {
+      error: responseError({ code: 'PCI-UI-PROTOCOL', detail: 'The server returned an incomplete error response.' }, 502)
+    };
     const detail = errors.field || errors.action || errors.integration || errors.system;
-    return {error:responseError({...detail, fields:errors.fields || {}}, envelope.status)};
+    return { error: responseError({ ...detail, fields: errors.fields || {} }, envelope.status) };
   }
-  if (!Object.hasOwn(envelope, 'data')) return {error:responseError({code:'PCI-UI-PROTOCOL',detail:'The server returned an incomplete result.'},502)};
+  if (!Object.hasOwn(envelope, 'data')) return {
+    error: responseError({ code: 'PCI-UI-PROTOCOL', detail: 'The server returned an incomplete result.' }, 502)
+  };
   if (envelope.next && Number.isInteger(envelope.next.step)) store.step = envelope.next.step;
   if (pending.path === '/api/v1/platform/status') store.platform = envelope.data;
   return { data: envelope.data };
@@ -256,16 +270,18 @@ const bridgePending = new Map();
 let bridgeClient, bridgeGrant, bridgeBootstrap, bridgeStarted = false, bridgeWasReady = false;
 let bridgeReadyWaiters = [], bridgeGeneration = 0, bridgeConnectedSocket = null;
 const bridgeReconnectListeners = new Set();
-
 function bridgeFailure(message, code = 'PCI-UI-DISCONNECTED') {
-  return responseError({code, detail:message, category:'system', retryable:true}, 503);
+  return responseError({ code, detail: message, category: 'system', retryable: true }, 503);
 }
 function finishBridgeRequest(id, result) {
   const entry = bridgePending.get(id);
   if (!entry) return;
-  clearTimeout(entry.timer); bridgePending.delete(id); delete store.ui.jobs[id];
+  clearTimeout(entry.timer);
+  bridgePending.delete(id);
+  delete store.ui.jobs[id];
   store.ui.pending = bridgePending.size;
-  if (result.error) entry.reject(result.error); else entry.resolve(result.data);
+  if (result.error) entry.reject(result.error);
+  else entry.resolve(result.data);
 }
 function receiveBridgeMessage(message) {
   const envelope = message?.payload;
@@ -273,31 +289,41 @@ function receiveBridgeMessage(message) {
   const result = reduceUiMessage(envelope, entry);
   if (result && !result.event) finishBridgeRequest(envelope.requestId, result);
 }
-function bridgeSocketId() { return bridgeClient?._socket?.id; }
-
+function bridgeSocketId() {
+  return bridgeClient?._socket?.id;
+}
 async function authorizeBridge() {
   if (bridgeGrant && bridgeGrant.expiresAt > Date.now() + 15000) return bridgeGrant;
   if (bridgeBootstrap) return bridgeBootstrap;
   const generation = bridgeGeneration;
-  bridgeBootstrap = (async () => {
+  bridgeBootstrap = (async() => {
     const grant = await decodeHttpResponse(await fetch(runtime.apiBasePath + '/auth/bridge', {
-      method:'POST', credentials:'include', headers:{accept:'application/json','content-type':'application/json'},
-      body:JSON.stringify({socketId:bridgeSocketId()}),
+      method: 'POST',
+      credentials: 'include',
+      headers: { accept: 'application/json', 'content-type': 'application/json' },
+      body: JSON.stringify({ socketId: bridgeSocketId() }),
     }));
     if (generation !== bridgeGeneration) throw bridgeFailure('Connection changed. Reconnect and refresh the current state.');
-    if (!grant?.token || !Number.isFinite(grant.expiresAt)) throw bridgeFailure('The server could not establish a browser session.','PCI-UI-PROTOCOL');
+    if (!grant?.token || !Number.isFinite(grant.expiresAt)) throw bridgeFailure('The server could not establish a browser session.',
+      'PCI-UI-PROTOCOL');
     bridgeGrant = grant;
     return grant;
   })();
-  try { return await bridgeBootstrap; } finally { if (generation === bridgeGeneration) bridgeBootstrap = null; }
+  try {
+    return await bridgeBootstrap;
+  } finally {
+    if (generation === bridgeGeneration) bridgeBootstrap = null;
+  }
 }
-
 function connectionChanged(connected) {
   if (!connected) {
     bridgeConnectedSocket = null;
-    bridgeGeneration++; bridgeGrant = null; bridgeBootstrap = null;
+    bridgeGeneration++;
+    bridgeGrant = null;
+    bridgeBootstrap = null;
     store.live.connected = false;
-    for (const id of [...bridgePending.keys()]) finishBridgeRequest(id,{error:bridgeFailure('Connection interrupted. Refresh to check the operation before retrying.')});
+    for (const id of [...bridgePending.keys()]) finishBridgeRequest(id, { error: bridgeFailure(
+      'Connection interrupted. Refresh to check the operation before retrying.') });
     return;
   }
   const socketId = bridgeSocketId();
@@ -307,13 +333,14 @@ function connectionChanged(connected) {
   for (const waiter of bridgeReadyWaiters.splice(0)) waiter();
   if (bridgeWasReady) {
     store.live.restoring = true;
-    void authorizeBridge().then(() => Promise.all([...bridgeReconnectListeners].map(fn => fn())))
-      .catch(error => { store.errors.global = normalizeUiError(error); })
-      .finally(() => { store.live.restoring = false; });
+    void authorizeBridge().then(() => Promise.all([...bridgeReconnectListeners].map(fn => fn()))).catch(error => {
+      store.errors.global = normalizeUiError(error);
+    }).finally(() => {
+      store.live.restoring = false;
+    });
   }
   bridgeWasReady = true;
 }
-
 function initializeBridge() {
   if (bridgeStarted) return;
   bridgeClient = window.uibuilder;
@@ -325,46 +352,81 @@ function initializeBridge() {
   bridgeClient.start();
   if (bridgeClient.get?.('ioConnected') === true) connectionChanged(true);
 }
-
 function onBridgeReconnect(callback) {
   bridgeReconnectListeners.add(callback);
   return () => bridgeReconnectListeners.delete(callback);
 }
-
 async function sendCommand(path, options = {}, action = 'request') {
   initializeBridge();
-  if (!store.live.connected) await new Promise((resolve,reject) => {
-    const ready = () => { clearTimeout(timer); resolve(); };
-    const timer = setTimeout(() => { bridgeReadyWaiters = bridgeReadyWaiters.filter(fn => fn !== ready); reject(bridgeFailure('The connection is unavailable. Reload this page to reconnect.')); },10000);
+  if (!store.live.connected) await new Promise((resolve, reject) => {
+    const ready = () => {
+      clearTimeout(timer);
+      resolve();
+    };
+    const timer = setTimeout(() => {
+      bridgeReadyWaiters = bridgeReadyWaiters.filter(fn => fn !== ready);
+      reject(bridgeFailure('The connection is unavailable. Reload this page to reconnect.'));
+    }, 10000);
     bridgeReadyWaiters.push(ready);
   });
   const grant = await authorizeBridge();
   const requestId = crypto.randomUUID();
-  const payload = {path, method:options.method || 'GET', body:options.body ? JSON.parse(options.body) : {}, headers:options.headers || {}};
-  const command = { version:1, type:'command', action, requestId, sessionId:grant.sessionId,
-    payload, meta:{bridgeToken:grant.token} };
-  return new Promise((resolve,reject) => {
-    const entry = {requestId,action,path,resolve,reject,timer:setTimeout(() => finishBridgeRequest(requestId,{error:bridgeFailure('The operation has not returned. Refresh to check its state before retrying.','PCI-UI-TIMEOUT')}),120000)};
-    bridgePending.set(requestId,entry); store.ui.pending = bridgePending.size;
+  const payload = {
+    path,
+    method: options.method || 'GET',
+    body: options.body ? JSON.parse(options.body): {},
+    headers: options.headers || {}
+  };
+  const command = {
+    version: 1,
+    type: 'command',
+    action,
+    requestId,
+    sessionId: grant.sessionId,
+    payload,
+    meta: { bridgeToken: grant.token }
+  };
+  return new Promise((resolve, reject) => {
+    const entry = {
+      requestId,
+      action,
+      path,
+      resolve,
+      reject,
+      timer: setTimeout(() => finishBridgeRequest(requestId, {
+        error: bridgeFailure('The operation has not returned. Refresh to check its state before retrying.', 'PCI-UI-TIMEOUT')
+      }), 120000)
+    };
+    bridgePending.set(requestId, entry);
+    store.ui.pending = bridgePending.size;
     try {
-      const encoded = JSON.stringify(payload), size = 128000;
-      if (encoded.length <= size) bridgeClient.send({payload:command});
+      const encoded = JSON.stringify(payload),
+      size = 128000;
+      if (encoded.length <= size) bridgeClient.send({ payload: command });
       else {
         const total = Math.ceil(encoded.length / size);
-        for (let index=0; index<total; index++) bridgeClient.send({payload:{...command,payload:encoded.slice(index*size,(index+1)*size),meta:{...command.meta,chunk:{index,total}}}});
+        for (let index = 0; index < total; index++) bridgeClient.send({
+          payload: {
+            ...command,
+            payload: encoded.slice(index * size, (index + 1) * size),
+            meta: { ...command.meta, chunk: { index, total } }
+          }
+        });
       }
-    } catch { finishBridgeRequest(requestId,{error:bridgeFailure('The command could not be sent. Reconnect before retrying.')}); }
+    } catch {
+      finishBridgeRequest(requestId, { error: bridgeFailure('The command could not be sent. Reconnect before retrying.') });
+    }
   });
 }
-
 const bridgePing = () => sendCommand('', {}, 'ping');
 
 
 // ---- src/components/feedback.js ----
 
 const UiFeedback = {
-  props:['error'], emits:['dismiss','recover'],
-  template:`<div v-if="error" class="error persistent-error" role="alert">
+  props: ['error'],
+  emits: ['dismiss', 'recover'],
+  template: `<div v-if="error" class="error persistent-error" role="alert">
     <div><strong>{{error.category==='field'?'Check the highlighted fields':error.category==='integration'?'Service unavailable':error.category==='action'?'Action could not be completed':'Something needs attention'}}</strong>
       <p>{{error.message}}</p><small v-if="error.code">Code: {{error.code}}</small>
       <small v-if="error.reference"> · Reference: {{error.reference}}</small>
@@ -373,19 +435,30 @@ const UiFeedback = {
     </div><div class="feedback-actions"><button v-if="error.retryable || error.category==='system' || error.category==='integration'" class="secondary" type="button" @click="$emit('recover')">Refresh state</button><button class="secondary" type="button" @click="$emit('dismiss')" aria-label="Dismiss error">Dismiss</button></div>
   </div>`,
 };
-
 const UiProgress = {
-  setup() { return { state:store }; },
-  template:`<div class="job-progress" v-if="state.ui.pending || state.live.restoring" role="status" aria-live="polite">
+  setup() {
+    return { state: store };
+  },
+  template: `<div class="job-progress" v-if="state.ui.pending || state.live.restoring" role="status" aria-live="polite">
     <template v-if="state.live.restoring">Connection restored. Reloading your workspace…</template>
     <div v-for="(job,id) in state.ui.jobs" :key="id"><span>{{job.label}}</span><progress :value="job.progress===null?undefined:job.progress" max="100" :aria-label="job.label"></progress></div>
     <span v-if="!Object.keys(state.ui.jobs).length && !state.live.restoring">Waiting for the server…</span>
   </div>`,
 };
-
 const UiField = {
-  props:['label','modelValue','error','name','type','required','placeholder','maxlength','pattern'], emits:['update:modelValue'],
-  template:`<label class="field"><span>{{label}}</span><input :id="name" :name="name" :type="type || 'text'" :value="modelValue" @input="$emit('update:modelValue',$event.target.value)" :required="required" :placeholder="placeholder" :maxlength="maxlength" :pattern="pattern" :aria-invalid="error?'true':undefined" :aria-describedby="error?name+'-error':undefined"><small v-if="error" :id="name+'-error'" class="field-error">{{error}}</small><slot></slot></label>`,
+  props: [
+    'label',
+    'modelValue',
+    'error',
+    'name',
+    'type',
+    'required',
+    'placeholder',
+    'maxlength',
+    'pattern'
+  ],
+  emits: ['update:modelValue'],
+  template: `<label class="field"><span>{{label}}</span><input :id="name" :name="name" :type="type || 'text'" :value="modelValue" @input="$emit('update:modelValue',$event.target.value)" :required="required" :placeholder="placeholder" :maxlength="maxlength" :pattern="pattern" :aria-invalid="error?'true':undefined" :aria-describedby="error?name+'-error':undefined"><small v-if="error" :id="name+'-error'" class="field-error">{{error}}</small><slot></slot></label>`,
 };
 
 
@@ -401,14 +474,15 @@ async function request(path, options = {}) {
   const headers = { accept: 'application/json', ...(options.headers || {}) };
   if (options.body || options.method === 'POST') headers['content-type'] = 'application/json';
   const target = withBasePath(path, runtime.basePath);
-  return decodeHttpResponse(await fetch(target, {credentials:'include', ...options, headers}));
+  return decodeHttpResponse(await fetch(target, { credentials: 'include', ...options, headers }));
 }
-
 const api = {
   registrationConfig: () => request("/api/v1/tenant-registration-config"),
   register: (input) => request("/api/v1/tenant-registrations", { method: "POST", body: JSON.stringify(input) }),
-  verify: (registrationId, token) => request(`/api/v1/tenant-registrations/${encodeURIComponent(registrationId)}/verify-email`, { method: "POST", body: JSON.stringify({ token }) }),
-  resend: (registrationId) => request(`/api/v1/tenant-registrations/${encodeURIComponent(registrationId)}/resend-verification`, { method: "POST" }),
+  verify: (registrationId, token) => request(`/api/v1/tenant-registrations/${encodeURIComponent(registrationId)}/verify-email`,
+    { method: "POST", body: JSON.stringify({ token }) }),
+  resend: (registrationId) => request(`/api/v1/tenant-registrations/${encodeURIComponent(registrationId)}/resend-verification`,
+    { method: "POST" }),
   authConfig: () => request("/api/v1/auth/config"),
   authExchange: (body) => request("/api/v1/auth/oidc/exchange", { method: "POST", body: JSON.stringify(body) }),
   session: () => request("/api/v1/auth/session"),
@@ -420,17 +494,15 @@ const api = {
     headers: { "if-match": `"${item.version}"` },
     body: JSON.stringify({ reason: reason || null }),
   }),
-  reject: (item, reason) => request(`/api/v1/provider/tenant-registrations/${encodeURIComponent(item.registrationId)}/reject`, {
-    method: "POST",
-    headers: { "if-match": `"${item.version}"` },
-    body: JSON.stringify({ reason }),
-  }),
+  reject: (item, reason) => request(`/api/v1/provider/tenant-registrations/${encodeURIComponent(item.registrationId)}/reject`,
+    { method: "POST", headers: { "if-match": `"${item.version}"` }, body: JSON.stringify({ reason }), }),
   tenants: () => request("/api/v1/provider/tenants"),
   tenantReconciliation: (id) => request(`/api/v1/provider/tenants/${encodeURIComponent(id)}/reconciliation`),
   tenantContext: () => request("/api/v1/runtime/tenant-context"),
   tenantProfile: () => request("/api/v1/tenant/profile"),
   tenantMembers: (tenantId) => request(`/api/v1/tenants/${encodeURIComponent(tenantId)}/members`),
-  inviteMember: (tenantId, input) => request(`/api/v1/tenants/${encodeURIComponent(tenantId)}/members`, { method: "POST", body: JSON.stringify(input) }),
+  inviteMember: (tenantId, input) => request(`/api/v1/tenants/${encodeURIComponent(tenantId)}/members`, { method: "POST", body: JSON
+    .stringify(input) }),
   platformStatus: () => request("/api/v1/platform/status"),
 };
 
@@ -440,8 +512,7 @@ const api = {
 
 
 const PREFIX = "fap-pci-oidc";
-
-async function beginLogin(native=false) {
+async function beginLogin(native = false) {
   const config = await api.authConfig();
   const verifier = randomUrlSafe(48);
   const challenge = await sha256UrlSafe(verifier);
@@ -461,11 +532,10 @@ async function beginLogin(native=false) {
   url.searchParams.set("nonce", nonce);
   url.searchParams.set("code_challenge", challenge);
   url.searchParams.set("code_challenge_method", "S256");
-  url.searchParams.set('kc_idp_hint',native===true?'':(config.identityProvider || ''));
-  if(native===true)url.searchParams.set('prompt','login');
+  url.searchParams.set('kc_idp_hint', native === true ? '': (config.identityProvider || ''));
+  if (native === true) url.searchParams.set('prompt', 'login');
   window.location.assign(url.toString());
 }
-
 async function completeLoginFromLocation() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get("code");
@@ -488,188 +558,1034 @@ async function completeLoginFromLocation() {
 
 // ---- src/qr-tables.js ----
 // QR byte-mode L tables from ReportLab 4.4.9 qrencoder (MIT). See vendor/qr-tables-LICENSE.txt.
-const PCI_QR_BLOCKS=[[1,26,19],[1,44,34],[1,70,55],[1,100,80],[1,134,108],[2,86,68],[2,98,78],[2,121,97],[2,146,116],[2,86,68,2,87,69],[4,101,81],[2,116,92,2,117,93],[4,133,107],[3,145,115,1,146,116],[5,109,87,1,110,88],[5,122,98,1,123,99],[1,135,107,5,136,108],[5,150,120,1,151,121],[3,141,113,4,142,114],[3,135,107,5,136,108],[4,144,116,4,145,117],[2,139,111,7,140,112],[4,151,121,5,152,122],[6,147,117,4,148,118],[8,132,106,4,133,107],[10,142,114,2,143,115],[8,152,122,4,153,123],[3,147,117,10,148,118],[7,146,116,7,147,117],[5,145,115,10,146,116],[13,145,115,3,146,116],[17,145,115],[17,145,115,1,146,116],[13,145,115,6,146,116],[12,151,121,7,152,122],[6,151,121,14,152,122],[17,152,122,4,153,123],[4,152,122,18,153,123],[20,147,117,4,148,118],[19,148,118,6,149,119]];
-const PCI_QR_ALIGNMENT=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]];
+const PCI_QR_BLOCKS = [
+  [1, 26, 19],
+  [1, 44, 34],
+  [1, 70, 55],
+  [1, 100, 80],
+  [1, 134, 108],
+  [2, 86, 68],
+  [2, 98, 78],
+  [2, 121, 97],
+  [2, 146, 116],
+  [2, 86, 68, 2, 87, 69],
+  [4, 101, 81],
+  [2, 116, 92, 2, 117, 93],
+  [4, 133, 107],
+  [3, 145, 115, 1, 146, 116],
+  [5, 109, 87, 1, 110, 88],
+  [5, 122, 98, 1, 123, 99],
+  [1, 135, 107, 5, 136, 108],
+  [5, 150, 120, 1, 151, 121],
+  [3, 141, 113, 4, 142, 114],
+  [3, 135, 107, 5, 136, 108],
+  [4, 144, 116, 4, 145, 117],
+  [2, 139, 111, 7, 140, 112],
+  [4, 151, 121, 5, 152, 122],
+  [6, 147, 117, 4, 148, 118],
+  [8, 132, 106, 4, 133, 107],
+  [10, 142, 114, 2, 143, 115],
+  [8, 152, 122, 4, 153, 123],
+  [3, 147, 117, 10, 148, 118],
+  [7, 146, 116, 7, 147, 117],
+  [5, 145, 115, 10, 146, 116],
+  [13, 145, 115, 3, 146, 116],
+  [17, 145, 115],
+  [17, 145, 115, 1, 146, 116],
+  [13, 145, 115, 6, 146, 116],
+  [12, 151, 121, 7, 152, 122],
+  [6, 151, 121, 14, 152, 122],
+  [17, 152, 122, 4, 153, 123],
+  [4, 152, 122, 18, 153, 123],
+  [20, 147, 117, 4, 148, 118],
+  [19, 148, 118, 6, 149, 119]
+];
+const PCI_QR_ALIGNMENT = [
+  [],
+  [6, 18],
+  [6, 22],
+  [6, 26],
+  [6, 30],
+  [6, 34],
+  [6, 22, 38],
+  [6, 24, 42],
+  [6, 26, 46],
+  [6, 28, 50],
+  [6, 30, 54],
+  [6, 32, 58],
+  [6, 34, 62],
+  [6, 26, 46, 66],
+  [6, 26, 48, 70],
+  [6, 26, 50, 74],
+  [6, 30, 54, 78],
+  [6, 30, 56, 82],
+  [6, 30, 58, 86],
+  [6, 34, 62, 90],
+  [6, 28, 50, 72, 94],
+  [6, 26, 50, 74, 98],
+  [6, 30, 54, 78, 102],
+  [6, 28, 54, 80, 106],
+  [6, 32, 58, 84, 110],
+  [6, 30, 58, 86, 114],
+  [6, 34, 62, 90, 118],
+  [6, 26, 50, 74, 98, 122],
+  [6, 30, 54, 78, 102, 126],
+  [6, 26, 52, 78, 104, 130],
+  [6, 30, 56, 82, 108, 134],
+  [6, 34, 60, 86, 112, 138],
+  [6, 30, 58, 86, 114, 142],
+  [6, 34, 62, 90, 118, 146],
+  [6, 30, 54, 78, 102, 126, 150],
+  [6, 24, 50, 76, 102, 128, 154],
+  [6, 28, 54, 80, 106, 132, 158],
+  [6, 32, 58, 84, 110, 136, 162],
+  [6, 26, 54, 82, 110, 138, 166],
+  [6, 30, 58, 86, 114, 142, 170]
+];
 
 
 // ---- src/qr.js ----
 
 // QR byte-mode encoder, error correction L, versions 1–40. No network or
 // browser storage. Tables and placement conventions credit in vendor notice.
-function pciQrMatrix(text, forcedMask=null) {
-  const data=new TextEncoder().encode(text);let version=1,capacity=0,blocks;
-  for(;version<=40;version++){
-    blocks=[];const spec=PCI_QR_BLOCKS[version-1];
-    for(let i=0;i<spec.length;i+=3)for(let k=0;k<spec[i];k++)blocks.push({total:spec[i+1],data:spec[i+2]});
-    capacity=blocks.reduce((sum,b)=>sum+b.data,0);
-    if(4+(version<10?8:16)+data.length*8<=capacity*8)break;
+function pciQrMatrix(text, forcedMask = null) {
+  const data = new TextEncoder().encode(text);
+  let version = 1,
+  capacity = 0,
+  blocks;
+  for (; version <= 40; version++) {
+    blocks = [];
+    const spec = PCI_QR_BLOCKS[version - 1];
+    for (let i = 0; i < spec.length; i += 3) for (let k = 0; k < spec[i]; k++) blocks.push({ total: spec[i + 1], data: spec[i + 2] });
+    capacity = blocks.reduce((sum, b) => sum + b.data, 0);
+    if (4 + (version < 10 ? 8: 16) + data.length * 8 <= capacity * 8) break;
   }
-  if(version>40)throw new Error('Offer exceeds QR capacity. Use the credential link.');
-  const bits=[],put=(n,count)=>{for(let i=count-1;i>=0;i--)bits.push((n>>>i)&1);};
-  put(4,4);put(data.length,version<10?8:16);for(const byte of data)put(byte,8);
-  put(0,Math.min(4,capacity*8-bits.length));while(bits.length%8)bits.push(0);
-  const bytes=[];for(let i=0;i<bits.length;i+=8)bytes.push(bits.slice(i,i+8).reduce((n,b)=>(n<<1)|b,0));
-  for(let i=0;bytes.length<capacity;i++)bytes.push(i%2?0x11:0xec);
-  const exp=new Array(512),log=new Array(256);let x=1;for(let i=0;i<255;i++){exp[i]=x;log[x]=i;x<<=1;if(x&256)x^=0x11d;}for(let i=255;i<512;i++)exp[i]=exp[i-255];
-  const mul=(a,b)=>a&&b?exp[log[a]+log[b]]:0;
-  let offset=0;const chunks=blocks.map(block=>{
-    const input=bytes.slice(offset,offset+block.data);offset+=block.data;const count=block.total-block.data;let generator=[1];
-    for(let i=0;i<count;i++){const next=Array(generator.length+1).fill(0);for(let j=0;j<generator.length;j++){next[j]^=generator[j];next[j+1]^=mul(generator[j],exp[i]);}generator=next;}
-    const ecc=Array(count).fill(0);for(const b of input){const factor=b^ecc.shift();ecc.push(0);for(let j=0;j<count;j++)ecc[j]^=mul(generator[j+1],factor);}return {input,ecc};
+  if (version > 40) throw new Error('Offer exceeds QR capacity. Use the credential link.');
+  const bits = [],
+  put = (n, count) => {
+    for (let i = count - 1; i >= 0; i--) bits.push((n >>> i) & 1);
+  };
+  put(4, 4);
+  put(data.length, version < 10 ? 8: 16);
+  for (const byte of data) put(byte, 8);
+  put(0, Math.min(4, capacity * 8 - bits.length));
+  while (bits.length % 8) bits.push(0);
+  const bytes = [];
+  for (let i = 0; i < bits.length; i += 8) bytes.push(bits.slice(i, i + 8).reduce((n, b) => (n << 1) | b, 0));
+  for (let i = 0; bytes.length < capacity; i++) bytes.push(i % 2 ? 0x11: 0xec);
+  const exp = new Array(512),
+  log = new Array(256);
+  let x = 1;
+  for (let i = 0; i < 255; i++) {
+    exp[i] = x;
+    log[x] = i;
+    x <<= 1;
+    if (x & 256) x ^= 0x11d;
+  } for (let i = 255; i < 512; i++) exp[i] = exp[i - 255];
+  const mul = (a, b) => a && b ? exp[log[a] + log[b]]: 0;
+  let offset = 0;
+  const chunks = blocks.map(block => {
+    const input = bytes.slice(offset, offset + block.data);
+    offset += block.data;
+    const count = block.total - block.data;
+    let generator = [1];
+    for (let i = 0; i < count; i++) {
+      const next = Array(generator.length + 1).fill(0);
+      for (let j = 0; j < generator.length; j++) {
+        next[j] ^= generator[j];
+        next[j + 1] ^= mul(generator[j], exp[i]);
+      } generator = next;
+    }
+    const ecc = Array(count).fill(0);
+    for (const b of input) {
+      const factor = b ^ ecc.shift();
+      ecc.push(0);
+      for (let j = 0; j < count; j++) ecc[j] ^= mul(generator[j + 1], factor);
+    } return { input, ecc };
   });
-  const encoded=[];for(let i=0;i<Math.max(...chunks.map(c=>c.input.length));i++)for(const c of chunks)if(i<c.input.length)encoded.push(c.input[i]);
-  for(let i=0;i<chunks[0].ecc.length;i++)for(const c of chunks)encoded.push(c.ecc[i]);
-  const size=version*4+17,base=Array.from({length:size},()=>Array(size).fill(null));
-  function finder(row,col){for(let r=-1;r<=7;r++)for(let c=-1;c<=7;c++)if(row+r>=0&&row+r<size&&col+c>=0&&col+c<size)base[row+r][col+c]=(r>=0&&r<=6&&(c===0||c===6))||(c>=0&&c<=6&&(r===0||r===6))||(r>=2&&r<=4&&c>=2&&c<=4);}
-  finder(0,0);finder(size-7,0);finder(0,size-7);
-  for(const r of PCI_QR_ALIGNMENT[version-1])for(const c of PCI_QR_ALIGNMENT[version-1])if(base[r][c]===null)for(let y=-2;y<=2;y++)for(let x=-2;x<=2;x++)base[r+y][c+x]=Math.max(Math.abs(y),Math.abs(x))!==1;
-  for(let i=8;i<size-8;i++){if(base[i][6]===null)base[i][6]=i%2===0;if(base[6][i]===null)base[6][i]=i%2===0;}
-  const digit=n=>n?32-Math.clz32(n):0;
-  function bch(n,shift,poly){let rest=n<<shift;while(digit(rest)>=digit(poly))rest^=poly<<(digit(rest)-digit(poly));return (n<<shift)|rest;}
-  if(version>=7){const v=bch(version,12,0x1f25);for(let i=0;i<18;i++)base[Math.floor(i/3)][i%3+size-11]=base[i%3+size-11][Math.floor(i/3)]=((v>>>i)&1)===1;}
-  const masks=[(r,c)=>(r+c)%2===0,r=>r%2===0,(r,c)=>c%3===0,(r,c)=>(r+c)%3===0,(r,c)=>(Math.floor(r/2)+Math.floor(c/3))%2===0,(r,c)=>(r*c)%2+(r*c)%3===0,(r,c)=>((r*c)%2+(r*c)%3)%2===0,(r,c)=>((r*c)%3+(r+c)%2)%2===0];
-  function matrix(mask){const m=base.map(r=>[...r]);const format=bch((1<<3)|mask,10,0x537)^0x5412;
-    for(let i=0;i<15;i++){const bit=((format>>>i)&1)===1;m[i<6?i:i<8?i+1:size-15+i][8]=bit;m[8][i<8?size-i-1:i<9?15-i:14-i]=bit;}m[size-8][8]=true;
-    let bit=0,row=size-1,dir=-1;
-    for(let col=size-1;col>0;col-=2){if(col===6)col--;for(;;){for(let side=0;side<2;side++){const c=col-side;if(m[row][c]!==null)continue;const raw=bit<encoded.length*8?((encoded[Math.floor(bit/8)]>>>(7-bit%8))&1)!==0:false;m[row][c]=raw!==masks[mask](row,c);bit++;}row+=dir;if(row<0||row>=size){row-=dir;dir=-dir;break;}}}return m;
+  const encoded = [];
+  for (let i = 0; i < Math.max(...chunks.map(c => c.input.length)); i++) for (const c of chunks) if (i < c.input.length) encoded.push(c
+    .input[i]);
+  for (let i = 0; i < chunks[0].ecc.length; i++) for (const c of chunks) encoded.push(c.ecc[i]);
+  const size = version * 4 + 17,
+  base = Array.from({ length: size }, () => Array(size).fill(null));
+  function finder(row, col) {
+    for (let r = - 1; r <= 7; r++) for (let c = - 1; c <= 7; c++) if (row + r >= 0 && row + r < size &&
+    col + c >= 0 && col + c < size) base[row + r][col + c] = (r >= 0 && r <= 6 && (c === 0 || c === 6)) ||
+    (c >= 0 && c <= 6 && (r === 0 || r === 6)) || (r >= 2 && r <= 4 && c >= 2 && c <= 4);
   }
-  function penalty(m){let score=0,dark=0;for(let r=0;r<size;r++)for(let c=0;c<size;c++){if(m[r][c])dark++;if(r&&c&&m[r][c]===m[r-1][c]&&m[r][c]===m[r][c-1]&&m[r][c]===m[r-1][c-1])score+=3;}
-    for(let axis=0;axis<2;axis++)for(let i=0;i<size;i++){const line=Array.from({length:size},(_,j)=>axis?m[j][i]:m[i][j]);let run=1;for(let j=1;j<=size;j++){if(j<size&&line[j]===line[j-1])run++;else{if(run>=5)score+=run-2;run=1;}}const s=line.map(b=>b?'1':'0').join('');for(let j=0;j<=size-11;j++)if(['00001011101','10111010000'].includes(s.slice(j,j+11)))score+=40;}
-    return score+Math.floor(Math.abs(dark*100/(size*size)-50)/5)*10;
+  finder(0, 0);
+  finder(size - 7, 0);
+  finder(0, size - 7);
+  for (const r of PCI_QR_ALIGNMENT[version - 1]) for (const c of PCI_QR_ALIGNMENT[version - 1]) if (base[r][c] === null) for (let y =
+    - 2; y <= 2; y++) for (let x = - 2; x <= 2; x++) base[r + y][c + x] = Math.max(Math.abs(y), Math.abs(x)) !== 1;
+  for (let i = 8; i < size - 8; i++) {
+    if (base[i][6] === null) base[i][6] = i % 2 === 0;
+    if (base[6][i] === null) base[6][i] = i % 2 === 0;
   }
-  if(forcedMask!==null){if(!Number.isInteger(forcedMask)||forcedMask<0||forcedMask>7)throw new Error('Invalid QR mask.');return matrix(forcedMask);}
-  let best=null,bestScore=Infinity;for(let mask=0;mask<8;mask++){const candidate=matrix(mask),score=penalty(candidate);if(score<bestScore){best=candidate;bestScore=score;}}return best;
+  const digit = n => n ? 32 - Math.clz32(n): 0;
+  function bch(n, shift, poly) {
+    let rest = n << shift;
+    while (digit(rest) >= digit(poly)) rest ^= poly << (digit(rest) - digit(poly));
+    return (n << shift) | rest;
+  }
+  if (version >= 7) {
+    const v = bch(version, 12, 0x1f25);
+    for (let i = 0; i < 18; i++) base[Math.floor(i / 3)][i % 3 + size - 11] = base[i % 3 + size - 11][Math.floor(i / 3)] = ((v >>> i) &
+      1) === 1;
+  }
+  const masks = [
+    (r, c) => (r + c) % 2 === 0,
+    r => r % 2 === 0,
+    (r, c) => c % 3 === 0,
+    (r, c) => (r + c) % 3 === 0,
+    (r, c) => (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0,
+    (r, c) => (r * c) % 2 + (r * c) % 3 === 0,
+    (r, c) => ((r * c) % 2 + (r * c) % 3) % 2 === 0,
+    (r, c) => ((r * c) % 3 + (r + c) % 2) % 2 === 0
+  ];
+  function matrix(mask) {
+    const m = base.map(r => [...r]);
+    const format = bch((1 << 3) | mask, 10, 0x537) ^ 0x5412;
+    for (let i = 0; i < 15; i++) {
+      const bit = ((format >>> i) & 1) === 1;
+      m[i < 6 ? i: i < 8 ? i + 1: size - 15 + i][8] = bit;
+      m[8][i < 8 ? size - i - 1: i < 9 ? 15 - i: 14 - i] = bit;
+    } m[size - 8][8] = true;
+    let bit = 0,
+    row = size - 1,
+    dir = - 1;
+    for (let col = size - 1; col > 0; col -= 2) {
+      if (col === 6) col--;
+      for (;;) {
+        for (let side = 0; side < 2; side++) {
+          const c = col - side;
+          if (m[row][c] !== null) continue;
+          const raw = bit < encoded.length * 8 ? ((encoded[Math.floor(bit / 8)] >>> (7 - bit % 8)) & 1) !== 0: false;
+          m[row][c] = raw !== masks[mask](row, c);
+          bit++;
+        } row += dir;
+        if (row < 0 || row >= size) {
+          row -= dir;
+          dir = - dir;
+          break;
+        }
+      }
+    } return m;
+  }
+  function penalty(m) {
+    let score = 0,
+    dark = 0;
+    for (let r = 0; r < size; r++) for (let c = 0; c < size; c++) {
+      if (m[r][c]) dark++;
+      if (r && c && m[r][c] === m[r - 1][c] && m[r][c] === m[r][c - 1] && m[r][c] === m[r - 1][c - 1]) score += 3;
+    }
+    for (let axis = 0; axis < 2; axis++) for (let i = 0; i < size; i++) {
+      const line = Array.from({ length: size }, (_, j) => axis ? m[j][i]: m[i][j]);
+      let run = 1;
+      for (let j = 1; j <= size; j++) {
+        if (j < size && line[j] === line[j - 1]) run++;
+        else {
+          if (run >= 5) score += run - 2;
+          run = 1;
+        }
+      } const s = line.map(b => b ? '1': '0').join('');
+      for (let j = 0; j <= size - 11; j++) if (['00001011101', '10111010000'].includes(s.slice(j, j + 11))) score += 40;
+    }
+    return score + Math.floor(Math.abs(dark * 100 / (size * size) - 50) / 5) * 10;
+  }
+  if (forcedMask !== null) {
+    if (!Number.isInteger(forcedMask) || forcedMask < 0 || forcedMask > 7) throw new Error('Invalid QR mask.');
+    return matrix(forcedMask);
+  }
+  let best = null,
+  bestScore = Infinity;
+  for (let mask = 0; mask < 8; mask++) {
+    const candidate = matrix(mask),
+    score = penalty(candidate);
+    if (score < bestScore) {
+      best = candidate;
+      bestScore = score;
+    }
+  } return best;
 }
-function pciQrImage(text){const matrix=pciQrMatrix(text),size=matrix.length+8;let path='';for(let r=0;r<matrix.length;r++){let c=0;while(c<matrix.length){if(!matrix[r][c]){c++;continue;}const start=c;while(c<matrix.length&&matrix[r][c])c++;path+=`M${start+4} ${r+4}h${c-start}v1h-${c-start}z`;}}return {size,path};}
+function pciQrImage(text) {
+  const matrix = pciQrMatrix(text),
+  size = matrix.length + 8;
+  let path = '';
+  for (let r = 0; r < matrix.length; r++) {
+    let c = 0;
+    while (c < matrix.length) {
+      if (!matrix[r][c]) {
+        c++;
+        continue;
+      } const start = c;
+      while (c < matrix.length && matrix[r][c]) c++;
+      path += `M${start+4} ${r+4}h${c-start}v1h-${c-start}z`;
+    }
+  } return { size, path };
+}
 
 
 // ---- src/sr2.js ----
 // Custom Vue workspace. ORCE rechecks authority for every bridge command.
 const Sr2Console = {
-  components:{UiFeedback,UiField},
-  props:['tenant','session'],
+  components: { UiFeedback, UiField },
+  props: ['tenant', 'session'],
   setup(props) {
-    const query=ref(''),configState=ref('all'),loaded=ref(false);
-    const settingsTab=ref('branding');
-    const tab=ref('request'),notice=ref(''),error=ref(null),busy=ref(false),cap=ref({}),configs=ref([]),flows=ref([]),connectors=ref([]),assets=ref([]),assignments=ref([]),members=ref([]),eligible=ref([]),history=ref([]),versions=ref([]),publication=ref(null);
-    const selected=ref(null),selectedFlow=ref(null),configForm=ref(null),flowForm=ref(null),preview=ref(null),metadata=ref(null),branding=ref(null),connector=ref(null),settings=ref(null);
-    const metadataForm=ref({profile:'oid4vci-1.0',issuer:window.location.origin+runtime.basePath,authorizationServers:[window.location.origin+runtime.basePath],did:'did:web:'+window.location.hostname,tokenKeyRef:'preauth',jwksUrl:window.location.origin+runtime.basePath+'/.well-known/jwks.json',displayName:props.tenant.organizationName});
-    const identity=ref(null),identityRedirect=ref(''),identityForm=ref({mode:'keycloak',displayName:'Organization account',issuer:'',clientId:'',clientSecret:'',audience:'',scopes:'openid profile email'});
-    async function loadIdentity(){const r=await call('/identity-provider');identity.value=r.item;identityRedirect.value=r.redirectUri;for(const key of ['mode','displayName','issuer','clientId','audience','scopes'])identityForm.value[key]=r.item[key];identityForm.value.clientSecret='';}
-    async function saveIdentity(){await run(async()=>{try{const data={...identityForm.value};if(!data.clientSecret)delete data.clientSecret;await call('/identity-provider','PUT',data,identity.value.version);notice.value='Identity provider configured. Sign in again to use it.';}finally{identityForm.value.clientSecret='';await loadIdentity();}});}
-    const keyName=ref('issuer'),keyType=ref('ecdsa-p256');
-    async function createKey(){await run(async()=>{await call('/issuer-keys','POST',{name:keyName.value,type:keyType.value});notice.value='TSA key created. Use its name in the credential configuration.';});}
-    const authServers=ref(window.location.origin+runtime.basePath),brandingForm=ref({title:props.tenant.organizationName,description:'',accent:'#005FFF',background:'#E1E7EF',foreground:'#1f2937',font:'system',layout:'wide',corners:'rounded',footer:'',logoAssetId:null});
-    const connectorForm=ref({name:'',endpoint:'',serverName:'',protocolVersion:'participant-v1',tlsSecret:{name:''},trustSecret:{name:''},jwtIssuer:'',jwtAudience:'',jwtScopes:['credential:issue'],signingModes:['internal-signing'],timeoutMs:5000,attempts:1,ratePerMinute:10,circuitFailureThreshold:3,circuitCooldownMs:30000,configurationIds:[]});
-    const settingsForm=ref({ratePerMinute:30,maxConcurrent:2}),grant=ref({subject:'',configurationIds:null}),grantConfig=ref(''),search=ref({principal:'',credentialId:'',requestId:'',subjectHash:'',type:'',cursor:'',from:'',to:''}),nextCursor=ref(null),historyConfig=ref(''),restoreVersion=ref('');
-    const journey=ref(null),answers=ref({}),consent=ref(false),offer=ref(null),uploadRole=ref('logoAssetId'),uploadScope=ref('configuration');
-    const qr=computed(()=>{if(!offer.value)return null;try{return pciQrImage(offer.value.offerUrl);}catch{return null;}});
-    const presentationConfigurations=ref([]),presentationConfig=ref(''),presentationProfile=ref('oid4vp-1.0'),presentation=ref(null),presentationCode=ref(''),presentationResult=ref(null);
-    const presentationQr=computed(()=>{try{return presentation.value?.requestUri?pciQrImage(presentation.value.requestUri):null;}catch{return null;}});
-    async function startPresentation(){await run(async()=>{presentationResult.value=null;presentationCode.value='';presentation.value=await call('/presentation-requests','POST',{configurationId:presentationConfig.value,profile:presentationProfile.value});});}
-    async function checkPresentation(){await run(async()=>{presentationResult.value=await call('/presentation-requests/'+presentation.value.requestId+'/result','POST',presentationCode.value?{responseCode:presentationCode.value}:{});if(presentationResult.value.status==='verified')presentationCode.value='';});}
-    const presentationReturn=new URLSearchParams(((window.location.hash||'').startsWith('#/presentation?')?window.location.hash.split('?')[1]:''));
-    if(presentationReturn.get('request')&&presentationReturn.get('response_code')){presentation.value={requestId:presentationReturn.get('request')};presentationCode.value=presentationReturn.get('response_code');tab.value='presentation';window.history.replaceState({},'',window.location.pathname+'#/presentation');}
-    const currentStep=computed(()=>journey.value?.request?.state==='journey'?journey.value.flow.steps[journey.value.request.step]:null);
-    const sections=computed(()=>[
-      {id:'request',label:'Request credential',icon:'M5 4h14v16H5z M8 8h8 M8 12h5 M8 16h3',description:'Choose a credential and follow your organization’s request journey.'},
-      {id:'presentation',label:'Verify credential',icon:'M12 3l8 4v5c0 5-8 9-8 9s-8-4-8-9V7z M8 12l3 3 5-6',description:'Present a credential from your wallet to check holder binding and current revocation status.'},
-      ...(cap.value.issuer?[
-        {id:'configurations',label:'Configurations',icon:'M3 6h7l2 3h9v11H3z',description:'Define credentials, review drafts, and manage published versions.'},
-        {id:'journeys',label:'Journeys',icon:'M5 5h5v5H5z M14 14h5v5h-5z M8 10v7h6',description:'Build the steps your members follow to request a credential.'},
-        {id:'history',label:'Issuance history',icon:'M4 8V3 M4 8h5 M4 8a8 8 0 1 1-1 7 M12 7v5l3 2',description:'Find credential records, inspect status, and manage revocation.'}]:[]),
-      ...(cap.value.tenantAdmin?[
-        {id:'tenant',label:'Tenant settings',icon:'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M7 7l-3-3 M17 17l3 3 M7 17l-3 3 M17 7l3-3 M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0',description:'Manage issuer identity, organization branding, and issuance limits.'},
-        {id:'connectors',label:'Connectors',icon:'M9 3v5 M15 3v5 M6 8h12v4a6 6 0 0 1-12 0z M12 18v3',description:'Connect participant services and approve which configurations can use them.'},
-        {id:'delegation',label:'Access & members',icon:'M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0 M5 21v-3a7 7 0 0 1 14 0v3',description:'Invite members and delegate issuer administration.'}]:[])
+    const query = ref(''),
+    configState = ref('all'),
+    loaded = ref(false);
+    const settingsTab = ref('branding');
+    const tab = ref('request'),
+    notice = ref(''),
+    error = ref(null),
+    busy = ref(false),
+    cap = ref({}),
+    configs = ref([]),
+    flows = ref([]),
+    connectors = ref([]),
+    assets = ref([]),
+    assignments = ref([]),
+    members = ref([]),
+    eligible = ref([]),
+    history = ref([]),
+    versions = ref([]),
+    publication = ref(null);
+    const selected = ref(null),
+    selectedFlow = ref(null),
+    configForm = ref(null),
+    flowForm = ref(null),
+    preview = ref(null),
+    metadata = ref(null),
+    branding = ref(null),
+    connector = ref(null),
+    settings = ref(null);
+    const metadataForm = ref({
+      profile: 'oid4vci-1.0',
+      issuer: window.location.origin + runtime.basePath,
+      authorizationServers: [window.location.origin + runtime.basePath],
+      did: 'did:web:' + window.location.hostname,
+      tokenKeyRef: 'preauth',
+      jwksUrl: window.location.origin + runtime.basePath + '/.well-known/jwks.json',
+      displayName: props.tenant.organizationName
+    });
+    const identity = ref(null),
+    identityRedirect = ref(''),
+    identityForm = ref({
+      mode: 'keycloak',
+      displayName: 'Organization account',
+      issuer: '',
+      clientId: '',
+      clientSecret: '',
+      audience: '',
+      scopes: 'openid profile email'
+    });
+    async function loadIdentity() {
+      const r = await call('/identity-provider');
+      identity.value = r.item;
+      identityRedirect.value = r.redirectUri;
+      for (const key of ['mode', 'displayName', 'issuer', 'clientId', 'audience', 'scopes']) identityForm.value[key] = r.item[key];
+      identityForm.value.clientSecret = '';
+    }
+    async function saveIdentity() {
+      await run(async() => {
+        try {
+          const data = { ...identityForm.value };
+          if (!data.clientSecret) delete data.clientSecret;
+          await call('/identity-provider', 'PUT', data, identity.value.version);
+          notice.value = 'Identity provider configured. Sign in again to use it.';
+        } finally {
+          identityForm.value.clientSecret = '';
+          await loadIdentity();
+        }
+      });
+    }
+    const keyName = ref('issuer'),
+    keyType = ref('ecdsa-p256');
+    async function createKey() {
+      await run(async() => {
+        await call('/issuer-keys', 'POST', { name: keyName.value, type: keyType.value });
+        notice.value = 'TSA key created. Use its name in the credential configuration.';
+      });
+    }
+    const authServers = ref(window.location.origin + runtime.basePath),
+    brandingForm = ref({
+      title: props.tenant.organizationName,
+      description: '',
+      accent: '#005FFF',
+      background: '#E1E7EF',
+      foreground: '#1f2937',
+      font: 'system',
+      layout: 'wide',
+      corners: 'rounded',
+      footer: '',
+      logoAssetId: null
+    });
+    const connectorForm = ref({
+      name: '',
+      endpoint: '',
+      serverName: '',
+      protocolVersion: 'participant-v1',
+      tlsSecret: { name: '' },
+      trustSecret: { name: '' },
+      jwtIssuer: '',
+      jwtAudience: '',
+      jwtScopes: ['credential:issue'],
+      signingModes: ['internal-signing'],
+      timeoutMs: 5000,
+      attempts: 1,
+      ratePerMinute: 10,
+      circuitFailureThreshold: 3,
+      circuitCooldownMs: 30000,
+      configurationIds: []
+    });
+    const settingsForm = ref({ ratePerMinute: 30, maxConcurrent: 2 }),
+    grant = ref({ subject: '', configurationIds: null }),
+    grantConfig = ref(''),
+    search = ref({ principal: '', credentialId: '', requestId: '', subjectHash: '', type: '', cursor: '', from: '', to: '' }),
+    nextCursor = ref(null),
+    historyConfig = ref(''),
+    restoreVersion = ref('');
+    const journey = ref(null),
+    answers = ref({}),
+    consent = ref(false),
+    offer = ref(null),
+    uploadRole = ref('logoAssetId'),
+    uploadScope = ref('configuration');
+    const qr = computed(() => {
+      if (!offer.value) return null;
+      try {
+        return pciQrImage(offer.value.offerUrl);
+      } catch {
+        return null;
+      }
+    });
+    const presentationConfigurations = ref([]),
+    presentationConfig = ref(''),
+    presentationProfile = ref('oid4vp-1.0'),
+    presentation = ref(null),
+    presentationCode = ref(''),
+    presentationResult = ref(null);
+    const presentationQr = computed(() => {
+      try {
+        return presentation.value?.requestUri ? pciQrImage(presentation.value.requestUri): null;
+      } catch {
+        return null;
+      }
+    });
+    async function startPresentation() {
+      await run(async() => {
+        presentationResult.value = null;
+        presentationCode.value = '';
+        presentation.value = await call('/presentation-requests', 'POST', { configurationId: presentationConfig
+          .value, profile: presentationProfile.value });
+      });
+    }
+    async function checkPresentation() {
+      await run(async() => {
+        presentationResult.value = await call('/presentation-requests/' + presentation.value.requestId + '/result', 'POST', presentationCode
+          .value ? { responseCode: presentationCode.value }: {});
+        if (presentationResult.value.status === 'verified') presentationCode.value = '';
+      });
+    }
+    const presentationReturn = new URLSearchParams(((window.location.hash || '').startsWith('#/presentation?') ? window.location.hash.split(
+      '?')[1]: ''));
+    if (presentationReturn.get('request') && presentationReturn.get('response_code')) {
+      presentation.value = { requestId: presentationReturn.get('request') };
+      presentationCode.value = presentationReturn.get('response_code');
+      tab.value = 'presentation';
+      window.history.replaceState({}, '', window.location.pathname + '#/presentation');
+    }
+    const currentStep = computed(() => journey.value?.request?.state === 'journey' ? journey.value.flow.steps[journey.value.request.step]:
+      null);
+    const sections = computed(() => [
+      {
+        id: 'request',
+        label: 'Request credential',
+        icon: 'M5 4h14v16H5z M8 8h8 M8 12h5 M8 16h3',
+        description: 'Choose a credential and follow your organization’s request journey.'
+      },
+      {
+        id: 'presentation',
+        label: 'Verify credential',
+        icon: 'M12 3l8 4v5c0 5-8 9-8 9s-8-4-8-9V7z M8 12l3 3 5-6',
+        description: 'Present a credential from your wallet to check holder binding and current revocation status.'
+      },
+      ...(cap.value.issuer ? [
+        {
+          id: 'configurations',
+          label: 'Configurations',
+          icon: 'M3 6h7l2 3h9v11H3z',
+          description: 'Define credentials, review drafts, and manage published versions.'
+        },
+        {
+          id: 'journeys',
+          label: 'Journeys',
+          icon: 'M5 5h5v5H5z M14 14h5v5h-5z M8 10v7h6',
+          description: 'Build the steps your members follow to request a credential.'
+        },
+        {
+          id: 'history',
+          label: 'Issuance history',
+          icon: 'M4 8V3 M4 8h5 M4 8a8 8 0 1 1-1 7 M12 7v5l3 2',
+          description: 'Find credential records, inspect status, and manage revocation.'
+        }
+      ]: []),
+      ...(cap.value.tenantAdmin ? [
+        {
+          id: 'tenant',
+          label: 'Tenant settings',
+          icon: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M7 7l-3-3 M17 17l3 3 M7 17l-3 3 M17 7l3-3 M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0',
+          description: 'Manage issuer identity, organization branding, and issuance limits.'
+        },
+        {
+          id: 'connectors',
+          label: 'Connectors',
+          icon: 'M9 3v5 M15 3v5 M6 8h12v4a6 6 0 0 1-12 0z M12 18v3',
+          description: 'Connect participant services and approve which configurations can use them.'
+        },
+        {
+          id: 'delegation',
+          label: 'Access & members',
+          icon: 'M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0 M5 21v-3a7 7 0 0 1 14 0v3',
+          description: 'Invite members and delegate issuer administration.'
+        }
+      ]: [])
     ]);
-    const section=computed(()=>sections.value.find(x=>x.id===tab.value) || sections.value[0]);
-    const filteredConfigs=computed(()=>configs.value.filter(c=>(configState.value==='all'||c.state===configState.value) && (c.draft.name+' '+c.draft.identifier).toLowerCase().includes(query.value.toLowerCase())));
-    const availableConnectors=computed(()=>connectors.value.filter(c=>c.state!=='archived' && (c.draft.configurationIds===null || (c.draft.configurationIds || []).includes(selected.value?.id))));
-    function navigate(id){tab.value=id;preview.value=null;notice.value='';rememberWorkspace();}
-    const base=()=>`/api/v1/tenants/${encodeURIComponent(props.tenant.tenantId)}`;
-    async function call(path,method='GET',data,version,extra={}) {return request(base()+path,{method,headers:{...(version?{'if-match':`"${version}"`}:{}),...extra},...(method!=='GET'?{body:JSON.stringify(data || {})}:{})});}
-    async function run(fn){busy.value=true;notice.value='';try{await fn();}catch(e){error.value=normalizeUiError(e);if(e.code==='PCI-SR2-INPUT-LOST'){try{await restoreJourney();}catch{}}}finally{busy.value=false;}}
-    const clone=value=>JSON.parse(JSON.stringify(value));
-    async function refresh(){await run(async()=>{
-      cap.value=await call('/issuer-capabilities');if(!loaded.value){if(tab.value!=='presentation' && !recovery?.tab)tab.value=cap.value.issuer?'configurations':'request';loaded.value=true;}if(!sections.value.some(s=>s.id===tab.value))tab.value='request';connectors.value=cap.value.connectors || [];eligible.value=(await call('/eligible-configurations')).items;presentationConfigurations.value=(await call('/presentation-configurations')).items;
-      if(cap.value.issuer){configs.value=(await call('/credential-configurations')).items;flows.value=(await call('/flows')).items;assets.value=(await call('/assets')).items;}
-      if(cap.value.tenantAdmin){await loadIdentity();connectors.value=(await call('/participant-connectors')).items;members.value=(await api.tenantMembers(props.tenant.tenantId)).items;assignments.value=(await call('/administrators')).items;
-        metadata.value=(await call('/issuer-metadata')).item;if(metadata.value){metadataForm.value=clone(metadata.value.draft);authServers.value=metadataForm.value.authorizationServers.join(', ');}
-        branding.value=(await call('/branding')).item;if(branding.value)brandingForm.value={...brandingForm.value,...clone(branding.value.draft),accent:'#005FFF',background:'#E1E7EF',foreground:'#1F2937',font:'system',corners:'rounded'};
-        settings.value=(await call('/issuer-settings')).item;if(settings.value)settingsForm.value=clone(settings.value.draft);
-        publication.value=await call('/publication');}
-      await restoreJourney();
-    });}
-    function newConfig(){selected.value=null;versions.value=[];configForm.value={identifier:'',name:'',description:'',profile:'oid4vci-1.0',format:'jwt_vc_json',credentialTypes:['VerifiableCredential','EmployeeCredential'],vct:null,claims:[{name:'name',type:'string',required:true}],logoAssetId:null,backgroundAssetId:null,flowId:null,connectorId:null,signingMode:'internal-signing',keyRef:'',statusProfile:'status-list',eligibility:{subjects:[],roles:['principal'],entitlements:[]},ratePerMinute:10,blockReissuance:true};}
-    async function editConfig(item){await run(async()=>{const r=await call('/credential-configurations/'+item.id);selected.value=r.item;configForm.value=clone(r.item.draft);versions.value=r.versions;preview.value=null;});}
-    async function saveConfig(){await run(async()=>{const r=await call('/credential-configurations'+(selected.value?'/'+selected.value.id:''),selected.value?'PATCH':'POST',{data:configForm.value},selected.value?.version);selected.value=r.item;configForm.value=clone(r.item.draft);configs.value=(await call('/credential-configurations')).items;notice.value='Draft saved. Publish when ready.';});}
-    async function exportTemplate(){if(!selected.value)return;await run(async()=>{const value=await call('/credential-configurations/'+selected.value.id+'/semantic-template');const blob=new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='pci-template-'+value.identifier+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notice.value='Template exported with JSON-LD context, SHACL constraints and synthetic example.';});}
-    async function configAction(action){if(!selected.value)return;if(action==='archive'&&!window.confirm('Archive this configuration and stop new requests?'))return;await run(async()=>{const r=await call('/credential-configurations/'+selected.value.id+(action==='archive'?'':'/'+action),action==='archive'?'DELETE':'POST',{},selected.value.version);if(r.item){selected.value=r.item;configForm.value=clone(r.item.draft);}preview.value=r.preview || null;notice.value=action==='validate'?'Configuration validation passed. Publish locally, then publish the catalogue to OCM.':'Configuration '+action+' completed.';configs.value=(await call('/credential-configurations')).items;});}
-    function newFlow(){selectedFlow.value=null;flowForm.value={configurationId:selected.value?.id || configs.value[0]?.id || '',data:{name:'Credential journey',steps:[{id:'intro',type:'information',title:'Your credential',text:'Review the information before requesting.',fields:[]},{id:'consent',type:'consent',title:'Privacy and consent',text:'Your participant data is processed transiently for issuance.',fields:[]},{id:'offer',type:'offer',title:'Receive your credential',text:'Open the credential offer in a compatible wallet.',fields:[]}]}};}
-    async function editFlow(item){await run(async()=>{const r=await call('/flows/'+item.id);selectedFlow.value=r.item;flowForm.value={configurationId:r.item.configurationId,data:clone(r.item.draft)};versions.value=r.versions;});}
-    function moveStep(index,delta){const steps=flowForm.value.data.steps,target=index+delta;if(target<0||target>=steps.length)return;[steps[index],steps[target]]=[steps[target],steps[index]];}
-    function addStep(){const list=flowForm.value.data.steps;list.splice(list.length-1,0,{id:'step'+crypto.randomUUID().slice(0,8),type:'information',title:'New step',text:'',fields:[]});}
-    async function flowAction(action){if(action==='save')return run(async()=>{const r=await call('/flows'+(selectedFlow.value?'/'+selectedFlow.value.id:''),selectedFlow.value?'PATCH':'POST',flowForm.value,selectedFlow.value?.version);selectedFlow.value=r.item;flows.value=(await call('/flows')).items;notice.value='Journey draft saved.';});if(!selectedFlow.value)return;await run(async()=>{const r=await call('/flows/'+selectedFlow.value.id+'/'+action,'POST',action==='rollback'?{version:Number(restoreVersion.value)}:{},selectedFlow.value.version);if(r.item){selectedFlow.value=r.item;flowForm.value={configurationId:r.item.configurationId,data:clone(r.item.draft)};}preview.value=r.preview || null;flows.value=(await call('/flows')).items;notice.value=action==='rollback'?'Version restored as a new draft. Publish to activate.':'Journey '+action+' completed.';});}
-    async function saveSingleton(kind,item,form,publish=false){await run(async()=>{const r=await call('/'+kind,item?'PUT':'POST',{data:form},item?.version);let saved=r.item;if(publish)saved=(await call('/'+kind+'/publish','POST',{},saved.version)).item;if(kind==='issuer-metadata')metadata.value=saved;if(kind==='branding'){branding.value=saved;props.tenant.branding=clone(saved.draft);}if(kind==='issuer-settings')settings.value=saved;notice.value=publish?'Saved and activated locally.':'Settings saved.';});}
-    async function saveMetadata(){metadataForm.value.authorizationServers=authServers.value.split(',').map(x=>x.trim()).filter(Boolean);await saveSingleton('issuer-metadata',metadata.value,metadataForm.value,true);}
-    async function saveConnector(){await run(async()=>{let r=await call('/participant-connectors'+(connector.value?'/'+connector.value.id:''),connector.value?'PATCH':'POST',{data:connectorForm.value},connector.value?.version);r=await call('/participant-connectors/'+r.item.id+'/publish','POST',{},r.item.version);connector.value=r.item;connectors.value=(await call('/participant-connectors')).items;notice.value='Connector saved. Test a credential request to verify its identity and mTLS configuration.';});}
-    const emptyConnector=clone(connectorForm.value);
-    function newConnector(){connector.value=null;connectorForm.value=clone(emptyConnector);}
-    function editConnector(c){connector.value=c;connectorForm.value={...clone(c.draft),configurationIds:c.draft.configurationIds ?? (Object.hasOwn(c.draft,'configurationIds')?null:[])};}
-    async function assign(){await run(async()=>{await call('/administrators','POST',{subject:grant.value.subject,configurationIds:grantConfig.value?[grantConfig.value]:null});assignments.value=(await call('/administrators')).items;notice.value='Issuer capability assigned.';});}
-    async function revokeAssignment(a){if(!window.confirm('Revoke this issuer assignment?'))return;await run(async()=>{await call('/administrators/'+a.id,'DELETE');assignments.value=(await call('/administrators')).items;notice.value='Assignment revoked immediately.';});}
-    async function upload(event){const file=event.target.files?.[0];if(!file)return;await run(async()=>{if(file.size>1048576)throw new Error('Select a PNG up to 1 MiB.');const bytes=new Uint8Array(await file.arrayBuffer());let raw='';for(const b of bytes)raw+=String.fromCharCode(b);const configurationId=uploadScope.value==='tenant'?null:selected.value?.id;if(uploadScope.value==='configuration'&&!configurationId)throw new Error('Save and select a configuration first.');const r=await call('/assets','POST',{configurationId,data:{mediaType:'image/png',base64:btoa(raw)}});assets.value=(await call('/assets')).items;if(configurationId)configForm.value[uploadRole.value]=r.item.id;else brandingForm.value.logoAssetId=r.item.id;notice.value='PNG decoded and re-encoded. Save and publish to expose it.';});event.target.value='';}
-    async function archiveAsset(a){if(!window.confirm('Archive this unpublished image?'))return;await run(async()=>{await call('/assets/'+a.id,'DELETE',{},a.version);assets.value=(await call('/assets')).items;notice.value='Image archived.';});}
-    async function restoreConfig(){if(!selected.value)return;await run(async()=>{const r=await call('/credential-configurations/'+selected.value.id+'/rollback','POST',{version:Number(restoreVersion.value)},selected.value.version);selected.value=r.item;configForm.value=clone(r.item.draft);notice.value='Version restored as a draft. Publish to activate.';});}
-    async function loadHistory(append=false){await run(async()=>{if(!historyConfig.value)return;const q=new URLSearchParams();for(const [k,v]of Object.entries(search.value))if(v)q.set(k,['from','to'].includes(k)?new Date(v).toISOString():v);const r=await call('/credential-configurations/'+historyConfig.value+'/history?'+q);history.value=append?[...history.value,...r.items]:r.items;nextCursor.value=r.nextCursor;});}
-    async function revoke(requestId){if(!window.confirm('Revoke this credential through its status provider? This cannot be undone.'))return;await run(async()=>{await call('/credential-configurations/'+historyConfig.value+'/revocations','POST',{requestId,confirmed:true});notice.value='Status provider confirmed revocation.';});await loadHistory();}
-    async function start(id){await run(async()=>{offer.value=null;journey.value=await call('/issuance-requests','POST',{configurationId:id},null,{'idempotency-key':crypto.randomUUID()});answers.value={};consent.value=false;tab.value='request';rememberWorkspace();});}
-    async function next(){await run(async()=>{journey.value=await call('/issuance-requests/'+journey.value.request.requestId+'/advance','POST',{step:journey.value.request.step,consent:consent.value,values:answers.value});answers.value={};consent.value=false;rememberWorkspace();});}
-    async function prepareOffer(){await run(async()=>{offer.value=await call('/issuance-requests/'+journey.value.request.requestId+'/offer','POST');await restoreJourney();});}
-    async function publishMetadata(){await run(async()=>{await call('/publication','POST');notice.value='Upstream metadata publication confirmed.';});publication.value=await call('/publication').catch(()=>publication.value);}
-    async function lifecycle(state){const confirmation=window.prompt('Enter the tenant slug to confirm '+state+':');if(confirmation===null)return;await run(async()=>{await call('/lifecycle','POST',{state,confirmation});window.location.reload();});}
+    const section = computed(() => sections.value.find(x => x.id === tab.value) || sections.value[0]);
+    const filteredConfigs = computed(() => configs.value.filter(c => (configState.value === 'all' || c.state === configState.value) &&
+    (c.draft.name + ' ' + c.draft.identifier).toLowerCase().includes(query.value.toLowerCase())));
+    const availableConnectors = computed(() => connectors.value.filter(c => c.state !== 'archived' &&
+    (c.draft.configurationIds === null || (c.draft.configurationIds || []).includes(selected.value?.id))));
+    function navigate(id) {
+      tab.value = id;
+      preview.value = null;
+      notice.value = '';
+      rememberWorkspace();
+    }
+    const base = () => `/api/v1/tenants/${encodeURIComponent(props.tenant.tenantId)}`;
+    async function call(path, method = 'GET', data, version, extra = {}) {
+      return request(base() + path, {
+        method,
+        headers: { ...(version ? { 'if-match': `"${version}"` }: {}), ...extra },
+        ...(method !== 'GET' ? { body: JSON.stringify(data || {}) }: {})
+      });
+    }
+    async function run(fn) {
+      busy.value = true;
+      notice.value = '';
+      try {
+        await fn();
+      } catch (e) {
+        error.value = normalizeUiError(e);
+        if (e.code === 'PCI-SR2-INPUT-LOST') {
+          try {
+            await restoreJourney();
+          } catch {}
+        }
+      } finally {
+        busy.value = false;
+      }
+    }
+    const clone = value => JSON.parse(JSON.stringify(value));
+    async function refresh() {
+      await run(async() => {
+        cap.value = await call('/issuer-capabilities');
+        if (!loaded.value) {
+          if (tab.value !== 'presentation' && !recovery?.tab) tab.value = cap.value.issuer ? 'configurations': 'request';
+          loaded.value = true;
+        } if (!sections.value.some(s => s.id === tab.value)) tab.value = 'request';
+        connectors.value = cap.value.connectors || [];
+        eligible.value = (await call('/eligible-configurations')).items;
+        presentationConfigurations.value = (await call('/presentation-configurations')).items;
+        if (cap.value.issuer) {
+          configs.value = (await call('/credential-configurations')).items;
+          flows.value = (await call('/flows')).items;
+          assets.value = (await call('/assets')).items;
+        }
+        if (cap.value.tenantAdmin) {
+          await loadIdentity();
+          connectors.value = (await call('/participant-connectors')).items;
+          members.value = (await api.tenantMembers(props.tenant.tenantId)).items;
+          assignments.value = (await call('/administrators')).items;
+          metadata.value = (await call('/issuer-metadata')).item;
+          if (metadata.value) {
+            metadataForm.value = clone(metadata.value.draft);
+            authServers.value = metadataForm.value.authorizationServers.join(', ');
+          }
+          branding.value = (await call('/branding')).item;
+          if (branding.value) brandingForm.value = {
+            ...brandingForm.value,
+            ...clone(branding.value.draft),
+            accent: '#005FFF',
+            background: '#E1E7EF',
+            foreground: '#1F2937',
+            font: 'system',
+            corners: 'rounded'
+          };
+          settings.value = (await call('/issuer-settings')).item;
+          if (settings.value) settingsForm.value = clone(settings.value.draft);
+          publication.value = await call('/publication');
+        }
+        await restoreJourney();
+      });
+    }
+    function newConfig() {
+      selected.value = null;
+      versions.value = [];
+      configForm.value = {
+        identifier: '',
+        name: '',
+        description: '',
+        profile: 'oid4vci-1.0',
+        format: 'jwt_vc_json',
+        credentialTypes: ['VerifiableCredential', 'EmployeeCredential'],
+        vct: null,
+        claims: [{ name: 'name', type: 'string', required: true }],
+        logoAssetId: null,
+        backgroundAssetId: null,
+        flowId: null,
+        connectorId: null,
+        signingMode: 'internal-signing',
+        keyRef: '',
+        statusProfile: 'status-list',
+        eligibility: { subjects: [], roles: ['principal'], entitlements: [] },
+        ratePerMinute: 10,
+        blockReissuance: true
+      };
+    }
+    async function editConfig(item) {
+      await run(async() => {
+        const r = await call('/credential-configurations/' + item.id);
+        selected.value = r.item;
+        configForm.value = clone(r.item.draft);
+        versions.value = r.versions;
+        preview.value = null;
+      });
+    }
+    async function saveConfig() {
+      await run(async() => {
+        const r = await call('/credential-configurations' + (selected.value ? '/' + selected.value.id: ''), selected.value ? 'PATCH':
+          'POST', { data: configForm.value }, selected.value?.version);
+        selected.value = r.item;
+        configForm.value = clone(r.item.draft);
+        configs.value = (await call('/credential-configurations')).items;
+        notice.value = 'Draft saved. Publish when ready.';
+      });
+    }
+    async function exportTemplate() {
+      if (!selected.value) return;
+      await run(async() => {
+        const value = await call('/credential-configurations/' + selected.value.id + '/semantic-template');
+        const blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json' });
+        const url = URL.createObjectURL(blob),
+        link = document.createElement('a');
+        link.href = url;
+        link.download = 'pci-template-' + value.identifier + '.json';
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        notice.value = 'Template exported with JSON-LD context, SHACL constraints and synthetic example.';
+      });
+    }
+    async function configAction(action) {
+      if (!selected.value) return;
+      if (action === 'archive' && !window.confirm('Archive this configuration and stop new requests?')) return;
+      await run(async() => {
+        const r = await call('/credential-configurations/' + selected.value.id + (action === 'archive' ? '': '/' + action), action ===
+          'archive' ? 'DELETE': 'POST', {}, selected.value.version);
+        if (r.item) {
+          selected.value = r.item;
+          configForm.value = clone(r.item.draft);
+        } preview.value = r.preview || null;
+        notice.value = action === 'validate' ? 'Configuration validation passed. Publish locally, then publish the catalogue to OCM.':
+          'Configuration ' + action + ' completed.';
+        configs.value = (await call('/credential-configurations')).items;
+      });
+    }
+    function newFlow() {
+      selectedFlow.value = null;
+      flowForm.value = {
+        configurationId: selected.value?.id || configs.value[0]?.id || '',
+        data: {
+          name: 'Credential journey',
+          steps: [
+            {
+              id: 'intro',
+              type: 'information',
+              title: 'Your credential',
+              text: 'Review the information before requesting.',
+              fields: []
+            },
+            {
+              id: 'consent',
+              type: 'consent',
+              title: 'Privacy and consent',
+              text: 'Your participant data is processed transiently for issuance.',
+              fields: []
+            },
+            {
+              id: 'offer',
+              type: 'offer',
+              title: 'Receive your credential',
+              text: 'Open the credential offer in a compatible wallet.',
+              fields: []
+            }
+          ]
+        }
+      };
+    }
+    async function editFlow(item) {
+      await run(async() => {
+        const r = await call('/flows/' + item.id);
+        selectedFlow.value = r.item;
+        flowForm.value = { configurationId: r.item.configurationId, data: clone(r.item.draft) };
+        versions.value = r.versions;
+      });
+    }
+    function moveStep(index, delta) {
+      const steps = flowForm.value.data.steps,
+      target = index + delta;
+      if (target < 0 || target >= steps.length) return;
+      [steps[index], steps[target]] = [steps[target], steps[index]];
+    }
+    function addStep() {
+      const list = flowForm.value.data.steps;
+      list.splice(list.length - 1, 0, {
+        id: 'step' + crypto.randomUUID().slice(0, 8),
+        type: 'information',
+        title: 'New step',
+        text: '',
+        fields: []
+      });
+    }
+    async function flowAction(action) {
+      if (action === 'save') return run(async() => {
+        const r = await call('/flows' + (selectedFlow.value ? '/' + selectedFlow.value.id: ''), selectedFlow.value ? 'PATCH': 'POST',
+          flowForm.value, selectedFlow.value?.version);
+        selectedFlow.value = r.item;
+        flows.value = (await call('/flows')).items;
+        notice.value = 'Journey draft saved.';
+      });
+      if (!selectedFlow.value) return;
+      await run(async() => {
+        const r = await call('/flows/' + selectedFlow.value.id + '/' + action, 'POST', action === 'rollback' ? { version: Number(
+          restoreVersion.value) }: {}, selectedFlow.value.version);
+        if (r.item) {
+          selectedFlow.value = r.item;
+          flowForm.value = { configurationId: r.item.configurationId, data: clone(r.item.draft) };
+        } preview.value = r.preview || null;
+        flows.value = (await call('/flows')).items;
+        notice.value = action === 'rollback' ? 'Version restored as a new draft. Publish to activate.': 'Journey ' + action + ' completed.';
+      });
+    }
+    async function saveSingleton(kind, item, form, publish = false) {
+      await run(async() => {
+        const r = await call('/' + kind, item ? 'PUT': 'POST', { data: form }, item?.version);
+        let saved = r.item;
+        if (publish) saved = (await call('/' + kind + '/publish', 'POST', {}, saved.version)).item;
+        if (kind === 'issuer-metadata') metadata.value = saved;
+        if (kind === 'branding') {
+          branding.value = saved;
+          props.tenant.branding = clone(saved.draft);
+        } if (kind === 'issuer-settings') settings.value = saved;
+        notice.value = publish ? 'Saved and activated locally.': 'Settings saved.';
+      });
+    }
+    async function saveMetadata() {
+      metadataForm.value.authorizationServers = authServers.value.split(',').map(x => x.trim()).filter(Boolean);
+      await saveSingleton('issuer-metadata', metadata.value, metadataForm.value, true);
+    }
+    async function saveConnector() {
+      await run(async() => {
+        let r = await call('/participant-connectors' + (connector.value ? '/' + connector.value.id: ''), connector.value ? 'PATCH': 'POST',
+          { data: connectorForm.value }, connector.value?.version);
+        r = await call('/participant-connectors/' + r.item.id + '/publish', 'POST', {}, r.item.version);
+        connector.value = r.item;
+        connectors.value = (await call('/participant-connectors')).items;
+        notice.value = 'Connector saved. Test a credential request to verify its identity and mTLS configuration.';
+      });
+    }
+    const emptyConnector = clone(connectorForm.value);
+    function newConnector() {
+      connector.value = null;
+      connectorForm.value = clone(emptyConnector);
+    }
+    function editConnector(c) {
+      connector.value = c;
+      connectorForm.value = {
+        ...clone(c.draft),
+        configurationIds: c.draft.configurationIds ?? (Object.hasOwn(c.draft, 'configurationIds') ? null: [])
+      };
+    }
+    async function assign() {
+      await run(async() => {
+        await call('/administrators', 'POST', { subject: grant.value.subject, configurationIds: grantConfig.value ? [grantConfig.value]:
+          null });
+        assignments.value = (await call('/administrators')).items;
+        notice.value = 'Issuer capability assigned.';
+      });
+    }
+    async function revokeAssignment(a) {
+      if (!window.confirm('Revoke this issuer assignment?')) return;
+      await run(async() => {
+        await call('/administrators/' + a.id, 'DELETE');
+        assignments.value = (await call('/administrators')).items;
+        notice.value = 'Assignment revoked immediately.';
+      });
+    }
+    async function upload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      await run(async() => {
+        if (file.size > 1048576) throw new Error('Select a PNG up to 1 MiB.');
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        let raw = '';
+        for (const b of bytes) raw += String.fromCharCode(b);
+        const configurationId = uploadScope.value === 'tenant' ? null: selected.value?.id;
+        if (uploadScope.value === 'configuration' && !configurationId) throw new Error('Save and select a configuration first.');
+        const r = await call('/assets', 'POST', { configurationId, data: { mediaType: 'image/png', base64: btoa(raw) } });
+        assets.value = (await call('/assets')).items;
+        if (configurationId) configForm.value[uploadRole.value] = r.item.id;
+        else brandingForm.value.logoAssetId = r.item.id;
+        notice.value = 'PNG decoded and re-encoded. Save and publish to expose it.';
+      });
+      event.target.value = '';
+    }
+    async function archiveAsset(a) {
+      if (!window.confirm('Archive this unpublished image?')) return;
+      await run(async() => {
+        await call('/assets/' + a.id, 'DELETE', {}, a.version);
+        assets.value = (await call('/assets')).items;
+        notice.value = 'Image archived.';
+      });
+    }
+    async function restoreConfig() {
+      if (!selected.value) return;
+      await run(async() => {
+        const r = await call('/credential-configurations/' + selected.value.id + '/rollback', 'POST', { version: Number(restoreVersion
+          .value) }, selected.value.version);
+        selected.value = r.item;
+        configForm.value = clone(r.item.draft);
+        notice.value = 'Version restored as a draft. Publish to activate.';
+      });
+    }
+    async function loadHistory(append = false) {
+      await run(async() => {
+        if (!historyConfig.value) return;
+        const q = new URLSearchParams();
+        for (const [k, v] of Object.entries(search.value)) if (v) q.set(k, ['from', 'to'].includes(k) ? new Date(v).toISOString(): v);
+        const r = await call('/credential-configurations/' + historyConfig.value + '/history?' + q);
+        history.value = append ? [...history.value, ...r.items]: r.items;
+        nextCursor.value = r.nextCursor;
+      });
+    }
+    async function revoke(requestId) {
+      if (!window.confirm('Revoke this credential through its status provider? This cannot be undone.')) return;
+      await run(async() => {
+        await call('/credential-configurations/' + historyConfig.value + '/revocations', 'POST', { requestId, confirmed: true });
+        notice.value = 'Status provider confirmed revocation.';
+      });
+      await loadHistory();
+    }
+    async function start(id) {
+      await run(async() => {
+        offer.value = null;
+        journey.value = await call('/issuance-requests', 'POST', { configurationId: id }, null, { 'idempotency-key': crypto.randomUUID() });
+        answers.value = {};
+        consent.value = false;
+        tab.value = 'request';
+        rememberWorkspace();
+      });
+    }
+    async function next() {
+      await run(async() => {
+        journey.value = await call('/issuance-requests/' + journey.value.request.requestId + '/advance', 'POST', { step: journey.value
+          .request.step, consent: consent.value, values: answers.value });
+        answers.value = {};
+        consent.value = false;
+        rememberWorkspace();
+      });
+    }
+    async function prepareOffer() {
+      await run(async() => {
+        offer.value = await call('/issuance-requests/' + journey.value.request.requestId + '/offer', 'POST');
+        await restoreJourney();
+      });
+    }
+    async function publishMetadata() {
+      await run(async() => {
+        await call('/publication', 'POST');
+        notice.value = 'Upstream metadata publication confirmed.';
+      });
+      publication.value = await call('/publication').catch(() => publication.value);
+    }
+    async function lifecycle(state) {
+      const confirmation = window.prompt('Enter the tenant slug to confirm ' + state + ':');
+      if (confirmation === null) return;
+      await run(async() => {
+        await call('/lifecycle', 'POST', { state, confirmation });
+        window.location.reload();
+      });
+    }
     // Only an opaque server-issued request identifier and presentation tab are
     // retained. Answers, offers, tokens and credential claims remain transient.
-    const recoveryKey = 'fap-pci-workspace:'+props.tenant.tenantId+':'+props.session.subject;
-    const recovery = (()=>{try{return JSON.parse(window.sessionStorage?.getItem(recoveryKey)||'null');}catch{return null;}})();
-    if(recovery?.tab)tab.value=recovery.tab;
-    let requestToRestore = /^[a-f0-9-]{36}$/i.test(recovery?.requestId||'')?recovery.requestId:null;
-    function rememberWorkspace(){
-      requestToRestore=journey.value?.request?.requestId || null;
-      try{window.sessionStorage?.setItem(recoveryKey,JSON.stringify({tab:tab.value,requestId:requestToRestore}));}catch{}
-    }
-    async function restoreJourney(){
-      const id=journey.value?.request?.requestId || requestToRestore;
-      if(!id)return;
+    const recoveryKey = 'fap-pci-workspace:' + props.tenant.tenantId + ':' + props.session.subject;
+    const recovery = (() => {
       try {
-        const restored=await call('/issuance-requests/'+encodeURIComponent(id));
-        if(restored.request.expiresAt<=Date.now()){
-          journey.value=null;offer.value=null;requestToRestore=null;
-          notice.value='Your previous request expired. Choose a credential to start again.';
-          rememberWorkspace();return;
+        return JSON.parse(window.sessionStorage?.getItem(recoveryKey) || 'null');
+      } catch {
+        return null;
+      }
+    })();
+    if (recovery?.tab) tab.value = recovery.tab;
+    let requestToRestore = /^[a-f0-9-]{36}$/i.test(recovery?.requestId || '') ? recovery.requestId: null;
+    function rememberWorkspace() {
+      requestToRestore = journey.value?.request?.requestId || null;
+      try {
+        window.sessionStorage?.setItem(recoveryKey, JSON.stringify({ tab: tab.value, requestId: requestToRestore }));
+      } catch {}
+    }
+    async function restoreJourney() {
+      const id = journey.value?.request?.requestId || requestToRestore;
+      if (!id) return;
+      try {
+        const restored = await call('/issuance-requests/' + encodeURIComponent(id));
+        if (restored.request.expiresAt <= Date.now()) {
+          journey.value = null;
+          offer.value = null;
+          requestToRestore = null;
+          notice.value = 'Your previous request expired. Choose a credential to start again.';
+          rememberWorkspace();
+          return;
         }
-        journey.value=restored;
-        if(restored.request.errorCode==='PCI-SR2-INPUT-LOST'){
-          answers.value={};consent.value=false;offer.value=null;
-          notice.value=restored.request.state==='journey'?'Your previous form answers were cleared. Enter them again to continue.':'Your form answers are no longer available. Start a new credential request.';
-          rememberWorkspace();return;
+        journey.value = restored;
+        if (restored.request.errorCode === 'PCI-SR2-INPUT-LOST') {
+          answers.value = {};
+          consent.value = false;
+          offer.value = null;
+          notice.value = restored.request.state === 'journey' ? 'Your previous form answers were cleared. Enter them again to continue.':
+            'Your form answers are no longer available. Start a new credential request.';
+          rememberWorkspace();
+          return;
         }
-        if(!offer.value && restored.request.state!=='journey')notice.value=restored.request.state==='issued'?'Your credential has been issued. Check your wallet.':'Previous request: '+restored.request.state+'. The offer is not stored in this browser. Refresh to check its status or start a new request.';
+        if (!offer.value && restored.request.state !== 'journey') notice.value = restored.request.state === 'issued' ?
+          'Your credential has been issued. Check your wallet.': 'Previous request: ' + restored.request.state +
+          '. The offer is not stored in this browser. Refresh to check its status or start a new request.';
         rememberWorkspace();
-      } catch(e) {
-        if([401,403,404,410].includes(e.status)){
-          journey.value=null;offer.value=null;requestToRestore=null;rememberWorkspace();
-          notice.value='The previous request is no longer available to this account. Start a new request.';
+      } catch (e) {
+        if ([401, 403, 404, 410].includes(e.status)) {
+          journey.value = null;
+          offer.value = null;
+          requestToRestore = null;
+          rememberWorkspace();
+          notice.value = 'The previous request is no longer available to this account. Start a new request.';
         } else throw e;
       }
     }
-    const stopReconnect=onBridgeReconnect(refresh);
+    const stopReconnect = onBridgeReconnect(refresh);
     onUnmounted(stopReconnect);
     onMounted(refresh);
-    return {settingsTab,restoreJourney,identity,identityRedirect,identityForm,saveIdentity,exportTemplate,presentationConfigurations,presentationConfig,presentationProfile,presentation,presentationCode,presentationResult,presentationQr,startPresentation,checkPresentation,keyName,keyType,createKey,query,configState,sections,section,filteredConfigs,availableConnectors,navigate,tab,notice,error,busy,cap,configs,flows,connectors,assets,assignments,members,eligible,history,versions,publication,selected,selectedFlow,configForm,flowForm,preview,metadata,branding,connector,settings,metadataForm,authServers,brandingForm,connectorForm,settingsForm,grant,grantConfig,search,nextCursor,historyConfig,restoreVersion,journey,answers,consent,offer,qr,currentStep,uploadRole,uploadScope,refresh,newConfig,editConfig,saveConfig,configAction,newFlow,editFlow,moveStep,addStep,flowAction,saveSingleton,saveMetadata,saveConnector,editConnector,newConnector,assign,revokeAssignment,upload,archiveAsset,restoreConfig,loadHistory,revoke,start,next,prepareOffer,publishMetadata,lifecycle};
+    return {
+      settingsTab,
+      restoreJourney,
+      identity,
+      identityRedirect,
+      identityForm,
+      saveIdentity,
+      exportTemplate,
+      presentationConfigurations,
+      presentationConfig,
+      presentationProfile,
+      presentation,
+      presentationCode,
+      presentationResult,
+      presentationQr,
+      startPresentation,
+      checkPresentation,
+      keyName,
+      keyType,
+      createKey,
+      query,
+      configState,
+      sections,
+      section,
+      filteredConfigs,
+      availableConnectors,
+      navigate,
+      tab,
+      notice,
+      error,
+      busy,
+      cap,
+      configs,
+      flows,
+      connectors,
+      assets,
+      assignments,
+      members,
+      eligible,
+      history,
+      versions,
+      publication,
+      selected,
+      selectedFlow,
+      configForm,
+      flowForm,
+      preview,
+      metadata,
+      branding,
+      connector,
+      settings,
+      metadataForm,
+      authServers,
+      brandingForm,
+      connectorForm,
+      settingsForm,
+      grant,
+      grantConfig,
+      search,
+      nextCursor,
+      historyConfig,
+      restoreVersion,
+      journey,
+      answers,
+      consent,
+      offer,
+      qr,
+      currentStep,
+      uploadRole,
+      uploadScope,
+      refresh,
+      newConfig,
+      editConfig,
+      saveConfig,
+      configAction,
+      newFlow,
+      editFlow,
+      moveStep,
+      addStep,
+      flowAction,
+      saveSingleton,
+      saveMetadata,
+      saveConnector,
+      editConnector,
+      newConnector,
+      assign,
+      revokeAssignment,
+      upload,
+      archiveAsset,
+      restoreConfig,
+      loadHistory,
+      revoke,
+      start,
+      next,
+      prepareOffer,
+      publishMetadata,
+      lifecycle
+    };
   },
-  template:`<section class="sr2-console" aria-label="Credential issuance workspace">
+  template: `<section class="sr2-console" aria-label="Credential issuance workspace">
     <aside class="workspace-sidebar">
       <div class="workspace-brand"><span class="workspace-monogram">PCI</span><div><strong>Credential issuance</strong><small>FACIS Application Platform</small></div></div>
       <div class="workspace-tenant"><span class="nav-caption">ORGANIZATION</span><strong>{{tenant.branding?.title || tenant.organizationName}}</strong><small>{{tenant.primaryDomain}}</small></div>
@@ -741,34 +1657,47 @@ const App = {
     const registrations = ref([]);
     const tenants = ref([]);
     const members = ref([]);
-    const form = ref({ organizationIdentifier: "", organizationName: "", contactName: "", contactEmail: "", requestedSlug: "", registrationMode: "public" });
+    const form = ref({
+      organizationIdentifier: "",
+      organizationName: "",
+      contactName: "",
+      contactEmail: "",
+      requestedSlug: "",
+      registrationMode: "public"
+    });
     const invite = ref({ username: "", email: "", firstName: "", lastName: "", role: "principal" });
     const submission = ref(null);
     const verification = ref({ state: "idle", message: "" });
     const hashRoute = ref(window.location.hash || "#/register");
-
-    const tenantTheme = computed(() => ({'--tenant-width':store.tenant?.branding?.layout==='focused'?'1040px':'1200px'}));
+    const tenantTheme = computed(() => ({ '--tenant-width': store.tenant?.branding?.layout === 'focused' ? '1040px': '1200px' }));
     const providerTab = ref('applications');
     const isTenantHost = computed(() => Boolean(store.tenant));
     const isProvider = computed(() => hashRoute.value.startsWith("#/provider"));
     const isTenantAdmin = computed(() => store.session?.roles?.includes("participant_tenant_admin"));
     const isProviderAdmin = computed(() => store.session?.roles?.includes("provider_admin"));
     const pending = computed(() => registrations.value.filter((item) => item.state === "pending_approval"));
-
     function setError(error) {
       store.errors.global = normalizeUiError(error);
     }
-
     async function loadSession() {
-      try { store.session = (await api.session()).session; } catch (error) { if(error.status===401)store.session=null;else setError(error); }
+      try {
+        store.session = (await api.session()).session;
+      } catch (error) {
+        if (error.status === 401) store.session = null;
+        else setError(error);
+      }
     }
-
     async function loadTenant() {
-      try { store.tenant = (await api.tenantContext()).tenant;
-        try {store.tenant.branding=(await request('/api/v1/public/branding')).branding;}catch{}
-         } catch (error) { if(error.status===404)store.tenant=null;else setError(error); }
+      try {
+        store.tenant = (await api.tenantContext()).tenant;
+        try {
+          store.tenant.branding = (await request('/api/v1/public/branding')).branding;
+        } catch {}
+      } catch (error) {
+        if (error.status === 404) store.tenant = null;
+        else setError(error);
+      }
     }
-
     async function loadProvider() {
       if (isTenantHost.value || !isProviderAdmin.value) return;
       store.busy = true;
@@ -776,24 +1705,30 @@ const App = {
         const [r, t] = await Promise.all([api.registrations(), api.tenants()]);
         registrations.value = r.items;
         tenants.value = t.items;
-        
-      } catch (error) { setError(error); }
-      finally { store.busy = false; }
+      } catch (error) {
+        setError(error);
+      } finally {
+        store.busy = false;
+      }
     }
-
     async function loadMembers() {
       if (!store.tenant || !isTenantAdmin.value) return;
-      try { members.value = (await api.tenantMembers(store.tenant.tenantId)).items;  }
-      catch (error) { setError(error); }
+      try {
+        members.value = (await api.tenantMembers(store.tenant.tenantId)).items;
+      } catch (error) {
+        setError(error);
+      }
     }
-
     async function submitRegistration() {
-      store.busy = true; 
-      try { submission.value = (await api.register(form.value)).registration; }
-      catch (error) { setError(error); }
-      finally { store.busy = false; }
+      store.busy = true;
+      try {
+        submission.value = (await api.register(form.value)).registration;
+      } catch (error) {
+        setError(error);
+      } finally {
+        store.busy = false;
+      }
     }
-
     async function verifyFromUrl() {
       const params = new URLSearchParams(window.location.search);
       const registrationId = params.get("verify_registration");
@@ -807,50 +1742,69 @@ const App = {
         verification.value = { state: "failed", message: error.message || "Verification failed." };
       }
     }
-
     async function decide(item, action) {
-      const promptText = action === "approve" ? "Approval note (optional)" : "Rejection reason (required)";
-      const reason = window.prompt(promptText, action === "approve" ? "Reviewed and approved" : "Registration requires correction");
+      const promptText = action === "approve" ? "Approval note (optional)": "Rejection reason (required)";
+      const reason = window.prompt(promptText, action === "approve" ? "Reviewed and approved": "Registration requires correction");
       if (reason === null || (action === "reject" && reason.trim().length < 3)) return;
       try {
         if (action === "approve") await api.approve(item, reason);
         else await api.reject(item, reason);
         await loadProvider();
-      } catch (error) { setError(error); }
+      } catch (error) {
+        setError(error);
+      }
     }
-
     async function inviteMember() {
       if (!store.tenant) return;
-      store.busy = true; 
+      store.busy = true;
       try {
         await api.inviteMember(store.tenant.tenantId, invite.value);
         invite.value = { username: "", email: "", firstName: "", lastName: "", role: "principal" };
         await loadMembers();
-      } catch (error) { setError(error); }
-      finally { store.busy = false; }
+      } catch (error) {
+        setError(error);
+      } finally {
+        store.busy = false;
+      }
     }
-
-    async function lifecycleTenant(tenant,state) {
-      const confirmation=window.prompt('Enter the tenant slug to confirm '+state+':');if(confirmation===null)return;
-      try {await request(`/api/v1/provider/tenants/${encodeURIComponent(tenant.tenantId)}/lifecycle`,{method:'POST',body:JSON.stringify({state,confirmation})});await loadProvider();}catch(error){setError(error);}
+    async function lifecycleTenant(tenant, state) {
+      const confirmation = window.prompt('Enter the tenant slug to confirm ' + state + ':');
+      if (confirmation === null) return;
+      try {
+        await request(`/api/v1/provider/tenants/${encodeURIComponent(tenant.tenantId)}/lifecycle`, { method: 'POST', body: JSON.stringify(
+          { state, confirmation }) });
+        await loadProvider();
+      } catch (error) {
+        setError(error);
+      }
     }
-    function focusMain() { document.getElementById('main')?.focus(); }
-
-    async function login(native=false) { try { await beginLogin(native); } catch(error) { setError(error); } }
-
+    function focusMain() {
+      document.getElementById('main')?.focus();
+    }
+    async function login(native = false) {
+      try {
+        await beginLogin(native);
+      } catch (error) {
+        setError(error);
+      }
+    }
     async function logout() {
-      try { await api.logout(); } finally { store.session = null; window.location.assign(runtime.uiPath); }
+      try {
+        await api.logout();
+      } finally {
+        store.session = null;
+        window.location.assign(runtime.uiPath);
+      }
     }
-
     async function recoverWorkspace() {
-      await loadSession(); await loadTenant();
+      await loadSession();
+      await loadTenant();
       if (isProvider.value) await loadProvider();
       if (isTenantHost.value) await loadMembers();
     }
     const stopReconnect = onBridgeReconnect(recoverWorkspace);
     onUnmounted(stopReconnect);
-
-    onMounted(async () => {
+    onMounted(async() => {
       window.addEventListener("hashchange", () => {
         hashRoute.value = window.location.hash || "#/register";
         if (hashRoute.value.startsWith("#/provider") && !isTenantHost.value) void loadProvider();
@@ -870,14 +1824,41 @@ const App = {
       await verifyFromUrl();
       if (isProvider.value && !isTenantHost.value) await loadProvider();
       if (isTenantHost.value) await loadMembers();
-      try { store.platform = await api.platformStatus(); } catch { /* platform endpoint may be warming up */ }
+      try {
+        store.platform = await api.platformStatus();
+      } catch {
+        /* platform endpoint may be warming up */
+      }
     });
-
     return {
-      tenantTheme, providerTab, recoverWorkspace, focusMain,
-      store, runtime, config, registrations, tenants, members, form, invite, submission, verification, hashRoute,
-      isTenantHost, isProvider, isTenantAdmin, isProviderAdmin, pending,
-      submitRegistration, decide, inviteMember, login, logout, lifecycleTenant, loadProvider, loadMembers,
+      tenantTheme,
+      providerTab,
+      recoverWorkspace,
+      focusMain,
+      store,
+      runtime,
+      config,
+      registrations,
+      tenants,
+      members,
+      form,
+      invite,
+      submission,
+      verification,
+      hashRoute,
+      isTenantHost,
+      isProvider,
+      isTenantAdmin,
+      isProviderAdmin,
+      pending,
+      submitRegistration,
+      decide,
+      inviteMember,
+      login,
+      logout,
+      lifecycleTenant,
+      loadProvider,
+      loadMembers,
     };
   },
   template: `
@@ -963,7 +1944,6 @@ const App = {
     <footer><span>FACIS.FAP_PCI</span><span>Credential workspace · 0.5.0-rc.12</span></footer>
   </div>`
 };
-
 createApp(App).mount("#app");
 
 })();

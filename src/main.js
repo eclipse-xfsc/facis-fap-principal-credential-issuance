@@ -7,7 +7,6 @@ import { initializeBridge, bridgePing, onBridgeReconnect } from './services/tran
 import { normalizeUiError } from './state/reducers.js';
 import { UiFeedback, UiProgress, UiField } from './components/feedback.js';
 import "./styles.css";
-
 const App = {
   components: { Sr2Console, UiFeedback, UiProgress, UiField },
   setup() {
@@ -15,34 +14,47 @@ const App = {
     const registrations = ref([]);
     const tenants = ref([]);
     const members = ref([]);
-    const form = ref({ organizationIdentifier: "", organizationName: "", contactName: "", contactEmail: "", requestedSlug: "", registrationMode: "public" });
+    const form = ref({
+      organizationIdentifier: "",
+      organizationName: "",
+      contactName: "",
+      contactEmail: "",
+      requestedSlug: "",
+      registrationMode: "public"
+    });
     const invite = ref({ username: "", email: "", firstName: "", lastName: "", role: "principal" });
     const submission = ref(null);
     const verification = ref({ state: "idle", message: "" });
     const hashRoute = ref(window.location.hash || "#/register");
-
-    const tenantTheme = computed(() => ({'--tenant-width':store.tenant?.branding?.layout==='focused'?'1040px':'1200px'}));
+    const tenantTheme = computed(() => ({ '--tenant-width': store.tenant?.branding?.layout === 'focused' ? '1040px': '1200px' }));
     const providerTab = ref('applications');
     const isTenantHost = computed(() => Boolean(store.tenant));
     const isProvider = computed(() => hashRoute.value.startsWith("#/provider"));
     const isTenantAdmin = computed(() => store.session?.roles?.includes("participant_tenant_admin"));
     const isProviderAdmin = computed(() => store.session?.roles?.includes("provider_admin"));
     const pending = computed(() => registrations.value.filter((item) => item.state === "pending_approval"));
-
     function setError(error) {
       store.errors.global = normalizeUiError(error);
     }
-
     async function loadSession() {
-      try { store.session = (await api.session()).session; } catch (error) { if(error.status===401)store.session=null;else setError(error); }
+      try {
+        store.session = (await api.session()).session;
+      } catch (error) {
+        if (error.status === 401) store.session = null;
+        else setError(error);
+      }
     }
-
     async function loadTenant() {
-      try { store.tenant = (await api.tenantContext()).tenant;
-        try {store.tenant.branding=(await request('/api/v1/public/branding')).branding;}catch{}
-         } catch (error) { if(error.status===404)store.tenant=null;else setError(error); }
+      try {
+        store.tenant = (await api.tenantContext()).tenant;
+        try {
+          store.tenant.branding = (await request('/api/v1/public/branding')).branding;
+        } catch {}
+      } catch (error) {
+        if (error.status === 404) store.tenant = null;
+        else setError(error);
+      }
     }
-
     async function loadProvider() {
       if (isTenantHost.value || !isProviderAdmin.value) return;
       store.busy = true;
@@ -50,24 +62,30 @@ const App = {
         const [r, t] = await Promise.all([api.registrations(), api.tenants()]);
         registrations.value = r.items;
         tenants.value = t.items;
-        
-      } catch (error) { setError(error); }
-      finally { store.busy = false; }
+      } catch (error) {
+        setError(error);
+      } finally {
+        store.busy = false;
+      }
     }
-
     async function loadMembers() {
       if (!store.tenant || !isTenantAdmin.value) return;
-      try { members.value = (await api.tenantMembers(store.tenant.tenantId)).items;  }
-      catch (error) { setError(error); }
+      try {
+        members.value = (await api.tenantMembers(store.tenant.tenantId)).items;
+      } catch (error) {
+        setError(error);
+      }
     }
-
     async function submitRegistration() {
-      store.busy = true; 
-      try { submission.value = (await api.register(form.value)).registration; }
-      catch (error) { setError(error); }
-      finally { store.busy = false; }
+      store.busy = true;
+      try {
+        submission.value = (await api.register(form.value)).registration;
+      } catch (error) {
+        setError(error);
+      } finally {
+        store.busy = false;
+      }
     }
-
     async function verifyFromUrl() {
       const params = new URLSearchParams(window.location.search);
       const registrationId = params.get("verify_registration");
@@ -81,50 +99,69 @@ const App = {
         verification.value = { state: "failed", message: error.message || "Verification failed." };
       }
     }
-
     async function decide(item, action) {
-      const promptText = action === "approve" ? "Approval note (optional)" : "Rejection reason (required)";
-      const reason = window.prompt(promptText, action === "approve" ? "Reviewed and approved" : "Registration requires correction");
+      const promptText = action === "approve" ? "Approval note (optional)": "Rejection reason (required)";
+      const reason = window.prompt(promptText, action === "approve" ? "Reviewed and approved": "Registration requires correction");
       if (reason === null || (action === "reject" && reason.trim().length < 3)) return;
       try {
         if (action === "approve") await api.approve(item, reason);
         else await api.reject(item, reason);
         await loadProvider();
-      } catch (error) { setError(error); }
+      } catch (error) {
+        setError(error);
+      }
     }
-
     async function inviteMember() {
       if (!store.tenant) return;
-      store.busy = true; 
+      store.busy = true;
       try {
         await api.inviteMember(store.tenant.tenantId, invite.value);
         invite.value = { username: "", email: "", firstName: "", lastName: "", role: "principal" };
         await loadMembers();
-      } catch (error) { setError(error); }
-      finally { store.busy = false; }
+      } catch (error) {
+        setError(error);
+      } finally {
+        store.busy = false;
+      }
     }
-
-    async function lifecycleTenant(tenant,state) {
-      const confirmation=window.prompt('Enter the tenant slug to confirm '+state+':');if(confirmation===null)return;
-      try {await request(`/api/v1/provider/tenants/${encodeURIComponent(tenant.tenantId)}/lifecycle`,{method:'POST',body:JSON.stringify({state,confirmation})});await loadProvider();}catch(error){setError(error);}
+    async function lifecycleTenant(tenant, state) {
+      const confirmation = window.prompt('Enter the tenant slug to confirm ' + state + ':');
+      if (confirmation === null) return;
+      try {
+        await request(`/api/v1/provider/tenants/${encodeURIComponent(tenant.tenantId)}/lifecycle`, { method: 'POST', body: JSON.stringify(
+          { state, confirmation }) });
+        await loadProvider();
+      } catch (error) {
+        setError(error);
+      }
     }
-    function focusMain() { document.getElementById('main')?.focus(); }
-
-    async function login(native=false) { try { await beginLogin(native); } catch(error) { setError(error); } }
-
+    function focusMain() {
+      document.getElementById('main')?.focus();
+    }
+    async function login(native = false) {
+      try {
+        await beginLogin(native);
+      } catch (error) {
+        setError(error);
+      }
+    }
     async function logout() {
-      try { await api.logout(); } finally { store.session = null; window.location.assign(runtime.uiPath); }
+      try {
+        await api.logout();
+      } finally {
+        store.session = null;
+        window.location.assign(runtime.uiPath);
+      }
     }
-
     async function recoverWorkspace() {
-      await loadSession(); await loadTenant();
+      await loadSession();
+      await loadTenant();
       if (isProvider.value) await loadProvider();
       if (isTenantHost.value) await loadMembers();
     }
     const stopReconnect = onBridgeReconnect(recoverWorkspace);
     onUnmounted(stopReconnect);
-
-    onMounted(async () => {
+    onMounted(async() => {
       window.addEventListener("hashchange", () => {
         hashRoute.value = window.location.hash || "#/register";
         if (hashRoute.value.startsWith("#/provider") && !isTenantHost.value) void loadProvider();
@@ -144,14 +181,41 @@ const App = {
       await verifyFromUrl();
       if (isProvider.value && !isTenantHost.value) await loadProvider();
       if (isTenantHost.value) await loadMembers();
-      try { store.platform = await api.platformStatus(); } catch { /* platform endpoint may be warming up */ }
+      try {
+        store.platform = await api.platformStatus();
+      } catch {
+        /* platform endpoint may be warming up */
+      }
     });
-
     return {
-      tenantTheme, providerTab, recoverWorkspace, focusMain,
-      store, runtime, config, registrations, tenants, members, form, invite, submission, verification, hashRoute,
-      isTenantHost, isProvider, isTenantAdmin, isProviderAdmin, pending,
-      submitRegistration, decide, inviteMember, login, logout, lifecycleTenant, loadProvider, loadMembers,
+      tenantTheme,
+      providerTab,
+      recoverWorkspace,
+      focusMain,
+      store,
+      runtime,
+      config,
+      registrations,
+      tenants,
+      members,
+      form,
+      invite,
+      submission,
+      verification,
+      hashRoute,
+      isTenantHost,
+      isProvider,
+      isTenantAdmin,
+      isProviderAdmin,
+      pending,
+      submitRegistration,
+      decide,
+      inviteMember,
+      login,
+      logout,
+      lifecycleTenant,
+      loadProvider,
+      loadMembers,
     };
   },
   template: `
@@ -237,5 +301,4 @@ const App = {
     <footer><span>FACIS.FAP_PCI</span><span>Credential workspace · __FAP_PCI_VERSION__</span></footer>
   </div>`
 };
-
 createApp(App).mount("#app");
