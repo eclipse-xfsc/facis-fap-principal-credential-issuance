@@ -1,3 +1,13 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 // Executes the shipped Function-node bodies. Only PostgreSQL and native
 // integrations are fixtures; envelope/auth/routing/error logic is unchanged.
 import fs from 'node:fs';
@@ -10,7 +20,7 @@ export function bridgeHarness() {
   const flows=JSON.parse(fs.readFileSync('dist/fap-pci-flow.json','utf8'));
   const f=fixture(), events=[], logs=[], sessions=new Map();
   const normalizer=flows.find(n=>n.name==='Validate and route browser command');
-  const buildId=flows.find(n=>n.name==='M11_PCI-IssuerRuntime').func.match(/buildId='([a-f0-9]+)'/)[1];
+  const buildId=flows.find(n=>n.name==='M11_PCI-IssuerRuntime').func.match(/buildId\s*=\s*'([a-f0-9]+)'/)[1];
   const pool={pciNative:{buildId,service:f.api,adapters:f.adapters,nats:{ready:true},subscription:true,metrics:new Map()},async query(sql,args){
     if(sql.includes('FROM tenants WHERE primary_domain='))return {rows:[...f.store.db.tenants.values()].filter(t=>t.primary_domain===args[0]&&!['deleted','deleting'].includes(t.state))};
     if(sql.includes('FROM auth_sessions WHERE token_hash='))return {rows:sessions.has(args[0])?[sessions.get(args[0])]:[]};

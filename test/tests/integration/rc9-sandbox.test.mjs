@@ -1,3 +1,13 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -94,7 +104,7 @@ for(const profile of ['oid4vci-1.0','oid4vci-draft13']){
 // and native HTTP/NATS boundary objects are fixtures; helper code is unchanged.
 function publicHandler({profile='oid4vci-1.0',kind='issuer',empty=false,mutate=()=>{},nativePayload}={}){
  const name='M11_PCI-IssuerRuntime',generated=flows.find(n=>n.name===name&&n.type==='function');
- const buildId=generated.func.match(/buildId='([a-f0-9]+)'/)[1];
+ const buildId=generated.func.match(/buildId\s*=\s*'([a-f0-9]+)'/)[1];
  const tenant={tenant_id:tid,tenant_slug:'alpha',primary_domain:'alpha-pci.example.com',state:'active'};
  const metadata={...bundle.issuer,profile,did:'did:web:alpha-pci.example.com',tokenKeyRef:'preauth'};
  const queryLog=[],calls=[],errors=[];

@@ -1,3 +1,13 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -27,6 +37,6 @@ test("uibuilder overwrites the socket identity and routes commands through grant
   const normalizer=baseFlow.find(node=>node.type==='function' && node.name==='Validate and route browser command');
   assert.ok(normalizer);
   assert.match(normalizer.func,/return pciNormalizeCommand\(/);
-  assert.match(normalizer.func,/msg = \{ _socketId: socketId/);
+  assert.match(normalizer.func,/msg\s*=\s*\{\s*_socketId:\s*socketId/);
   assert.doesNotMatch(normalizer.func,/handshakeCandidates|trustedUibuilderHeaders/);
 });
