@@ -1,3 +1,13 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 const read=p=>fs.readFileSync(p,'utf8');
 test('SR2 tabs, typed contracts, version and migration stay embedded in canonical release',()=>{
@@ -10,7 +20,7 @@ test('SR2 tabs, typed contracts, version and migration stay embedded in canonica
 });
 test('runtime has no payload debug nodes, optional transport flags, or executable tenant scripts',()=>{
  const flow=JSON.parse(read('dist/fap-pci-flow.json'));assert.equal(flow.some(n=>n.type==='debug'),false);
- const adapters=read('backend/sr2/adapters.js');assert.match(adapters,/ready:false/);assert.doesNotMatch(adapters,/process\.env|env\.get/);
+ const adapters=read('backend/sr2/adapters.js');assert.match(adapters,/ready\s*:\s*false/);assert.doesNotMatch(adapters,/process\.env|env\.get/);
  const domain=read('backend/sr2/domain.js');assert.doesNotMatch(domain,/new Function|\beval\(/);assert.match(read('backend/functions/_common.js'),/msg\.pciTransport === "internal"\) return \[null, null\]/);
 });
 test('schema keeps independent immutable versions and enforces tenant-qualified status uniqueness',()=>{

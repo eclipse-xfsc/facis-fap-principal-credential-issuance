@@ -1,3 +1,14 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
+import { stripModuleSyntax } from '../../../tools/lib/module-source.mjs';
 import test from 'node:test';import assert from 'node:assert/strict';
 import { fixture,configuration,alpha,beta } from '../../support/sr2-fixture.mjs';
 import { httpHarness } from '../../support/sr2-http.mjs';
@@ -33,7 +44,7 @@ test('HTTP history filters by verified credential ID and exposes current state w
 
 test('validation errors survive distinct Node-RED VM constructors',async()=>{
  const vm=await import('node:vm'),fs=await import('node:fs');
- const domain=fs.readFileSync('backend/sr2/domain.js','utf8').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'');
+ const domain=stripModuleSyntax(fs.readFileSync('backend/sr2/domain.js','utf8'), 'backend/sr2/domain.js');
  const foreign=vm.runInNewContext(domain+'\nnew Sr2Error(400,"PCI-CONFIG-PREREQUISITES","Activate the participant connector first.")');
  const f=fixture();f.api.resource=async()=>{throw foreign;};
  const response=await httpHarness(f)(base+'/credential-configurations/11111111-1111-4111-8111-111111111111/validate',{method:'POST'});

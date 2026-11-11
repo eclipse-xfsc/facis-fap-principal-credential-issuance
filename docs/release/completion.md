@@ -1,5 +1,7 @@
 # Executed checks and release documentation
 
+The results on this page belong to the commit they name. Pull requests merged after it carry their own workflow runs; the gates that have no result yet for the current source are listed in [acceptance gates](acceptance-gates.md).
+
 Reviewed source: [`3fef8e3048f3`](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/commit/3fef8e3048f3803b8aecbd99f582a3c4c05295b0), application `0.5.0-rc.12`. Container distribution: `ecofacis/fap-pci:1.0.0`. Results below describe the identified source CI run; they do not relabel that run as a deployment test of the packaged image.
 
 | Check | Executed result | Record |
