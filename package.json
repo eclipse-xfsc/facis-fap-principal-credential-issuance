@@ -13,7 +13,14 @@
     "test:integration": "node --test test/tests/integration/*.test.mjs",
     "test:ci": "npm run build && npm run test:static && npm run test:bdd && npm run test:integration",
     "security:audit": "npm audit --omit=dev --audit-level=high",
-    "test:offline": "node tools/validate-offline.mjs"
+    "test:offline": "node tools/validate-offline.mjs",
+    "format:check": "node tools/format-source.mjs --check backend src shared tools build.js",
+    "format": "node tools/format-source.mjs backend src shared tools build.js",
+    "preview:fixture": "node tools/preview-fixture.mjs",
+    "test:browser:dom": "node test/browser/dom-smoke.mjs",
+    "test:ux-summary": "python3 -B -m unittest discover -s test/ux-runner -p test_*.py",
+    "check:maintainability": "node tools/check-maintainability.mjs",
+    "check:headers": "node tools/add-licence-headers.mjs --check"
   },
   "dependencies": {
     "jsonwebtoken": "9.0.2",
@@ -22,6 +29,9 @@
     "pg": "8.16.3",
     "vue": "3.5.43",
     "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "acorn": "8.15.0"
   },
   "engines": {
     "node": ">=20.0.0"
