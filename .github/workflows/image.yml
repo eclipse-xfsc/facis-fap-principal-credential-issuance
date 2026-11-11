@@ -1,0 +1,208 @@
+name: Images
+
+# Builds the application image (deployment/image/Dockerfile, on the mandated
+# ORCE base image referenced by digest) and the participant service image for
+# every pull request, every push to main and every release candidate tag.
+# Pull requests from forks have no repository secrets: their images are built,
+# scanned, given an SBOM and started, but not pushed. Pushes to main and tags
+# publish through the reusable workflows of eclipse-xfsc/dev-ops, which read
+# harbor.config and the HARBOR_* secrets.
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: images-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TRIVY_VERSION: 0.58.1
+  SYFT_VERSION: v1.54.1
+
+jobs:
+  base-image:
+    name: Resolve and verify the base image
+    runs-on: ubuntu-24.04
+    outputs:
+      reference: ${{ steps.lock.outputs.reference }}
+      digest: ${{ steps.lock.outputs.digest }}
+      uibuilder: ${{ steps.lock.outputs.uibuilder }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read base-image.lock and check the tag still resolves to the recorded digest
+        id: lock
+        run: |
+          set -euo pipefail
+          source <(grep -E '^[A-Z_]+=' deployment/image/base-image.lock | sed 's/^/export /')
+          test -n "${BASE_DIGEST}" || { echo "::error::BASE_DIGEST is empty in deployment/image/base-image.lock; inspect the base image and record its digest"; exit 1; }
+          test -n "${BASE_ENTRYPOINT}" || { echo "::error::BASE_ENTRYPOINT is empty in deployment/image/base-image.lock"; exit 1; }
+          CURRENT="$(docker buildx imagetools inspect "${BASE_REFERENCE}" --format '{{json .Manifest.Digest}}' | tr -d '"')"
+          if [ "${CURRENT}" != "${BASE_DIGEST}" ]; then
+            echo "::error::${BASE_REFERENCE} now resolves to ${CURRENT}, not to the recorded ${BASE_DIGEST}. Review the change and update the lock file deliberately."
+            exit 1
+          fi
+          echo "reference=${BASE_REFERENCE}@${BASE_DIGEST}" >> "$GITHUB_OUTPUT"
+          echo "digest=${BASE_DIGEST}" >> "$GITHUB_OUTPUT"
+          echo "uibuilder=${UIBUILDER_VERSION}" >> "$GITHUB_OUTPUT"
+
+  application-image:
+    name: Build, scan and start the application image
+    needs: base-image
+    runs-on: ubuntu-24.04
+    env:
+      PCI_ORCE_BASE_PATH: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build
+        run: |
+          set -euo pipefail
+          docker buildx build --load \
+            --file deployment/image/Dockerfile \
+            --build-arg "ORCE_BASE=${{ needs.base-image.outputs.reference }}" \
+            --build-arg "UIBUILDER_VERSION=${{ needs.base-image.outputs.uibuilder }}" \
+            --build-arg "SOURCE_COMMIT=${GITHUB_SHA}" \
+            --build-arg "SOURCE_VERSION=$(cat VERSION)" \
+            --tag fap-pci:ci .
+          docker image inspect fap-pci:ci > image-application.json
+      - name: Install Trivy
+        run: |
+          set -euo pipefail
+          curl -sSfL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" -o trivy.tgz
+          curl -sSfL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_checksums.txt" -o trivy.sums
+          grep "trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" trivy.sums | sha256sum -c -
+          tar -xzf trivy.tgz trivy && sudo mv trivy /usr/local/bin/trivy
+      - name: Scan the base image and the application image
+        run: |
+          set -euo pipefail
+          trivy image --format json --output scan-base.json --severity HIGH,CRITICAL --scanners vuln "${{ needs.base-image.outputs.reference }}"
+          trivy image --format json --output scan-application.json --severity HIGH,CRITICAL --scanners vuln fap-pci:ci
+          node tools/check-image-scan.mjs --base scan-base.json --image scan-application.json --exceptions security/image-scan-exceptions.json
+      - name: SBOM of the application image
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610
+        with:
+          image: fap-pci:ci
+          syft-version: ${{ env.SYFT_VERSION }}
+          format: cyclonedx-json
+          output-file: sbom-application.cdx.json
+          upload-artifact: false
+          upload-release-assets: false
+      - name: Start-up check (seeding, health and readiness, PCI flows loaded)
+        run: |
+          set -euo pipefail
+          docker volume create pci-data >/dev/null
+          docker run -d --name pci --publish 1880:1880 \
+            --volume pci-data:/data \
+            --env-file deployment/image/startup-check.env \
+            fap-pci:ci
+          for i in $(seq 1 60); do
+            if curl -sSf "http://127.0.0.1:1880${PCI_ORCE_BASE_PATH:-}/healthz" >/dev/null 2>&1; then break; fi
+            sleep 5
+          done
+          curl -sSf "http://127.0.0.1:1880${PCI_ORCE_BASE_PATH:-}/healthz"
+          curl -sS "http://127.0.0.1:1880${PCI_ORCE_BASE_PATH:-}/readyz" || true
+          docker exec pci node -e '
+            const fs = require("fs");
+            const marker = JSON.parse(fs.readFileSync("/data/fap-pci/install/image-release.json", "utf8"));
+            const flows = JSON.parse(fs.readFileSync("/data/" + (process.env.FLOW_FILE || "flows.json"), "utf8"));
+            const tabs = flows.filter(n => n.type === "tab" && /^M\d+_PCI-|^PCI_Interface$/.test(n.label || ""));
+            if (tabs.length < 10) throw new Error("PCI tabs not loaded: " + tabs.length);
+            console.log(JSON.stringify({ release: marker.release, commit: marker.commit, pciTabs: tabs.length }));
+          '
+          docker logs pci > startup-check.log 2>&1
+      - name: Keep the records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-image-${{ github.sha }}
+          path: |
+            image-application.json
+            scan-base.json
+            scan-application.json
+            sbom-application.cdx.json
+            startup-check.log
+
+  participant-image:
+    name: Build and scan the participant image
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build
+        run: |
+          set -euo pipefail
+          docker buildx build --load --platform linux/amd64 \
+            --file reference/participant-data-repository/Dockerfile \
+            --tag fap-pci-participant:ci .
+          docker image inspect fap-pci-participant:ci > image-participant.json
+      - name: Install Trivy
+        run: |
+          set -euo pipefail
+          curl -sSfL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" -o trivy.tgz
+          curl -sSfL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_checksums.txt" -o trivy.sums
+          grep "trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" trivy.sums | sha256sum -c -
+          tar -xzf trivy.tgz trivy && sudo mv trivy /usr/local/bin/trivy
+      - name: Scan (fails on HIGH or CRITICAL; the distroless base carries no inherited findings to exclude)
+        run: trivy image --exit-code 1 --severity HIGH,CRITICAL --scanners vuln --format json --output scan-participant.json fap-pci-participant:ci
+      - name: SBOM of the participant image
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610
+        with:
+          image: fap-pci-participant:ci
+          syft-version: ${{ env.SYFT_VERSION }}
+          format: cyclonedx-json
+          output-file: sbom-participant.cdx.json
+          upload-artifact: false
+          upload-release-assets: false
+      - name: Keep the records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: participant-image-${{ github.sha }}
+          path: |
+            image-participant.json
+            scan-participant.json
+            sbom-participant.cdx.json
+
+  # Publication: main and release candidate tags only, through the reusable
+  # workflows of eclipse-xfsc/dev-ops (pinned to a commit; their inner reference
+  # to build-context.yml is @main, which the pin cannot fix). They push to the
+  # Harbor project of harbor.config under the robot account of HARBOR_CREDENTIALS.
+  publish-application:
+    if: github.event_name == 'push'
+    needs: [base-image, application-image]
+    uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@0a41e33426aa16be73845a06aabbaf080b6fe5ff
+    with:
+      dockerfile: deployment/image/Dockerfile
+      buildContext: .
+      service: fap-pci
+      platforms: linux/amd64
+      build_args: ORCE_BASE=${{ needs.base-image.outputs.reference }},UIBUILDER_VERSION=${{ needs.base-image.outputs.uibuilder }},SOURCE_COMMIT=${{ github.sha }}
+    secrets: inherit
+
+  publish-participant:
+    if: github.event_name == 'push'
+    needs: participant-image
+    uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@0a41e33426aa16be73845a06aabbaf080b6fe5ff
+    with:
+      dockerfile: reference/participant-data-repository/Dockerfile
+      buildContext: .
+      service: fap-pci-participant
+      platforms: linux/amd64
+    secrets: inherit
+
+  publish-charts:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: [publish-application, publish-participant]
+    strategy:
+      fail-fast: false
+      matrix:
+        chart: [fap-pci, observability, participant]
+    uses: eclipse-xfsc/dev-ops/.github/workflows/helm.yml@0a41e33426aa16be73845a06aabbaf080b6fe5ff
+    with:
+      buildContext: deployment/helm/${{ matrix.chart }}
+    secrets: inherit

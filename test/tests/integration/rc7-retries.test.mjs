@@ -1,8 +1,17 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {spawnSync} from 'node:child_process';
-test('installation retries transient preparation failures but never replay an ambiguous deployment or permanent error',()=>{
- const result=spawnSync('python3',['-c',`
+import { spawnSync } from 'node:child_process';
+test('installation retries transient preparation failures but never replay an ambiguous deployment or permanent error', () => {
+  const result = spawnSync('python3', [
+    '-c',
+    `
 import runpy,subprocess,tempfile
 from pathlib import Path
 from unittest.mock import patch
@@ -22,6 +31,7 @@ with tempfile.TemporaryDirectory() as directory:
  with (Path(directory)/'result.log').open('w') as log:
   code,output,submitted,deadline=m['run_installer'](['python3','-c','print("deploying nodes: 357",flush=True);print("i/o timeout",flush=True);raise SystemExit(1)'],{},Path(directory),log,5)
  assert code==1 and submitted and not retry(output,submitted,deadline)
-`],{encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}});
- assert.equal(result.status,0,result.stderr);
+`
+  ], { encoding: 'utf8', env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' } });
+  assert.equal(result.status, 0, result.stderr);
 });

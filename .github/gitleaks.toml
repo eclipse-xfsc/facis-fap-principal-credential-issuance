@@ -1,0 +1,24 @@
+# Secret-scan configuration for gitleaks (R1-2).
+# The default rule set applies. The allowlist covers files that hold
+# checksums and integrity hashes, which the generic rules otherwise report.
+title = "FAP PCI secret scan"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Checksums, integrity hashes and generated inventories"
+paths = [
+  '''package-lock\.json$''',
+  '''vendor/vue-provenance\.json$''',
+  '''contracts/envoy-release\.json$''',
+  '''docs/release/artifacts\.json$''',
+  '''docs/release/source-sha256\.txt$''',
+  '''docs/specifications/manifest\.json$''',
+  '''test/support/qr-reference\.json$''',
+  '''reference/participant-data-repository/go\.sum$''',
+]
+regexes = [
+  '''ephemeral-ci-only''',
+  '''startup-check''',
+]
