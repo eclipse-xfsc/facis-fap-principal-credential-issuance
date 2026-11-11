@@ -1,0 +1,194 @@
+{
+  "$comment": "Requirements whose status differed between the status matrices of 17 and 18 October 2026, with the proposed status for the current source, the reason and the measure. Proposed by the author of the matrix for confirmation by the QA sign-off (Atoosa Eslami); a deviation from a MUST requirement (status GAP or a PARTIAL that will not be closed before the resubmission) needs the prior written agreement of the principal. The evidence field is filled from the runs on the release candidate tag.",
+  "statuses": {
+    "EVIDENCE_LINKED": "executed result for the current source linked",
+    "PARTIAL": "source exists; acceptance or external evidence outstanding",
+    "GAP": "required delivery has not occurred"
+  },
+  "items": [
+    {
+      "id": "FR-PCI-48",
+      "status": "PARTIAL",
+      "reason": "PCI's own transient-data handling is implemented and tested; R4-3 adds the collection of the captures for the canary scan. The whole-chain check depends on the deployment of the upstream payload-logging fixes by the OCM owner.",
+      "measure": "Canary scan with scripts/collect-privacy-captures.py and scripts/privacy-audit.py on both QA deployments after a successful and a failed synthetic issuance (R5); written notice of the upstream dependency to the principal.",
+      "closes": "R4-3, R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-51",
+      "status": "PARTIAL",
+      "reason": "A PCI/ directory for rc.12 has been in eclipse-xfsc/deployment since 17 October 2026, uploaded directly to main and not through a pull request; the acceptance criterion requires pull requests merged by a maintainer. R4-4 generates the package from the source.",
+      "measure": "Pull request to eclipse-xfsc/deployment replacing PCI/ with the export of the release candidate, reviewed and merged by its maintainers.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-54",
+      "status": "PARTIAL",
+      "reason": "The documentation built strictly but was published only on manual dispatch. R3-8 publishes it on every push to main and every release candidate tag and adds the troubleshooting and FAQ page; publication for the current source is not yet recorded.",
+      "measure": "Documentation workflow run with publication on the release candidate tag, recorded in the evidence package.",
+      "closes": "R3-8, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-60",
+      "status": "PARTIAL",
+      "reason": "The baseline forced the FACIS palette, font and corners. R2-10 lets each tenant choose colors (with the contrast rules), one of five font stacks, the corner style and the page width, applied as soon as the branding is activated; the provider pages keep the FACIS standard. The live ad-hoc demonstration on a deployment is outstanding.",
+      "measure": "Live demonstration of an ad-hoc theme change on the QA deployment during the internal milestone demonstration (R5), recorded with the test report.",
+      "closes": "R2-10, R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-61",
+      "status": "PARTIAL",
+      "reason": "The deployed XFSC BDD Executor run has not been executed; the runner and the twelve @pci-ux scenarios are in the repository (R2-7).",
+      "measure": "Run on IONOS and OSC in R5; summary committed through a pull request; evidence linked here.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-73",
+      "status": "PARTIAL",
+      "reason": "The Eclipse Dash check failed on the baseline because markdown 3.11.2 has no vetted licence data.",
+      "measure": "Constraints pin (R1-1) makes the check green; IP Team request for markdown 3.11.2 filed by the committer; approval recorded.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-74",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-75",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-84",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 2.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-85",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-86",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-87",
+      "status": "PARTIAL",
+      "reason": "PCM Mobile import of two distinct flows is not established by the software-wallet tests and the QR generation.",
+      "measure": "End-to-end test with PCM Mobile import of two flows on both clusters in R5, recorded with the test report.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-88",
+      "status": "PARTIAL",
+      "reason": "PCM Mobile issuance across several tenants and users is not demonstrated.",
+      "measure": "End-to-end test across two tenants and users on both clusters in R5.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-89",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-90",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 3.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-91",
+      "status": "PARTIAL",
+      "reason": "Second-cluster deployment with end-to-end issuance is not recorded; the automation exists.",
+      "measure": "Deployment of the release candidate images on OSC and IONOS and end-to-end issuance in R5, recorded with digests.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-92",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-93",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-94",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 4.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-95",
+      "status": "PARTIAL",
+      "reason": "Current images and charts are not published to the Harbor registry; the images are built by the Images workflow (R4).",
+      "measure": "Publication through the dev-ops workflows on the release candidate tag once the Harbor project and robot account are issued; digests recorded (R4, R6).",
+      "closes": "R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-96",
+      "status": "PARTIAL",
+      "reason": "Stale statements of earlier CI results were corrected in R2-8, R3-7 and R3-8; the reviewed, versioned and published documentation of the release candidate is outstanding.",
+      "measure": "Review of the documentation pull requests and publication on the release candidate tag.",
+      "closes": "R3-8, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-97",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for the final milestone.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-101",
+      "status": "GAP",
+      "reason": "An all-green workflow result cannot be claimed while the Eclipse Dash workflow is red on main.",
+      "measure": "All workflows green on the release candidate tag after R1-1; the run recorded in the evidence package.",
+      "closes": "R6",
+      "evidence": null
+    }
+  ]
+}

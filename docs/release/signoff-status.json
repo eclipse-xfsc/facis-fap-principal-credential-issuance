@@ -1,5 +1,5 @@
 {
-  "version": "0.5.0-rc.12",
+  "version": "0.5.0-rc.16",
   "recordType": "review-receipt-procedure",
   "receiptTemplate": "acceptance.example.json",
   "command": "node tools/signoff-gate.mjs docs/release/acceptance.json",

@@ -1,0 +1,4325 @@
+{
+  "version": "0.5.0-rc.16",
+  "purpose": "Requirement-to-test traceability for the resubmission of MS2: each SRS requirement and each technical provision with its tests, the pull requests that implement it and its evidence. Statuses of the requirements under reassessment come from requirement-deviations.json; the evidence column is filled from the runs on the release candidate tag.",
+  "deviations": [
+    {
+      "id": "FR-PCI-48",
+      "status": "PARTIAL",
+      "reason": "PCI's own transient-data handling is implemented and tested; R4-3 adds the collection of the captures for the canary scan. The whole-chain check depends on the deployment of the upstream payload-logging fixes by the OCM owner.",
+      "measure": "Canary scan with scripts/collect-privacy-captures.py and scripts/privacy-audit.py on both QA deployments after a successful and a failed synthetic issuance (R5); written notice of the upstream dependency to the principal.",
+      "closes": "R4-3, R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-51",
+      "status": "PARTIAL",
+      "reason": "A PCI/ directory for rc.12 has been in eclipse-xfsc/deployment since 17 October 2026, uploaded directly to main and not through a pull request; the acceptance criterion requires pull requests merged by a maintainer. R4-4 generates the package from the source.",
+      "measure": "Pull request to eclipse-xfsc/deployment replacing PCI/ with the export of the release candidate, reviewed and merged by its maintainers.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-54",
+      "status": "PARTIAL",
+      "reason": "The documentation built strictly but was published only on manual dispatch. R3-8 publishes it on every push to main and every release candidate tag and adds the troubleshooting and FAQ page; publication for the current source is not yet recorded.",
+      "measure": "Documentation workflow run with publication on the release candidate tag, recorded in the evidence package.",
+      "closes": "R3-8, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-60",
+      "status": "PARTIAL",
+      "reason": "The baseline forced the FACIS palette, font and corners. R2-10 lets each tenant choose colors (with the contrast rules), one of five font stacks, the corner style and the page width, applied as soon as the branding is activated; the provider pages keep the FACIS standard. The live ad-hoc demonstration on a deployment is outstanding.",
+      "measure": "Live demonstration of an ad-hoc theme change on the QA deployment during the internal milestone demonstration (R5), recorded with the test report.",
+      "closes": "R2-10, R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-61",
+      "status": "PARTIAL",
+      "reason": "The deployed XFSC BDD Executor run has not been executed; the runner and the twelve @pci-ux scenarios are in the repository (R2-7).",
+      "measure": "Run on IONOS and OSC in R5; summary committed through a pull request; evidence linked here.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-73",
+      "status": "PARTIAL",
+      "reason": "The Eclipse Dash check failed on the baseline because markdown 3.11.2 has no vetted licence data.",
+      "measure": "Constraints pin (R1-1) makes the check green; IP Team request for markdown 3.11.2 filed by the committer; approval recorded.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-74",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-75",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-84",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 2.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-85",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-86",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-87",
+      "status": "PARTIAL",
+      "reason": "PCM Mobile import of two distinct flows is not established by the software-wallet tests and the QR generation.",
+      "measure": "End-to-end test with PCM Mobile import of two flows on both clusters in R5, recorded with the test report.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-88",
+      "status": "PARTIAL",
+      "reason": "PCM Mobile issuance across several tenants and users is not demonstrated.",
+      "measure": "End-to-end test across two tenants and users on both clusters in R5.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-89",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-90",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 3.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-91",
+      "status": "PARTIAL",
+      "reason": "Second-cluster deployment with end-to-end issuance is not recorded; the automation exists.",
+      "measure": "Deployment of the release candidate images on OSC and IONOS and end-to-end issuance in R5, recorded with digests.",
+      "closes": "R5",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-92",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "closes": "R4-4, deployment PR",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-93",
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "closes": "R4-3, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-94",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 4.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-95",
+      "status": "PARTIAL",
+      "reason": "Current images and charts are not published to the Harbor registry; the images are built by the Images workflow (R4).",
+      "measure": "Publication through the dev-ops workflows on the release candidate tag once the Harbor project and robot account are issued; digests recorded (R4, R6).",
+      "closes": "R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-96",
+      "status": "PARTIAL",
+      "reason": "Stale statements of earlier CI results were corrected in R2-8, R3-7 and R3-8; the reviewed, versioned and published documentation of the release candidate is outstanding.",
+      "measure": "Review of the documentation pull requests and publication on the release candidate tag.",
+      "closes": "R3-8, R6",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-97",
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for the final milestone.",
+      "measure": "As FR-PCI-73.",
+      "closes": "R1-1",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-101",
+      "status": "GAP",
+      "reason": "An all-green workflow result cannot be claimed while the Eclipse Dash workflow is red on main.",
+      "measure": "All workflows green on the release candidate tag after R1-1; the run recorded in the evidence package.",
+      "closes": "R6",
+      "evidence": null
+    }
+  ],
+  "srs": [
+    {
+      "id": "FR-PCI-01",
+      "title": "Key Creation over TSA Crypto Provider",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/service.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/native-adapter.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Configure both keys through UI; inspect tenant ownership; sign with Vault and OpenBao in an approved environment.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-02",
+      "title": "DID Provisioning over TSA Crypto Provider",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/service.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/native-adapter.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Public DID document shows the actual issuer key and resolves through the selected universal resolver; deletion/rotation behavior recorded.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-03",
+      "title": "Credential Endpoint",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/profiles.js"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/native-adapter.test.mjs",
+        "test/tests/integration/native-profiles.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "From outside cluster request the exact tenant credential endpoint and reject a cross-tenant host/header.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-04",
+      "title": "Pre-Authorization Bridge Endpoints",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/profiles.js"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/native-adapter.test.mjs",
+        "test/tests/integration/native-profiles.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "External positive and cross-tenant negative API calls using the selected OCM bridge.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-05",
+      "title": "TSA Endpoints",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/service.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/native-adapter.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Resolve tenant JWKS over HTTPS and match it to configured signing keys and DID.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-06",
+      "title": "Issuer Management Delegation",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/http.js",
+        "backend/functions/tenant.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-security.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Two users with different scopes; direct API and UI create/edit/delete/flow tests before and after revocation.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R3-2"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-07",
+      "title": "OID4VCI Issuer Metadata Configuration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/native.js",
+        "deployment/prerequisites/upstream/oid4-vci-vp-well-known-service-empty-catalogue.patch",
+        "backend/sr2/runtime.js"
+      ],
+      "tests": [
+        "test/tests/bdd/native-completion.test.mjs",
+        "test/tests/integration/native-adapter.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Authenticated publish, observed revision, well-known read-back, restart/replay, stale update and unauthorized edit tests.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-08",
+      "title": "Issuing Management",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/http.js",
+        "backend/functions/tenant.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-security.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Delegated issuer performs full CRUD and manages two actual issuance flows.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R3-2"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-09",
+      "title": "OID4VCI Credential Configuration Permissioning",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/http.js",
+        "backend/functions/tenant.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-security.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Ordinary principal denied UI and APIs; authorized issuer succeeds, cross-tenant requests denied.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R3-2"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-10",
+      "title": "Credential Logos",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/assets.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Wallet fetches and renders tenant-specific image from actual metadata; old published assets remain resolvable.",
+      "pullRequests": [
+        "R2-10",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-11",
+      "title": "Issuance Flow Configuration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/issuance.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Two configuration IDs with distinct multi-step journeys executed in browser and pinned for an in-flight request.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-12",
+      "title": "Credential History per Configuration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/history.js",
+        "backend/sr2/store.js",
+        "backend/sr2/service.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/live/postgres.test.mjs",
+        "test/tests/integration/history.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Restricted per-configuration UI showing IDs, dates, offered/expired/issued/revoked states and approved principal association; privacy review.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-13",
+      "title": "Credential Revocation",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/issuance.js",
+        "backend/sr2/native.js",
+        "src/sr2.js",
+        "backend/sr2/revocation.js",
+        "test/tests/integration/rc4-revocation.test.mjs"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/history.test.mjs",
+        "test/tests/integration/native-adapter.test.mjs",
+        "test/tests/integration/rc6-native-contract.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Search by approved ID/date/principal reference, revoke once, verify public credential status, block reissue and audit override.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-14",
+      "title": "Credential Configuration Deletion",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/issuance.js",
+        "backend/sr2/maintenance.js",
+        "backend/sr2/native.js",
+        "test/bdd/features/native-wallet.feature"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-review-regressions.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-deletion.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Archive/delete a configuration while old credentials still verify until the agreed validity limit.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-15",
+      "title": "Credential Configuration Creation/Update",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/domain.js",
+        "backend/sr2/service.js",
+        "src/sr2.js",
+        "backend/sr2/linked-data.js",
+        "test/bdd/features/pcm.feature"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Real create/update/delete and standards fixtures read back from well-known endpoints.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-16",
+      "title": "Participant Backend Connection",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/participant-security.js",
+        "backend/sr2/wire.js",
+        "backend/sr2/issuance.js",
+        "reference/participant-data-repository"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/sr2-mtls.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Configure each credential connection through UI; real mutual TLS including expired/wrong cert and bounded egress cases.",
+      "pullRequests": [
+        "R2-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-17",
+      "title": "OCM W-Stack Integration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/profiles.js",
+        "backend/sr2/sdjwt.js",
+        "test/tests/integration/rc4-formats.test.mjs"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/native-adapter.test.mjs",
+        "test/tests/integration/native-profiles.test.mjs",
+        "test/tests/integration/rc6-native-contract.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Reviewed exact contract implementation and full native issuance through OCM and PCM.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-18",
+      "title": "NATS Provisioning of Configured Metadata",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/native.js",
+        "deployment/prerequisites/upstream/oid4-vci-vp-well-known-service-empty-catalogue.patch",
+        "backend/sr2/maintenance.js"
+      ],
+      "tests": [
+        "test/tests/bdd/native-completion.test.mjs",
+        "test/tests/integration/native-adapter.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Tenant issuer/config metadata published, observed at native Well-Known, including revision/delete/restart behavior.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-19",
+      "title": "History Logging",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/history.js",
+        "backend/sr2/store.js",
+        "backend/sr2/service.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/live/postgres.test.mjs",
+        "test/tests/integration/history.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Sanitized event samples for both modes, per configuration, with audit and GDPR review.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-20",
+      "title": "Participant Backend Connection",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/participant-security.js",
+        "backend/sr2/wire.js",
+        "backend/sr2/issuance.js",
+        "reference/participant-data-repository",
+        "reference/participant-data-repository/ldp_signer.go",
+        "test/bdd/features/native-wallet.feature",
+        "backend/sr2/linked-data.js"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/rc6-native-contract.test.mjs",
+        "test/tests/integration/sr2-mtls.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Participant mock and repository flows with positive/negative token, cert, subject, signature, status cases.",
+      "pullRequests": [
+        "R2-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-21",
+      "title": "ORCE Integration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/native.js",
+        "backend/sr2/runtime.js",
+        "backend/sr2/profiles.js"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/native-adapter.test.mjs",
+        "test/tests/integration/native-profiles.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Actual configured ORCE flow creates short-lived offer; QR scanned by PCM and resolved by OCM.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-22",
+      "title": "Golang Service",
+      "priority": "MUST",
+      "implementation": [
+        "reference/participant-data-repository",
+        "contracts/participant.proto",
+        "backend/sr2/native.js",
+        "reference/participant-data-source"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/participant-source.test.mjs"
+      ],
+      "otherChecks": [
+        "reference/participant-data-repository/repository_test.go"
+      ],
+      "acceptanceProcedure": "Reviewed Goa design/generated code, Docker image, runtime service and code review.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-23",
+      "title": "Data Format Library",
+      "priority": "SHOULD",
+      "implementation": [
+        "reference/participant-data-repository/credential"
+      ],
+      "tests": [],
+      "otherChecks": [
+        "reference/participant-data-repository/credential/formats_test.go",
+        ".github/workflows/ci.yml"
+      ],
+      "acceptanceProcedure": "Build and review the reusable JWT/SD-JWT package. Contribute it to the designated XFSC repository through the approved process. VCDM 2.0/ETSI EAA is recommended; full conformity is outside this release scope.",
+      "pullRequests": [
+        "R1-1",
+        "R2-4",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-24",
+      "title": "Data Request",
+      "priority": "MUST",
+      "implementation": [
+        "reference/participant-data-repository",
+        "contracts/participant.proto",
+        "backend/sr2/native.js",
+        "reference/participant-data-source"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/participant-source.test.mjs"
+      ],
+      "otherChecks": [
+        "reference/participant-data-repository/repository_test.go"
+      ],
+      "acceptanceProcedure": "Versioned proto, service implementation, interoperable call and reviewed error/metadata semantics.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-25",
+      "title": "Tenant Management",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Provider browser journey and unauthorized access denial on live environment.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-26",
+      "title": "Tenant Approved",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Approved tenant reaches Ready, route and login; compare resources before/after and verify email.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-27",
+      "title": "Tenant Deletion",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/reconcile.js",
+        "backend/sr2/maintenance.js",
+        "backend/sr2/issuance.js",
+        "backend/functions/_participant-cleanup.js",
+        "test/tests/integration/rc4-lifecycle.test.mjs",
+        "scripts/reconcile-participant-ownership.py"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-deletion.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation.",
+      "pullRequests": [
+        "R2-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-28",
+      "title": "Tenant Rejection",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Reject a pending request, see retained decision and email, and confirm no tenant resources.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-29",
+      "title": "Confirmation/Deletion/List Section",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Register, approve, list, duplicate participant rejection, and protected delete in browser.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-30",
+      "title": "Participant Tenant Administration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/auth.js",
+        "backend/functions/tenant.js",
+        "automation/stage1/ground-zero.sh",
+        "scripts/configure-entra.py",
+        "docs/operations/identity.md",
+        "backend/functions/_identity.js",
+        "test/tests/integration/rc4-identity.test.mjs",
+        "test/bdd/features/fresh-identity.feature",
+        "test/bdd/features/pcm.feature"
+      ],
+      "tests": [
+        "test/bdd/features/runtime.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/integration/keycloak-network-policy.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "After approval, use emailed account, change password/register strong factor, configure tenant and exercise it.",
+      "pullRequests": [
+        "R2-7",
+        "R3-4",
+        "R3-7",
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-31",
+      "title": "Compliance",
+      "priority": "SHOULD",
+      "implementation": [
+        "src/main.js",
+        "src/sr2.js",
+        "src/styles.css",
+        "docs/ux/ux-concept.md"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/browser/runtime.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification.",
+      "pullRequests": [
+        "R2-10",
+        "R2-5",
+        "R2-6",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-32",
+      "title": "Registration Data Form",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Both modes, forged private registration denial, email verification, provider approval and cluster inventory.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-33",
+      "title": "Compliance",
+      "priority": "SHOULD",
+      "implementation": [
+        "src/main.js",
+        "src/sr2.js",
+        "src/styles.css",
+        "docs/ux/ux-concept.md"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/browser/runtime.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Complete browser, keyboard, screen-reader and EN 301 549 evaluation; local Vue tests are not accessibility certification.",
+      "pullRequests": [
+        "R2-10",
+        "R2-5",
+        "R2-6",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-34",
+      "title": "Credential Configuration Management",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/domain.js",
+        "backend/sr2/service.js",
+        "src/sr2.js",
+        "backend/sr2/linked-data.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Create/edit/delete with claims/assets/connector, read native metadata and issue from selected backend.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-35",
+      "title": "Credential Issuance Permissioning",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/issuance.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-security.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Director versus employee issuance, denial and role-removal propagation across two configurations.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-36",
+      "title": "Credential History and Revocation",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/issuance.js",
+        "backend/sr2/native.js",
+        "src/sr2.js",
+        "backend/sr2/revocation.js",
+        "test/tests/integration/rc4-revocation.test.mjs"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/history.test.mjs",
+        "test/tests/integration/native-adapter.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Authorized history search and per-record revoke; separate public verifier/status proof and denied reissue.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-37",
+      "title": "Steps Configuration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/issuance.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Landing→input/consent→offer sequences, tenant branding and error/replay tests.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-38",
+      "title": "ORCE Utilization",
+      "priority": "SHOULD (conditional MUST)",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/issuance.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Demonstrate two changes without code deployment and run both in ORCE.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-39",
+      "title": "mTLS Connection",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/participant-security.js",
+        "backend/sr2/wire.js",
+        "backend/sr2/issuance.js",
+        "reference/participant-data-repository"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/sr2-mtls.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Real participant TLS handshake, negative trust tests and documented UI/config procedure.",
+      "pullRequests": [
+        "R2-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-40",
+      "title": "Participant JWT Reusage",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/participant-security.js",
+        "backend/sr2/wire.js",
+        "backend/sr2/issuance.js",
+        "reference/participant-data-repository"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/sr2-mtls.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Observe redacted claims/binding from participant-issued token at repository, reject wrong issuer/audience/scope/subject.",
+      "pullRequests": [
+        "R2-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-41",
+      "title": "Issuing Settings",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/domain.js",
+        "backend/sr2/issuance.js",
+        "backend/sr2/store.js"
+      ],
+      "tests": [
+        "test/live/postgres.test.mjs",
+        "test/tests/bdd/native-completion.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Configure limits in tenant UI, load test, inspect bounded behavior after restart and under two tenants.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-42",
+      "title": "TLS Security",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/transport.js",
+        "backend/sr2/wire.js",
+        "backend/functions/_common.js",
+        "docs/operations/transport.md"
+      ],
+      "tests": [
+        "test/tests/integration/native-transport.test.mjs",
+        "test/tests/integration/runtime-memory.test.mjs",
+        "test/tests/integration/sr2-mtls.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "TLS 1.3 enforced on PCI Gateway and participant channel; selected in-cluster OCM HTTP/NATS endpoints need OCM-owner TLS/service-mesh deployment and a full endpoint scan.",
+      "pullRequests": [],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-43",
+      "title": "TLS Certificates",
+      "priority": "MUST",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "scripts/deploy-observability.py",
+        "deployment/helm/observability"
+      ],
+      "tests": [
+        "test/tests/static/hardening.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/check-g0-manifests.py"
+      ],
+      "acceptanceProcedure": "Review and demonstrate the supplied static TLS Secret, name coverage, expiry and rotation. The SRS permits static TLS as an alternative to route-specific Let’s Encrypt.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-44",
+      "title": "Authentication with Keycloak in Tenant",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/auth.js",
+        "backend/functions/tenant.js",
+        "automation/stage1/ground-zero.sh",
+        "scripts/configure-entra.py",
+        "docs/operations/identity.md"
+      ],
+      "tests": [
+        "test/bdd/features/runtime.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/integration/keycloak-network-policy.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Live PKCE login and issuance with valid/invalid realm, audience, tenant and disabled member.",
+      "pullRequests": [
+        "R2-7",
+        "R3-4",
+        "R3-7",
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-45",
+      "title": "Authentication with Microsoft Entra in Tenant",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/auth.js",
+        "backend/functions/tenant.js",
+        "automation/stage1/ground-zero.sh",
+        "scripts/configure-entra.py",
+        "docs/operations/identity.md",
+        "backend/functions/_identity.js",
+        "test/bdd/features/fresh-identity.feature"
+      ],
+      "tests": [
+        "test/bdd/features/runtime.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/integration/keycloak-network-policy.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Document tenant connection, perform Entra login and complete a credential journey.",
+      "pullRequests": [
+        "R2-7",
+        "R3-4",
+        "R3-7",
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-46",
+      "title": "Authentication in Tenant Administration/Registration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/auth.js",
+        "backend/functions/tenant.js",
+        "automation/stage1/ground-zero.sh",
+        "scripts/configure-entra.py",
+        "docs/operations/identity.md"
+      ],
+      "tests": [
+        "test/bdd/features/runtime.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/integration/keycloak-network-policy.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Registration→verification→approval→passkey enrollment and protected admin access in browser.",
+      "pullRequests": [
+        "R2-7",
+        "R3-4",
+        "R3-7",
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-47",
+      "title": "IDP Authorization Reusage",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/auth.js",
+        "backend/functions/tenant.js",
+        "automation/stage1/ground-zero.sh",
+        "scripts/configure-entra.py",
+        "docs/operations/identity.md"
+      ],
+      "tests": [
+        "test/bdd/features/runtime.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/integration/keycloak-network-policy.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "IdP role/group mapping guide and live permission change reflected in issuance.",
+      "pullRequests": [
+        "R2-7",
+        "R3-4",
+        "R3-7",
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-48",
+      "title": "GDPR Compliance",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/issuance.js",
+        "backend/sr2/presentation.js",
+        "backend/functions/_common.js",
+        "scripts/privacy-audit.py",
+        "deployment/prerequisites/upstream",
+        "tools/prepare-upstream-builds.py"
+      ],
+      "tests": [
+        "test/tests/integration/presentation.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/release-automation.test.mjs",
+        "test/tests/integration/runtime-memory.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Owner reviews/builds/deploys exact native logging patches; execute successful/failed real-path canary scans across all retained sinks and record remediation/retention evidence.",
+      "pullRequests": [
+        "R2-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "PCI's own transient-data handling is implemented and tested; R4-3 adds the collection of the captures for the canary scan. The whole-chain check depends on the deployment of the upstream payload-logging fixes by the OCM owner.",
+      "measure": "Canary scan with scripts/collect-privacy-captures.py and scripts/privacy-audit.py on both QA deployments after a successful and a failed synthetic issuance (R5); written notice of the upstream dependency to the principal.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-49",
+      "title": "Deployment Playbook",
+      "priority": "MUST",
+      "implementation": [
+        "automation/stage1",
+        "automation/flows/pci-deployment.json",
+        "scripts/lifecycle.py",
+        "scripts/deploy.sh",
+        "scripts/uninstall.sh",
+        "scripts/import-legacy-baseline.py",
+        "automation/stage1/apply-resources.py"
+      ],
+      "tests": [
+        "test/bdd/features/lifecycle.feature",
+        "test/tests/integration/artifact-lifecycle.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/rc6-apply.test.mjs",
+        "test/tests/integration/release-automation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Clean second cluster from a locked release, rollback/restore, full credential issuance.",
+      "pullRequests": [],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-50",
+      "title": "Route Management",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/reconcile.js",
+        "backend/functions/_k8s.js",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "tests": [
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/static/gateway-base-path.test.mjs",
+        "test/tests/static/security-host-authority.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Effective Envoy route dumps; forged header, direct Service, cross-host and multi-tenant tests.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-51",
+      "title": "Deployment Publication",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Maintainer-merged PRs with release SHA and deployment integration; separate repository alone is insufficient.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "A PCI/ directory for rc.12 has been in eclipse-xfsc/deployment since 17 October 2026, uploaded directly to main and not through a pull request; the acceptance criterion requires pull requests merged by a maintainer. R4-4 generates the package from the source.",
+      "measure": "Pull request to eclipse-xfsc/deployment replacing PCI/ with the export of the release candidate, reviewed and merged by its maintainers.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-52",
+      "title": "Deployment Tool Stack",
+      "priority": "MUST",
+      "implementation": [
+        "automation/stage1",
+        "automation/flows/pci-deployment.json",
+        "scripts/lifecycle.py",
+        "scripts/deploy.sh",
+        "scripts/uninstall.sh",
+        "automation/stage1/apply-resources.py"
+      ],
+      "tests": [
+        "test/bdd/features/lifecycle.feature",
+        "test/tests/integration/artifact-lifecycle.test.mjs",
+        "test/tests/integration/rc6-apply.test.mjs",
+        "test/tests/integration/release-automation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Published architecture/deployment choices, license inventory and second-cluster portability test.",
+      "pullRequests": [],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-53",
+      "title": "Resource Limitation",
+      "priority": "MUST",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "deployment/helm",
+        "docs/operations/runbook.md"
+      ],
+      "tests": [
+        "test/tests/integration/release-automation.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/check-g0-manifests.py"
+      ],
+      "acceptanceProcedure": "Limits and storage/CPU/memory sizing guide, load test, safe scale/restore demonstration.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-54",
+      "title": "Web Documentation",
+      "priority": "MUST",
+      "implementation": [
+        "mkdocs.yml",
+        ".github/workflows/docs.yml",
+        "docs/product.adoc",
+        "docs/specifications",
+        "docs/architecture",
+        "docs/api"
+      ],
+      "tests": [],
+      "otherChecks": [
+        "docs build workflow",
+        "tools/check-documentation.mjs"
+      ],
+      "acceptanceProcedure": "Versioned public support page with working navigation, FAQ, install/troubleshooting guides and link check.",
+      "pullRequests": [
+        "R1-1",
+        "R2-7",
+        "R2-8",
+        "R3-7",
+        "R3-8",
+        "R4-2",
+        "R6-1"
+      ],
+      "status": "PARTIAL",
+      "reason": "The documentation built strictly but was published only on manual dispatch. R3-8 publishes it on every push to main and every release candidate tag and adds the troubleshooting and FAQ page; publication for the current source is not yet recorded.",
+      "measure": "Documentation workflow run with publication on the release candidate tag, recorded in the evidence package.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-55",
+      "title": "Jaeger Tracing",
+      "priority": "MUST",
+      "implementation": [
+        "deployment/helm/observability",
+        "scripts/deploy-observability.py",
+        "backend/sr2/runtime.js"
+      ],
+      "tests": [
+        "test/tests/integration/runtime-memory.test.mjs"
+      ],
+      "otherChecks": [
+        ".github/workflows/ci.yml",
+        "docs/operations/observability.md"
+      ],
+      "acceptanceProcedure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
+      "pullRequests": [
+        "R1-1",
+        "R2-3",
+        "R2-4",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-56",
+      "title": "Prometheus",
+      "priority": "MUST",
+      "implementation": [
+        "deployment/helm/observability",
+        "scripts/deploy-observability.py",
+        "backend/sr2/runtime.js"
+      ],
+      "tests": [
+        "test/tests/integration/runtime-memory.test.mjs"
+      ],
+      "otherChecks": [
+        ".github/workflows/ci.yml",
+        "docs/operations/observability.md"
+      ],
+      "acceptanceProcedure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
+      "pullRequests": [
+        "R1-1",
+        "R2-3",
+        "R2-4",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-57",
+      "title": "OTEL Collection",
+      "priority": "MUST",
+      "implementation": [
+        "deployment/helm/observability",
+        "scripts/deploy-observability.py",
+        "backend/sr2/runtime.js"
+      ],
+      "tests": [
+        "test/tests/integration/runtime-memory.test.mjs"
+      ],
+      "otherChecks": [
+        ".github/workflows/ci.yml",
+        "docs/operations/observability.md"
+      ],
+      "acceptanceProcedure": "Render and deploy the private TLS 1.3 Jaeger/Prometheus/Collector stack. Demonstrate real PCI counters and safe traces, retention/rotation and telemetry failure isolation. No cross-component trace propagation claim.",
+      "pullRequests": [
+        "R1-1",
+        "R2-3",
+        "R2-4",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-58",
+      "title": "Health Endpoints/Logging",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/status.js",
+        "backend/sr2/runtime.js",
+        "backend/functions/_common.js"
+      ],
+      "tests": [
+        "test/bdd/features/runtime.feature",
+        "test/tests/integration/runtime-memory.test.mjs",
+        "test/tests/integration/sr2-http.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Native outage injection, stable health states and sanitized log samples.",
+      "pullRequests": [
+        "R2-3",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-59",
+      "title": "Low Code",
+      "priority": "MUST",
+      "implementation": [
+        "src/main.js",
+        "src/sr2.js",
+        "src/styles.css",
+        "backend/sr2/domain.js",
+        "backend/sr2/service.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/browser/runtime.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Tenant admin changes all relevant pages through one coherent low-code interface.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-6",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-60",
+      "title": "Layout Customization",
+      "priority": "MUST",
+      "implementation": [
+        "src/main.js",
+        "src/sr2.js",
+        "src/styles.css",
+        "backend/sr2/domain.js",
+        "backend/sr2/service.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/browser/runtime.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Visual comparison, immediate theme edit across two tenants and responsive browser check.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-6",
+        "R2-7"
+      ],
+      "status": "PARTIAL",
+      "reason": "The baseline forced the FACIS palette, font and corners. R2-10 lets each tenant choose colors (with the contrast rules), one of five font stacks, the corner style and the page width, applied as soon as the branding is activated; the provider pages keep the FACIS standard. The live ad-hoc demonstration on a deployment is outstanding.",
+      "measure": "Live demonstration of an ad-hoc theme change on the QA deployment during the internal milestone demonstration (R5), recorded with the test report.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-61",
+      "title": "UX Tests",
+      "priority": "MUST",
+      "implementation": [
+        "scripts/run-ux-bdd.py",
+        "scripts/collect-ux-environment.py",
+        "test/bdd/features/steps/administration.py",
+        "test/bdd/features/steps/pci.py"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/bdd/features/offer.feature",
+        "test/bdd/features/runtime.feature",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/ux-runner/test_summary.py"
+      ],
+      "otherChecks": [
+        ".github/workflows/ci.yml"
+      ],
+      "acceptanceProcedure": "Run supplied XFSC Executor browser/runtime/lifecycle cases on a synthetic tenant. Complete real registration/IdP/PCM and accessibility evidence from the walkthrough; no browser or wallet execution was available here.",
+      "pullRequests": [
+        "R1-1",
+        "R2-4",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "PARTIAL",
+      "reason": "The deployed XFSC BDD Executor run has not been executed; the runner and the twelve @pci-ux scenarios are in the repository (R2-7).",
+      "measure": "Run on IONOS and OSC in R5; summary committed through a pull request; evidence linked here.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-62",
+      "title": "OID4VCI/VP Version",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/profiles.js",
+        "backend/sr2/presentation.js",
+        "src/sr2.js",
+        "docs/contracts/presentation.md",
+        "backend/sr2/native.js",
+        "test/tests/integration/rc4-formats.test.mjs"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/native-profiles.test.mjs",
+        "test/tests/integration/presentation.test.mjs",
+        "test/tests/integration/rc6-native-contract.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Draft 13 and 1.0 issuance serializers implemented; OID4VP profiles and native non-JWT conformance require upstream work. See UP-02/03.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-63",
+      "title": "Protocol Structure",
+      "priority": "MUST",
+      "implementation": [
+        "reference/participant-data-repository",
+        "contracts/participant.proto",
+        "backend/sr2/native.js",
+        "reference/participant-data-source",
+        "backend/sr2/sdjwt.js",
+        "test/bdd/features/native-wallet.feature",
+        "reference/participant-data-repository/ldp_signer.go",
+        "reference/participant-data-repository/ldp_signer_test.go"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/participant-source.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs"
+      ],
+      "otherChecks": [
+        "reference/participant-data-repository/repository_test.go"
+      ],
+      "acceptanceProcedure": "Notification and data request contract, both modes with participant and internal signing, interoperable wire tests.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-64",
+      "title": "Standard Workflows",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml",
+        "docs/ci-cd.md"
+      ],
+      "tests": [
+        "test/tests/static/hardening.test.mjs"
+      ],
+      "otherChecks": [
+        "workflow review"
+      ],
+      "acceptanceProcedure": "Restore official remote workflows in every code repo; successful runs tied to release SHA.",
+      "pullRequests": [
+        "R1-1",
+        "R2-4",
+        "R2-5",
+        "R3-7",
+        "R3-8"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-65",
+      "title": "Tenant registration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "BDD report with mail and DB/cluster state.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-66",
+      "title": "Tenant deletion",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/reconcile.js",
+        "backend/sr2/maintenance.js",
+        "backend/sr2/issuance.js",
+        "backend/functions/_participant-cleanup.js",
+        "test/bdd/features/administration.feature",
+        "scripts/reconcile-participant-ownership.py"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-deletion.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Confirm deletion by exact tenant slug; inventory PCI-owned routes/configuration/Secret grants and accounts. Verify public UI, DID, JWKS, issuer and status URLs are unavailable; other tenants and shared OCM remain. Configuration archive is a separate operation.",
+      "pullRequests": [
+        "R2-3",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-67",
+      "title": "Provider approval",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Review audit, no premature resources, final Ready tenant.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-68",
+      "title": "Provider rejection",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/registration.js",
+        "backend/functions/provider.js",
+        "backend/functions/reconcile.js",
+        "src/main.js",
+        "test/bdd/features/pcm.feature"
+      ],
+      "tests": [
+        "test/bdd/features/registration.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Rejection BDD, Mailpit/SMTP evidence and resource inventory.",
+      "pullRequests": [
+        "R2-10",
+        "R2-4",
+        "R2-5",
+        "R2-6"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-69",
+      "title": "Participant IAM login",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/auth.js",
+        "backend/functions/tenant.js",
+        "automation/stage1/ground-zero.sh",
+        "scripts/configure-entra.py",
+        "docs/operations/identity.md",
+        "backend/functions/_identity.js",
+        "test/bdd/features/fresh-identity.feature"
+      ],
+      "tests": [
+        "test/bdd/features/runtime.feature",
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/integration/keycloak-network-policy.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Principal browser authentication and eligible/denied issuance choices.",
+      "pullRequests": [
+        "R2-7",
+        "R3-4",
+        "R3-7",
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-70",
+      "title": "Multiple tenant domains",
+      "priority": "MUST",
+      "implementation": [
+        "backend/functions/reconcile.js",
+        "backend/functions/_k8s.js",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "tests": [
+        "test/tests/bdd/tenant-foundation.test.mjs",
+        "test/tests/static/gateway-base-path.test.mjs",
+        "test/tests/static/security-host-authority.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Alpha/Beta login, isolation and route test.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-71",
+      "title": "Tenant branding",
+      "priority": "MUST",
+      "implementation": [
+        "src/main.js",
+        "src/sr2.js",
+        "src/styles.css",
+        "backend/sr2/domain.js",
+        "backend/sr2/service.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/browser/runtime.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Two independently branded live landing pages.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-6",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-72",
+      "title": "Delegated issuer management",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/http.js",
+        "backend/functions/tenant.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-security.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Grant/revoke by one tenant admin for two real users and scoped operations.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R3-2"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-73",
+      "title": "M1 Eclipse IP scan",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Compatible license scan and adjudication.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "The Eclipse Dash check failed on the baseline because markdown 3.11.2 has no vetted licence data.",
+      "measure": "Constraints pin (R1-1) makes the check green; IP Team request for markdown 3.11.2 filed by the committer; approval recorded.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-74",
+      "title": "M1 deployment integration",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Merged XFSC deployment PR.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-75",
+      "title": "M1 release version",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Tagged release with cluster image/flow/UI/G0 SHA record.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-76",
+      "title": "Create credential configuration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/domain.js",
+        "backend/sr2/service.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "UI/Well-Known creation demonstration.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-77",
+      "title": "Modify credential configuration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/domain.js",
+        "backend/sr2/service.js",
+        "src/sr2.js",
+        "test/bdd/features/registration.feature"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Versioned edit, metadata read-back and in-flight request proof.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-78",
+      "title": "Delete credential configuration",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/issuance.js",
+        "backend/sr2/maintenance.js",
+        "test/bdd/features/native-wallet.feature"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-review-regressions.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-deletion.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Old credential verifier check after deletion.",
+      "pullRequests": [
+        "R2-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-79",
+      "title": "Credential logo display",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/assets.js",
+        "src/sr2.js",
+        "test/bdd/features/pcm.feature"
+      ],
+      "tests": [
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Wallet-resolved logo and image processing record.",
+      "pullRequests": [
+        "R2-10",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-80",
+      "title": "Issuance flow interaction",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/service.js",
+        "backend/sr2/issuance.js",
+        "src/sr2.js"
+      ],
+      "tests": [
+        "test/bdd/features/administration.feature",
+        "test/tests/bdd/sr2-issuer.test.mjs",
+        "test/tests/integration/sr2-ui.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Two live journey definitions and executions.",
+      "pullRequests": [
+        "R2-10",
+        "R2-3",
+        "R2-5",
+        "R2-7"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-81",
+      "title": "History per configuration shows latest issuances and status",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2/history.js",
+        "backend/sr2/store.js",
+        "backend/sr2/service.js",
+        "src/sr2.js",
+        "backend/sr2/revocation.js",
+        "test/tests/integration/rc4-revocation.test.mjs"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/live/postgres.test.mjs",
+        "test/tests/integration/history.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Search a real issued credential ID, inspect issuance/status/history and authorized principal statement, revoke it through the native status service, and record current state.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-82",
+      "title": "Issuance based on participant backend",
+      "priority": "MUST",
+      "implementation": [
+        "reference/participant-data-repository",
+        "contracts/participant.proto",
+        "backend/sr2/native.js",
+        "reference/participant-data-source",
+        "reference/participant-data-repository/ldp_signer.go"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/participant-source.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/rc6-native-contract.test.mjs"
+      ],
+      "otherChecks": [
+        "reference/participant-data-repository/repository_test.go"
+      ],
+      "acceptanceProcedure": "Participant repository signs through Crypto Provider Core; independently verify the real credential, import it in PCM and record history/status.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-83",
+      "title": "Issuance based on participant data repository",
+      "priority": "MUST",
+      "implementation": [
+        "reference/participant-data-repository",
+        "contracts/participant.proto",
+        "backend/sr2/native.js",
+        "reference/participant-data-source",
+        "backend/sr2/linked-data.js"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/participant-grpc.test.mjs",
+        "test/tests/integration/participant-source.test.mjs",
+        "test/tests/integration/rc5-closure.test.mjs",
+        "test/tests/integration/rc6-native-contract.test.mjs"
+      ],
+      "otherChecks": [
+        "reference/participant-data-repository/repository_test.go"
+      ],
+      "acceptanceProcedure": "Participant repository returns unsigned credential data; native OCM signs it. Independently verify, import in PCM and record history/status.",
+      "pullRequests": [
+        "R2-3",
+        "R3-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-84",
+      "title": "M2 Eclipse IP scan",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Official M2 scan report.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 2.",
+      "measure": "As FR-PCI-73.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-85",
+      "title": "M2 deployment integration",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Merged source/chart change in XFSC deployment.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-86",
+      "title": "M2 release version",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Immutable tag and live digest/version trace.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-87",
+      "title": "Multiple flows and PCM import",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2",
+        "src/sr2.js",
+        "test/live/wallet.mjs",
+        "test/bdd/features/native-wallet.feature",
+        "test/bdd/features/pcm.feature",
+        "test/bdd/features/steps/pcm.py"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/presentation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Two full issuance journeys imported in PCM with verification.",
+      "pullRequests": [
+        "R2-5"
+      ],
+      "status": "PARTIAL",
+      "reason": "PCM Mobile import of two distinct flows is not established by the software-wallet tests and the QR generation.",
+      "measure": "End-to-end test with PCM Mobile import of two flows on both clusters in R5, recorded with the test report.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-88",
+      "title": "Multiple tenants/users in PCM",
+      "priority": "MUST",
+      "implementation": [
+        "backend/sr2",
+        "src/sr2.js",
+        "test/live/wallet.mjs",
+        "test/bdd/features/native-wallet.feature",
+        "test/bdd/features/pcm.feature",
+        "test/bdd/features/steps/pcm.py"
+      ],
+      "tests": [
+        "test/bdd/features/native-wallet.feature",
+        "test/tests/integration/presentation.test.mjs"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Two tenant and principal matrices in wallet, isolation results.",
+      "pullRequests": [
+        "R2-5"
+      ],
+      "status": "PARTIAL",
+      "reason": "PCM Mobile issuance across several tenants and users is not demonstrated.",
+      "measure": "End-to-end test across two tenants and users on both clusters in R5.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-89",
+      "title": "M3 release version",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Immutable release and deployed digest record.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-90",
+      "title": "M3 Eclipse IP scan",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Official scan and findings closure.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 3.",
+      "measure": "As FR-PCI-73.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-91",
+      "title": "Second-cluster issuance",
+      "priority": "MUST",
+      "implementation": [
+        "automation/stage1",
+        "scripts/lifecycle.py",
+        "deployment/helm",
+        "test/bdd"
+      ],
+      "tests": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/native-wallet.feature"
+      ],
+      "otherChecks": [],
+      "acceptanceProcedure": "Clean-install and credential import/verify evidence on another cluster.",
+      "pullRequests": [],
+      "status": "PARTIAL",
+      "reason": "Second-cluster deployment with end-to-end issuance is not recorded; the automation exists.",
+      "measure": "Deployment of the release candidate images on OSC and IONOS and end-to-end issuance in R5, recorded with digests.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-92",
+      "title": "Second-cluster deployment integration",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Merged XFSC deployment changes.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-51 for this milestone.",
+      "measure": "As FR-PCI-51.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-93",
+      "title": "Second-cluster release version",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Matching source/chart/image tags and notes.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
+      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-94",
+      "title": "M4 Eclipse IP scan",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Official scan result.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for milestone 4.",
+      "measure": "As FR-PCI-73.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-95",
+      "title": "Final releases, charts and images",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Tags/releases, chart/image digests and registry records.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "Current images and charts are not published to the Harbor registry; the images are built by the Images workflow (R4).",
+      "measure": "Publication through the dev-ops workflows on the release candidate tag once the Harbor project and robot account are issued; digests recorded (R4, R6).",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-96",
+      "title": "Final documentation",
+      "priority": "MUST",
+      "implementation": [
+        "mkdocs.yml",
+        ".github/workflows/docs.yml",
+        "docs/product.adoc",
+        "docs/specifications",
+        "docs/architecture",
+        "docs/api"
+      ],
+      "tests": [],
+      "otherChecks": [
+        "docs build workflow",
+        "tools/check-documentation.mjs"
+      ],
+      "acceptanceProcedure": "Reviewed, versioned and published documentation set.",
+      "pullRequests": [
+        "R1-1",
+        "R2-7",
+        "R2-8",
+        "R3-7",
+        "R3-8",
+        "R4-2",
+        "R6-1"
+      ],
+      "status": "PARTIAL",
+      "reason": "Stale statements of earlier CI results were corrected in R2-8, R3-7 and R3-8; the reviewed, versioned and published documentation of the release candidate is outstanding.",
+      "measure": "Review of the documentation pull requests and publication on the release candidate tag.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-97",
+      "title": "Final Eclipse IP scan",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Scan for every code repo and dependency with zero unapproved conflicts.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "PARTIAL",
+      "reason": "As FR-PCI-73 for the final milestone.",
+      "measure": "As FR-PCI-73.",
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-98",
+      "title": "EUDI/ARF/ETSI roadmap",
+      "priority": "MUST",
+      "implementation": [
+        "docs/security/compliance-roadmap.md"
+      ],
+      "tests": [],
+      "otherChecks": [
+        "Client review"
+      ],
+      "acceptanceProcedure": "Component-level compliance delta, tasks/owners/effort and explicit noncertification statement.",
+      "pullRequests": [],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-99",
+      "title": "Issue and PR disposition",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Timestamped inventory and disposition/closure of each issue/PR.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-100",
+      "title": "Required remote workflows",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml",
+        "docs/ci-cd.md"
+      ],
+      "tests": [
+        "test/tests/static/hardening.test.mjs"
+      ],
+      "otherChecks": [
+        "workflow review"
+      ],
+      "acceptanceProcedure": "Repo workflow review.",
+      "pullRequests": [
+        "R1-1",
+        "R2-4",
+        "R2-5",
+        "R3-7",
+        "R3-8"
+      ],
+      "status": "NOT_REASSESSED_FOR_ACCEPTANCE",
+      "reason": null,
+      "measure": null,
+      "evidence": null
+    },
+    {
+      "id": "FR-PCI-101",
+      "title": "Successful final workflows",
+      "priority": "MUST",
+      "implementation": [
+        ".github/workflows",
+        "docs/ci-cd.md",
+        "docs/testing/live-acceptance.md"
+      ],
+      "tests": [
+        "test/tests/integration/signoff-gate.test.mjs"
+      ],
+      "otherChecks": [
+        "tools/signoff-gate.mjs"
+      ],
+      "acceptanceProcedure": "Green action logs and immutable artifact provenance.",
+      "pullRequests": [
+        "R1-1",
+        "R3-7",
+        "R3-8",
+        "R4-3"
+      ],
+      "status": "GAP",
+      "reason": "An all-green workflow result cannot be claimed while the Eclipse Dash workflow is red on main.",
+      "measure": "All workflows green on the release candidate tag after R1-1; the run recorded in the evidence package.",
+      "evidence": null
+    }
+  ],
+  "technicalClauses": [
+    {
+      "id": "TDC-001",
+      "title": "Use the preferred Kanban or Scrum development process",
+      "source": "Technical-Development-Requirements.pdf p. 2, Scope Management",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Client records the selected process and real delivery history.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-002",
+      "title": "Release scoped software under Apache 2.0",
+      "source": "Technical-Development-Requirements.pdf p. 2, Scope Management",
+      "group": "TDR-04",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "LICENSE.txt",
+        "NOTICE.md",
+        "THIRD_PARTY_NOTICES.md"
+      ],
+      "closure": "Approve dependency/IP evidence and publish the licensed release.",
+      "pullRequests": [
+        "R2-1",
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-003",
+      "title": "Present the UX concept before implementation",
+      "source": "Technical-Development-Requirements.pdf p. 2, Scope Management",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/ux/ux-concept.md"
+      ],
+      "closure": "Record the actual presentation/approval history; do not backdate it.",
+      "pullRequests": [
+        "R2-10"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-004",
+      "title": "Include repository structure in the project plan",
+      "source": "Technical-Development-Requirements.pdf p. 2, Scope Management",
+      "group": "TDR-03",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "README.md",
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Client approves the structure in the authoritative project plan.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-005",
+      "title": "Present progress every two weeks",
+      "source": "Technical-Development-Requirements.pdf p. 2, Scope Management",
+      "group": "TDR-05",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "docs/requirements/traceability.md",
+        "docs/release/0.5.0-rc.4.md"
+      ],
+      "closure": "Actual presenters retain attendance, dates and progress decisions.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-006",
+      "title": "Use BDD tests in milestone presentations",
+      "source": "Technical-Development-Requirements.pdf p. 2, Scope Management",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd",
+        "docs/testing/completion.md"
+      ],
+      "closure": "Execute the delivered packs and present actual milestone outcomes.",
+      "pullRequests": [
+        "R4-3"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-007",
+      "title": "Use ORCE for service orchestration",
+      "source": "Technical-Development-Requirements.pdf p. 2, ORCE",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "backend/functions",
+        "backend/sr2",
+        "dist/fap-pci-flow.json"
+      ],
+      "closure": "Execute deployed native issuance and tenant operations.",
+      "pullRequests": [
+        "R2-1",
+        "R2-10",
+        "R2-3",
+        "R2-4",
+        "R3-2",
+        "R3-3",
+        "R3-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-008",
+      "title": "Use ORCE for Builder Node orchestration",
+      "source": "Technical-Development-Requirements.pdf p. 2, ORCE",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "tools/build-flows.mjs",
+        "docs/architecture/orce-nodes.md"
+      ],
+      "closure": "Inspect imported functions and run them in the target ORCE.",
+      "pullRequests": [
+        "R2-1",
+        "R2-3",
+        "R2-4",
+        "R3-7"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-009",
+      "title": "Use ORCE for applicable deployment workflows",
+      "source": "Technical-Development-Requirements.pdf p. 2, ORCE",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "automation/flows",
+        "docs/operations/automation.md"
+      ],
+      "closure": "Run deploy, upgrade and uninstall from the separate operator ORCE.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-010",
+      "title": "Use low-code integration",
+      "source": "Technical-Development-Requirements.pdf p. 2, ORCE",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "backend/sr2/service.js",
+        "src/sr2.js"
+      ],
+      "closure": "Configure multiple journeys and connectors without source edits.",
+      "pullRequests": [
+        "R2-3",
+        "R2-5"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-011",
+      "title": "Deploy on IONOS Cloud Kubernetes",
+      "source": "Technical-Development-Requirements.pdf p. 2, Deployment on Kubernetes",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/deploy.sh",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "closure": "Complete the IONOS deployment and test receipt.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-012",
+      "title": "Deploy on T-Systems Open Sovereign Cloud Kubernetes",
+      "source": "Technical-Development-Requirements.pdf p. 2, Deployment on Kubernetes",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/deploy.sh",
+        "docs/testing/live-acceptance.md"
+      ],
+      "closure": "Complete the OSC deployment and test receipt.",
+      "pullRequests": [
+        "R1-1",
+        "R4-3"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-013",
+      "title": "Automate deployment with Kubernetes and Helm",
+      "source": "Technical-Development-Requirements.pdf p. 2, Kubernetes and Helm",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "deployment/helm"
+      ],
+      "closure": "Render/lint the charts and execute cluster admission/deployment.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-014",
+      "title": "Automate updates with Kubernetes and Helm",
+      "source": "Technical-Development-Requirements.pdf p. 2, Kubernetes and Helm",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/stage1/install.sh"
+      ],
+      "closure": "Upgrade with existing PVCs, sessions and configurations, then verify.",
+      "pullRequests": [
+        "R4-4"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-015",
+      "title": "Automate uninstall with Kubernetes and Helm",
+      "source": "Technical-Development-Requirements.pdf p. 2, Kubernetes and Helm",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/uninstall.sh",
+        "automation/stage1/restore-runtime.mjs",
+        "scripts/import-legacy-baseline.py"
+      ],
+      "closure": "Run on a disposable installation; preserve unrelated edits and data. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-016",
+      "title": "Manage resources and ingress",
+      "source": "Technical-Development-Requirements.pdf p. 2, Kubernetes and Helm",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "backend/functions/_k8s.js",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "closure": "Review live ownership, limits, routes and tenant header isolation.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-017",
+      "title": "Deliver charts with each release",
+      "source": "Technical-Development-Requirements.pdf p. 2, Helm charts",
+      "group": "TDR-07",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "deployment/helm",
+        ".github/workflows/release.yml"
+      ],
+      "closure": "Publish reviewed chart artifacts alongside each approved release.",
+      "pullRequests": [
+        "R1-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-018",
+      "title": "Provision realms and clients",
+      "source": "Technical-Development-Requirements.pdf p. 2, Keycloak",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "backend/functions/reconcile.js"
+      ],
+      "closure": "Inspect realm/client settings and login flows in deployed Keycloak.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-019",
+      "title": "Manage service credentials",
+      "source": "Technical-Development-Requirements.pdf p. 2, Keycloak",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "backend/functions/_common.js"
+      ],
+      "closure": "Verify Secret reuse, mounts, rotation and current service authority.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-020",
+      "title": "Keep all code, schemas, charts and scripts in the client-designated repository",
+      "source": "Technical-Development-Requirements.pdf p. 2, Repository rules",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "README.md",
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Project lead supplies the designated repository and accepts these files.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-021",
+      "title": "Run GitHub Actions with security checks",
+      "source": "Technical-Development-Requirements.pdf p. 2, Repository rules",
+      "group": "TDR-03",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml"
+      ],
+      "closure": "Execute actual workflows and retain dependency/IP results.",
+      "pullRequests": [
+        "R1-1",
+        "R2-4",
+        "R2-5"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-022",
+      "title": "Do not create parallel private repositories",
+      "source": "Technical-Development-Requirements.pdf p. 2, Repository rules",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Project participants attest to repository authority; no repository was created here.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-023",
+      "title": "Commit work to the client repository daily",
+      "source": "Technical-Development-Requirements.pdf p. 2, Repository rules",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Actual daily history is required and cannot be manufactured retrospectively.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-024",
+      "title": "Include Apache license text and SPDX identity",
+      "source": "Technical-Development-Requirements.pdf p. 2, Apache License",
+      "group": "TDR-04",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "LICENSE.txt",
+        "NOTICE.md"
+      ],
+      "closure": "Client/IP reviewer approves the final licensed scope.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-025",
+      "title": "Use only Apache-compatible FOSS and approved licenses",
+      "source": "Technical-Development-Requirements.pdf p. 3, FOSS",
+      "group": "TDR-04",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "THIRD_PARTY_NOTICES.md",
+        "package-lock.json",
+        "reference/participant-data-repository/go.mod"
+      ],
+      "closure": "Resolve Go sums and full SBOM, scan transitive dependencies and approve licenses.",
+      "pullRequests": [
+        "R1-2",
+        "R2-1",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-026",
+      "title": "Inform the client in writing about planned license exceptions",
+      "source": "Technical-Development-Requirements.pdf p. 3, FOSS",
+      "group": "TDR-04",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "THIRD_PARTY_NOTICES.md",
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Client records any exception assessment; no approval is implied.",
+      "pullRequests": [
+        "R2-1",
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-027",
+      "title": "Obtain client confirmation of existing FOSS content",
+      "source": "Technical-Development-Requirements.pdf p. 3, FOSS",
+      "group": "TDR-04",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "THIRD_PARTY_NOTICES.md",
+        "contracts/source-manifest.json"
+      ],
+      "closure": "Client approves the inventoried dependencies and reused source.",
+      "pullRequests": [
+        "R2-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-028",
+      "title": "Assess and obtain approval of API and component versions",
+      "source": "Technical-Development-Requirements.pdf p. 3, FOSS",
+      "group": "TDR-04",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/compatibility/compatibility-matrix.md",
+        "contracts/source-manifest.json"
+      ],
+      "closure": "Verify deployed revisions and record client approval of the compatibility matrix.",
+      "pullRequests": [
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-029",
+      "title": "Avoid redundant XFSC functions",
+      "source": "Technical-Development-Requirements.pdf p. 3, XFSC reuse",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/architecture/architecture.md",
+        "docs/contracts/native-ocm.md"
+      ],
+      "closure": "Review boundaries: PCI orchestration reuses native keys/signing/offers/metadata/status.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-030",
+      "title": "Comply with Eclipse Contributor Agreement 3.1.0 or higher",
+      "source": "Technical-Development-Requirements.pdf p. 3, Contributor agreement",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Each actual contributor completes the required onboarding and agreement.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-031",
+      "title": "Use Kubernetes 1.29 or higher",
+      "source": "Technical-Development-Requirements.pdf p. 3, Runtime environments",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/preflight.sh",
+        "docs/compatibility/compatibility-matrix.md"
+      ],
+      "closure": "Validate the selected supported version; the documented supported range is narrower than the minimum.",
+      "pullRequests": [
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-032",
+      "title": "Use Helm deployments and ORCE Builder runtime without Docker Compose",
+      "source": "Technical-Development-Requirements.pdf p. 3, Runtime environments",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/deploy.sh",
+        "deployment/helm",
+        "tools/build-flows.mjs"
+      ],
+      "closure": "Confirm the supplied Kubernetes/ORCE topology in the running environment.",
+      "pullRequests": [
+        "R2-1",
+        "R2-3",
+        "R2-4"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-033",
+      "title": "Use Node.js for Builder logic",
+      "source": "Technical-Development-Requirements.pdf p. 3, Programming Languages",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "backend/functions",
+        "backend/sr2"
+      ],
+      "closure": "Load the generated functions into the approved ORCE Node.js runtime.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-034",
+      "title": "Use HTML, JavaScript and JSON schemas for ORCE UI nodes",
+      "source": "Technical-Development-Requirements.pdf p. 3, Programming Languages",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "src",
+        "backend/sr2/domain.js",
+        "docs/api/openapi.json"
+      ],
+      "closure": "Run the browser and UI acceptance pack.",
+      "pullRequests": [
+        "R2-10",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-035",
+      "title": "Supply Bash automation under scripts",
+      "source": "Technical-Development-Requirements.pdf p. 3, Programming Languages",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/deploy.sh",
+        "scripts/uninstall.sh",
+        "scripts/preflight.sh"
+      ],
+      "closure": "Execute Bash entrypoints and supplemental Python orchestration in the operator environment.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-036",
+      "title": "Use YAML for charts and Kubernetes manifests",
+      "source": "Technical-Development-Requirements.pdf p. 3, Programming Languages",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "deployment/helm",
+        "automation/stage1/ground-zero.sh"
+      ],
+      "closure": "Helm lint/render and live admission remain required.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-037",
+      "title": "Use Go for backend services",
+      "source": "Technical-Development-Requirements.pdf p. 3, Programming Languages",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "reference/participant-data-repository"
+      ],
+      "closure": "Generate Goa/protobuf, run vet/race tests and compile the participant service.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-038",
+      "title": "Report upstream issues in writing and obtain approval for additional work",
+      "source": "Technical-Development-Requirements.pdf p. 3, Mandated component dependencies",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/known-gaps.md",
+        "deployment/prerequisites/upstream"
+      ],
+      "closure": "Deliver the written findings through the client's approved process; owners review/build/deploy their component fixes.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-039",
+      "title": "Follow the Eclipse Handbook",
+      "source": "Technical-Development-Requirements.pdf p. 3, Documentation",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md",
+        "CODE_OF_CONDUCT.md"
+      ],
+      "closure": "Project lead reviews governance, releases and contributor records.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-040",
+      "title": "Use FAP Partner Onboarding as reference",
+      "source": "Technical-Development-Requirements.pdf p. 3, Documentation",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/source-baseline.md",
+        "docs/architecture/architecture.md"
+      ],
+      "closure": "Confirm the selected reference and PCI-specific adaptations with the client.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-041",
+      "title": "Submit BDD documentation within one month of project-plan approval",
+      "source": "Technical-Development-Requirements.pdf p. 3, Documentation",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd",
+        "docs/testing/completion.md"
+      ],
+      "closure": "Actual project-plan and submission dates are required; no backdated submission.",
+      "pullRequests": [
+        "R4-3"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-042",
+      "title": "Document high-level behavior",
+      "source": "Technical-Development-Requirements.pdf p. 3, Local Repo",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "README.md",
+        "docs/product.adoc",
+        "docs/architecture/architecture.md"
+      ],
+      "closure": "Review the product scope against the source specifications.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-043",
+      "title": "Document packaging and container boundaries",
+      "source": "Technical-Development-Requirements.pdf p. 3, Local Repo",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "README.md",
+        "reference/participant-data-repository/Dockerfile",
+        "docs/testing/participant-test.md"
+      ],
+      "closure": "Build the mandated participant image; approve its digest. PCI remains imported flows/UI.",
+      "pullRequests": [
+        "R2-8",
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-044",
+      "title": "Document deployment and preconditions",
+      "source": "Technical-Development-Requirements.pdf p. 3, Local Repo",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/operations/deployment.md",
+        "docs/operations/upgrade-0.5.0-rc.4.md"
+      ],
+      "closure": "Execute the documented deployment/upgrade against the actual environment.",
+      "pullRequests": [
+        "R4-2"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-045",
+      "title": "Document changes and additions to source specifications",
+      "source": "Technical-Development-Requirements.pdf p. 4, Local Repo",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/requirements/traceability.md",
+        "docs/known-gaps.md",
+        "docs/release/0.5.0-rc.4.md"
+      ],
+      "closure": "Client reviews implementation decisions and unresolved dependencies; source specifications are unchanged.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-046",
+      "title": "Document orchestrated flow breakdown",
+      "source": "Technical-Development-Requirements.pdf p. 4, Local Repo",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/architecture/orce-nodes.md",
+        "docs/architecture/issuer-runtime.md"
+      ],
+      "closure": "Review node inputs/outputs and trust boundaries.",
+      "pullRequests": [
+        "R3-7"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-047",
+      "title": "Include BDD, licenses, dependencies and external OSS references",
+      "source": "Technical-Development-Requirements.pdf p. 4, Local Repo",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd",
+        "LICENSE.txt",
+        "THIRD_PARTY_NOTICES.md",
+        "contracts/source-manifest.json"
+      ],
+      "closure": "Review the complete tested dependency inventory before release.",
+      "pullRequests": [
+        "R2-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-048",
+      "title": "Use one monorepo, one history and unified concepts/specifications/source",
+      "source": "Technical-Development-Requirements.pdf p. 4, General Principles",
+      "group": "TDR-03",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "README.md",
+        "docs/specifications",
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Import into the designated repository; no nested independent Git projects are supplied.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-049",
+      "title": "Have project leads create the main repository via the client",
+      "source": "Technical-Development-Requirements.pdf p. 4, Repository Creation",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Client/project leads supply the official destination and naming.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-050",
+      "title": "Complete XFSC contributor onboarding",
+      "source": "Technical-Development-Requirements.pdf p. 4, Contributor Onboarding",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md"
+      ],
+      "closure": "Actual contributors complete and retain onboarding records.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-051",
+      "title": "Supply a MkDocs or ReadTheDocs documentation build",
+      "source": "Technical-Development-Requirements.pdf p. 4, Documentation Generator",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "mkdocs.yml",
+        ".github/workflows/docs.yml"
+      ],
+      "closure": "Run strict MkDocs build and publish the reviewed site.",
+      "pullRequests": [
+        "R1-1",
+        "R2-7",
+        "R2-8",
+        "R3-7",
+        "R3-8",
+        "R4-2",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-052",
+      "title": "Supply AsciiDoc product documentation",
+      "source": "Technical-Development-Requirements.pdf p. 4, Product Documentation",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/product.adoc"
+      ],
+      "closure": "Client reviews the product document in its accepted documentation format.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-053",
+      "title": "Supply editable architecture models",
+      "source": "Technical-Development-Requirements.pdf p. 4, Architecture Modelling",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/architecture/components.puml",
+        "docs/architecture/issuance.puml"
+      ],
+      "closure": "Review/render the delivered UML sources and confirm the client's model format.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-054",
+      "title": "Define every REST endpoint and provide examples",
+      "source": "Technical-Development-Requirements.pdf p. 4, APIs",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/api/openapi.json",
+        "docs/api/examples.json",
+        "tools/check-documentation.mjs"
+      ],
+      "closure": "Execute API examples with private real sessions and validate deployed responses.",
+      "pullRequests": [
+        "R2-10",
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-055",
+      "title": "Describe orchestration node contracts",
+      "source": "Technical-Development-Requirements.pdf p. 4, Node-RED hooks",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/architecture/orce-nodes.md",
+        "backend/sr2/routes.json"
+      ],
+      "closure": "Review imported nodes and configured external modules.",
+      "pullRequests": [
+        "R3-7"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-056",
+      "title": "Supply JSON-LD contexts and SHACL shapes for templates/data",
+      "source": "Technical-Development-Requirements.pdf p. 4, Semantic templates",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "contracts/examples",
+        "backend/sr2/semantics.js",
+        "docs/contracts/semantic-templates.md",
+        "backend/sr2/linked-data.js",
+        "test/live/semantic-validation.py"
+      ],
+      "closure": "Run a semantic processor and SHACL validator; client approves production vocabulary/template profiles. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-057",
+      "title": "Reconcile client-supplied template examples",
+      "source": "Technical-Development-Requirements.pdf p. 4, Client templates",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "contracts/examples",
+        "docs/contracts/semantic-templates.md"
+      ],
+      "closure": "Replace synthetic reference vocabulary when the client provides its approved templates.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-058",
+      "title": "Provide overview, setup, environment/configuration and documentation links",
+      "source": "Technical-Development-Requirements.pdf p. 4, README",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "README.md",
+        "docs/operations/deployment.md",
+        "docs/operations/transport.md"
+      ],
+      "closure": "Client reviews the documented installation choices.",
+      "pullRequests": [
+        "R2-8",
+        "R4-2",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-059",
+      "title": "Include an understandable use-case diagram",
+      "source": "Technical-Development-Requirements.pdf p. 5, README",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "README.md",
+        "docs/architecture/components.puml"
+      ],
+      "closure": "Review the rendered diagram with the client.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-060",
+      "title": "Reference official XFSC Dash scanner and build workflows",
+      "source": "Technical-Development-Requirements.pdf p. 6, FOSS Repository Workflows",
+      "group": "TDR-03",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml",
+        "docs/ci-cd.md"
+      ],
+      "closure": "Run workflows, capture resolved nested versions and review actual findings.",
+      "pullRequests": [
+        "R1-1",
+        "R2-4",
+        "R2-5",
+        "R3-7",
+        "R3-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-061",
+      "title": "Confirm responsible contributor/contact information",
+      "source": "Technical-Development-Requirements.pdf p. 6, FOSS Repository README",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md"
+      ],
+      "closure": "Client must name the maintainer and approved contact; no identity or mailbox is invented.",
+      "pullRequests": [
+        "R2-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-062",
+      "title": "Document contributor, release and issue-reporting processes",
+      "source": "Technical-Development-Requirements.pdf p. 6, FOSS Repository Contributing",
+      "group": "TDR-03",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "CONTRIBUTING.md",
+        "SECURITY.md"
+      ],
+      "closure": "Client finalizes these processes for the designated project.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-063",
+      "title": "Include license terms",
+      "source": "Technical-Development-Requirements.pdf p. 6, FOSS Repository License",
+      "group": "TDR-04",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "LICENSE.txt",
+        "NOTICE.md"
+      ],
+      "closure": "IP reviewer approves final software and third-party notices.",
+      "pullRequests": [
+        "R2-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-064",
+      "title": "Finalize the code of conduct with the Principal",
+      "source": "Technical-Development-Requirements.pdf p. 6, FOSS Repository Code of Conduct",
+      "group": "TDR-03",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "CODE_OF_CONDUCT.md"
+      ],
+      "closure": "Principal approves the existing code-of-conduct text.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-065",
+      "title": "Host specifications/models and documentation on GitHub Pages",
+      "source": "Technical-Development-Requirements.pdf p. 6, FOSS Repository Docs",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs",
+        "mkdocs.yml",
+        ".github/workflows/docs.yml"
+      ],
+      "closure": "Review the generated documentation and explicitly publish it.",
+      "pullRequests": [
+        "R1-1",
+        "R2-7",
+        "R2-8",
+        "R3-7",
+        "R3-8",
+        "R4-2",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-066",
+      "title": "Document CI/CD and OpenAPI",
+      "source": "Technical-Development-Requirements.pdf p. 6, FOSS Repository CI and APIs",
+      "group": "TDR-06",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/ci-cd.md",
+        "docs/api/README.md",
+        "docs/api/openapi.json"
+      ],
+      "closure": "Review exact workflow inputs and API response contracts.",
+      "pullRequests": [
+        "R2-10",
+        "R3-7",
+        "R3-8",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-067",
+      "title": "Run deploy/redeploy/uninstall with zero manual intervention after inputs",
+      "source": "Technical-Development-Requirements.pdf p. 6, ORCE Automation QA",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/flows/pci-deployment.json",
+        "scripts/import-legacy-baseline.py",
+        "scripts/reconcile-participant-ownership.py"
+      ],
+      "closure": "Run all three operations with pre-provisioned private inputs and inspect outcomes. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-068",
+      "title": "Use structured JSON automation/runtime logs",
+      "source": "Technical-Development-Requirements.pdf p. 6, ORCE Automation QA",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/flows/lifecycle.js",
+        "backend/functions/_common.js"
+      ],
+      "closure": "Inspect safe structured outcomes across actual success/failure executions.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-069",
+      "title": "Expose machine-readable errors in ORCE context",
+      "source": "Technical-Development-Requirements.pdf p. 6, ORCE Automation QA",
+      "group": "TDR-02",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/lifecycle.py",
+        "automation/flows/lifecycle.js"
+      ],
+      "closure": "Confirm phase/code/detail/nextStep/exitCode without child payload leakage.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-070",
+      "title": "Enforce TLS 1.3 for every endpoint and hop",
+      "source": "Technical-Development-Requirements.pdf p. 6, Runtime Validation",
+      "group": "TDR-01",
+      "responsibility": "OWNER_REVIEW_REQUIRED",
+      "implementation": [
+        "docs/operations/transport.md",
+        "backend/sr2/transport.js",
+        "deployment/helm/observability",
+        "deployment/prerequisites/all-hop-tls/mesh.yaml",
+        "tools/prepare-all-hop-tls.py"
+      ],
+      "closure": "Platform owners must encrypt compatibility ORCE/database/mail and shared native links. Client flags alone do not close this requirement. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-071",
+      "title": "Store secrets in Kubernetes Secrets and keep them out of logs",
+      "source": "Technical-Development-Requirements.pdf p. 6, Runtime Validation",
+      "group": "TDR-01",
+      "responsibility": "OWNER_REVIEW_REQUIRED",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "docs/privacy/data-handling.md",
+        "scripts/privacy-audit.py",
+        "deployment/prerequisites/upstream",
+        "tools/prepare-upstream-builds.py"
+      ],
+      "closure": "Deploy owner-approved upstream log fixes and inspect every real payload sink. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-072",
+      "title": "Create namespaces, ingress/routes, services and deployments correctly",
+      "source": "Technical-Development-Requirements.pdf p. 6, Runtime Validation",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "automation/stage1/ground-zero.sh",
+        "backend/functions/_k8s.js",
+        "tools/check-g0-manifests.py"
+      ],
+      "closure": "Validate Kubernetes admission, controllers, ownership and readiness on both clouds.",
+      "pullRequests": [
+        "R4-4",
+        "R6-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-073",
+      "title": "Reach identity and trust dependencies",
+      "source": "Technical-Development-Requirements.pdf p. 6, Runtime Validation",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "scripts/preflight.sh",
+        "backend/functions/status.js"
+      ],
+      "closure": "Demonstrate Keycloak, native TSA/status/metadata/NATS and trust connectivity.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-074",
+      "title": "Execute successful deployment scenario",
+      "source": "Technical-Development-Requirements.pdf p. 6, BDD Suite",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "closure": "Run the official Executor against an approved disposable installation.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-075",
+      "title": "Execute invalid parameter scenario",
+      "source": "Technical-Development-Requirements.pdf p. 6, BDD Suite",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "closure": "Run the delivered negative parameter case and retain its safe result.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-076",
+      "title": "Execute idempotent redeployment scenario",
+      "source": "Technical-Development-Requirements.pdf p. 7, BDD Suite",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "closure": "Prove repeated deployment preserves identities and unrelated resources.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-077",
+      "title": "Execute uninstall scenario",
+      "source": "Technical-Development-Requirements.pdf p. 7, BDD Suite",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd/features/lifecycle.feature",
+        "test/bdd/features/steps/completion.py"
+      ],
+      "closure": "Prove owned removal, retained PVCs and unrelated-resource preservation.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-078",
+      "title": "Execute identity/policy/token/integration validation scenarios",
+      "source": "Technical-Development-Requirements.pdf p. 7, BDD Suite",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd/features",
+        "test/live/wallet.mjs",
+        "test/bdd/features/pcm.feature",
+        "test/bdd/features/native-wallet.feature"
+      ],
+      "closure": "Run real authentication, permissions, native issuance and failure cases. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-079",
+      "title": "Deliver BDD packs with every release",
+      "source": "Technical-Development-Requirements.pdf p. 7, BDD packs",
+      "group": "TDR-05",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "test/bdd",
+        "docs/testing/completion.md",
+        ".github/workflows/release.yml"
+      ],
+      "closure": "Publish the reviewed pack and actual BDD results with each release.",
+      "pullRequests": [
+        "R1-1",
+        "R4-3"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-080",
+      "title": "Test Keycloak, OCM, PCM Mobile, TSA, OpenBao and ORCE on both clouds",
+      "source": "Technical-Development-Requirements.pdf p. 7, QA hosting",
+      "group": "TDR-01",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "docs/testing/live-acceptance.md",
+        "test/bdd"
+      ],
+      "closure": "Collect real IONOS/OSC receipts with all mandated services and PCM.",
+      "pullRequests": [
+        "R1-1",
+        "R4-3"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-081",
+      "title": "Use Git, GitFlow, GitHub Actions and Jira",
+      "source": "Technical-Development-Requirements.pdf p. 7, DevOps tools",
+      "group": "TDR-03",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
+      "implementation": [
+        "CONTRIBUTING.md",
+        ".github/workflows",
+        "docs/ci-cd.md"
+      ],
+      "closure": "Project team records actual issue/branch/review/release use.",
+      "pullRequests": [
+        "R2-8",
+        "R3-7",
+        "R3-8"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-082",
+      "title": "Deliver Helm repository artifacts, OCI images and BDD reports",
+      "source": "Technical-Development-Requirements.pdf p. 7, Release artifacts",
+      "group": "TDR-07",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "deployment/helm",
+        "reference/participant-data-repository/Dockerfile",
+        ".github/workflows/release.yml",
+        "test/bdd"
+      ],
+      "closure": "Build/scan/publish the mandated participant image and charts; attach executed BDD reports.",
+      "pullRequests": [
+        "R1-1"
+      ],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    },
+    {
+      "id": "TDC-083",
+      "title": "Integrate approved deployment with ArgoCD",
+      "source": "Technical-Development-Requirements.pdf p. 7, DevOps tools",
+      "group": "TDR-07",
+      "responsibility": "SOURCE_REFERENCED",
+      "implementation": [
+        "deployment/argocd/participant-application.example.yaml",
+        "docs/operations/argocd.md"
+      ],
+      "closure": "Client supplies approved repository/ArgoCD destination and performs deployment integration.",
+      "pullRequests": [],
+      "status": "NOT_VERIFIED_ON_CURRENT_SOURCE"
+    }
+  ]
+}

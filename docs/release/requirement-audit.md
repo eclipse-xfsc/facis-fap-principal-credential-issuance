@@ -2,7 +2,7 @@
 
 All 101 SRS requirements, 83 individual technical clauses and eight supplementary audit groups are retained. This catalogue links the implementation and verification procedures. The original [specifications](../specifications/README.md) define the normative scope.
 
-[Executed CI checks](completion.md) record 350 passing Node tests and successful PostgreSQL, generated participant, Helm, Chromium, semantic and official Go jobs. [Workflow evidence](ci-evidence.json) records source and documentation publication separately from Eclipse Dash. The [container package](1.0.0.md) records Docker Hub distribution; deployment records identify their own image digests and runtime versions.
+[Executed checks](completion.md) identify the executed scope by commit and run. [Workflow evidence](ci-evidence.json) concerns the commit it names, not the current source. The open gates are listed in the [acceptance gates](acceptance-gates.md). No automatic acceptance conclusion is generated.
 
 ## SRS
 
@@ -68,7 +68,7 @@ All 101 SRS requirements, 83 individual technical clauses and eight supplementar
 | FR-PCI-58 | Health Endpoints/Logging | backend/functions/status.js; backend/sr2/runtime.js; backend/functions/_common.js | Native outage injection, stable health states and sanitized log samples. |
 | FR-PCI-59 | Low Code | src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js | Tenant admin changes all relevant pages through one coherent low-code interface. |
 | FR-PCI-60 | Layout Customization | src/main.js; src/sr2.js; src/styles.css; backend/sr2/domain.js; backend/sr2/service.js | Visual comparison, immediate theme edit across two tenants and responsive browser check. |
-| FR-PCI-61 | UX Tests | test/bdd; test/live/wallet.mjs; test/browser/runtime.mjs; test/bdd/features/native-wallet.feature | Run supplied XFSC Executor browser/runtime/lifecycle cases on a synthetic tenant. Complete real registration/IdP/PCM and accessibility evidence from the walkthrough; no browser or wallet execution was available here. |
+| FR-PCI-61 | UX Tests | scripts/run-ux-bdd.py; scripts/collect-ux-environment.py; test/bdd/features/steps/administration.py; test/bdd/features/steps/pci.py | Run supplied XFSC Executor browser/runtime/lifecycle cases on a synthetic tenant. Complete real registration/IdP/PCM and accessibility evidence from the walkthrough; no browser or wallet execution was available here. |
 | FR-PCI-62 | OID4VCI/VP Version | backend/sr2/profiles.js; backend/sr2/presentation.js; src/sr2.js; docs/contracts/presentation.md; backend/sr2/native.js; test/tests/integration/rc4-formats.test.mjs | Draft 13 and 1.0 issuance serializers implemented; OID4VP profiles and native non-JWT conformance require upstream work. See UP-02/03. |
 | FR-PCI-63 | Protocol Structure | reference/participant-data-repository; contracts/participant.proto; backend/sr2/native.js; reference/participant-data-source; backend/sr2/sdjwt.js; test/bdd/features/native-wallet.feature; reference/participant-data-repository/ldp_signer.go; reference/participant-data-repository/ldp_signer_test.go | Notification and data request contract, both modes with participant and internal signing, interoperable wire tests. |
 | FR-PCI-64 | Standard Workflows | .github/workflows/ci.yml; .github/workflows/release.yml; docs/ci-cd.md | Restore official remote workflows in every code repo; successful runs tied to release SHA. |

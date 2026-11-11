@@ -1,5 +1,7 @@
 # FAP PCI container image
 
+This page records the 1.0.0 package, which was produced by capturing a running ORCE container. From release candidate rc.16 the application image is built from the tagged source by the `Images` workflow (`deployment/image/Dockerfile`, base image by digest, no captured state); see [deploying the application image](deployment.md#deploying-the-application-image). The 1.0.0 package is superseded by that image and is kept here as the record of what was distributed.
+
 ## Distribution
 
 | Item | Value |
@@ -8,7 +10,7 @@
 | Repository | [ecofacis/fap-pci](https://hub.docker.com/r/ecofacis/fap-pci) |
 | Release tag | `ecofacis/fap-pci:1.0.0` |
 | ORCE packaging base | `ecofacis/xfsc-orce:2.0.15` |
-| Application source version | `0.5.0-rc.12` |
+| Application source version | `0.5.0-rc.12` (package 1.0.0); current source `0.5.0-rc.16` |
 
 The 1.0.0 packaging procedure captures the running ORCE container filesystem and explicitly copies `/data` into the resulting image before publication. This includes PCI flows, UI/configuration and the installed dependencies present in that release snapshot. Docker commit alone omits mounted-volume contents; the separate `/data` embedding step is part of this package's preparation.
 

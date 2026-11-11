@@ -20,7 +20,7 @@ go build -tags=generated ./cmd/server
 The authored transport entrypoint is `cmd/server/main.go.in`. Generation materializes it after Goa/protobuf output exists, so clean-checkout `go mod tidy` does not try to fetch missing local generated packages. The `generated` tag includes that entrypoint for the full service build. The participant CI job always generates and compiles the complete service. The Dockerfile builds from repository root:
 
 ```bash
-docker build -f reference/participant-data-repository/Dockerfile -t <registry>/pci-participant:0.5.0-rc.12 .
+docker build -f reference/participant-data-repository/Dockerfile -t <registry>/pci-participant:0.5.0-rc.16 .
 ```
 
 ## Configure

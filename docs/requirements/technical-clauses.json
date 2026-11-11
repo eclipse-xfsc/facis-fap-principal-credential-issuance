@@ -1,5 +1,5 @@
 {
-  "version": "0.5.0-rc.12",
+  "version": "0.5.0-rc.16",
   "idPolicy": "TDC identifiers are local audit keys for unnumbered provisions, not identifiers assigned by the source document. Page numbers are printed PDF pages. TDR group references retain compatibility with the earlier grouped audit.",
   "items": [
     {
@@ -11,11 +11,17 @@
       },
       "group": "TDR-03",
       "title": "Use the preferred Kanban or Scrum development process",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "closure": "Client records the selected process and real delivery history."
+      "closure": "Client records the selected process and real delivery history.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-002",
@@ -26,13 +32,19 @@
       },
       "group": "TDR-04",
       "title": "Release scoped software under Apache 2.0",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md",
         "THIRD_PARTY_NOTICES.md"
       ],
-      "closure": "Approve dependency/IP evidence and publish the licensed release."
+      "closure": "Approve dependency/IP evidence and publish the licensed release.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-003",
@@ -43,11 +55,17 @@
       },
       "group": "TDR-05",
       "title": "Present the UX concept before implementation",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/ux/ux-concept.md"
       ],
-      "closure": "Record the actual presentation/approval history; do not backdate it."
+      "closure": "Record the actual presentation/approval history; do not backdate it.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-004",
@@ -58,12 +76,18 @@
       },
       "group": "TDR-03",
       "title": "Include repository structure in the project plan",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md"
       ],
-      "closure": "Client approves the structure in the authoritative project plan."
+      "closure": "Client approves the structure in the authoritative project plan.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-005",
@@ -74,12 +98,18 @@
       },
       "group": "TDR-05",
       "title": "Present progress every two weeks",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "docs/requirements/traceability.md",
         "docs/release/0.5.0-rc.4.md"
       ],
-      "closure": "Actual presenters retain attendance, dates and progress decisions."
+      "closure": "Actual presenters retain attendance, dates and progress decisions.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-006",
@@ -90,12 +120,18 @@
       },
       "group": "TDR-05",
       "title": "Use BDD tests in milestone presentations",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
       ],
-      "closure": "Execute the delivered packs and present actual milestone outcomes."
+      "closure": "Execute the delivered packs and present actual milestone outcomes.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-007",
@@ -106,13 +142,19 @@
       },
       "group": "TDR-01",
       "title": "Use ORCE for service orchestration",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions",
         "backend/sr2",
         "dist/fap-pci-flow.json"
       ],
-      "closure": "Execute deployed native issuance and tenant operations."
+      "closure": "Execute deployed native issuance and tenant operations.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-008",
@@ -123,12 +165,18 @@
       },
       "group": "TDR-01",
       "title": "Use ORCE for Builder Node orchestration",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "tools/build-flows.mjs",
         "docs/architecture/orce-nodes.md"
       ],
-      "closure": "Inspect imported functions and run them in the target ORCE."
+      "closure": "Inspect imported functions and run them in the target ORCE.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-009",
@@ -139,12 +187,18 @@
       },
       "group": "TDR-02",
       "title": "Use ORCE for applicable deployment workflows",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "automation/flows",
         "docs/operations/automation.md"
       ],
-      "closure": "Run deploy, upgrade and uninstall from the separate operator ORCE."
+      "closure": "Run deploy, upgrade and uninstall from the separate operator ORCE.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-010",
@@ -155,12 +209,18 @@
       },
       "group": "TDR-01",
       "title": "Use low-code integration",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "src/sr2.js"
       ],
-      "closure": "Configure multiple journeys and connectors without source edits."
+      "closure": "Configure multiple journeys and connectors without source edits.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-011",
@@ -171,12 +231,18 @@
       },
       "group": "TDR-01",
       "title": "Deploy on IONOS Cloud Kubernetes",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "automation/stage1/ground-zero.sh"
       ],
-      "closure": "Complete the IONOS deployment and test receipt."
+      "closure": "Complete the IONOS deployment and test receipt.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-012",
@@ -187,12 +253,18 @@
       },
       "group": "TDR-01",
       "title": "Deploy on T-Systems Open Sovereign Cloud Kubernetes",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "docs/testing/live-acceptance.md"
       ],
-      "closure": "Complete the OSC deployment and test receipt."
+      "closure": "Complete the OSC deployment and test receipt.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-013",
@@ -203,12 +275,18 @@
       },
       "group": "TDR-02",
       "title": "Automate deployment with Kubernetes and Helm",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "deployment/helm"
       ],
-      "closure": "Render/lint the charts and execute cluster admission/deployment."
+      "closure": "Render/lint the charts and execute cluster admission/deployment.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-014",
@@ -219,12 +297,18 @@
       },
       "group": "TDR-02",
       "title": "Automate updates with Kubernetes and Helm",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/stage1/install.sh"
       ],
-      "closure": "Upgrade with existing PVCs, sessions and configurations, then verify."
+      "closure": "Upgrade with existing PVCs, sessions and configurations, then verify.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-015",
@@ -235,13 +319,19 @@
       },
       "group": "TDR-02",
       "title": "Automate uninstall with Kubernetes and Helm",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/uninstall.sh",
         "automation/stage1/restore-runtime.mjs",
         "scripts/import-legacy-baseline.py"
       ],
-      "closure": "Run on a disposable installation; preserve unrelated edits and data. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+      "closure": "Run on a disposable installation; preserve unrelated edits and data. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-016",
@@ -252,12 +342,18 @@
       },
       "group": "TDR-02",
       "title": "Manage resources and ingress",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/_k8s.js",
         "automation/stage1/ground-zero.sh"
       ],
-      "closure": "Review live ownership, limits, routes and tenant header isolation."
+      "closure": "Review live ownership, limits, routes and tenant header isolation.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-017",
@@ -268,12 +364,18 @@
       },
       "group": "TDR-07",
       "title": "Deliver charts with each release",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm",
         ".github/workflows/release.yml"
       ],
-      "closure": "Publish reviewed chart artifacts alongside each approved release."
+      "closure": "Publish reviewed chart artifacts alongside each approved release.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-018",
@@ -284,12 +386,18 @@
       },
       "group": "TDR-01",
       "title": "Provision realms and clients",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/reconcile.js"
       ],
-      "closure": "Inspect realm/client settings and login flows in deployed Keycloak."
+      "closure": "Inspect realm/client settings and login flows in deployed Keycloak.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-019",
@@ -300,12 +408,18 @@
       },
       "group": "TDR-01",
       "title": "Manage service credentials",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/_common.js"
       ],
-      "closure": "Verify Secret reuse, mounts, rotation and current service authority."
+      "closure": "Verify Secret reuse, mounts, rotation and current service authority.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-020",
@@ -316,12 +430,18 @@
       },
       "group": "TDR-03",
       "title": "Keep all code, schemas, charts and scripts in the client-designated repository",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md"
       ],
-      "closure": "Project lead supplies the designated repository and accepts these files."
+      "closure": "Project lead supplies the designated repository and accepts these files.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-021",
@@ -332,12 +452,18 @@
       },
       "group": "TDR-03",
       "title": "Run GitHub Actions with security checks",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml"
       ],
-      "closure": "Execute actual workflows and retain dependency/IP results."
+      "closure": "Execute actual workflows and retain dependency/IP results.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-022",
@@ -348,11 +474,17 @@
       },
       "group": "TDR-03",
       "title": "Do not create parallel private repositories",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "closure": "Project participants attest to repository authority; no repository was created here."
+      "closure": "Project participants attest to repository authority; no repository was created here.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-023",
@@ -363,11 +495,17 @@
       },
       "group": "TDR-03",
       "title": "Commit work to the client repository daily",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "closure": "Actual daily history is required and cannot be manufactured retrospectively."
+      "closure": "Actual daily history is required and cannot be manufactured retrospectively.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-024",
@@ -378,12 +516,18 @@
       },
       "group": "TDR-04",
       "title": "Include Apache license text and SPDX identity",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md"
       ],
-      "closure": "Client/IP reviewer approves the final licensed scope."
+      "closure": "Client/IP reviewer approves the final licensed scope.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-025",
@@ -394,13 +538,19 @@
       },
       "group": "TDR-04",
       "title": "Use only Apache-compatible FOSS and approved licenses",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "package-lock.json",
         "reference/participant-data-repository/go.mod"
       ],
-      "closure": "Resolve Go sums and full SBOM, scan transitive dependencies and approve licenses."
+      "closure": "Resolve Go sums and full SBOM, scan transitive dependencies and approve licenses.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-026",
@@ -411,12 +561,18 @@
       },
       "group": "TDR-04",
       "title": "Inform the client in writing about planned license exceptions",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "CONTRIBUTING.md"
       ],
-      "closure": "Client records any exception assessment; no approval is implied."
+      "closure": "Client records any exception assessment; no approval is implied.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-027",
@@ -427,12 +583,18 @@
       },
       "group": "TDR-04",
       "title": "Obtain client confirmation of existing FOSS content",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "contracts/source-manifest.json"
       ],
-      "closure": "Client approves the inventoried dependencies and reused source."
+      "closure": "Client approves the inventoried dependencies and reused source.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-028",
@@ -443,12 +605,18 @@
       },
       "group": "TDR-04",
       "title": "Assess and obtain approval of API and component versions",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/compatibility/compatibility-matrix.md",
         "contracts/source-manifest.json"
       ],
-      "closure": "Verify deployed revisions and record client approval of the compatibility matrix."
+      "closure": "Verify deployed revisions and record client approval of the compatibility matrix.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-029",
@@ -459,12 +627,18 @@
       },
       "group": "TDR-01",
       "title": "Avoid redundant XFSC functions",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/architecture.md",
         "docs/contracts/native-ocm.md"
       ],
-      "closure": "Review boundaries: PCI orchestration reuses native keys/signing/offers/metadata/status."
+      "closure": "Review boundaries: PCI orchestration reuses native keys/signing/offers/metadata/status.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-030",
@@ -475,11 +649,17 @@
       },
       "group": "TDR-03",
       "title": "Comply with Eclipse Contributor Agreement 3.1.0 or higher",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "closure": "Each actual contributor completes the required onboarding and agreement."
+      "closure": "Each actual contributor completes the required onboarding and agreement.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-031",
@@ -490,12 +670,18 @@
       },
       "group": "TDR-01",
       "title": "Use Kubernetes 1.29 or higher",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/preflight.sh",
         "docs/compatibility/compatibility-matrix.md"
       ],
-      "closure": "Validate the selected supported version; the documented supported range is narrower than the minimum."
+      "closure": "Validate the selected supported version; the documented supported range is narrower than the minimum.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-032",
@@ -506,13 +692,19 @@
       },
       "group": "TDR-02",
       "title": "Use Helm deployments and ORCE Builder runtime without Docker Compose",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "deployment/helm",
         "tools/build-flows.mjs"
       ],
-      "closure": "Confirm the supplied Kubernetes/ORCE topology in the running environment."
+      "closure": "Confirm the supplied Kubernetes/ORCE topology in the running environment.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-033",
@@ -523,12 +715,18 @@
       },
       "group": "TDR-01",
       "title": "Use Node.js for Builder logic",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions",
         "backend/sr2"
       ],
-      "closure": "Load the generated functions into the approved ORCE Node.js runtime."
+      "closure": "Load the generated functions into the approved ORCE Node.js runtime.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-034",
@@ -539,13 +737,19 @@
       },
       "group": "TDR-01",
       "title": "Use HTML, JavaScript and JSON schemas for ORCE UI nodes",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "src",
         "backend/sr2/domain.js",
         "docs/api/openapi.json"
       ],
-      "closure": "Run the browser and UI acceptance pack."
+      "closure": "Run the browser and UI acceptance pack.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-035",
@@ -556,13 +760,19 @@
       },
       "group": "TDR-02",
       "title": "Supply Bash automation under scripts",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "scripts/uninstall.sh",
         "scripts/preflight.sh"
       ],
-      "closure": "Execute Bash entrypoints and supplemental Python orchestration in the operator environment."
+      "closure": "Execute Bash entrypoints and supplemental Python orchestration in the operator environment.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-036",
@@ -573,12 +783,18 @@
       },
       "group": "TDR-02",
       "title": "Use YAML for charts and Kubernetes manifests",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm",
         "automation/stage1/ground-zero.sh"
       ],
-      "closure": "Helm lint/render and live admission remain required."
+      "closure": "Helm lint/render and live admission remain required.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-037",
@@ -589,11 +805,17 @@
       },
       "group": "TDR-01",
       "title": "Use Go for backend services",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository"
       ],
-      "closure": "Generate Goa/protobuf, run vet/race tests and compile the participant service."
+      "closure": "Generate Goa/protobuf, run vet/race tests and compile the participant service.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-038",
@@ -604,12 +826,18 @@
       },
       "group": "TDR-01",
       "title": "Report upstream issues in writing and obtain approval for additional work",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/known-gaps.md",
         "deployment/prerequisites/upstream"
       ],
-      "closure": "Deliver the written findings through the client's approved process; owners review/build/deploy their component fixes."
+      "closure": "Deliver the written findings through the client's approved process; owners review/build/deploy their component fixes.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-039",
@@ -620,12 +848,18 @@
       },
       "group": "TDR-03",
       "title": "Follow the Eclipse Handbook",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md"
       ],
-      "closure": "Project lead reviews governance, releases and contributor records."
+      "closure": "Project lead reviews governance, releases and contributor records.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-040",
@@ -636,12 +870,18 @@
       },
       "group": "TDR-06",
       "title": "Use FAP Partner Onboarding as reference",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/source-baseline.md",
         "docs/architecture/architecture.md"
       ],
-      "closure": "Confirm the selected reference and PCI-specific adaptations with the client."
+      "closure": "Confirm the selected reference and PCI-specific adaptations with the client.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-041",
@@ -652,12 +892,18 @@
       },
       "group": "TDR-05",
       "title": "Submit BDD documentation within one month of project-plan approval",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
       ],
-      "closure": "Actual project-plan and submission dates are required; no backdated submission."
+      "closure": "Actual project-plan and submission dates are required; no backdated submission.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-042",
@@ -668,13 +914,19 @@
       },
       "group": "TDR-06",
       "title": "Document high-level behavior",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/product.adoc",
         "docs/architecture/architecture.md"
       ],
-      "closure": "Review the product scope against the source specifications."
+      "closure": "Review the product scope against the source specifications.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-043",
@@ -685,13 +937,19 @@
       },
       "group": "TDR-06",
       "title": "Document packaging and container boundaries",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "reference/participant-data-repository/Dockerfile",
         "docs/testing/participant-test.md"
       ],
-      "closure": "Build the mandated participant image; approve its digest. PCI remains imported flows/UI."
+      "closure": "Build the mandated participant image; approve its digest. PCI remains imported flows/UI.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-044",
@@ -702,12 +960,18 @@
       },
       "group": "TDR-06",
       "title": "Document deployment and preconditions",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/operations/deployment.md",
         "docs/operations/upgrade-0.5.0-rc.4.md"
       ],
-      "closure": "Execute the documented deployment/upgrade against the actual environment."
+      "closure": "Execute the documented deployment/upgrade against the actual environment.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-045",
@@ -718,13 +982,19 @@
       },
       "group": "TDR-06",
       "title": "Document changes and additions to source specifications",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/requirements/traceability.md",
         "docs/known-gaps.md",
         "docs/release/0.5.0-rc.4.md"
       ],
-      "closure": "Client reviews implementation decisions and unresolved dependencies; source specifications are unchanged."
+      "closure": "Client reviews implementation decisions and unresolved dependencies; source specifications are unchanged.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-046",
@@ -735,12 +1005,18 @@
       },
       "group": "TDR-06",
       "title": "Document orchestrated flow breakdown",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "docs/architecture/issuer-runtime.md"
       ],
-      "closure": "Review node inputs/outputs and trust boundaries."
+      "closure": "Review node inputs/outputs and trust boundaries.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-047",
@@ -751,14 +1027,20 @@
       },
       "group": "TDR-06",
       "title": "Include BDD, licenses, dependencies and external OSS references",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "LICENSE.txt",
         "THIRD_PARTY_NOTICES.md",
         "contracts/source-manifest.json"
       ],
-      "closure": "Review the complete tested dependency inventory before release."
+      "closure": "Review the complete tested dependency inventory before release.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-048",
@@ -769,13 +1051,19 @@
       },
       "group": "TDR-03",
       "title": "Use one monorepo, one history and unified concepts/specifications/source",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/specifications",
         "CONTRIBUTING.md"
       ],
-      "closure": "Import into the designated repository; no nested independent Git projects are supplied."
+      "closure": "Import into the designated repository; no nested independent Git projects are supplied.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-049",
@@ -786,11 +1074,17 @@
       },
       "group": "TDR-03",
       "title": "Have project leads create the main repository via the client",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "closure": "Client/project leads supply the official destination and naming."
+      "closure": "Client/project leads supply the official destination and naming.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-050",
@@ -801,11 +1095,17 @@
       },
       "group": "TDR-03",
       "title": "Complete XFSC contributor onboarding",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
-      "closure": "Actual contributors complete and retain onboarding records."
+      "closure": "Actual contributors complete and retain onboarding records.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-051",
@@ -816,12 +1116,18 @@
       },
       "group": "TDR-06",
       "title": "Supply a MkDocs or ReadTheDocs documentation build",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "mkdocs.yml",
         ".github/workflows/docs.yml"
       ],
-      "closure": "Run strict MkDocs build and publish the reviewed site."
+      "closure": "Run strict MkDocs build and publish the reviewed site.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-052",
@@ -832,11 +1138,17 @@
       },
       "group": "TDR-06",
       "title": "Supply AsciiDoc product documentation",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/product.adoc"
       ],
-      "closure": "Client reviews the product document in its accepted documentation format."
+      "closure": "Client reviews the product document in its accepted documentation format.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-053",
@@ -847,12 +1159,18 @@
       },
       "group": "TDR-06",
       "title": "Supply editable architecture models",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/components.puml",
         "docs/architecture/issuance.puml"
       ],
-      "closure": "Review/render the delivered UML sources and confirm the client's model format."
+      "closure": "Review/render the delivered UML sources and confirm the client's model format.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-054",
@@ -863,13 +1181,19 @@
       },
       "group": "TDR-06",
       "title": "Define every REST endpoint and provide examples",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/api/openapi.json",
         "docs/api/examples.json",
         "tools/check-documentation.mjs"
       ],
-      "closure": "Execute API examples with private real sessions and validate deployed responses."
+      "closure": "Execute API examples with private real sessions and validate deployed responses.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-055",
@@ -880,12 +1204,18 @@
       },
       "group": "TDR-06",
       "title": "Describe orchestration node contracts",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "backend/sr2/routes.json"
       ],
-      "closure": "Review imported nodes and configured external modules."
+      "closure": "Review imported nodes and configured external modules.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-056",
@@ -896,7 +1226,7 @@
       },
       "group": "TDR-06",
       "title": "Supply JSON-LD contexts and SHACL shapes for templates/data",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "contracts/examples",
         "backend/sr2/semantics.js",
@@ -904,7 +1234,13 @@
         "backend/sr2/linked-data.js",
         "test/live/semantic-validation.py"
       ],
-      "closure": "Run a semantic processor and SHACL validator; client approves production vocabulary/template profiles. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+      "closure": "Run a semantic processor and SHACL validator; client approves production vocabulary/template profiles. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-057",
@@ -915,12 +1251,18 @@
       },
       "group": "TDR-06",
       "title": "Reconcile client-supplied template examples",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "contracts/examples",
         "docs/contracts/semantic-templates.md"
       ],
-      "closure": "Replace synthetic reference vocabulary when the client provides its approved templates."
+      "closure": "Replace synthetic reference vocabulary when the client provides its approved templates.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-058",
@@ -931,13 +1273,19 @@
       },
       "group": "TDR-06",
       "title": "Provide overview, setup, environment/configuration and documentation links",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/operations/deployment.md",
         "docs/operations/transport.md"
       ],
-      "closure": "Client reviews the documented installation choices."
+      "closure": "Client reviews the documented installation choices.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-059",
@@ -948,12 +1296,18 @@
       },
       "group": "TDR-06",
       "title": "Include an understandable use-case diagram",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/architecture/components.puml"
       ],
-      "closure": "Review the rendered diagram with the client."
+      "closure": "Review the rendered diagram with the client.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-060",
@@ -964,13 +1318,19 @@
       },
       "group": "TDR-03",
       "title": "Reference official XFSC Dash scanner and build workflows",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
         "docs/ci-cd.md"
       ],
-      "closure": "Run workflows, capture resolved nested versions and review actual findings."
+      "closure": "Run workflows, capture resolved nested versions and review actual findings.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-061",
@@ -981,13 +1341,19 @@
       },
       "group": "TDR-06",
       "title": "Confirm responsible contributor/contact information",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md",
         "SECURITY.md"
       ],
-      "closure": "Client must name the maintainer and approved contact; no identity or mailbox is invented."
+      "closure": "Client must name the maintainer and approved contact; no identity or mailbox is invented.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-062",
@@ -998,12 +1364,18 @@
       },
       "group": "TDR-03",
       "title": "Document contributor, release and issue-reporting processes",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "CONTRIBUTING.md",
         "SECURITY.md"
       ],
-      "closure": "Client finalizes these processes for the designated project."
+      "closure": "Client finalizes these processes for the designated project.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-063",
@@ -1014,12 +1386,18 @@
       },
       "group": "TDR-04",
       "title": "Include license terms",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md"
       ],
-      "closure": "IP reviewer approves final software and third-party notices."
+      "closure": "IP reviewer approves final software and third-party notices.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-064",
@@ -1030,11 +1408,17 @@
       },
       "group": "TDR-03",
       "title": "Finalize the code of conduct with the Principal",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "CODE_OF_CONDUCT.md"
       ],
-      "closure": "Principal approves the existing code-of-conduct text."
+      "closure": "Principal approves the existing code-of-conduct text.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-065",
@@ -1045,13 +1429,19 @@
       },
       "group": "TDR-06",
       "title": "Host specifications/models and documentation on GitHub Pages",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs",
         "mkdocs.yml",
         ".github/workflows/docs.yml"
       ],
-      "closure": "Review the generated documentation and explicitly publish it."
+      "closure": "Review the generated documentation and explicitly publish it.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-066",
@@ -1062,13 +1452,19 @@
       },
       "group": "TDR-06",
       "title": "Document CI/CD and OpenAPI",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/ci-cd.md",
         "docs/api/README.md",
         "docs/api/openapi.json"
       ],
-      "closure": "Review exact workflow inputs and API response contracts."
+      "closure": "Review exact workflow inputs and API response contracts.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-067",
@@ -1079,14 +1475,20 @@
       },
       "group": "TDR-02",
       "title": "Run deploy/redeploy/uninstall with zero manual intervention after inputs",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/pci-deployment.json",
         "scripts/import-legacy-baseline.py",
         "scripts/reconcile-participant-ownership.py"
       ],
-      "closure": "Run all three operations with pre-provisioned private inputs and inspect outcomes. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+      "closure": "Run all three operations with pre-provisioned private inputs and inspect outcomes. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-068",
@@ -1097,13 +1499,19 @@
       },
       "group": "TDR-02",
       "title": "Use structured JSON automation/runtime logs",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/lifecycle.js",
         "backend/functions/_common.js"
       ],
-      "closure": "Inspect safe structured outcomes across actual success/failure executions."
+      "closure": "Inspect safe structured outcomes across actual success/failure executions.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-069",
@@ -1114,12 +1522,18 @@
       },
       "group": "TDR-02",
       "title": "Expose machine-readable errors in ORCE context",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/lifecycle.js"
       ],
-      "closure": "Confirm phase/code/detail/nextStep/exitCode without child payload leakage."
+      "closure": "Confirm phase/code/detail/nextStep/exitCode without child payload leakage.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-070",
@@ -1130,7 +1544,7 @@
       },
       "group": "TDR-01",
       "title": "Enforce TLS 1.3 for every endpoint and hop",
-      "development": "BLOCKED_OWNER",
+      "development": "OWNER_REVIEW_REQUIRED",
       "implementation": [
         "docs/operations/transport.md",
         "backend/sr2/transport.js",
@@ -1138,7 +1552,13 @@
         "deployment/prerequisites/all-hop-tls/mesh.yaml",
         "tools/prepare-all-hop-tls.py"
       ],
-      "closure": "Platform owners must encrypt compatibility ORCE/database/mail and shared native links. Client flags alone do not close this requirement. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+      "closure": "Platform owners must encrypt compatibility ORCE/database/mail and shared native links. Client flags alone do not close this requirement. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "BLOCKED_OWNER"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-071",
@@ -1149,7 +1569,7 @@
       },
       "group": "TDR-01",
       "title": "Store secrets in Kubernetes Secrets and keep them out of logs",
-      "development": "BLOCKED_OWNER",
+      "development": "OWNER_REVIEW_REQUIRED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "docs/privacy/data-handling.md",
@@ -1157,7 +1577,13 @@
         "deployment/prerequisites/upstream",
         "tools/prepare-upstream-builds.py"
       ],
-      "closure": "Deploy owner-approved upstream log fixes and inspect every real payload sink. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+      "closure": "Deploy owner-approved upstream log fixes and inspect every real payload sink. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "BLOCKED_OWNER"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-072",
@@ -1168,13 +1594,19 @@
       },
       "group": "TDR-01",
       "title": "Create namespaces, ingress/routes, services and deployments correctly",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/_k8s.js",
         "tools/check-g0-manifests.py"
       ],
-      "closure": "Validate Kubernetes admission, controllers, ownership and readiness on both clouds."
+      "closure": "Validate Kubernetes admission, controllers, ownership and readiness on both clouds.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-073",
@@ -1185,12 +1617,18 @@
       },
       "group": "TDR-01",
       "title": "Reach identity and trust dependencies",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/preflight.sh",
         "backend/functions/status.js"
       ],
-      "closure": "Demonstrate Keycloak, native TSA/status/metadata/NATS and trust connectivity."
+      "closure": "Demonstrate Keycloak, native TSA/status/metadata/NATS and trust connectivity.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-074",
@@ -1201,12 +1639,18 @@
       },
       "group": "TDR-05",
       "title": "Execute successful deployment scenario",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
-      "closure": "Run the official Executor against an approved disposable installation."
+      "closure": "Run the official Executor against an approved disposable installation.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-075",
@@ -1217,12 +1661,18 @@
       },
       "group": "TDR-05",
       "title": "Execute invalid parameter scenario",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
-      "closure": "Run the delivered negative parameter case and retain its safe result."
+      "closure": "Run the delivered negative parameter case and retain its safe result.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-076",
@@ -1233,12 +1683,18 @@
       },
       "group": "TDR-05",
       "title": "Execute idempotent redeployment scenario",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
-      "closure": "Prove repeated deployment preserves identities and unrelated resources."
+      "closure": "Prove repeated deployment preserves identities and unrelated resources.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-077",
@@ -1249,12 +1705,18 @@
       },
       "group": "TDR-05",
       "title": "Execute uninstall scenario",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
       ],
-      "closure": "Prove owned removal, retained PVCs and unrelated-resource preservation."
+      "closure": "Prove owned removal, retained PVCs and unrelated-resource preservation.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-078",
@@ -1265,14 +1727,20 @@
       },
       "group": "TDR-05",
       "title": "Execute identity/policy/token/integration validation scenarios",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features",
         "test/live/wallet.mjs",
         "test/bdd/features/pcm.feature",
         "test/bdd/features/native-wallet.feature"
       ],
-      "closure": "Run real authentication, permissions, native issuance and failure cases. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable."
+      "closure": "Run real authentication, permissions, native issuance and failure cases. rc.5 supplies the implementation/tooling; execute the linked upgrade/acceptance steps and retain actual evidence. Owner approvals and trusted environment inputs remain required where applicable.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-079",
@@ -1283,13 +1751,19 @@
       },
       "group": "TDR-05",
       "title": "Deliver BDD packs with every release",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md",
         ".github/workflows/release.yml"
       ],
-      "closure": "Publish the reviewed pack and actual BDD results with each release."
+      "closure": "Publish the reviewed pack and actual BDD results with each release.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-080",
@@ -1300,12 +1774,18 @@
       },
       "group": "TDR-01",
       "title": "Test Keycloak, OCM, PCM Mobile, TSA, OpenBao and ORCE on both clouds",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "docs/testing/live-acceptance.md",
         "test/bdd"
       ],
-      "closure": "Collect real IONOS/OSC receipts with all mandated services and PCM."
+      "closure": "Collect real IONOS/OSC receipts with all mandated services and PCM.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-081",
@@ -1316,13 +1796,19 @@
       },
       "group": "TDR-03",
       "title": "Use Git, GitFlow, GitHub Actions and Jira",
-      "development": "EXCLUDED",
+      "development": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md",
         ".github/workflows",
         "docs/ci-cd.md"
       ],
-      "closure": "Project team records actual issue/branch/review/release use."
+      "closure": "Project team records actual issue/branch/review/release use.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "EXCLUDED"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-082",
@@ -1333,14 +1819,20 @@
       },
       "group": "TDR-07",
       "title": "Deliver Helm repository artifacts, OCI images and BDD reports",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm",
         "reference/participant-data-repository/Dockerfile",
         ".github/workflows/release.yml",
         "test/bdd"
       ],
-      "closure": "Build/scan/publish the mandated participant image and charts; attach executed BDD reports."
+      "closure": "Build/scan/publish the mandated participant image and charts; attach executed BDD reports.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     },
     {
       "id": "TDC-083",
@@ -1351,14 +1843,21 @@
       },
       "group": "TDR-07",
       "title": "Integrate approved deployment with ArgoCD",
-      "development": "DONE",
+      "development": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/argocd/participant-application.example.yaml",
         "docs/operations/argocd.md"
       ],
-      "closure": "Client supplies approved repository/ArgoCD destination and performs deployment integration."
+      "closure": "Client supplies approved repository/ArgoCD destination and performs deployment integration.",
+      "historicalLabels": {
+        "baselineCommit": "2fa3a8af9e4a329f01d629b3510a03d95b3fb397",
+        "development": "DONE"
+      },
+      "acceptanceStatus": "NOT_VERIFIED_ON_CURRENT_SOURCE",
+      "contractualScope": "IN_SCOPE"
     }
   ],
   "catalogueScope": "Individual source provisions, implementation references and verification procedures. The development field classifies source/owner/process responsibility at the baseline, not an executed acceptance result.",
-  "evidence": "docs/release/ci-evidence.json"
+  "evidence": "docs/release/ci-evidence.json",
+  "assessmentPolicy": "Source references are not verification or acceptance. All normative requirements remain in scope. Historic labels are retained explicitly, not carried forward as current acceptance."
 }

@@ -1,7 +1,12 @@
 {
-  "version": "0.5.0-rc.12",
-  "sourceCommit": "3fef8e3048f3803b8aecbd99f582a3c4c05295b0",
-  "reviewedAt": "2026-10-18",
+  "version": "0.5.0-rc.16",
+  "sourceCommit": null,
+  "reviewedAt": null,
+  "historicalCi": {
+    "sourceCommit": "3fef8e3048f3803b8aecbd99f582a3c4c05295b0",
+    "reviewedAt": "2026-10-18",
+    "scope": "Result for the named commit only; not a result for the current tree"
+  },
   "method": "Source and delivery references retain all normative identifiers. Executed outcomes identify their own run, commit and test scope in the linked validation records. This catalogue does not create an acceptance receipt.",
   "evidence": {
     "validation": "docs/release/validation.json",
@@ -22,7 +27,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -41,7 +46,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -60,7 +65,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -80,7 +85,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -100,7 +105,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -119,7 +124,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -140,7 +145,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/native.js",
@@ -161,7 +166,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -182,7 +187,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -203,7 +208,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/assets.js",
         "src/sr2.js"
@@ -221,7 +226,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -241,7 +246,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/history.js",
         "backend/sr2/store.js",
@@ -262,7 +267,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/issuance.js",
         "backend/sr2/native.js",
@@ -285,7 +290,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -307,7 +312,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -330,7 +335,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -351,7 +356,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -374,7 +379,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/native.js",
@@ -395,7 +400,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/history.js",
         "backend/sr2/store.js",
@@ -416,7 +421,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -442,7 +447,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/native.js",
         "backend/sr2/runtime.js",
@@ -462,7 +467,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -484,7 +489,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository/credential"
       ],
@@ -501,7 +506,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -523,7 +528,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -543,7 +548,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -563,7 +568,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/sr2/maintenance.js",
@@ -586,7 +591,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -606,7 +611,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -626,7 +631,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -653,7 +658,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -674,7 +679,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -694,7 +699,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -715,7 +720,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -737,7 +742,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -756,7 +761,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/issuance.js",
         "backend/sr2/native.js",
@@ -778,7 +783,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -798,7 +803,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -818,7 +823,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -839,7 +844,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/participant-security.js",
         "backend/sr2/wire.js",
@@ -860,7 +865,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/issuance.js",
@@ -879,7 +884,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/transport.js",
         "backend/sr2/wire.js",
@@ -900,7 +905,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "scripts/deploy-observability.py",
@@ -919,7 +924,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -941,7 +946,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -965,7 +970,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -987,7 +992,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -1009,7 +1014,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "BLOCKED_OWNER",
+      "responsibility": "OWNER_REVIEW_REQUIRED",
       "implementation": [
         "backend/sr2/issuance.js",
         "backend/sr2/presentation.js",
@@ -1033,7 +1038,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1",
         "automation/flows/pci-deployment.json",
@@ -1059,7 +1064,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/functions/_k8s.js",
@@ -1079,7 +1084,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1098,7 +1103,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1",
         "automation/flows/pci-deployment.json",
@@ -1122,7 +1127,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "deployment/helm",
@@ -1141,7 +1146,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "mkdocs.yml",
         ".github/workflows/docs.yml",
@@ -1163,7 +1168,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm/observability",
         "scripts/deploy-observability.py",
@@ -1183,7 +1188,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm/observability",
         "scripts/deploy-observability.py",
@@ -1203,7 +1208,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm/observability",
         "scripts/deploy-observability.py",
@@ -1223,7 +1228,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/status.js",
         "backend/sr2/runtime.js",
@@ -1243,7 +1248,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -1265,7 +1270,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -1287,15 +1292,18 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
-        "test/bdd",
-        "test/live/wallet.mjs",
-        "test/browser/runtime.mjs",
-        "test/bdd/features/native-wallet.feature"
+        "scripts/run-ux-bdd.py",
+        "scripts/collect-ux-environment.py",
+        "test/bdd/features/steps/administration.py",
+        "test/bdd/features/steps/pci.py"
       ],
       "checks": [
-        "test/bdd/requirements.txt",
+        "test/bdd/features/administration.feature",
+        "test/bdd/features/offer.feature",
+        "test/bdd/features/runtime.feature",
+        "test/ux-runner/test_summary.py",
         ".github/workflows/ci.yml",
         "test/tests/integration/rc5-closure.test.mjs"
       ],
@@ -1308,7 +1316,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/profiles.js",
         "backend/sr2/presentation.js",
@@ -1332,7 +1340,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -1359,7 +1367,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
@@ -1378,7 +1386,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -1398,7 +1406,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/sr2/maintenance.js",
@@ -1421,7 +1429,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -1441,7 +1449,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/registration.js",
         "backend/functions/provider.js",
@@ -1463,7 +1471,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/auth.js",
         "backend/functions/tenant.js",
@@ -1487,7 +1495,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/reconcile.js",
         "backend/functions/_k8s.js",
@@ -1507,7 +1515,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "src/main.js",
         "src/sr2.js",
@@ -1529,7 +1537,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/http.js",
@@ -1550,7 +1558,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1569,7 +1577,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1588,7 +1596,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1607,7 +1615,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -1627,7 +1635,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/domain.js",
         "backend/sr2/service.js",
@@ -1649,7 +1657,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -1670,7 +1678,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/assets.js",
         "src/sr2.js",
@@ -1690,7 +1698,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "backend/sr2/issuance.js",
@@ -1710,7 +1718,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/history.js",
         "backend/sr2/store.js",
@@ -1733,7 +1741,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -1758,7 +1766,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository",
         "contracts/participant.proto",
@@ -1783,7 +1791,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1802,7 +1810,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1821,7 +1829,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1840,7 +1848,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2",
         "src/sr2.js",
@@ -1862,7 +1870,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2",
         "src/sr2.js",
@@ -1884,7 +1892,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1903,7 +1911,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1922,7 +1930,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1",
         "scripts/lifecycle.py",
@@ -1942,7 +1950,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1961,7 +1969,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1980,7 +1988,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -1999,7 +2007,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2018,7 +2026,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "mkdocs.yml",
         ".github/workflows/docs.yml",
@@ -2040,7 +2048,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2059,7 +2067,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/security/compliance-roadmap.md"
       ],
@@ -2075,7 +2083,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2094,7 +2102,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
@@ -2113,7 +2121,7 @@
       "source": {
         "document": "SRS.pdf"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         ".github/workflows",
         "docs/ci-cd.md",
@@ -2136,7 +2144,7 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
@@ -2152,7 +2160,7 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md",
@@ -2170,7 +2178,7 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/ux/ux-concept.md"
       ],
@@ -2186,7 +2194,7 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md"
@@ -2203,7 +2211,7 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "docs/requirements/traceability.md",
         "docs/release/0.5.0-rc.4.md"
@@ -2220,7 +2228,7 @@
         "page": 2,
         "section": "Scope Management"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
@@ -2237,7 +2245,7 @@
         "page": 2,
         "section": "ORCE"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions",
         "backend/sr2",
@@ -2255,7 +2263,7 @@
         "page": 2,
         "section": "ORCE"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "tools/build-flows.mjs",
         "docs/architecture/orce-nodes.md"
@@ -2272,7 +2280,7 @@
         "page": 2,
         "section": "ORCE"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/flows",
         "docs/operations/automation.md"
@@ -2289,7 +2297,7 @@
         "page": 2,
         "section": "ORCE"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/sr2/service.js",
         "src/sr2.js"
@@ -2306,7 +2314,7 @@
         "page": 2,
         "section": "Deployment on Kubernetes"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "automation/stage1/ground-zero.sh"
@@ -2323,7 +2331,7 @@
         "page": 2,
         "section": "Deployment on Kubernetes"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "docs/testing/live-acceptance.md"
@@ -2340,7 +2348,7 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "deployment/helm"
@@ -2357,7 +2365,7 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/stage1/install.sh"
@@ -2374,7 +2382,7 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/uninstall.sh",
         "automation/stage1/restore-runtime.mjs",
@@ -2392,7 +2400,7 @@
         "page": 2,
         "section": "Kubernetes and Helm"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions/_k8s.js",
         "automation/stage1/ground-zero.sh"
@@ -2409,7 +2417,7 @@
         "page": 2,
         "section": "Helm charts"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm",
         ".github/workflows/release.yml"
@@ -2426,7 +2434,7 @@
         "page": 2,
         "section": "Keycloak"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/reconcile.js"
@@ -2443,7 +2451,7 @@
         "page": 2,
         "section": "Keycloak"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/_common.js"
@@ -2460,7 +2468,7 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md"
@@ -2477,7 +2485,7 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml"
@@ -2494,7 +2502,7 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
@@ -2510,7 +2518,7 @@
         "page": 2,
         "section": "Repository rules"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
@@ -2526,7 +2534,7 @@
         "page": 2,
         "section": "Apache License"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md"
@@ -2543,7 +2551,7 @@
         "page": 3,
         "section": "FOSS"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "package-lock.json",
@@ -2561,7 +2569,7 @@
         "page": 3,
         "section": "FOSS"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "CONTRIBUTING.md"
@@ -2578,7 +2586,7 @@
         "page": 3,
         "section": "FOSS"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "THIRD_PARTY_NOTICES.md",
         "contracts/source-manifest.json"
@@ -2595,7 +2603,7 @@
         "page": 3,
         "section": "FOSS"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/compatibility/compatibility-matrix.md",
         "contracts/source-manifest.json"
@@ -2612,7 +2620,7 @@
         "page": 3,
         "section": "XFSC reuse"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/architecture.md",
         "docs/contracts/native-ocm.md"
@@ -2629,7 +2637,7 @@
         "page": 3,
         "section": "Contributor agreement"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
@@ -2645,7 +2653,7 @@
         "page": 3,
         "section": "Runtime environments"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/preflight.sh",
         "docs/compatibility/compatibility-matrix.md"
@@ -2662,7 +2670,7 @@
         "page": 3,
         "section": "Runtime environments"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "deployment/helm",
@@ -2680,7 +2688,7 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "backend/functions",
         "backend/sr2"
@@ -2697,7 +2705,7 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "src",
         "backend/sr2/domain.js",
@@ -2715,7 +2723,7 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/deploy.sh",
         "scripts/uninstall.sh",
@@ -2733,7 +2741,7 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm",
         "automation/stage1/ground-zero.sh"
@@ -2750,7 +2758,7 @@
         "page": 3,
         "section": "Programming Languages"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "reference/participant-data-repository"
       ],
@@ -2766,7 +2774,7 @@
         "page": 3,
         "section": "Mandated component dependencies"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/known-gaps.md",
         "deployment/prerequisites/upstream"
@@ -2783,7 +2791,7 @@
         "page": 3,
         "section": "Documentation"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md"
@@ -2800,7 +2808,7 @@
         "page": 3,
         "section": "Documentation"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/source-baseline.md",
         "docs/architecture/architecture.md"
@@ -2817,7 +2825,7 @@
         "page": 3,
         "section": "Documentation"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md"
@@ -2834,7 +2842,7 @@
         "page": 3,
         "section": "Local Repo"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/product.adoc",
@@ -2852,7 +2860,7 @@
         "page": 3,
         "section": "Local Repo"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "reference/participant-data-repository/Dockerfile",
@@ -2870,7 +2878,7 @@
         "page": 3,
         "section": "Local Repo"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/operations/deployment.md",
         "docs/operations/upgrade-0.5.0-rc.4.md"
@@ -2887,7 +2895,7 @@
         "page": 4,
         "section": "Local Repo"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/requirements/traceability.md",
         "docs/known-gaps.md",
@@ -2905,7 +2913,7 @@
         "page": 4,
         "section": "Local Repo"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "docs/architecture/issuer-runtime.md"
@@ -2922,7 +2930,7 @@
         "page": 4,
         "section": "Local Repo"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "LICENSE.txt",
@@ -2941,7 +2949,7 @@
         "page": 4,
         "section": "General Principles"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/specifications",
@@ -2959,7 +2967,7 @@
         "page": 4,
         "section": "Repository Creation"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
@@ -2975,7 +2983,7 @@
         "page": 4,
         "section": "Contributor Onboarding"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md"
       ],
@@ -2991,7 +2999,7 @@
         "page": 4,
         "section": "Documentation Generator"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "mkdocs.yml",
         ".github/workflows/docs.yml"
@@ -3008,7 +3016,7 @@
         "page": 4,
         "section": "Product Documentation"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/product.adoc"
       ],
@@ -3024,7 +3032,7 @@
         "page": 4,
         "section": "Architecture Modelling"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/components.puml",
         "docs/architecture/issuance.puml"
@@ -3041,7 +3049,7 @@
         "page": 4,
         "section": "APIs"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/api/openapi.json",
         "docs/api/examples.json",
@@ -3059,7 +3067,7 @@
         "page": 4,
         "section": "Node-RED hooks"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/architecture/orce-nodes.md",
         "backend/sr2/routes.json"
@@ -3076,7 +3084,7 @@
         "page": 4,
         "section": "Semantic templates"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "contracts/examples",
         "backend/sr2/semantics.js",
@@ -3096,7 +3104,7 @@
         "page": 4,
         "section": "Client templates"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "contracts/examples",
         "docs/contracts/semantic-templates.md"
@@ -3113,7 +3121,7 @@
         "page": 4,
         "section": "README"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/operations/deployment.md",
@@ -3131,7 +3139,7 @@
         "page": 5,
         "section": "README"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "docs/architecture/components.puml"
@@ -3148,7 +3156,7 @@
         "page": 6,
         "section": "FOSS Repository Workflows"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         ".github/workflows/ci.yml",
         ".github/workflows/release.yml",
@@ -3166,7 +3174,7 @@
         "page": 6,
         "section": "FOSS Repository README"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "README.md",
         "CONTRIBUTING.md",
@@ -3184,7 +3192,7 @@
         "page": 6,
         "section": "FOSS Repository Contributing"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "CONTRIBUTING.md",
         "SECURITY.md"
@@ -3201,7 +3209,7 @@
         "page": 6,
         "section": "FOSS Repository License"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "LICENSE.txt",
         "NOTICE.md"
@@ -3218,7 +3226,7 @@
         "page": 6,
         "section": "FOSS Repository Code of Conduct"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "CODE_OF_CONDUCT.md"
       ],
@@ -3234,7 +3242,7 @@
         "page": 6,
         "section": "FOSS Repository Docs"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs",
         "mkdocs.yml",
@@ -3252,7 +3260,7 @@
         "page": 6,
         "section": "FOSS Repository CI and APIs"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/ci-cd.md",
         "docs/api/README.md",
@@ -3270,7 +3278,7 @@
         "page": 6,
         "section": "ORCE Automation QA"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/pci-deployment.json",
@@ -3289,7 +3297,7 @@
         "page": 6,
         "section": "ORCE Automation QA"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/lifecycle.js",
@@ -3307,7 +3315,7 @@
         "page": 6,
         "section": "ORCE Automation QA"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/lifecycle.py",
         "automation/flows/lifecycle.js"
@@ -3324,7 +3332,7 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "responsibility": "BLOCKED_OWNER",
+      "responsibility": "OWNER_REVIEW_REQUIRED",
       "implementation": [
         "docs/operations/transport.md",
         "backend/sr2/transport.js",
@@ -3344,7 +3352,7 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "responsibility": "BLOCKED_OWNER",
+      "responsibility": "OWNER_REVIEW_REQUIRED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "docs/privacy/data-handling.md",
@@ -3364,7 +3372,7 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "automation/stage1/ground-zero.sh",
         "backend/functions/_k8s.js",
@@ -3382,7 +3390,7 @@
         "page": 6,
         "section": "Runtime Validation"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "scripts/preflight.sh",
         "backend/functions/status.js"
@@ -3399,7 +3407,7 @@
         "page": 6,
         "section": "BDD Suite"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
@@ -3416,7 +3424,7 @@
         "page": 6,
         "section": "BDD Suite"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
@@ -3433,7 +3441,7 @@
         "page": 7,
         "section": "BDD Suite"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
@@ -3450,7 +3458,7 @@
         "page": 7,
         "section": "BDD Suite"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features/lifecycle.feature",
         "test/bdd/features/steps/completion.py"
@@ -3467,7 +3475,7 @@
         "page": 7,
         "section": "BDD Suite"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd/features",
         "test/live/wallet.mjs",
@@ -3486,7 +3494,7 @@
         "page": 7,
         "section": "BDD packs"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "test/bdd",
         "docs/testing/completion.md",
@@ -3504,7 +3512,7 @@
         "page": 7,
         "section": "QA hosting"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/testing/live-acceptance.md",
         "test/bdd"
@@ -3521,7 +3529,7 @@
         "page": 7,
         "section": "DevOps tools"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "CONTRIBUTING.md",
         ".github/workflows",
@@ -3539,7 +3547,7 @@
         "page": 7,
         "section": "Release artifacts"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/helm",
         "reference/participant-data-repository/Dockerfile",
@@ -3558,7 +3566,7 @@
         "page": 7,
         "section": "DevOps tools"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "deployment/argocd/participant-application.example.yaml",
         "docs/operations/argocd.md"
@@ -3575,7 +3583,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "BLOCKED_OWNER",
+      "responsibility": "OWNER_REVIEW_REQUIRED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -3600,7 +3608,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -3625,7 +3633,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -3650,7 +3658,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -3675,7 +3683,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -3700,7 +3708,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -3730,7 +3738,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "EXCLUDED",
+      "responsibility": "PROCESS_REVIEW_REQUIRED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",
@@ -3755,7 +3763,7 @@
       "source": {
         "document": "Supplementary audit grouping"
       },
-      "responsibility": "DONE",
+      "responsibility": "SOURCE_REFERENCED",
       "implementation": [
         "docs/product.adoc",
         "docs/specifications",

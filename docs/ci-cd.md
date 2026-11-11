@@ -1,5 +1,7 @@
 # CI and release delivery
 
+The workflow results on this page belong to the commit they name. Every pull request runs the workflows listed in the [contribution and review workflow](development/official-workflow.md); the gates without a result for the current source are listed in [acceptance gates](release/acceptance-gates.md).
+
 ## Verified workflow results
 
 For source commit `3fef8e3048f3`, [CI run 38727256710](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/38727256710) completed successfully. Its Node, PostgreSQL, participant Go/Goa/protobuf, official Go, Helm, Chromium and semantic checks passed. The offline Node total was 350 passed with zero failed or skipped. The [Documentation run 39127451730](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/39127451730) completed its strict build and Pages publication on 18 October 2026. Exact job IDs and outcomes are in [ci-evidence.json](release/ci-evidence.json).
@@ -12,7 +14,7 @@ Eclipse Dash is an independent workflow. Run `38727256204` concluded `failure`; 
 
 ## Documentation publication
 
-`docs.yml` runs `mkdocs build --strict` and preserves the generated site artifact on pushes and pull requests. To publish an updated site, dispatch **Documentation** on the committed branch with `publish=true`. Its `publish` job deploys the built Pages artifact. Build and publication results identify the exact documentation revision.
+`docs.yml` runs `mkdocs build --strict` and preserves the generated site artifact on pushes and pull requests. Every push to `main` and every release candidate tag publishes the built site to GitHub Pages; the site carries `VERSION.txt` with the version and commit it was built from. Dispatching **Documentation** with `publish=true` republishes on demand. Build and publication results identify the exact documentation revision.
 
 ## Container and release workflows
 

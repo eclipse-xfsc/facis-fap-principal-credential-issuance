@@ -3,7 +3,7 @@
 | Component | Source/configuration | Verification and operating scope |
 |---|---|---|
 | PCI container | `ecofacis/fap-pci:1.0.0` on Docker Hub | ORCE 2.0.15 filesystem with embedded PCI `/data`; record the pulled digest |
-| PCI application | `0.5.0-rc.12` | Source version in `VERSION` and `package.json`; 350-test CI record |
+| PCI application | `0.5.0-rc.16` | Source version in `VERSION` and `package.json`; CI results per pull request and on the release candidate tag |
 | UI | Vue 3.5.43 source pin; uibuilder runtime supplied by ORCE | Chromium component/layout CI passed at desktop and narrow widths |
 | Kubernetes | 1.33–1.36 | G0/Gateway APIs and target-cluster admission |
 | Helm | 3.17 or newer | Chart lint/template CI passed; bounded ownership adoption uses `--take-ownership` |

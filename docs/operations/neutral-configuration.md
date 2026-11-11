@@ -1,6 +1,6 @@
 # Neutral deployment configuration
 
-This source revision retains version **0.5.0-rc.12**. Operator-specific names, domains, email addresses, workstation paths, public IP addresses and live tenant/configuration identifiers have been removed. Official FACIS/XFSC identifiers, upstream contracts, source attribution and third-party licence notices are retained.
+This page describes the neutral revision prepared at version **0.5.0-rc.12**; the current source is `0.5.0-rc.16`. Operator-specific names, domains, email addresses, workstation paths, public IP addresses and live tenant/configuration identifiers have been removed. Official FACIS/XFSC identifiers, upstream contracts, source attribution and third-party licence notices are retained.
 
 The examples in current and historical deployment guides are placeholders. Replace them before running deployment or wallet commands. Earlier release notes describe historical observations; neutral example URLs do not represent a publicly tested deployment.
 

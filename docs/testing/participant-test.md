@@ -28,7 +28,7 @@ Keep the editor separately authenticated. Use only synthetic employee values. Co
 }
 ```
 
-Create the configuration as a draft first to obtain its UUID. The supplied Alpha UUID is `f87d5e92-f5b8-4cc3-b54f-2151cdd89402`; verify it still matches the intended tenant. Configure records on the separate datasource ORCE (replace the three datasource deployment arguments):
+Create the configuration as a draft first to obtain its UUID. Use the actual tenant and configuration UUIDs of the intended installation. Configure records on the separate datasource ORCE (replace the three datasource deployment arguments):
 
 ```bash
 python3 scripts/configure-test-source.py \
@@ -55,7 +55,7 @@ bash reference/participant-data-repository/generate.sh
   go build -tags=generated ./cmd/server
 )
 docker build -f reference/participant-data-repository/Dockerfile \
-  -t <approved-registry>/pci-participant:0.5.0-rc.5 .
+  -t <approved-registry>/pci-participant:<release version> .
 ```
 
 Publish the image only through the participant owner's approved registry process. Record its resulting `@sha256:...` digest and retain `go.sum`, generated source and test output as release evidence. The main PCI application still consists of imported ORCE flows and UI; this container is the service expressly required by the SRS. It was not built or published on your behalf.
@@ -69,7 +69,7 @@ python3 scripts/deploy-participant.py \
   --pci-namespace xfsc-orce-pci-orce \
   --orce-deployment xfsc-orce \
   --orce-container orce \
-  --tenant-id f87d5e92-f5b8-4cc3-b54f-2151cdd89402 \
+  --tenant-id <actual-tenant-UUID> \
   --configuration-id <actual-configuration-UUID> \
   --image <approved-registry>/pci-participant@sha256:<digest> \
   --source-url https://<datasource-host>/<ORCE-base>/participant-test/v1/records \

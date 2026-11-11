@@ -6,22 +6,24 @@ FAP PCI runs inside XFSC ORCE and provides tenant onboarding, delegated issuer a
 
 | Distribution | Reference |
 |---|---|
-| Packaged PCI container | [`ecofacis/fap-pci:1.0.0`](https://hub.docker.com/r/ecofacis/fap-pci/tags?name=1.0.0) |
-| Application source version | `0.5.0-rc.12`, as recorded in `VERSION` and `package.json` |
+| Application source version | `0.5.0-rc.16`, as recorded in `VERSION` and `package.json` |
+| Packaged PCI container | [`ecofacis/fap-pci:1.0.0`](https://hub.docker.com/r/ecofacis/fap-pci/tags?name=1.0.0), built from source `0.5.0-rc.12` at commit `3fef8e3048f3`; it does not contain changes merged after that commit and is superseded by the image of the next release candidate |
 | Packaging base | `ecofacis/xfsc-orce:2.0.15` |
 | Published documentation | [FAP PCI documentation](https://eclipse-xfsc.github.io/facis-fap-principal-credential-issuance/) |
 
-The container captures the ORCE filesystem and explicitly includes `/data`, covering PCI flows, UI/configuration and installed dependencies. Container packaging and application versions identify different release units. An older base image tag on an existing deployment does not identify the version of hot-installed PCI artifacts. See [container use and provenance](docs/operations/container-image.md) and the [1.0.0 packaging record](docs/release/1.0.0.md).
+The container captures the ORCE filesystem and explicitly includes `/data`, covering PCI flows, UI/configuration and installed dependencies. Container packaging and application versions identify different release units. An older base image tag on an existing deployment does not identify the version of hot-installed PCI artifacts. See [container use and provenance](docs/operations/container-image.md), the [1.0.0 packaging record](docs/release/1.0.0.md) and the [acceptance gates](docs/release/acceptance-gates.md) that remain open for the current source.
 
 ## Build and checks
 
 ```bash
 npm ci
 python3 -m pip install PyYAML==6.0.2
+npm run format:check
+npm run check:maintainability
 npm run test:offline
 ```
 
-Use Node.js 20 or newer, Python 3, OpenSSL and the pinned dependencies. [CI results](docs/release/completion.md) record 350 passing Node tests plus successful PostgreSQL, Go/Goa/protobuf, Helm, Chromium and semantic checks for the reviewed source commit. The [test strategy](docs/testing/test-strategy.md) explains each suite and its fixtures. Deployment-specific tests use private target configuration and sessions.
+Use Node.js 20 or newer, Python 3, OpenSSL and the pinned dependencies. The source formatter and the maintainability gate are described in the [maintainer guide](docs/development/maintainer-guide.md). The [test strategy](docs/testing/test-strategy.md) explains each suite and its fixtures; [executed checks](docs/release/completion.md) record results by commit and run. Deployment-specific tests use private target configuration and sessions; see [live acceptance](docs/testing/live-acceptance.md) and the [deployed UX tests](docs/testing/ux-bdd-runbook.md).
 
 ## Install and operate
 
@@ -31,14 +33,14 @@ Use Node.js 20 or newer, Python 3, OpenSSL and the pinned dependencies. [CI resu
 4. Follow [participant setup](docs/testing/participant-test.md) and the [test walkthrough](docs/testing/acceptance-walkthrough.md).
 5. Use the [operations runbook](docs/operations/runbook.md) for recovery, maintenance and uninstall.
 
-The source artifact interface is `dist/fap-pci-flow.json`, `dist/ground-zero.sh` and `dist/ui/`. For an existing instance, use the [artifact upgrade](docs/operations/upgrade-0.5.0-rc.12.md). Import PCI flows through the established modified-flows deployment and retain the instance's persistent data. The [operating profiles](docs/known-gaps.md) describe dependency ownership, transport, supported formats and retention.
+The source artifact interface is `dist/fap-pci-flow.json`, `dist/ground-zero.sh` and `dist/ui/`. For an existing instance deployed from the image, follow [deploying the application image](docs/operations/deployment.md#deploying-the-application-image); for an instance maintained with the hot installer, the [rc.12 artifact upgrade](docs/operations/upgrade-0.5.0-rc.12.md) procedure applies with the current `dist/`. Import PCI flows through the established modified-flows deployment and retain the instance's persistent data. The [operating profiles](docs/known-gaps.md) describe dependency ownership, transport, supported formats and retention.
 
 ## Source layout
 
 | Path | Purpose |
 |---|---|
 | `backend/functions/`, `backend/sr2/` | Registration, IAM, reconciliation, issuer domain and native adapters |
-| `src/`, `shared/` | UI and public URL model |
+| `src/`, `shared/` | UI (issuer workspace under `src/issuer/`) and public URL model |
 | `automation/`, `scripts/` | Prerequisites, artifact installation, lifecycle and diagnostics |
 | `deployment/` | Helm charts and infrastructure profiles |
 | `reference/participant-data-repository/` | Go/Goa participant service |
@@ -48,4 +50,4 @@ The source artifact interface is `dist/fap-pci-flow.json`, `dist/ground-zero.sh`
 
 The [101 SRS entries](docs/requirements/traceability.md) and [83 technical clauses](docs/requirements/technical-clauses.md) link implementation and verification procedures to the original specifications. Current [validation](docs/release/validation.json) and [workflow evidence](docs/release/ci-evidence.json) identify executed checks by commit and run. Release-specific test receipts are maintained separately from the source catalogue.
 
-Application source is Apache-2.0. Original specifications and dependencies retain their notices. See [licences](THIRD_PARTY_NOTICES.md), [contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md). Use the repository issue process for project questions; keep credentials, participant records and private deployment files outside Git.
+Application source is Apache-2.0. Original specifications and dependencies retain their notices. See [notices](NOTICE.md), [third-party components](THIRD_PARTY_NOTICES.md), [contributing](CONTRIBUTING.md), the [contribution and review workflow](docs/development/official-workflow.md) and [security reporting](SECURITY.md). Use the repository issue process for project questions; keep credentials, participant records and private deployment files outside Git.

@@ -10,7 +10,7 @@ Run on synthetic data first. Select the approved [operating profiles](../known-g
 
 ```bash
 python3 -m venv /private/pci-bdd
-/private/pci-bdd/bin/pip install -r test/bdd/requirements.txt
+/private/pci-bdd/bin/pip install -r test/bdd/requirements.txt -c test/bdd/constraints.txt
 /private/pci-bdd/bin/playwright install chromium
 ```
 
@@ -46,6 +46,22 @@ The selected official Executor has older pinned dependencies; include its depend
 | Release | Official workflows, IP/SBOM, Harbor, deployment PRs, tags, docs, issue closure | Missing/failed evidence blocks sign-off |
 
 The additional `ux`/`offer` cases and their opt-in synthetic-data setup are described in [the acceptance walkthrough](acceptance-walkthrough.md). The Executor pack automates a subset; the full table and all SRS milestone criteria still need executed evidence. Extend it with the operator's wallet/IdP harness instead of replacing unavailable actions with mocks.
+
+## Deployment record
+
+Every test run names the deployment it ran against. `scripts/record-deployment.py`
+records the release candidate tag and its commit, the image references and the digests
+the pods actually run, the Helm releases and the version reported by `/healthz`, and
+checks that the version matches the tag, that every container runs a digest and that
+every container is ready (exit code 1 otherwise). It reads only and records no Secret.
+
+```bash
+python3 scripts/record-deployment.py --environment IONOS --tag v0.5.0-rc.16 \
+  --base-url https://<provider-host><base-path> --out /private/evidence/deployment-ionos.json
+```
+
+The record of each QA deployment is part of the evidence package of the release
+candidate and of the receipt below.
 
 ## Receipt
 

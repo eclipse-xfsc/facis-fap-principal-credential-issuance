@@ -1,5 +1,5 @@
 {
-  "version": "0.5.0-rc.12",
+  "version": "0.5.0-rc.16",
   "purpose": "Synthetic request shapes. Replace IDs, private session, If-Match and resource bindings; these are not captured acceptance results. Consult OpenAPI response schemas and live BDD assertions.",
   "items": [
     {
