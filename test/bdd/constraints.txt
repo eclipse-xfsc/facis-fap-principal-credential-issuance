@@ -1,0 +1,4 @@
+# Version constraints for the BDD Executor dependency set.
+# Markdown 3.8.1 includes the parser-crash fix for PYSEC-2026-89.
+# Eclipse Dash/IP clearance must be verified for this exact version.
+markdown==3.8.1

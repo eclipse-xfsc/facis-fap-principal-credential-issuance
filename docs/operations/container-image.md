@@ -1,5 +1,7 @@
 # FAP PCI container image
 
+This page records the 1.0.0 package, which was produced by capturing a running ORCE container. From release candidate rc.16 the application image is built from the tagged source by the `Images` workflow (`deployment/image/Dockerfile`, base image by digest, no captured state); see [deploying the application image](deployment.md#deploying-the-application-image). The 1.0.0 package is superseded by that image and is kept here as the record of what was distributed.
+
 ## Distribution
 
 | Item | Value |

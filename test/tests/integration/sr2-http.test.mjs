@@ -1,46 +1,110 @@
-import test from 'node:test';import assert from 'node:assert/strict';
-import { fixture,configuration,alpha,beta } from '../../support/sr2-fixture.mjs';
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
+import { stripModuleSyntax } from '../../../tools/lib/module-source.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { fixture, configuration, alpha, beta } from '../../support/sr2-fixture.mjs';
 import { httpHarness } from '../../support/sr2-http.mjs';
-const base='/api/v1/tenants/'+alpha;
-test('ORCE HTTP wrapper creates, reads, updates and requires If-Match',async()=>{
- const http=httpHarness(fixture());const created=await http(base+'/credential-configurations',{method:'POST',body:{data:configuration()}});assert.equal(created.status,201);const id=created.body.item.id;
- assert.equal((await http(base+'/credential-configurations/'+id)).status,200);
- const update={method:'PATCH',body:{data:{...created.body.item.draft,name:'New name'}}};assert.equal((await http(base+'/credential-configurations/'+id,update)).status,428);const saved=await http(base+'/credential-configurations/'+id,{...update,headers:{'if-match':'"1"'}});assert.equal(saved.status,200);assert.equal(saved.headers.etag,'"2"');assert.equal((await http(base+'/credential-configurations/'+id,{...update,headers:{'if-match':'"1"'}})).status,412);
+const base = '/api/v1/tenants/' + alpha;
+test('ORCE HTTP wrapper creates, reads, updates and requires If-Match', async() => {
+  const http = httpHarness(fixture());
+  const created = await http(base + '/credential-configurations', { method: 'POST', body: { data: configuration() } });
+  assert.equal(created.status, 201);
+  const id = created.body.item.id;
+  assert.equal((await http(base + '/credential-configurations/' + id)).status, 200);
+  const update = { method: 'PATCH', body: { data: { ...created.body.item.draft, name: 'New name' } } };
+  assert.equal((await http(base + '/credential-configurations/' + id, update)).status, 428);
+  const saved = await http(base + '/credential-configurations/' + id, { ...update, headers: { 'if-match': '"1"' } });
+  assert.equal(saved.status, 200);
+  assert.equal(saved.headers.etag, '"2"');
+  assert.equal((await http(base + '/credential-configurations/' + id, { ...update, headers: { 'if-match': '"1"' } })).status, 412);
 });
-test('HTTP wrapper rejects Alpha on Beta, mixed-case duplicate headers, forged context, CSRF and uibuilder transport',async()=>{
- const f=fixture(),http=httpHarness(f);
- assert.equal((await http('/api/v1/tenants/'+beta+'/credential-configurations')).status,404);
- assert.equal((await http(base+'/credential-configurations',{headers:{'x-pci-tenant-id':beta}})).status,404);
- assert.equal((await http(base+'/credential-configurations',{rawHeaders:['Host','alpha-pci.example.com','hOSt','beta-pci.example.com']})).status,403);
- assert.equal((await http(base+'/credential-configurations',{method:'POST',body:{data:configuration()},headers:{origin:'https://attacker.example.com'}})).status,403);
- assert.equal((await http(base+'/credential-configurations',{method:'POST',body:{data:configuration()},headers:{'content-type':'text/plain'}})).status,400);
- assert.equal((await http(base+'/credential-configurations',{transport:'uibuilder'})).status,400);
+test('HTTP wrapper rejects Alpha on Beta, mixed-case duplicate headers, forged context, CSRF and uibuilder transport', async() => {
+  const f = fixture(),
+  http = httpHarness(f);
+  assert.equal((await http('/api/v1/tenants/' + beta + '/credential-configurations')).status, 404);
+  assert.equal((await http(base + '/credential-configurations', { headers: { 'x-pci-tenant-id': beta } })).status, 404);
+  assert.equal((await http(base + '/credential-configurations',
+    { rawHeaders: ['Host', 'alpha-pci.example.com', 'hOSt', 'beta-pci.example.com'] })).status, 403);
+  assert.equal((await http(base + '/credential-configurations', {
+    method: 'POST',
+    body: { data: configuration() },
+    headers: { origin: 'https://attacker.example.com' }
+  })).status, 403);
+  assert.equal((await http(base + '/credential-configurations',
+    { method: 'POST', body: { data: configuration() }, headers: { 'content-type': 'text/plain' } })).status, 400);
+  assert.equal((await http(base + '/credential-configurations', { transport: 'uibuilder' })).status, 400);
 });
-test('internal callback and offer routes cannot be reached with a browser-asserted identity',async()=>{
- const http=httpHarness(fixture());for(const path of ['/offers','/callbacks']){const r=await http('/api/v1/internal/tenants/'+alpha+path,{method:'POST',body:{principal:{roles:['principal'],tenantId:alpha}},headers:{authorization:'Bearer not-an-active-token','x-pci-public-request':'1'}});assert.equal(r.status,401);}
+test('internal callback and offer routes cannot be reached with a browser-asserted identity', async() => {
+  const http = httpHarness(fixture());
+  for (const path of ['/offers', '/callbacks']) {
+    const r = await http('/api/v1/internal/tenants/' + alpha + path, {
+      method: 'POST',
+      body: { principal: { roles: ['principal'], tenantId: alpha } },
+      headers: { authorization: 'Bearer not-an-active-token', 'x-pci-public-request': '1' }
+    });
+    assert.equal(r.status, 401);
+  }
 });
-test('principal cannot bypass issuer controls through direct HTTP',async()=>{
- const f=fixture(),{config}=await f.prepared(),http=httpHarness(f,'principal');const r=await http(base+'/credential-configurations/'+config.id,{method:'PATCH',body:{data:config.draft},headers:{'if-match':`"${config.version}"`}});assert.equal(r.status,404);assert.equal((await http(base+'/issuer-metadata')).status,403);
+test('principal cannot bypass issuer controls through direct HTTP', async() => {
+  const f = fixture(),
+  { config } = await f.prepared(),
+  http = httpHarness(f, 'principal');
+  const r = await http(base + '/credential-configurations/' + config.id, { method: 'PATCH', body: { data: config
+    .draft }, headers: { 'if-match': `"${config.version}"` } });
+  assert.equal(r.status, 404);
+  assert.equal((await http(base + '/issuer-metadata')).status, 403);
 });
-test('HTTP history filters by verified credential ID and exposes current state without provider handles',async()=>{
- const f=fixture(),a=await f.prepared(),p=f.principal('principal'),id=await f.offered(a.config,p);await f.api.complete(p,id,'ephemeral',null);
- const http=httpHarness(f),path=base+'/credential-configurations/'+a.config.id+'/history',r=await http(path+'?requestId='+id);
- assert.equal(r.status,200);const row=r.body.items.find(x=>x.type==='issued');assert.match(row.credentialId,/^urn:uuid:/);assert.equal(row.currentState,'issued');assert.equal(row.statusReference.handle,undefined);
- assert.equal((await http(path+'?credentialId=urn%3Auuid%3Aabsent')).body.items.length,0);
- const filtered=await http(path+'?credentialId='+encodeURIComponent(row.credentialId));assert.ok(filtered.body.items.length);
- assert.ok(!JSON.stringify(filtered.body).includes(f.privateClaim));
+test('HTTP history filters by verified credential ID and exposes current state without provider handles', async() => {
+  const f = fixture(),
+  a = await f.prepared(),
+  p = f.principal('principal'),
+  id = await f.offered(a.config, p);
+  await f.api.complete(p, id, 'ephemeral', null);
+  const http = httpHarness(f),
+  path = base + '/credential-configurations/' + a.config.id + '/history',
+  r = await http(path + '?requestId=' + id);
+  assert.equal(r.status, 200);
+  const row = r.body.items.find(x => x.type === 'issued');
+  assert.match(row.credentialId, /^urn:uuid:/);
+  assert.equal(row.currentState, 'issued');
+  assert.equal(row.statusReference.handle, undefined);
+  assert.equal((await http(path + '?credentialId=urn%3Auuid%3Aabsent')).body.items.length, 0);
+  const filtered = await http(path + '?credentialId=' + encodeURIComponent(row.credentialId));
+  assert.ok(filtered.body.items.length);
+  assert.ok(!JSON.stringify(filtered.body).includes(f.privateClaim));
 });
-
-test('validation errors survive distinct Node-RED VM constructors',async()=>{
- const vm=await import('node:vm'),fs=await import('node:fs');
- const domain=fs.readFileSync('backend/sr2/domain.js','utf8').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'');
- const foreign=vm.runInNewContext(domain+'\nnew Sr2Error(400,"PCI-CONFIG-PREREQUISITES","Activate the participant connector first.")');
- const f=fixture();f.api.resource=async()=>{throw foreign;};
- const response=await httpHarness(f)(base+'/credential-configurations/11111111-1111-4111-8111-111111111111/validate',{method:'POST'});
- assert.equal(response.status,400);assert.equal(response.body.code,'PCI-CONFIG-PREREQUISITES');assert.match(response.body.detail,/participant connector/);
+test('validation errors survive distinct Node-RED VM constructors', async() => {
+  const vm = await import ('node:vm'),
+  fs = await import ('node:fs');
+  const domain = stripModuleSyntax(fs.readFileSync('backend/sr2/domain.js', 'utf8'), 'backend/sr2/domain.js');
+  const foreign = vm.runInNewContext(domain + '\nnew Sr2Error(400,"PCI-CONFIG-PREREQUISITES","Activate the participant connector first.")');
+  const f = fixture();
+  f.api.resource = async() => {
+    throw foreign;
+  };
+  const response = await httpHarness(f)(base + '/credential-configurations/11111111-1111-4111-8111-111111111111/validate',
+    { method: 'POST' });
+  assert.equal(response.status, 400);
+  assert.equal(response.body.code, 'PCI-CONFIG-PREREQUISITES');
+  assert.match(response.body.detail, /participant connector/);
 });
-test('configuration validation names the missing prerequisites instead of throwing a server error',async()=>{
- const f=fixture(),http=httpHarness(f),created=await http(base+'/credential-configurations',{method:'POST',body:{data:configuration()}});
- const result=await http(base+'/credential-configurations/'+created.body.item.id+'/validate',{method:'POST'});
- assert.equal(result.status,400);assert.equal(result.body.code,'PCI-CONFIG-PREREQUISITES');assert.match(result.body.detail,/participant connector/);assert.match(result.body.detail,/issuance journey/);assert.match(result.body.detail,/issuer metadata/);
+test('configuration validation names the missing prerequisites instead of throwing a server error', async() => {
+  const f = fixture(),
+  http = httpHarness(f),
+  created = await http(base + '/credential-configurations', { method: 'POST', body: { data: configuration() } });
+  const result = await http(base + '/credential-configurations/' + created.body.item.id + '/validate', { method: 'POST' });
+  assert.equal(result.status, 400);
+  assert.equal(result.body.code, 'PCI-CONFIG-PREREQUISITES');
+  assert.match(result.body.detail, /participant connector/);
+  assert.match(result.body.detail, /issuance journey/);
+  assert.match(result.body.detail, /issuer metadata/);
 });

@@ -1,0 +1,22 @@
+{
+  "mainUrl": "https://pci.example.com/pci-orce",
+  "alphaUrl": "https://alpha-pci.example.com/pci-orce",
+  "betaUrl": "https://beta-pci.example.com/pci-orce",
+  "alphaTenantId": "REPLACE_WITH_ALPHA_TENANT_UUID",
+  "betaTenantId": "REPLACE_WITH_BETA_TENANT_UUID",
+  "allowUxMutations": false,
+  "allowDestructiveAcceptance": false,
+  "issuerKey": "issuer",
+  "offerConfigurationName": "REPLACE_WITH_PUBLISHED_SYNTHETIC_CONFIGURATION_NAME",
+  "journeyAnswers": {},
+  "sessions": {
+    "alphaAdmin": {"url": "https://alpha-pci.example.com/pci-orce", "stateFile": "alpha-admin.json"},
+    "alphaPrincipal": {"url": "https://alpha-pci.example.com/pci-orce", "stateFile": "alpha-principal.json"}
+  },
+  "delegationCase": {
+    "tenantId": "REPLACE_WITH_ALPHA_TENANT_UUID",
+    "configurationId": "REPLACE_WITH_ALPHA_CONFIGURATION_UUID",
+    "subject": "REPLACE_WITH_ORDINARY_ALPHA_PRINCIPAL_SUBJECT",
+    "session": "alphaPrincipal"
+  }
+}
