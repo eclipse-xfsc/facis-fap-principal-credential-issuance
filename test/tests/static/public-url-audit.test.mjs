@@ -1,3 +1,13 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
@@ -69,7 +79,7 @@ test("email, invitation and Keycloak URL sites are all base-path aware", () => {
   for (const file of ["backend/functions/registration.js", "backend/functions/provider.js", "backend/functions/reconcile.js", "backend/functions/_common.js"]) {
     assert.match(authored[file], /uiUrl\([^\n]+cfg\.orceBasePath\)/, `${file} must use uiUrl with cfg.orceBasePath`);
   }
-  assert.match(authored["backend/functions/reconcile.js"], /redirectUris = Array\.from\(new Set\(\[uiUrl\(cfg\.mainHost, cfg\.orceBasePath\)/);
+  assert.match(authored["backend/functions/reconcile.js"], /redirectUris\s*=\s*Array\.from\(new Set\(\[\s*uiUrl\(cfg\.mainHost, cfg\.orceBasePath\)/);
   assert.match(authored["backend/functions/reconcile.js"], /post\.logout\.redirect\.uris/);
   assert.match(authored["backend/functions/auth.js"], /const expectedRedirect = uiUrl\(host, cfg\.orceBasePath\)/);
 });

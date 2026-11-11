@@ -10,7 +10,7 @@ Run on synthetic data first. Select the approved [operating profiles](../known-g
 
 ```bash
 python3 -m venv /private/pci-bdd
-/private/pci-bdd/bin/pip install -r test/bdd/requirements.txt
+/private/pci-bdd/bin/pip install -r test/bdd/requirements.txt -c test/bdd/constraints.txt
 /private/pci-bdd/bin/playwright install chromium
 ```
 
