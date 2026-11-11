@@ -1,11 +1,16 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-
 const openapi = JSON.parse(await readFile("docs/api/openapi.json", "utf8"));
 const flows = JSON.parse(await readFile("dist/fap-pci-flow.json", "utf8"));
 const httpRoutes = new Set(flows.filter((node) => node.type === "http in").map((node) => `${node.method.toLowerCase()} ${node.url}`));
-
 test("external Sprint Review 1 HTTP contract is represented by ORCE HTTP In nodes", () => {
   const required = [
     "get /api/v1/tenant-registration-config",
@@ -20,21 +25,17 @@ test("external Sprint Review 1 HTTP contract is represented by ORCE HTTP In node
   ];
   for (const route of required) assert.ok(httpRoutes.has(route), route);
 });
-
 test("OpenAPI contains Keycloak auth and compatibility paths", () => {
   assert.ok(openapi.components.securitySchemes.oidc);
   assert.ok(openapi.paths["/api/v1/auth/oidc/exchange"]);
   assert.ok(openapi.paths["/api/v1/internal/provisioning/tenants"]);
 });
-
-
 test("OpenAPI documents the deployment base-path variable without changing route paths", () => {
   assert.match(openapi.servers[0].url, /\{basePath\}$/);
   assert.equal(openapi.servers[0].variables.basePath.default, "");
   assert.ok(openapi.paths["/api/v1/auth/config"]);
   assert.equal(Object.keys(openapi.paths).some((path) => path.startsWith("/BASE/")), false);
 });
-
 test("OpenAPI exposes base-path-aware public and OIDC configuration fields", () => {
   const publicConfig = openapi.components.schemas.PublicConfiguration;
   const oidcConfig = openapi.components.schemas.OidcConfiguration;

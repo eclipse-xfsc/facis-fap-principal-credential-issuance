@@ -1,0 +1,187 @@
+{
+  "$comment": "Limits of the maintainability gate (tools/check-maintainability.mjs). Exceptions name a file, the rules it may still violate, the reason and the issue that tracks their removal. An exception is removed in the pull request that refactors the file.",
+  "scope": [
+    "backend",
+    "src",
+    "shared",
+    "tools",
+    "build.js",
+    "test"
+  ],
+  "lineLength": 240,
+  "fileLines": 900,
+  "statementsPerLine": 3,
+  "issuer": {
+    "pathPrefix": "src/issuer/",
+    "moduleLines": 240,
+    "viewModuleLines": 350,
+    "functionLines": 100,
+    "functionComplexity": 20,
+    "compositionFactoryPrefix": "createPci"
+  },
+  "exceptions": [
+    {
+      "file": "backend/functions/_bridge.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: pciCreateBridgeGrant, pciNormalizeCommand. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/_common.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: ensureTenantKeycloakUser. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/_identity.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: pciIdentityAdmit, pciIdentityProvision, pciIdentityValidate. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/_participant-cleanup.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: pciDeleteParticipant. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/provider.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/reconcile.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>, deleteTenantResources, reconcileTenant. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/registration.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/status.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/functions/tenant.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/adapter-contracts.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: sr2VerifyJwt. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/assets.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: sr2Png. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/issuance.js",
+      "rules": [
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/native-keys.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: pciHolderProof, pciNativeSigningKey. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/presentation.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: pciPresentationToken. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/runtime.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: handlePciNative, pciRuntime. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/service.js",
+      "rules": [
+        "function-complexity",
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>, validateLinks. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/store.js",
+      "rules": [
+        "function-lines"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    },
+    {
+      "file": "backend/sr2/wire.js",
+      "rules": [
+        "function-complexity"
+      ],
+      "reason": "Backend function(s) not yet refactored: <closure>. Characterisation tests first, then the refactoring removes this entry.",
+      "issue": "R3 backend refactoring"
+    }
+  ],
+  "sqlLiterals": "string and template literals that contain an SQL statement are exempt from lineLength",
+  "backend": {
+    "pathPrefix": "backend/",
+    "functionLines": 100,
+    "functionComplexity": 20,
+    "compositionFactoryPrefixes": [
+      "createPci",
+      "createSr2",
+      "extendSr2"
+    ]
+  }
+}

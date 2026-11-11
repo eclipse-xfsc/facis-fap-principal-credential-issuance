@@ -5,49 +5,89 @@ theme: readthedocs
 plugins: [search]
 nav:
   - Overview: README.md
-  - Neutral configuration: operations/neutral-configuration.md
-  - Container image: operations/container-image.md
-  - Container package 1.0.0: release/1.0.0.md
-  - Deploy: operations/deployment.md
-  - Fresh cluster and upgrade: operations/deploy-0.5.0-rc.6.md
-  - Automation: operations/automation.md
-  - ArgoCD handoff: operations/argocd.md
-  - Transport: operations/transport.md
-  - Specifications: specifications/README.md
-  - Participant test source: testing/participant-test.md
-  - Acceptance order: testing/acceptance-walkthrough.md
-  - Telemetry: operations/observability.md
-  - Release rc.12: release/0.5.0-rc.12.md
-  - Upgrade prepared PCI to rc.12: operations/upgrade-0.5.0-rc.12.md
-  - Release rc.11: release/0.5.0-rc.11.md
-  - Release rc.10: release/0.5.0-rc.10.md
-  - Upgrade prepared PCI to rc.10: operations/upgrade-0.5.0-rc.10.md
-  - Release rc.9: release/0.5.0-rc.9.md
-  - Upgrade prepared PCI to rc.9: operations/upgrade-0.5.0-rc.9.md
-  - Release rc.8: release/0.5.0-rc.8.md
-  - Upgrade rc.7 to rc.8: operations/upgrade-0.5.0-rc.8.md
-  - Release rc.7: release/0.5.0-rc.7.md
-  - Upgrade rc.6 to rc.7: operations/upgrade-0.5.0-rc.7.md
-  - Release rc.6: release/0.5.0-rc.6.md
-  - Implementation catalogue: release/requirement-audit.md
-  - Executed checks: release/completion.md
-  - Neutral revision validation: release/neutral-revision.md
-  - Issuer setup: operations/issuer-runbook.md
-  - Identity: operations/identity.md
-  - Operations: operations/runbook.md
-  - Architecture: architecture/architecture.md
-  - ORCE nodes: architecture/orce-nodes.md
-  - Presentation: contracts/presentation.md
-  - Semantic templates: contracts/semantic-templates.md
-  - Completion tests: testing/completion.md
-  - Native contracts: contracts/native-ocm.md
-  - Participant: contracts/participant-protocol.md
-  - API: api/README.md
-  - Tests: testing/test-strategy.md
-  - Live acceptance: testing/live-acceptance.md
-  - Requirements: requirements/traceability.md
-  - Technical clauses: requirements/technical-clauses.md
-  - Operating profiles: known-gaps.md
-  - Compliance roadmap: security/compliance-roadmap.md
-  - CI and releases: ci-cd.md
+  - Install and operate:
+      - Neutral configuration: operations/neutral-configuration.md
+      - Container image: operations/container-image.md
+      - Container package 1.0.0: release/1.0.0.md
+      - Deploy: operations/deployment.md
+      - Fresh cluster and upgrade: operations/deploy-0.5.0-rc.6.md
+      - Automation: operations/automation.md
+      - ArgoCD handoff: operations/argocd.md
+      - Transport: operations/transport.md
+      - Telemetry: operations/observability.md
+      - Issuer setup: operations/issuer-runbook.md
+      - Identity: operations/identity.md
+      - Manual input to credential claims: operations/journey-input.md
+      - Operations: operations/runbook.md
+      - Compatibility baseline: compatibility/compatibility-matrix.md
+  - Architecture:
+      - Architecture: architecture/architecture.md
+      - ORCE nodes: architecture/orce-nodes.md
+      - Issuer management: architecture/issuer-management.md
+      - Issuer runtime and adapter boundary: architecture/issuer-runtime.md
+      - Public URL and base-path model: architecture/base-path-model.md
+      - ADR-001 ORCE as sole runtime: architecture/decisions/ADR-001-orce-sole-runtime.md
+      - ADR-002 Tenant subdomains and Envoy: architecture/decisions/ADR-002-tenant-subdomains-envoy.md
+      - ADR-003 In-cluster service account: architecture/decisions/ADR-003-in-cluster-service-account.md
+      - ADR-004 OCM read-only: architecture/decisions/ADR-004-ocm-read-only.md
+      - ADR-005 Keycloak realm: architecture/decisions/ADR-005-keycloak-realm.md
+      - Threat model: security/threat-model.md
+      - Privacy and data handling: privacy/data-handling.md
+      - Compliance roadmap: security/compliance-roadmap.md
+  - Contracts and API:
+      - Native contracts: contracts/native-ocm.md
+      - NATS contracts: contracts/nats.md
+      - Participant: contracts/participant-protocol.md
+      - Presentation: contracts/presentation.md
+      - Semantic templates: contracts/semantic-templates.md
+      - API: api/README.md
+      - Specifications: specifications/README.md
+  - User interface:
+      - Issuer experience: ux/ux-concept.md
+      - Partner onboarding UI alignment: ux/dcm-reference.md
+  - Testing:
+      - Tests: testing/test-strategy.md
+      - Participant test source: testing/participant-test.md
+      - Acceptance order: testing/acceptance-walkthrough.md
+      - Completion tests: testing/completion.md
+      - Live acceptance: testing/live-acceptance.md
+      - Deployed UX tests: testing/ux-bdd-runbook.md
+  - Requirements and evidence:
+      - Requirements: requirements/traceability.md
+      - Technical clauses: requirements/technical-clauses.md
+      - Implementation catalogue: release/requirement-audit.md
+      - Executed checks: release/completion.md
+      - Acceptance gates: release/acceptance-gates.md
+      - Neutral revision validation: release/neutral-revision.md
+      - Operating profiles: known-gaps.md
+      - Source and container provenance: source-baseline.md
+      - Historical source input records: release/source-history.md
+      - OCM live findings 2026-10-11: release/ocm-live-findings-2026-10-11.md
+      - CI and releases: ci-cd.md
+  - Development:
+      - Maintainer guide: development/maintainer-guide.md
+      - Contribution and review workflow: development/official-workflow.md
+  - Releases and upgrades:
+      - Release rc.12: release/0.5.0-rc.12.md
+      - Upgrade prepared PCI to rc.12: operations/upgrade-0.5.0-rc.12.md
+      - Release rc.11: release/0.5.0-rc.11.md
+      - Upgrade prepared PCI to rc.11: operations/upgrade-0.5.0-rc.11.md
+      - Release rc.10: release/0.5.0-rc.10.md
+      - Upgrade prepared PCI to rc.10: operations/upgrade-0.5.0-rc.10.md
+      - Release rc.9: release/0.5.0-rc.9.md
+      - Upgrade prepared PCI to rc.9: operations/upgrade-0.5.0-rc.9.md
+      - Release rc.8: release/0.5.0-rc.8.md
+      - Upgrade rc.7 to rc.8: operations/upgrade-0.5.0-rc.8.md
+      - Release rc.7: release/0.5.0-rc.7.md
+      - Upgrade rc.6 to rc.7: operations/upgrade-0.5.0-rc.7.md
+      - Release rc.6: release/0.5.0-rc.6.md
+      - Release rc.5: release/0.5.0-rc.5.md
+      - Upgrade to rc.5: operations/upgrade-0.5.0-rc.5.md
+      - Release rc.4: release/0.5.0-rc.4.md
+      - Upgrade to rc.4: operations/upgrade-0.5.0-rc.4.md
+      - Release rc.3: release/0.5.0-rc.3.md
+      - Upgrade to rc.3: operations/upgrade-0.5.0-rc.3.md
+      - Release rc.2: release/0.5.0-rc.2.md
+      - Upgrade to rc.2: operations/upgrade-0.5.0-rc.2.md
+      - Release rc.1: release/0.5.0-rc.1.md
 markdown_extensions: [tables, fenced_code]
