@@ -17,6 +17,7 @@
 | M11 Issuer runtime | Authenticated principal or private correlated native NATS callback | Pinned issuance, participant data exchange, native signing/status and transient presentation verification |
 | M12 Participant integration | Tenant admin and operator-approved host/Secret names | Connector binding, native participant-v1 mTLS gRPC invocation |
 | M13 History/status | Current issuer assignment and configuration scope | Search, safe principal JWT, verified ID/holder, native revoke and explicit unblock |
+| M17 Tenant identity | Enabled tenant-admin membership; current version as If-Match; same-origin JSON | Read and configure the tenant's organization sign-in (`GET`/`PUT /api/v1/tenants/{tenantId}/identity-provider`): server-controlled broker alias `pci-<tenant UUID>`, versioned revision that stays `pending` until the Keycloak broker write succeeds, credentials rooted in the `fap-pci-identity` Secret; verified principal admission at sign-in (M5) uses the active revision |
 | PCI interface | HTTP route normalization and uibuilder socket | UI files, normalized commands/results and job events; server rechecks authority for every operation |
 
 The route registry is authoritative for the exact module/action mapping; the table describes responsibilities. Function node messages carry `pciAction`, `pciTransport`, `payload`, and the original HTTP request/response handles. A public body cannot grant `pciInternal`. Gateway request headers are overwritten by the trusted route; membership and routed host must still agree with the requested tenant.

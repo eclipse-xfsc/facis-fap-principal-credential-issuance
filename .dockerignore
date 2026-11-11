@@ -1,0 +1,14 @@
+# Build context of deployment/image/Dockerfile and reference/participant-data-repository/Dockerfile.
+# The application build (node build.js) reads VERSION, package files, backend/, src/, shared/,
+# tools/, vendor/, automation/, docs/ and reference/participant-data-source/; everything else
+# stays out of the image build context.
+.git
+.github
+.build
+node_modules
+dist
+test
+certs
+deployment-private
+*.zip
+*.log

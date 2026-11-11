@@ -2,7 +2,7 @@
 
 All 101 SRS requirements, 83 individual technical clauses and eight supplementary audit groups are retained. This catalogue links the implementation and verification procedures. The original [specifications](../specifications/README.md) define the normative scope.
 
-[Executed CI checks](completion.md) record 350 passing Node tests and successful PostgreSQL, generated participant, Helm, Chromium, semantic and official Go jobs. [Workflow evidence](ci-evidence.json) records source and documentation publication separately from Eclipse Dash. The [container package](1.0.0.md) records Docker Hub distribution; deployment records identify their own image digests and runtime versions.
+[Executed checks](completion.md) identify the executed scope by commit and run. [Workflow evidence](ci-evidence.json) concerns the commit it names, not the current source. The open gates are listed in the [acceptance gates](acceptance-gates.md). No automatic acceptance conclusion is generated.
 
 ## SRS
 

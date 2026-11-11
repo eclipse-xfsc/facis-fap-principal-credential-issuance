@@ -64,6 +64,18 @@ For privacy, put unique synthetic claim canaries (16–512 bytes per line) in `/
 ]
 ```
 
+`scripts/collect-privacy-captures.py` generates the synthetic canaries and, after the
+successful and the failed issuance that used them, collects the PCI and OCM logs, a
+data-only dump of the PCI database and the ORCE context store into a private directory
+and writes this manifest; NATS, trace and backup captures are added with `--extra`:
+
+```bash
+python3 scripts/collect-privacy-captures.py canaries --out /private/canaries.txt
+# ... run one successful and one failed synthetic issuance with the canary values ...
+python3 scripts/collect-privacy-captures.py collect --out /private/captures --ocm-namespace ocm-wstack --since 2h \
+  --extra nats=/private/nats-report.txt --extra traces=/private/jaeger-export.json --extra backups=/private/backup/data.tgz
+```
+
 ```bash
 python3 scripts/privacy-audit.py --canary-file /private/canaries.txt \
   --manifest /private/capture-manifest.json > /private/evidence/privacy-result.json

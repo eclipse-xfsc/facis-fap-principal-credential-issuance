@@ -1,0 +1,15 @@
+# Base image of the FAP PCI application image (deployment/image/Dockerfile).
+# The workflow reads this file and refuses to build when the tag no longer
+# resolves to the recorded digest. Fill the digest, entrypoint and command
+# from `docker buildx imagetools inspect <reference> --format '{{json .}}'`
+# and `docker image inspect <reference>` of the pulled image; record the
+# inspection output in the evidence package.
+#
+# key=value, one per line. Lines starting with # are comments.
+BASE_REFERENCE=ecofacis/xfsc-orce:2.0.15
+BASE_DIGEST=sha256:cd1ca5f52fb3f907daebc5e1de0dc2032b14d1541b246cedde79b03a47a30973
+# JSON arrays, exactly as `docker image inspect` reports Config.Entrypoint and Config.Cmd.
+BASE_ENTRYPOINT=["/usr/src/node-red/entrypoint.sh"]
+BASE_CMD=["/bin/bash"]
+# The uibuilder version G0 installs into /data (automation/stage1/ground-zero.sh).
+UIBUILDER_VERSION=7.5.0
