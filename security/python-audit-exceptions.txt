@@ -1,0 +1,5 @@
+# pip-audit findings accepted for the time being, one per line:
+# <vulnerability id> <issue number> <short reason>
+# Only findings below high severity may be listed here; each needs an open
+# issue in the repository. The list is reviewed with every pull request that
+# changes test/bdd/requirements.txt or test/bdd/constraints.txt.

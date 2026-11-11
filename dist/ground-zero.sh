@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 LEANEA GmbH and others.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License, Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0.
+#
+# SPDX-License-Identifier: Apache-2.0
+
 set -Eeuo pipefail
 
 VERSION="0.5.0-rc.11"
@@ -224,7 +232,14 @@ PYDBTLS
     python3 - "$file.json" "$ORCE_NS" "$INFRA_NS" "${K[@]}" <<'PYPCIAPPLY'
 # BEGIN PCI RESOURCE APPLY
 #!/usr/bin/env python3
+# Copyright (c) 2026 LEANEA GmbH and others.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License, Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0.
+#
 # SPDX-License-Identifier: Apache-2.0
+
 """Apply PCI manifests; migrate only matching Helm-owned fields on conflict.
 
 Embedded in dist/ground-zero.sh by build.js, so the G0 artifact stays standalone.

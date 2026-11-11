@@ -1,3 +1,14 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
+import { stripModuleSyntax } from '../../../tools/lib/module-source.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -20,7 +31,7 @@ function frontend(backend) {
     setTimeout:(fn,ms)=>{const id=setTimeout(fn,ms);timers.add(id);return id;},clearTimeout:id=>{clearTimeout(id);timers.delete(id);},
     runtime:{basePath:'/pci-orce',apiBasePath:'/pci-orce/api/v1'},
     fetch:async(path,options)=>{network.push({path,options});assert.equal(path,'/pci-orce/api/v1/auth/bridge');const r=await backend.bootstrap(identity,JSON.parse(options.body).socketId);return {ok:r.status<400,status:r.status,json:async()=>r};}});
-  for(const path of ['src/state/store.js','src/state/reducers.js','src/services/transport.js'])vm.runInContext(fs.readFileSync(path,'utf8').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,''),context);
+  for(const path of ['src/state/store.js','src/state/reducers.js','src/services/transport.js'])vm.runInContext(stripModuleSyntax(fs.readFileSync(path,'utf8'), path),context);
   const api=vm.runInContext('({store,initializeBridge,sendCommand,onBridgeReconnect,decodeHttpResponse,reduceUiMessage})',context);
   return {api,client,observers,sent,received,network,close(){for(const id of timers)clearTimeout(id);}};
 }
