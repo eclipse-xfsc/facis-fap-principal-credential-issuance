@@ -1,9 +1,15 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {spawnSync} from 'node:child_process';
-
-test('datasource reapply preserves its token, rolls out changed records once and rejects foreign ownership',()=>{
- const script=String.raw`
+import { spawnSync } from 'node:child_process';
+test('datasource reapply preserves its token, rolls out changed records once and rejects foreign ownership', () => {
+  const script = String.raw `
 import runpy,copy
 m=runpy.run_path('scripts/configure-test-source.py');plan=m['plan'];SourceError=m['SourceError']
 d={'metadata':{'name':'source','namespace':'source-ns','uid':'source-uid','resourceVersion':'7'},'spec':{'template':{'spec':{'containers':[{'name':'orce'}],'volumes':[{'name':'data','persistentVolumeClaim':{'claimName':'data'}}]}}}}
@@ -29,15 +35,19 @@ try:plan(d,legacy,records,'orce');raise AssertionError('unbound legacy source ad
 except SourceError:pass
 assert 'metadata' not in d['spec']['template'],'Planning mutated input'
 `;
- const result=spawnSync('python3',['-c',script],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);
+  const result = spawnSync('python3', ['-c', script], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
 });
-
-test('automation errors provide safe next steps without propagating child output',()=>{
- const script=String.raw`
+test('automation errors provide safe next steps without propagating child output', () => {
+  const script = String.raw `
 import runpy,json
 m=runpy.run_path('scripts/lifecycle.py');error=m['LifecycleError']('PCI-AUTOMATION-CHILD-FAILED','artifacts',23)
 print(json.dumps(m['problem'](error)))
 `;
- const result=spawnSync('python3',['-c',script],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);
- const p=JSON.parse(result.stdout);assert.equal(p.exitCode,23);assert.match(p.detail,/installation failed/);assert.match(p.nextStep,/flow revision/);
+  const result = spawnSync('python3', ['-c', script], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  const p = JSON.parse(result.stdout);
+  assert.equal(p.exitCode, 23);
+  assert.match(p.detail, /installation failed/);
+  assert.match(p.nextStep, /flow revision/);
 });

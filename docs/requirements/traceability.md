@@ -1,120 +1,120 @@
-# SRS implementation and delivery catalogue
+# SRS implementation references and acceptance scope
 
 The original specifications define the requirements. This catalogue retains all 101 SRS IDs and eight supplementary TDR groups, with implementation paths and verification procedures. Delivery tracking is separate from executed test outcomes; current results are recorded in [completion](../release/completion.md) and [workflow evidence](../release/ci-evidence.json).
 
 TDR-01 through TDR-07 group technical provisions. TDR-08 records the supplementary AI-assistance disclosure. The [83 individual clauses](technical-clauses.md) retain their original page/section references. Normative PDFs and hashes are under [specifications](../specifications/README.md). FR-81/82/83 map to history, participant signing and participant-data internal signing.
 
-| ID | Requirement | Delivery or responsibility |
+| ID | Requirement | Current review status or responsibility |
 |---|---|---|
-| FR-PCI-01 | Key Creation over TSA Crypto Provider | Delivered |
-| FR-PCI-02 | DID Provisioning over TSA Crypto Provider | Delivered |
-| FR-PCI-03 | Credential Endpoint | Delivered |
-| FR-PCI-04 | Pre-Authorization Bridge Endpoints | Delivered |
-| FR-PCI-05 | TSA Endpoints | Delivered |
-| FR-PCI-06 | Issuer Management Delegation | Delivered |
-| FR-PCI-07 | OID4VCI Issuer Metadata Configuration | Delivered |
-| FR-PCI-08 | Issuing Management | Delivered |
-| FR-PCI-09 | OID4VCI Credential Configuration Permissioning | Delivered |
-| FR-PCI-10 | Credential Logos | Delivered |
-| FR-PCI-11 | Issuance Flow Configuration | Delivered |
-| FR-PCI-12 | Credential History per Configuration | Delivered |
-| FR-PCI-13 | Credential Revocation | Delivered |
-| FR-PCI-14 | Credential Configuration Deletion | Delivered |
-| FR-PCI-15 | Credential Configuration Creation/Update | Delivered |
-| FR-PCI-16 | Participant Backend Connection | Delivered |
-| FR-PCI-17 | OCM W-Stack Integration | Delivered |
-| FR-PCI-18 | NATS Provisioning of Configured Metadata | Delivered |
-| FR-PCI-19 | History Logging | Delivered |
-| FR-PCI-20 | Participant Backend Connection | Delivered |
-| FR-PCI-21 | ORCE Integration | Delivered |
-| FR-PCI-22 | Golang Service | Delivered |
-| FR-PCI-23 | Data Format Library | Delivered |
-| FR-PCI-24 | Data Request | Delivered |
-| FR-PCI-25 | Tenant Management | Delivered |
-| FR-PCI-26 | Tenant Approved | Delivered |
-| FR-PCI-27 | Tenant Deletion | Delivered |
-| FR-PCI-28 | Tenant Rejection | Delivered |
-| FR-PCI-29 | Confirmation/Deletion/List Section | Delivered |
-| FR-PCI-30 | Participant Tenant Administration | Delivered |
-| FR-PCI-31 | Compliance | Delivered |
-| FR-PCI-32 | Registration Data Form | Delivered |
-| FR-PCI-33 | Compliance | Delivered |
-| FR-PCI-34 | Credential Configuration Management | Delivered |
-| FR-PCI-35 | Credential Issuance Permissioning | Delivered |
-| FR-PCI-36 | Credential History and Revocation | Delivered |
-| FR-PCI-37 | Steps Configuration | Delivered |
-| FR-PCI-38 | ORCE Utilization | Delivered |
-| FR-PCI-39 | mTLS Connection | Delivered |
-| FR-PCI-40 | Participant JWT Reusage | Delivered |
-| FR-PCI-41 | Issuing Settings | Delivered |
-| FR-PCI-42 | TLS Security | Delivered |
-| FR-PCI-43 | TLS Certificates | Delivered |
-| FR-PCI-44 | Authentication with Keycloak in Tenant | Delivered |
-| FR-PCI-45 | Authentication with Microsoft Entra in Tenant | Delivered |
-| FR-PCI-46 | Authentication in Tenant Administration/Registration | Delivered |
-| FR-PCI-47 | IDP Authorization Reusage | Delivered |
-| FR-PCI-48 | GDPR Compliance | Delivered |
-| FR-PCI-49 | Deployment Playbook | Delivered |
-| FR-PCI-50 | Route Management | Delivered |
-| FR-PCI-51 | Deployment Publication | Delivered |
-| FR-PCI-52 | Deployment Tool Stack | Delivered |
-| FR-PCI-53 | Resource Limitation | Delivered |
-| FR-PCI-54 | Web Documentation | Delivered |
-| FR-PCI-55 | Jaeger Tracing | Delivered |
-| FR-PCI-56 | Prometheus | Delivered |
-| FR-PCI-57 | OTEL Collection | Delivered |
-| FR-PCI-58 | Health Endpoints/Logging | Delivered |
-| FR-PCI-59 | Low Code | Delivered |
-| FR-PCI-60 | Layout Customization | Delivered |
-| FR-PCI-61 | UX Tests | Delivered |
-| FR-PCI-62 | OID4VCI/VP Version | Delivered |
-| FR-PCI-63 | Protocol Structure | Delivered |
-| FR-PCI-64 | Standard Workflows | Delivered |
-| FR-PCI-65 | Tenant registration | Delivered |
-| FR-PCI-66 | Tenant deletion | Delivered |
-| FR-PCI-67 | Provider approval | Delivered |
-| FR-PCI-68 | Provider rejection | Delivered |
-| FR-PCI-69 | Participant IAM login | Delivered |
-| FR-PCI-70 | Multiple tenant domains | Delivered |
-| FR-PCI-71 | Tenant branding | Delivered |
-| FR-PCI-72 | Delegated issuer management | Delivered |
-| FR-PCI-73 | M1 Eclipse IP scan | Delivered |
-| FR-PCI-74 | M1 deployment integration | Delivered |
-| FR-PCI-75 | M1 release version | Delivered |
-| FR-PCI-76 | Create credential configuration | Delivered |
-| FR-PCI-77 | Modify credential configuration | Delivered |
-| FR-PCI-78 | Delete credential configuration | Delivered |
-| FR-PCI-79 | Credential logo display | Delivered |
-| FR-PCI-80 | Issuance flow interaction | Delivered |
-| FR-PCI-81 | History per configuration shows latest issuances and status | Delivered |
-| FR-PCI-82 | Issuance based on participant backend | Delivered |
-| FR-PCI-83 | Issuance based on participant data repository | Delivered |
-| FR-PCI-84 | M2 Eclipse IP scan | Delivered |
-| FR-PCI-85 | M2 deployment integration | Delivered |
-| FR-PCI-86 | M2 release version | Delivered |
-| FR-PCI-87 | Multiple flows and PCM import | Delivered |
-| FR-PCI-88 | Multiple tenants/users in PCM | Delivered |
-| FR-PCI-89 | M3 release version | Delivered |
-| FR-PCI-90 | M3 Eclipse IP scan | Delivered |
-| FR-PCI-91 | Second-cluster issuance | Delivered |
-| FR-PCI-92 | Second-cluster deployment integration | Delivered |
-| FR-PCI-93 | Second-cluster release version | Delivered |
-| FR-PCI-94 | M4 Eclipse IP scan | Delivered |
-| FR-PCI-95 | Final releases, charts and images | Delivered |
-| FR-PCI-96 | Final documentation | Documentation revision |
-| FR-PCI-97 | Final Eclipse IP scan | Delivered |
-| FR-PCI-98 | EUDI/ARF/ETSI roadmap | Delivered |
-| FR-PCI-99 | Issue and PR disposition | Delivered |
-| FR-PCI-100 | Required remote workflows | Delivered |
-| FR-PCI-101 | Successful final workflows | Workflow review |
-| TDR-01 | IONOS and OSC Kubernetes deployment | Shared component or platform profile |
-| TDR-02 | Helm deployment, upgrade and uninstall | PCI source |
-| TDR-03 | Repository and daily delivery governance | Project process or delivery |
-| TDR-04 | Apache-compatible FOSS and Eclipse IP | PCI source |
-| TDR-05 | BDD pack and milestone presentations | PCI source |
-| TDR-06 | Documentation and API/model artifacts | PCI source |
-| TDR-07 | Registry and deployment integration | Project process or delivery |
-| TDR-08 | AI-assisted implementation disclosure | PCI source |
+| FR-PCI-01 | Key Creation over TSA Crypto Provider | Referenced; acceptance not reassessed |
+| FR-PCI-02 | DID Provisioning over TSA Crypto Provider | Referenced; acceptance not reassessed |
+| FR-PCI-03 | Credential Endpoint | Referenced; acceptance not reassessed |
+| FR-PCI-04 | Pre-Authorization Bridge Endpoints | Referenced; acceptance not reassessed |
+| FR-PCI-05 | TSA Endpoints | Referenced; acceptance not reassessed |
+| FR-PCI-06 | Issuer Management Delegation | Referenced; acceptance not reassessed |
+| FR-PCI-07 | OID4VCI Issuer Metadata Configuration | Referenced; acceptance not reassessed |
+| FR-PCI-08 | Issuing Management | Referenced; acceptance not reassessed |
+| FR-PCI-09 | OID4VCI Credential Configuration Permissioning | Referenced; acceptance not reassessed |
+| FR-PCI-10 | Credential Logos | Referenced; acceptance not reassessed |
+| FR-PCI-11 | Issuance Flow Configuration | Referenced; acceptance not reassessed |
+| FR-PCI-12 | Credential History per Configuration | Referenced; acceptance not reassessed |
+| FR-PCI-13 | Credential Revocation | Referenced; acceptance not reassessed |
+| FR-PCI-14 | Credential Configuration Deletion | Referenced; acceptance not reassessed |
+| FR-PCI-15 | Credential Configuration Creation/Update | Referenced; acceptance not reassessed |
+| FR-PCI-16 | Participant Backend Connection | Referenced; acceptance not reassessed |
+| FR-PCI-17 | OCM W-Stack Integration | Referenced; acceptance not reassessed |
+| FR-PCI-18 | NATS Provisioning of Configured Metadata | Referenced; acceptance not reassessed |
+| FR-PCI-19 | History Logging | Referenced; acceptance not reassessed |
+| FR-PCI-20 | Participant Backend Connection | Referenced; acceptance not reassessed |
+| FR-PCI-21 | ORCE Integration | Referenced; acceptance not reassessed |
+| FR-PCI-22 | Golang Service | Referenced; acceptance not reassessed |
+| FR-PCI-23 | Data Format Library | Referenced; acceptance not reassessed |
+| FR-PCI-24 | Data Request | Referenced; acceptance not reassessed |
+| FR-PCI-25 | Tenant Management | Referenced; acceptance not reassessed |
+| FR-PCI-26 | Tenant Approved | Referenced; acceptance not reassessed |
+| FR-PCI-27 | Tenant Deletion | Referenced; acceptance not reassessed |
+| FR-PCI-28 | Tenant Rejection | Referenced; acceptance not reassessed |
+| FR-PCI-29 | Confirmation/Deletion/List Section | Referenced; acceptance not reassessed |
+| FR-PCI-30 | Participant Tenant Administration | Referenced; acceptance not reassessed |
+| FR-PCI-31 | Compliance | Referenced; acceptance not reassessed |
+| FR-PCI-32 | Registration Data Form | Referenced; acceptance not reassessed |
+| FR-PCI-33 | Compliance | Referenced; acceptance not reassessed |
+| FR-PCI-34 | Credential Configuration Management | Referenced; acceptance not reassessed |
+| FR-PCI-35 | Credential Issuance Permissioning | Referenced; acceptance not reassessed |
+| FR-PCI-36 | Credential History and Revocation | Referenced; acceptance not reassessed |
+| FR-PCI-37 | Steps Configuration | Referenced; acceptance not reassessed |
+| FR-PCI-38 | ORCE Utilization | Referenced; acceptance not reassessed |
+| FR-PCI-39 | mTLS Connection | Referenced; acceptance not reassessed |
+| FR-PCI-40 | Participant JWT Reusage | Referenced; acceptance not reassessed |
+| FR-PCI-41 | Issuing Settings | Referenced; acceptance not reassessed |
+| FR-PCI-42 | TLS Security | Referenced; acceptance not reassessed |
+| FR-PCI-43 | TLS Certificates | Referenced; acceptance not reassessed |
+| FR-PCI-44 | Authentication with Keycloak in Tenant | Referenced; acceptance not reassessed |
+| FR-PCI-45 | Authentication with Microsoft Entra in Tenant | Referenced; acceptance not reassessed |
+| FR-PCI-46 | Authentication in Tenant Administration/Registration | Referenced; acceptance not reassessed |
+| FR-PCI-47 | IDP Authorization Reusage | Referenced; acceptance not reassessed |
+| FR-PCI-48 | GDPR Compliance | Referenced; acceptance not reassessed |
+| FR-PCI-49 | Deployment Playbook | Referenced; acceptance not reassessed |
+| FR-PCI-50 | Route Management | Referenced; acceptance not reassessed |
+| FR-PCI-51 | Deployment Publication | Referenced; acceptance not reassessed |
+| FR-PCI-52 | Deployment Tool Stack | Referenced; acceptance not reassessed |
+| FR-PCI-53 | Resource Limitation | Referenced; acceptance not reassessed |
+| FR-PCI-54 | Web Documentation | Referenced; acceptance not reassessed |
+| FR-PCI-55 | Jaeger Tracing | Referenced; acceptance not reassessed |
+| FR-PCI-56 | Prometheus | Referenced; acceptance not reassessed |
+| FR-PCI-57 | OTEL Collection | Referenced; acceptance not reassessed |
+| FR-PCI-58 | Health Endpoints/Logging | Referenced; acceptance not reassessed |
+| FR-PCI-59 | Low Code | Referenced; acceptance not reassessed |
+| FR-PCI-60 | Layout Customization | Referenced; acceptance not reassessed |
+| FR-PCI-61 | UX Tests | Referenced; acceptance not reassessed |
+| FR-PCI-62 | OID4VCI/VP Version | Referenced; acceptance not reassessed |
+| FR-PCI-63 | Protocol Structure | Referenced; acceptance not reassessed |
+| FR-PCI-64 | Standard Workflows | Referenced; acceptance not reassessed |
+| FR-PCI-65 | Tenant registration | Referenced; acceptance not reassessed |
+| FR-PCI-66 | Tenant deletion | Referenced; acceptance not reassessed |
+| FR-PCI-67 | Provider approval | Referenced; acceptance not reassessed |
+| FR-PCI-68 | Provider rejection | Referenced; acceptance not reassessed |
+| FR-PCI-69 | Participant IAM login | Referenced; acceptance not reassessed |
+| FR-PCI-70 | Multiple tenant domains | Referenced; acceptance not reassessed |
+| FR-PCI-71 | Tenant branding | Referenced; acceptance not reassessed |
+| FR-PCI-72 | Delegated issuer management | Referenced; acceptance not reassessed |
+| FR-PCI-73 | M1 Eclipse IP scan | Referenced; acceptance not reassessed |
+| FR-PCI-74 | M1 deployment integration | Referenced; acceptance not reassessed |
+| FR-PCI-75 | M1 release version | Referenced; acceptance not reassessed |
+| FR-PCI-76 | Create credential configuration | Referenced; acceptance not reassessed |
+| FR-PCI-77 | Modify credential configuration | Referenced; acceptance not reassessed |
+| FR-PCI-78 | Delete credential configuration | Referenced; acceptance not reassessed |
+| FR-PCI-79 | Credential logo display | Referenced; acceptance not reassessed |
+| FR-PCI-80 | Issuance flow interaction | Referenced; acceptance not reassessed |
+| FR-PCI-81 | History per configuration shows latest issuances and status | Referenced; acceptance not reassessed |
+| FR-PCI-82 | Issuance based on participant backend | Referenced; acceptance not reassessed |
+| FR-PCI-83 | Issuance based on participant data repository | Referenced; acceptance not reassessed |
+| FR-PCI-84 | M2 Eclipse IP scan | Referenced; acceptance not reassessed |
+| FR-PCI-85 | M2 deployment integration | Referenced; acceptance not reassessed |
+| FR-PCI-86 | M2 release version | Referenced; acceptance not reassessed |
+| FR-PCI-87 | Multiple flows and PCM import | Referenced; acceptance not reassessed |
+| FR-PCI-88 | Multiple tenants/users in PCM | Referenced; acceptance not reassessed |
+| FR-PCI-89 | M3 release version | Referenced; acceptance not reassessed |
+| FR-PCI-90 | M3 Eclipse IP scan | Referenced; acceptance not reassessed |
+| FR-PCI-91 | Second-cluster issuance | Referenced; acceptance not reassessed |
+| FR-PCI-92 | Second-cluster deployment integration | Referenced; acceptance not reassessed |
+| FR-PCI-93 | Second-cluster release version | Referenced; acceptance not reassessed |
+| FR-PCI-94 | M4 Eclipse IP scan | Referenced; acceptance not reassessed |
+| FR-PCI-95 | Final releases, charts and images | Referenced; acceptance not reassessed |
+| FR-PCI-96 | Final documentation | Referenced; acceptance not reassessed |
+| FR-PCI-97 | Final Eclipse IP scan | Referenced; acceptance not reassessed |
+| FR-PCI-98 | EUDI/ARF/ETSI roadmap | Referenced; acceptance not reassessed |
+| FR-PCI-99 | Issue and PR disposition | Referenced; acceptance not reassessed |
+| FR-PCI-100 | Required remote workflows | Referenced; acceptance not reassessed |
+| FR-PCI-101 | Successful final workflows | Referenced; acceptance not reassessed |
+| TDR-01 | IONOS and OSC Kubernetes deployment | Shared component owner review required |
+| TDR-02 | Helm deployment, upgrade and uninstall | PCI source reference |
+| TDR-03 | Repository and daily delivery governance | Project process review required |
+| TDR-04 | Apache-compatible FOSS and Eclipse IP | PCI source reference |
+| TDR-05 | BDD pack and milestone presentations | PCI source reference |
+| TDR-06 | Documentation and API/model artifacts | PCI source reference |
+| TDR-07 | Registry and deployment integration | Project process review required |
+| TDR-08 | AI-assisted implementation disclosure | PCI source reference |
 
 ## Implementation and verification
 

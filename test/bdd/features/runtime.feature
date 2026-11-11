@@ -1,4 +1,4 @@
-@runtime
+@runtime @pci-ux
 Feature: Deployed PCI runtime and tenant boundary
   Background:
     Given the PCI environment is configured

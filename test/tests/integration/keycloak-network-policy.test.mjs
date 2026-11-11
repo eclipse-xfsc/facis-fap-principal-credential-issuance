@@ -1,8 +1,17 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {spawnSync} from 'node:child_process';
-test('G0 Keycloak network integration respects existing isolation and ownership',()=>{
- const result=spawnSync('python3',['-c',String.raw`
+import { spawnSync } from 'node:child_process';
+test('G0 Keycloak network integration respects existing isolation and ownership', () => {
+  const result = spawnSync('python3', [
+    '-c',
+    String.raw `
 import json,sys,subprocess,hashlib
 from pathlib import Path
 from unittest.mock import patch
@@ -46,6 +55,7 @@ for kwargs in [{'types':['Ingress'],'collision':True},{'second':True}]:
     except SystemExit:pass
     else:raise AssertionError('Expected fail-closed policy check')
 print('10 policy scenarios passed')
-`],{encoding:'utf8'});
- assert.equal(result.status,0,result.stdout+result.stderr);
+`
+  ], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stdout + result.stderr);
 });
