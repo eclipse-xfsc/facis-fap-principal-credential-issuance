@@ -1,5 +1,7 @@
 # CI and release delivery
 
+The workflow results on this page belong to the commit they name. Every pull request runs the workflows listed in the [contribution and review workflow](development/official-workflow.md); the gates without a result for the current source are listed in [acceptance gates](release/acceptance-gates.md).
+
 ## Verified workflow results
 
 For source commit `3fef8e3048f3`, [CI run 38727256710](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/38727256710) completed successfully. Its Node, PostgreSQL, participant Go/Goa/protobuf, official Go, Helm, Chromium and semantic checks passed. The offline Node total was 350 passed with zero failed or skipped. The [Documentation run 39127451730](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/39127451730) completed its strict build and Pages publication on 18 October 2026. Exact job IDs and outcomes are in [ci-evidence.json](release/ci-evidence.json).

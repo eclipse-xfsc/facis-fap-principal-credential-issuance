@@ -1,25 +1,52 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 // Generate source traceability without conflating delivery tracking and test results.
 import fs from 'node:fs';
-const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
-const requirements=read('docs/requirements/requirements.json');
-const technical=read('docs/requirements/technical-clauses.json');
-const cell=v=>String(v??'').replaceAll('|','\\|').replaceAll('\n',' ');
-const table=(headers,rows)=>'| '+headers.join(' | ')+' |\n|'+headers.map(()=>'---').join('|')+'|\n'+rows.map(r=>'| '+r.map(cell).join(' | ')+' |').join('\n')+'\n';
-const responsibility=value=>({DONE:'PCI source',EXCLUDED:'Project process or delivery',BLOCKED_OWNER:'Shared component or platform profile'}[value]||value);
-const tracking=r=>r.id==='FR-PCI-101'?'Workflow review':r.id==='FR-PCI-96'?'Documentation revision':r.id.startsWith('FR-')?'Delivered':responsibility(r.development);
-let md='# SRS implementation and delivery catalogue\n\n';
-md+='The original specifications define the requirements. This catalogue retains all 101 SRS IDs and eight supplementary TDR groups, with implementation paths and verification procedures. Delivery tracking is separate from executed test outcomes; current results are recorded in [completion](../release/completion.md) and [workflow evidence](../release/ci-evidence.json).\n\n';
-md+='TDR-01 through TDR-07 group technical provisions. TDR-08 records the supplementary AI-assistance disclosure. The [83 individual clauses](technical-clauses.md) retain their original page/section references. Normative PDFs and hashes are under [specifications](../specifications/README.md). FR-81/82/83 map to history, participant signing and participant-data internal signing.\n\n';
-md+=table(['ID','Requirement','Delivery or responsibility'],requirements.items.map(r=>[r.id,r.title,tracking(r)]));
-md+='\n## Implementation and verification\n\n';
-md+=table(['ID','Implementation','Checks','Verification procedure'],requirements.items.map(r=>[r.id,r.implementationSummary||r.implementation,r.checks,r.acceptance]));
-md+='\n[Structured catalogue](requirements.json) · [Operating profiles](../known-gaps.md) · [Test strategy](../testing/test-strategy.md)\n';
-fs.writeFileSync('docs/requirements/traceability.md',md);
-let clauses='# Technical requirements — individual provisions\n\n'+technical.idPolicy+'\n\n';
-clauses+='Each provision links to its source implementation or responsible project/platform process and its verification procedure. Responsibility is not an acceptance verdict. Current source/toolchain execution is recorded in [completion](../release/completion.md); deployment and review records use the [receipt procedure](../testing/live-acceptance.md#receipt).\n\n';
-clauses+=table(['Local audit ID','PDF page / section','Provision','Implementation responsibility'],technical.items.map(r=>[r.id,r.source.page+' / '+r.source.section,r.title,responsibility(r.development)]));
-clauses+='\n## Source references and verification\n\n';
-clauses+=table(['ID','Implementation','Verification procedure'],technical.items.map(r=>[r.id,r.implementation.map(p=>'`'+p+'`').join('; '),r.closure]));
-clauses+='\n[Original specifications](../specifications/README.md) · [SRS catalogue](traceability.md) · [Structured technical catalogue](technical-clauses.json)\n';
-fs.writeFileSync('docs/requirements/technical-clauses.md',clauses);
-console.log('[requirements] 101 SRS entries and '+technical.items.length+' technical clauses');
+const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
+const requirements = read('docs/requirements/requirements.json');
+const technical = read('docs/requirements/technical-clauses.json');
+const cell = v => String(v ?? '').replaceAll('|', '\\|').replaceAll('\n', ' ');
+const table = (headers, rows) => '| ' + headers.join(' | ') + ' |\n|' + headers.map(() => '---').join('|') + '|\n' + rows.map(r => '| ' + r
+  .map(cell).join(' | ') + ' |').join('\n') + '\n';
+const responsibility = value => ({
+  SOURCE_REFERENCED: 'PCI source reference',
+  PROCESS_REVIEW_REQUIRED: 'Project process review required',
+  OWNER_REVIEW_REQUIRED: 'Shared component owner review required'
+}[value] || value);
+const tracking = r => r.id.startsWith('FR-') ? 'Referenced; acceptance not reassessed': responsibility(r.development);
+let md = '# SRS implementation references and acceptance scope\n\n';
+md += ("The original specifications define the requirements. This catalogue retains all 101 SRS IDs and eight " +
+  "supplementary TDR groups, with implementation paths and verification procedures. Delivery tracking is " +
+  "separate from executed test outcomes; current results are recorded in " +
+  "[completion](../release/completion.md) and [workflow evidence](../release/ci-evidence.json).\n\n");
+md += ("TDR-01 through TDR-07 group technical provisions. TDR-08 records the supplementary AI-assistance " +
+  "disclosure. The [83 individual clauses](technical-clauses.md) retain their original page/section " +
+  "references. Normative PDFs and hashes are under [specifications](../specifications/README.md). " +
+  "FR-81/82/83 map to history, participant signing and participant-data internal signing.\n\n");
+md += table(['ID', 'Requirement', 'Current review status or responsibility'], requirements.items.map(r => [r.id, r.title, tracking(r)]));
+md += '\n## Implementation and verification\n\n';
+md += table(['ID', 'Implementation', 'Checks', 'Verification procedure'], requirements.items.map(r => [r.id, r.implementationSummary ||
+r.implementation, r.checks, r.acceptance]));
+md += '\n[Structured catalogue](requirements.json) · [Operating profiles](../known-gaps.md) · [Test strategy](../testing/test-strategy.md)\n';
+fs.writeFileSync('docs/requirements/traceability.md', md);
+let clauses = '# Technical requirements: individual provisions\n\n' + technical.idPolicy + '\n\n';
+clauses += ("Each provision links to its source implementation or responsible project/platform process and its " +
+  "verification procedure. Responsibility is not an acceptance verdict. Current source/toolchain execution " +
+  "is recorded in [completion](../release/completion.md); deployment and review records use the [receipt " +
+  "procedure](../testing/live-acceptance.md#receipt).\n\n");
+clauses += table(['Local audit ID', 'PDF page / section', 'Provision', 'Implementation responsibility'], technical.items.map(r => [r.id, r
+  .source.page + ' / ' + r.source.section, r.title, responsibility(r.development)]));
+clauses += '\n## Source references and verification\n\n';
+clauses += table(['ID', 'Implementation', 'Verification procedure'], technical.items.map(r => [r.id, r.implementation.map(p => '`' + p +
+  '`').join('; '), r.closure]));
+clauses += '\n[Original specifications](../specifications/README.md) · [SRS catalogue](traceability.md) · [Structured technical catalogue](technical-clauses.json)\n';
+fs.writeFileSync('docs/requirements/technical-clauses.md', clauses);
+console.log('[requirements] 101 SRS entries and ' + technical.items.length + ' technical clauses');
