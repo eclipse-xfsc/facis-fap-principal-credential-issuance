@@ -1,0 +1,4 @@
+{
+  "$comment": "HIGH or CRITICAL findings in the layers LEANEA adds to the application image that cannot be fixed yet. Each entry names the vulnerability, the package, the reason and the issue that tracks it; an entry for a finding the image no longer has fails the check (tools/check-image-scan.mjs). Findings of the mandated base image are not listed here: they are reported to the principal in writing and recorded in the evidence package.",
+  "exceptions": []
+}

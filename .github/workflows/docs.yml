@@ -1,4 +1,8 @@
 name: Documentation
+# Builds the site strictly on every push and pull request. Publishes to GitHub
+# Pages on every push to main and every release candidate tag, so the published
+# site is always the reviewed documentation of main or of the latest tag;
+# workflow_dispatch with publish=true republishes on demand.
 on:
   push:
   pull_request:
@@ -12,22 +16,24 @@ permissions:
   contents: read
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: pip install mkdocs==1.6.1
       - run: mkdocs build --strict
+      - name: Record the documented version
+        run: echo "$(cat VERSION) $(git rev-parse HEAD)" > site/VERSION.txt
       - uses: actions/upload-artifact@v4
         with: {name: pci-documentation, path: site}
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name == 'workflow_dispatch' && inputs.publish
+        if: (github.event_name == 'workflow_dispatch' && inputs.publish) || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')))
         with: {path: site}
   publish:
-    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    if: (github.event_name == 'workflow_dispatch' && inputs.publish) || (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')))
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       pages: write
       id-token: write

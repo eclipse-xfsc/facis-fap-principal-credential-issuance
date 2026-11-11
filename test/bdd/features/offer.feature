@@ -1,4 +1,4 @@
-@offer @mutation
+@offer @mutation @pci-ux
 Feature: Principal request reaches the native OCM offer
   Scenario: Complete the configured synthetic journey
     Given a dedicated synthetic UX tenant is explicitly enabled

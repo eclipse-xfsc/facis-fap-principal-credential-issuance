@@ -466,9 +466,9 @@
           },
           "accent": {
             "type": "string",
-            "pattern": "^#005[fF]{3}$",
+            "pattern": "^#[0-9a-fA-F]{6}$",
             "default": "#005FFF",
-            "description": "Shared FACIS primary action color."
+            "description": "Primary action color; at least 4.5:1 contrast with white text. Default: FACIS blue."
           },
           "logoAssetId": {
             "type": "string",
@@ -477,32 +477,44 @@
           },
           "background": {
             "type": "string",
-            "pattern": "^#[eE]1[eE]7[eE][fF]$",
-            "default": "#E1E7EF"
+            "pattern": "^#[0-9a-fA-F]{6}$",
+            "default": "#E1E7EF",
+            "description": "Page canvas color."
           },
           "foreground": {
             "type": "string",
-            "pattern": "^#1[fF]2937$",
-            "default": "#1F2937"
+            "pattern": "^#[0-9a-fA-F]{6}$",
+            "default": "#1F2937",
+            "description": "Text color; at least 4.5:1 contrast on the canvas and on white cards."
           },
           "font": {
             "type": "string",
             "enum": [
-              "system"
-            ]
+              "system",
+              "sans",
+              "serif",
+              "rounded",
+              "mono"
+            ],
+            "default": "system"
           },
           "layout": {
             "type": "string",
             "enum": [
               "wide",
-              "focused"
-            ]
+              "focused",
+              "full"
+            ],
+            "default": "wide"
           },
           "corners": {
             "type": "string",
             "enum": [
-              "rounded"
-            ]
+              "rounded",
+              "soft",
+              "square"
+            ],
+            "default": "rounded"
           },
           "footer": {
             "type": "string",
