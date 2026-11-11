@@ -1,3 +1,13 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
@@ -22,5 +32,5 @@ test("tenant activation waits for identity, route and DNS", () => {
   assert.match(reconcile, /IdentityReady/);
   assert.match(reconcile, /RouteAccepted/);
   assert.match(reconcile, /DNSReady/);
-  assert.match(reconcile, /dnsReady \? "active" : "provisioning"/);
+  assert.match(reconcile, /dnsReady\s*\?\s*"active"\s*:\s*"provisioning"/);
 });

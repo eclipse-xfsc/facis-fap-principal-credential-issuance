@@ -1,34 +1,85 @@
 # Contributing
 
-This source candidate is prepared for contribution through the client-designated Eclipse/XFSC repository. No online repository was changed while producing it. Do not create a parallel private repository. Daily delivery, contributor onboarding and approval records must be recorded by the actual project participants; this package cannot reconstruct them retrospectively.
+Contributions reach this repository as pull requests from a public fork, reviewed by a
+named reviewer and merged by an Eclipse committer. The process, the required checks
+and the intellectual-property steps are described in the
+[contribution and review workflow](docs/development/official-workflow.md); the
+module boundaries, the build and the source gates in the
+[maintainer guide](docs/development/maintainer-guide.md).
 
-## Required workflow before contribution
+## Before you start
 
-1. Synchronize the live `eclipse-xfsc/deployment` authority and re-resolve whether `k8s-bootstrap` or `main` is authoritative.
-2. Create a requirement-linked issue and feature branch in the client-designated repository.
-3. Preserve the boundary between PCI source, deployment integration, and upstream component source.
-4. Run `npm ci` and `npm run test:offline`, the Go/Goa/protobuf gate, Helm rendering, PostgreSQL and browser checks, Kubernetes integration tests, and relevant BDD scenarios. See [test strategy](docs/testing/test-strategy.md) and [CI](docs/ci-cd.md).
-5. Generate and review the complete dependency lock, SBOM, vulnerability scans, and Eclipse IP scan.
-6. Commit with the Eclipse Contributor Agreement/sign-off process required by the target project.
-7. Obtain review before changing any OCM, TSA, ORCE core, or deployment-repository behavior.
+1. Sign the Eclipse Contributor Agreement with the Eclipse Foundation account whose
+   e-mail address you commit with.
+2. Open or pick the issue that names the requirement or finding you address.
+3. Fork the repository and create the branch for that issue.
+
+## Before you open the pull request for review
+
+Run the local checks:
+
+```bash
+npm ci
+python3 -m pip install -r test/bdd/requirements.txt -c test/bdd/constraints.txt
+npm run format:check
+npm run check:maintainability
+npm run test:offline
+```
+
+The Go/Goa/protobuf gate, Helm rendering, PostgreSQL and browser checks, the
+Kubernetes integration tests and the relevant BDD scenarios run in the pull request
+workflows; see the [test strategy](docs/testing/test-strategy.md) and
+[CI](docs/ci-cd.md). A change to deployed behaviour is tested with the
+[live acceptance procedure](docs/testing/live-acceptance.md) and the
+[deployed UX tests](docs/testing/ux-bdd-runbook.md).
 
 ## Coding rules
 
-- Node.js logic runs inside ORCE; validate JSON domain boundaries and use structured errors. UI source is HTML/JavaScript/Vue. The participant backend uses Go/Goa.
-- Tenant-owned repository methods must require tenant identity; never use an unscoped object lookup for tenant-owned state.
-- Go code must pass `gofmt`, `go test`, and `go vet`.
-- Shell scripts use `set -euo pipefail`, validate all parameters, and never echo secrets.
-- Helm resources are declarative, owner-labelled, and parameterized.
-- Pin direct dependencies, runtime image versions and workflow references. Record resolved image digests and nested workflow versions before public release; an outer workflow pin does not make mutable upstream inputs immutable.
-- Do not log tokens, verification links, credentials, kubeconfigs, private keys, credential payloads, or participant data.
-- Follow the supplied [lifecycle ownership contract](docs/operations/automation.md). Preserve data volumes and unrelated operator changes; refuse conflicting ownership or stale versions.
+- Node.js logic runs inside ORCE; validate JSON domain boundaries and use structured
+  errors. UI source is HTML/JavaScript/Vue. The participant backend uses Go/Goa.
+- Tenant-owned repository methods must require tenant identity; never use an unscoped
+  object lookup for tenant-owned state.
+- Source files carry the copyright statement and `SPDX-License-Identifier: Apache-2.0`;
+  `node tools/add-licence-headers.mjs` adds the header to a new file and `npm run
+  check:headers` fails CI on a file without one. A file largely prepared with
+  AI-assisted tools is listed in `tools/licence-header-ai-files.txt` and carries the
+  disclosure in its header. Third-party files keep their own notices.
+- Authored JavaScript passes `npm run format:check` and `npm run check:maintainability`;
+  a new exception in `tools/maintainability-rules.json` names its reason and the issue
+  that removes it.
+- Go code must pass `gofmt`, `go test` and `go vet`.
+- Shell scripts use `set -euo pipefail`, validate all parameters and never echo secrets.
+- Helm resources are declarative, owner-labelled and parameterised.
+- Pin direct dependencies, runtime image versions and workflow references. Record
+  resolved image digests and nested workflow versions before a release; an outer
+  workflow pin does not make mutable upstream inputs immutable.
+- Do not log tokens, verification links, credentials, kubeconfigs, private keys,
+  credential payloads or participant data.
+- Follow the [lifecycle ownership contract](docs/operations/automation.md): preserve
+  data volumes and unrelated operator changes; refuse conflicting ownership or stale
+  versions.
+- Generated files (`dist/`, `docs/api/*.json`, `docs/release/*.json`,
+  `docs/requirements/*.md`) are produced by the build and committed with the change
+  that caused them; they are not edited by hand.
 
-## Pull-request evidence
+## Pull-request contents
 
-A change should include requirement mapping, unit/contract/integration evidence, sanitized output, changed compatibility entries, security/privacy impact, and migration/rollback notes when state or deployment behavior changes.
+A pull request includes the requirement or issue mapping, the tests that demonstrate
+the change, sanitised output where a run is part of the evidence, changed
+compatibility entries, the security and privacy impact, and migration and rollback
+notes when state or deployment behaviour changes. The pull-request template asks for
+the author, the AI disclosure and the named reviewer.
 
 ## Release and reporting
 
-Use requirement-linked feature branches, reviewed merges and the project's approved GitFlow/release policy. Update the version, regenerate distribution files and examples, refresh the requirement ledger and artifact hashes, and obtain the required evidence before the final tag. Do not publish a prerelease as contractual acceptance. Documentation, charts, participant image and BDD reports accompany each approved release.
+Releases are release candidate tags with a GitHub pre-release, created by a committer
+from `main` after the release pull request (version files, charts, API documents,
+integration lock, release inventory) has been reviewed and merged. A pre-release is
+not a contractual acceptance. Documentation, charts, images, SBOMs and test reports
+accompany each release.
 
-Report mandated-component problems in writing to the client with the exact source/image revision, impact, safe reproduction and proposed fix. The included upstream patch proposals are for owner review; changing shared OCM/TSA/ORCE components requires the established change-request process. Use the designated repository's issue tracker for non-sensitive reports, and [SECURITY.md](SECURITY.md) for security reporting. The client must confirm the responsible maintainer/contact and finalize the code of conduct before public delivery.
+Report problems in mandated shared components (OCM, TSA, ORCE core, the deployment
+repository) in writing with the exact source or image revision, impact, safe
+reproduction and proposed fix; changing those components follows their owners'
+change process. Use the issue tracker of this repository for non-sensitive reports
+and [SECURITY.md](SECURITY.md) for security reports.
