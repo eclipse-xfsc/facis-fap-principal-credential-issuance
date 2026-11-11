@@ -1,8 +1,17 @@
+// Copyright (c) 2026 LEANEA GmbH and others.
+//
+// This program and the accompanying materials are made available under the
+// terms of the Apache License, Version 2.0 which is available at
+// https://www.apache.org/licenses/LICENSE-2.0.
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+// Prepared with AI-assisted tools and reviewed by the author.
+// Assisted-by: AI
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
-
 async function walk(directory) {
   const output = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
@@ -12,7 +21,6 @@ async function walk(directory) {
   }
   return output;
 }
-
 const authoredFiles = [
   ...await walk("src"),
   ...await walk("backend/functions"),
@@ -20,14 +28,12 @@ const authoredFiles = [
   ...await walk("tools"),
   "shared/public-url.js",
 ].filter((file) => !file.endsWith(".css") && !file.endsWith(".sql"));
-const authored = Object.fromEntries(await Promise.all(authoredFiles.map(async (file) => [file, await readFile(file, "utf8")])));
+const authored = Object.fromEntries(await Promise.all(authoredFiles.map(async(file) => [file, await readFile(file, "utf8")])));
 const joined = Object.entries(authored).map(([file, source]) => `\n/* ${file} */\n${source}`).join("\n");
-
 test("authored source contains no obsolete complete-public-URL setting", () => {
   assert.doesNotMatch(joined, /PCI_PUBLIC_BASE_URL/);
 });
-
-test("authored browser source has no direct root-relative network calls or root-relative asset links", async () => {
+test("authored browser source has no direct root-relative network calls or root-relative asset links", async() => {
   const frontend = [
     await readFile("src/index.html", "utf8"),
     await readFile("src/main.js", "utf8"),
@@ -44,19 +50,14 @@ test("authored browser source has no direct root-relative network calls or root-
   ];
   for (const pattern of forbidden) assert.doesNotMatch(frontend, pattern, String(pattern));
 });
-
 test("all authored public URL generation uses canonical helpers", () => {
-  const backend = Object.entries(authored)
-    .filter(([file]) => file.startsWith("backend/functions/"))
-    .map(([, source]) => source)
-    .join("\n");
+  const backend = Object.entries(authored).filter(([file]) => file.startsWith("backend/functions/")).map(([, source]) => source).join("\n");
   assert.doesNotMatch(backend, /`https:\/\/\$\{(?:cfg\.|tenant\.|host)/);
   assert.doesNotMatch(backend, /["']https:\/\/["']\s*\+/);
   assert.match(backend, /uiUrl\(cfg\.mainHost, cfg\.orceBasePath\)/);
   assert.match(backend, /uiUrl\(tenant\.primary_domain, cfg\.orceBasePath\)/);
   assert.match(authored["backend/functions/status.js"], /publicOrigin\(cfg\.mainHost\)/);
 });
-
 test("root-relative literals are limited to application route contracts and helper inputs", () => {
   const tools = authored["tools/build-flows.mjs"];
   for (const match of tools.matchAll(/["'`](\/(?:api\/v1|healthz|readyz|metrics)[^"'`]*)["'`]/g)) {
@@ -64,12 +65,17 @@ test("root-relative literals are limited to application route contracts and help
     assert.doesNotMatch(match[1], /^\/(?:BASE|platform\/orce)\//);
   }
 });
-
 test("email, invitation and Keycloak URL sites are all base-path aware", () => {
-  for (const file of ["backend/functions/registration.js", "backend/functions/provider.js", "backend/functions/reconcile.js", "backend/functions/_common.js"]) {
+  for (const file of [
+    "backend/functions/registration.js",
+    "backend/functions/provider.js",
+    "backend/functions/reconcile.js",
+    "backend/functions/_common.js"
+  ]) {
     assert.match(authored[file], /uiUrl\([^\n]+cfg\.orceBasePath\)/, `${file} must use uiUrl with cfg.orceBasePath`);
   }
-  assert.match(authored["backend/functions/reconcile.js"], /redirectUris = Array\.from\(new Set\(\[uiUrl\(cfg\.mainHost, cfg\.orceBasePath\)/);
+  assert.match(authored["backend/functions/reconcile.js"],
+    /redirectUris\s*=\s*Array\.from\(new Set\(\[\s*uiUrl\(cfg\.mainHost, cfg\.orceBasePath\)/);
   assert.match(authored["backend/functions/reconcile.js"], /post\.logout\.redirect\.uris/);
   assert.match(authored["backend/functions/auth.js"], /const expectedRedirect = uiUrl\(host, cfg\.orceBasePath\)/);
 });
