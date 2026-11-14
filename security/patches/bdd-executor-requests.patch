@@ -1,0 +1,14 @@
+diff --git a/requirements-dev.txt b/requirements-dev.txt
+index 0c937f6..ffa57fc 100644
+--- a/requirements-dev.txt
++++ b/requirements-dev.txt
+@@ -86 +86 @@ quadrilateral-fitter==1.8
+-requests==2.31.0
++requests==2.33.0
+diff --git a/setup.cfg b/setup.cfg
+index 990793d..e17f92f 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -18 +18 @@ install_requires =
+-    requests==2.31.0
++    requests==2.33.0

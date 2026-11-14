@@ -1,0 +1,168 @@
+name: Security scans
+
+# Dependency and vulnerability scans of the Python and Go dependencies, a
+# secret scan of the commits and of the tree, and a schema check of the
+# rendered Kubernetes manifests. Node dependencies are audited in ci.yml
+# (npm audit, high and critical). Code scanning runs through the CodeQL
+# default setup of the repository, not through a workflow file here.
+#
+# Policy: a job fails on high or critical findings. Findings below that level
+# are recorded as issues in the repository and listed in the exception files
+# named below, each with the issue number.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-scans-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python-dependencies:
+    name: Python dependency audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install the BDD Executor dependency set in an isolated environment
+        run: |
+          python security/prepare-bdd.py --output "$RUNNER_TEMP/pci-bdd-requirements.txt"
+          python -m venv "$RUNNER_TEMP/pci-bdd"
+          "$RUNNER_TEMP/pci-bdd/bin/python" -m pip install --quiet --upgrade pip==26.3 setuptools==84.1.0
+          "$RUNNER_TEMP/pci-bdd/bin/python" -m pip install --quiet \
+            -r "$RUNNER_TEMP/pci-bdd-requirements.txt" -c test/bdd/constraints.txt \
+            PyLD==2.0.4 rdflib==7.1.4 pyshacl==0.30.1 PyYAML==6.0.2
+      - name: Check patched BDD compatibility
+        run: |
+          "$RUNNER_TEMP/pci-bdd/bin/python" security/check-bdd-compatibility.py
+      - name: Install pip-audit in its own environment
+        run: |
+          python -m venv "$RUNNER_TEMP/pci-audit"
+          "$RUNNER_TEMP/pci-audit/bin/python" -m pip install --quiet pip-audit==2.9.0
+      - name: Audit the installed Python packages
+        run: |
+          mkdir -p scan-evidence
+          cp "$RUNNER_TEMP/pci-bdd-requirements.provenance.json" scan-evidence/bdd-provenance.json
+          cp security/patches/bdd-executor-requests.patch scan-evidence/
+          "$RUNNER_TEMP/pci-bdd/bin/python" -m pip freeze --all > scan-evidence/python-resolved.txt
+          audit_path="$("$RUNNER_TEMP/pci-bdd/bin/python" -c 'import sysconfig; print(sysconfig.get_path("purelib"))')"
+          ignore=()
+          while IFS= read -r line; do
+            case "$line" in ''|'#'*) continue ;; esac
+            ignore+=(--ignore-vuln "${line%% *}")
+          done < security/python-audit-exceptions.txt
+          "$RUNNER_TEMP/pci-audit/bin/pip-audit" \
+            --path "$audit_path" \
+            --format json --output scan-evidence/python-audit.json "${ignore[@]}" || status=$?
+          "$RUNNER_TEMP/pci-audit/bin/pip-audit" \
+            --path "$audit_path" "${ignore[@]}" || true
+          exit "${status:-0}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: python-audit-${{ github.run_id }}
+          path: scan-evidence/
+          if-no-files-found: error
+
+  go-dependencies:
+    name: Go vulnerability check (participant service)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: reference/participant-data-repository
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: reference/participant-data-repository/go.mod
+          cache: false
+      - run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
+      - run: bash generate.sh
+      - name: govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+          "$(go env GOPATH)/bin/govulncheck" -tags=generated ./...
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install gitleaks (pinned release)
+        env:
+          GITLEAKS_VERSION: 8.21.2
+          GITLEAKS_SHA256: 5bc41815076e6ed6ef8fbecc9d9b75bcae31f39029ceb55da08086315316e3ba
+        run: |
+          curl -fsSL --retry 3 -o gitleaks.tgz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
+          ./gitleaks version
+      - name: Verify secret-scanner regression fixtures
+        run: python3 security/check-gitleaks.py --gitleaks ./gitleaks
+      - name: Scan the commits of this change
+        if: github.event_name == 'pull_request'
+        run: |
+          ./gitleaks detect --source . --config .github/gitleaks.toml --redact \
+            --log-opts "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}" \
+            --report-format sarif --report-path gitleaks-commits.sarif
+      - name: Scan the tree
+        run: |
+          ./gitleaks detect --source . --config .github/gitleaks.toml --redact --no-git \
+            --report-format sarif --report-path gitleaks-tree.sarif
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: secret-scan-${{ github.run_id }}
+          path: gitleaks-*.sarif
+          if-no-files-found: ignore
+
+  manifests:
+    name: Kubernetes manifest schema check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: azure/setup-helm@v4
+        with: {version: v3.17.4}
+      - name: Install kubeconform (pinned release)
+        env:
+          KUBECONFORM_VERSION: 0.6.7
+          KUBECONFORM_SHA256: 95f14e87aa28c09d5941f11bd024c1d02fdc0303ccaa23f61cef67bc92619d73
+        run: |
+          curl -fsSL --retry 3 -o kubeconform.tgz \
+            "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
+          echo "${KUBECONFORM_SHA256}  kubeconform.tgz" | sha256sum -c -
+          tar -xzf kubeconform.tgz kubeconform
+          ./kubeconform -v
+      - name: Verify manifest-schema regression fixtures
+        run: python3 security/check-kubeconform.py --kubeconform ./kubeconform
+      - name: Render the charts and validate the manifests
+        run: |
+          mkdir -p rendered
+          helm template --kube-version 1.34.0 pci deployment/helm/fap-pci > rendered/pci.yaml
+          helm template --kube-version 1.34.0 telemetry deployment/helm/observability \
+            --set serverName=telemetry.pci.svc.cluster.local,pciHost=pci.example.com > rendered/observability.yaml
+          helm template --kube-version 1.34.0 participant deployment/helm/participant \
+            --set image=example.invalid/participant:test,tenantId=alpha,issuer=https://identity.example,audience=participant-data,pciClientDns=pci.example,tlsSecret=tls,dataSecret=data,pciNamespace=pci > rendered/participant.yaml
+          PCI_KUBECONFORM=./kubeconform bash security/validate-manifests.sh rendered/

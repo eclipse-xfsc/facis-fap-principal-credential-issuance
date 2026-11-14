@@ -24,7 +24,7 @@ concurrency:
 jobs:
   licence-scan:
     name: Licence gate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     defaults:
       run:
@@ -66,9 +66,12 @@ jobs:
 
       - name: Resolve Python dependencies without installing them
         run: |
+          python security/prepare-bdd.py --output "$RUNNER_TEMP/pci-bdd-requirements.txt"
+          mkdir -p dash-evidence
+          cp "$RUNNER_TEMP/pci-bdd-requirements.provenance.json" dash-evidence/bdd-provenance.json
           python -m pip install --dry-run --ignore-installed \
             --report dash-evidence/python-resolved.json \
-            -r test/bdd/requirements.txt \
+            -r "$RUNNER_TEMP/pci-bdd-requirements.txt" -c test/bdd/constraints.txt \
             PyLD==2.0.4 rdflib==7.1.4 pyshacl==0.30.1 PyYAML==6.0.2
 
       - name: Build additional dependency inventory
