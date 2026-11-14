@@ -9,7 +9,15 @@ import {
   pciNativeRuntimeBindings
 } from './lib/bundle-graph.mjs';
 const functionKinds = new Set(['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression']);
-const sqlPattern = /\b(?:SELECT|INSERT\s+INTO|UPDATE|DELETE\s+FROM|CREATE\s+(?:TABLE|INDEX|UNIQUE)|ALTER\s+TABLE|WITH\s+\w+\s+AS)\b/i;
+const sqlPatterns = [
+  /^\s*SELECT\s+[\s\S]+?\s+FROM\s+\S+/i,
+  /^\s*INSERT\s+INTO\s+\S+[\s\S]*\b(?:VALUES|SELECT)\b/i,
+  /^\s*UPDATE\s+\S+\s+SET\b/i,
+  /^\s*DELETE\s+FROM\s+\S+/i,
+  /^\s*CREATE\s+(?:TABLE|(?:UNIQUE\s+)?INDEX)\s+\S+/i,
+  /^\s*ALTER\s+TABLE\s+\S+/i,
+  /^\s*WITH\s+(?:RECURSIVE\s+)?[A-Za-z_]\w*(?:\s*\([^)]*\))?\s+AS\s*\(/i,
+];
 export const rules = JSON.parse(fs.readFileSync(new URL('./maintainability-rules.json', import.meta.url), 'utf8'));
 /** Repository-relative path with forward slashes on every platform. */
 export function normalizeFile(file) {
@@ -63,7 +71,7 @@ export function measureSource(source, filename = '<source>') {
     const literal = node.type === 'TemplateLiteral' ? node.quasis.map(q => q.value.cooked ?? q.value.raw).join(' '): node.type ===
       'Literal' &&
     typeof node.value === 'string' ? node.value: null;
-    if (literal !== null && sqlPattern.test(literal)) {
+    if (literal !== null && sqlPatterns.some(pattern => pattern.test(literal))) {
       for (let line = node.loc.start.line; line <= node.loc.end.line; line++) sqlLines.add(line);
     }
     for (const value of Object.values(node)) {
@@ -118,7 +126,8 @@ export function checkMaintainability(root = process.cwd()) {
   const metrics = files.map(file => measureSource(fs.readFileSync(path.join(root, file), 'utf8'), file));
   const load = file => fs.readFileSync(path.join(root, file), 'utf8');
   const ui = inspectBundleGraph(PCI_UI_MODULES, { externals: pciUiRuntimeBindings, assets: ['src/styles.css'], load });
-  const backend = inspectBundleGraph(PCI_SR2_MODULES.map(file => 'backend/sr2/' + file), { externals: pciNativeRuntimeBindings, load });
+  const backend = inspectBundleGraph(PCI_SR2_MODULES.map(file => 'backend/sr2/' + file),
+    { externals: pciNativeRuntimeBindings, runtimeBindings: ['URL', 'URLSearchParams'], load });
   const staleExceptions = rules.exceptions.filter(e => !files.includes(e.file)).map(e =>
     `${e.file}: exception for a file that does not exist`);
   const errors = [...metrics.flatMap(sourceViolations), ...ui.errors, ...backend.errors, ...staleExceptions];

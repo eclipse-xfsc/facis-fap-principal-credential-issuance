@@ -53,5 +53,5 @@
       "issue": "R2-8"
     }
   ],
-  "sqlLiterals": "string and template literals that contain an SQL statement are exempt from lineLength"
+  "sqlLiterals": "String and template literals beginning with recognized SQL statement structures are exempt from lineLength; ordinary text and HTML are measured."
 }

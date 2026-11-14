@@ -15,7 +15,8 @@ const commonBase = (await readFile(path.join(root, "backend", "functions", "_com
 const common = commonBase + '\n' + await readFile(path.join(root, 'backend/functions/_identity.js'), 'utf8') + '\n' + await readFile(path
   .join(root, 'backend/functions/_bridge.js'), 'utf8');
 const sr2Files = PCI_SR2_MODULES;
-const graph = inspectBundleGraph(sr2Files.map(file => 'backend/sr2/' + file), { externals: pciNativeRuntimeBindings });
+const graph = inspectBundleGraph(sr2Files.map(file => 'backend/sr2/' + file),
+  { externals: pciNativeRuntimeBindings, runtimeBindings: ['URL', 'URLSearchParams'] });
 if (graph.errors.length) throw new Error(graph.errors.join('\n'));
 let sr2Source = (await Promise.all(sr2Files.map(async file => stripModuleSyntax(await readFile(path.join(root, 'backend', 'sr2', file),
   'utf8'), file)))).join('\n');

@@ -15,6 +15,22 @@ function declarationNames(node) {
   if (!node) return [];
   return node.type === 'VariableDeclaration' ? node.declarations.flatMap(d => patternNames(d.id)): patternNames(node.id);
 }
+const moduleScopeBarriers = new Set(['FunctionDeclaration', 'FunctionExpression', 'ArrowFunctionExpression', 'StaticBlock',]);
+function hoistedVarNames(tree) {
+  const names = new Set();
+  function visit(node) {
+    if (!node || typeof node.type !== 'string' || moduleScopeBarriers.has(node.type)) return;
+    if (node.type === 'VariableDeclaration' && node.kind === 'var') {
+      declarationNames(node).forEach(name => names.add(name));
+    }
+    for (const value of Object.values(node)) {
+      if (Array.isArray(value)) value.forEach(visit);
+      else if (value && typeof value === 'object') visit(value);
+    }
+  }
+  visit(tree);
+  return names;
+}
 /** Check the explicit module graph before flattening into the ORCE/browser scope. */
 export function inspectBundleGraph(files, options = {}) {
   const load = options.load || (file => fs.readFileSync(file, 'utf8'));
@@ -23,6 +39,13 @@ export function inspectBundleGraph(files, options = {}) {
   const errors = [],
   modules = new Map(),
   declarations = new Map();
+  const injected = [
+    ...Object.values(externals).flatMap(mapping => mapping && typeof mapping === 'object' ? Object.values(mapping): []),
+    ...(options.runtimeBindings || []),
+  ];
+  for (const name of injected) {
+    if (typeof name === 'string') declarations.set(name, '<runtime binding>');
+  }
   for (const file of files) {
     if (modules.has(file)) {
       errors.push(`Duplicate bundle module: ${file}`);
@@ -37,12 +60,10 @@ export function inspectBundleGraph(files, options = {}) {
     }
     const module = { exports: new Set(), edges: new Set(), imports: [] };
     modules.set(file, module);
+    const moduleNames = hoistedVarNames(tree);
     for (const statement of tree.body) {
       const declaration = statement.type === 'ExportNamedDeclaration' ? statement.declaration: statement;
-      for (const name of declarationNames(declaration)) {
-        if (declarations.has(name)) errors.push(`Flat-scope collision: ${name} in ${declarations.get(name)} and ${file}`);
-        else declarations.set(name, file);
-      }
+      for (const name of declarationNames(declaration)) moduleNames.add(name);
       if (statement.type === 'ExportNamedDeclaration') {
         declarationNames(statement.declaration).forEach(name => module.exports.add(name));
         statement.specifiers.forEach(s => module.exports.add(s.exported.name));
@@ -63,13 +84,18 @@ export function inspectBundleGraph(files, options = {}) {
         }))
       });
     }
+    for (const name of moduleNames) {
+      if (declarations.has(name)) {
+        errors.push(`Flat-scope collision: ${name} in ${declarations.get(name)} and ${file}`);
+      } else declarations.set(name, file);
+    }
   }
   for (const [file, module] of modules) {
     for (const imported of module.imports) {
       if (!imported.source.startsWith('.')) {
-        const allowed = externals[imported.source];
+        const allowed = Object.hasOwn(externals, imported.source) ? externals[imported.source]: undefined;
         for (const binding of imported.bindings) {
-          if (!allowed || allowed[binding.imported] !== binding.local) errors.push(
+          if (!allowed || !Object.hasOwn(allowed, binding.imported) || allowed[binding.imported] !== binding.local) errors.push(
             `Unbound external ${imported.source}:${binding.local} in ${file}`);
         }
         if (!imported.bindings.length && !allowed) errors.push(`Undeclared external side effect: ${imported.source}`);
