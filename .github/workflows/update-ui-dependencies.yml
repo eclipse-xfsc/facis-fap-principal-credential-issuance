@@ -1,126 +1,68 @@
-name: Update UI dependencies
+name: Report UI dependency updates
+
+# This workflow no longer commits or pushes. It checks whether the pinned UI
+# runtime dependency has a newer release and, if so, opens or updates an issue
+# with the details. The update itself is made by a named author in a reviewed
+# pull request, like every other change (see docs/development/official-workflow.md).
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'
 
 permissions:
-  contents: write
+  contents: read
+  issues: write
 
 concurrency:
-  group: pci-ui-dependency-update
+  group: pci-ui-dependency-report
   cancel-in-progress: false
 
 jobs:
-  update:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+  report:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: npm
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+      - name: Validate dependency reporting
+        run: node --test test/tests/static/ui-dependency-updates.test.mjs
 
-      - name: Install validation tools
-        run: python -m pip install PyYAML==6.0.2 mkdocs==1.6.1
-
-      - name: Update dependency pins and lockfile
+      - name: Compare the pinned Vue version with the npm registry
+        id: compare
         run: |
-          npm pkg set overrides.source-map-js=1.2.2
-          npm install --save-exact vue@3.5.43
+          pinned=$(node -p "require('./package.json').dependencies.vue")
+          latest=$(npm view vue version)
+          update=$(node tools/compare-ui-versions.mjs "$pinned" "$latest")
+          echo "pinned=$pinned" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          echo "update=$update" >> "$GITHUB_OUTPUT"
 
-      - name: Update vendored Vue and provenance
+      - name: Open or update the issue
+        if: steps.compare.outputs.update == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PINNED: ${{ steps.compare.outputs.pinned }}
+          LATEST: ${{ steps.compare.outputs.latest }}
         run: |
-          node --input-type=module <<'JS'
-          import fs from 'node:fs';
-          import crypto from 'node:crypto';
+          title="Dependency update available: vue ${LATEST} (pinned ${PINNED})"
+          body=$(cat <<EOF
+          The pinned UI runtime dependency \`vue@${PINNED}\` has a newer release: \`${LATEST}\`.
 
-          const version = JSON.parse(
-            fs.readFileSync('node_modules/vue/package.json', 'utf8')
-          ).version;
+          To update: a named author runs \`npm install --save-exact vue@${LATEST}\`, refreshes the vendored runtime and its provenance (\`vendor/vue.global.prod.js\`, \`vendor/vue-provenance.json\`, \`THIRD_PARTY_NOTICES.md\`), rebuilds \`dist/\`, runs the offline suite and the licence check, and opens a pull request for review. Nothing is committed by this workflow.
 
-          if (version !== '3.5.43') {
-            throw new Error('Unexpected Vue version');
-          }
-
-          const bytes = fs.readFileSync(
-            'node_modules/vue/dist/vue.global.prod.js'
-          );
-          fs.writeFileSync('vendor/vue.global.prod.js', bytes);
-          fs.copyFileSync('node_modules/vue/LICENSE', 'vendor/vue-LICENSE.txt');
-
-          const lock = JSON.parse(
-            fs.readFileSync('package-lock.json', 'utf8')
-          );
-          const dependency = lock.packages['node_modules/vue'];
-
-          fs.writeFileSync('vendor/vue-provenance.json', JSON.stringify({
-            version,
-            source: `npm:vue@${version}/dist/vue.global.prod.js`,
-            npmTarball: dependency.resolved,
-            npmIntegrity: dependency.integrity,
-            sha256: crypto.createHash('sha256').update(bytes).digest('hex'),
-            license: 'MIT'
-          }, null, 2) + '\n');
-
-          let notices = fs.readFileSync('THIRD_PARTY_NOTICES.md', 'utf8');
-          notices = notices.replace(
-            /^\| Vue \| .*$/m,
-            `| Vue | ${version} | MIT | Browser UI runtime |`
-          );
-          notices = notices.replace(
-            /^The Vue .*$/m,
-            `The Vue ${version} browser runtime is vendored from the npm vue package. Its npm integrity and file SHA-256 are recorded in vendor/vue-provenance.json. The MIT notice is in vendor/vue-LICENSE.txt. Node dependencies are recorded in package-lock.json.`
-          );
-          fs.writeFileSync('THIRD_PARTY_NOTICES.md', notices);
-          JS
-
-      - name: Validate and regenerate distribution
-        run: |
-          npm ci
-          npm run security:audit
-          npm run test:offline
-          mkdocs build --strict
-
-      - name: Refresh release hashes
-        run: |
-          node --input-type=module <<'JS'
-          import fs from 'node:fs';
-          import {releaseArtifacts} from './tools/release-artifacts.mjs';
-
-          const artifacts = releaseArtifacts(process.cwd());
-          fs.writeFileSync(
-            'docs/release/artifacts.json',
-            JSON.stringify(artifacts, null, 2) + '\n'
-          );
-          fs.writeFileSync(
-            'docs/release/source-sha256.txt',
-            Object.entries(artifacts)
-              .map(([path, hash]) => `${hash}  ${path}`)
-              .join('\n') + '\n'
-          );
-          JS
-
-      - name: Commit validated changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add package.json package-lock.json vendor dist \
-            THIRD_PARTY_NOTICES.md docs/release/artifacts.json \
-            docs/release/source-sha256.txt
-
-          if git diff --cached --quiet; then
-            echo "No changes needed."
-            exit 0
+          Reported by the workflow run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}.
+          EOF
+          )
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"Dependency update available: vue\" in:title" --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"
           fi
-
-          git commit -s -m "Update UI dependencies and regenerate release artifacts"
-          git push origin HEAD:main
