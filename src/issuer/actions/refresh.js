@@ -1,0 +1,145 @@
+import { createPciIssuerState } from '../workspace-state.js';
+/** Refresh operations with explicit state and I/O dependencies. */
+export function createPciRefreshActions(state, dependencies) {
+  const {
+    cap,
+    loaded,
+    tab,
+    connectors,
+    eligible,
+    presentationConfigurations,
+    configs,
+    flows,
+    assets,
+    members,
+    assignments,
+    metadata,
+    metadataForm,
+    authServers,
+    branding,
+    brandingForm,
+    settings,
+    settingsForm,
+    publication,
+    preview,
+    notice
+  } = state;
+  const {
+    run,
+    call,
+    loadIdentity,
+    api,
+    props,
+    clone,
+    restoreJourney,
+    rememberWorkspace,
+    recovery,
+    sections,
+    runtime,
+    window
+  } = dependencies;
+  const defaults = createPciIssuerState({ ref: value => ({ value }), props, runtime, window });
+  const issuerFields = [
+    'configs',
+    'flows',
+    'assets',
+    'selected',
+    'configForm',
+    'selectedFlow',
+    'flowForm',
+    'history',
+    'versions',
+    'preview',
+    'query',
+    'configState',
+    'historyConfig',
+    'restoreVersion',
+    'search',
+    'nextCursor'
+  ];
+  const administratorFields = [
+    'members',
+    'assignments',
+    'identity',
+    'identityRedirect',
+    'identityForm',
+    'metadata',
+    'metadataForm',
+    'authServers',
+    'branding',
+    'brandingForm',
+    'settings',
+    'settingsForm',
+    'publication',
+    'connector',
+    'connectorForm',
+    'grant',
+    'grantConfig',
+    'keyName',
+    'keyType',
+    'settingsTab'
+  ];
+  function resetFields(names) {
+    for (const name of names) state[name].value = clone(defaults[name].value);
+  }
+  function clearRevokedPrivileges() {
+    if (!cap.value.issuer) resetFields(issuerFields);
+    if (!cap.value.tenantAdmin) resetFields(administratorFields);
+    if (!cap.value.issuer && !cap.value.tenantAdmin) {
+      resetFields(['uploadRole', 'uploadScope']);
+    }
+  }
+  async function refresh() {
+    await run(async() => {
+      cap.value = await call('/issuer-capabilities');
+      clearRevokedPrivileges();
+      if (!loaded.value) {
+        if (tab.value !== 'presentation' && !recovery?.tab) {
+          tab.value = cap.value.issuer ? 'configurations': 'request';
+        }
+        loaded.value = true;
+      }
+      if (!sections.value.some(section => section.id === tab.value)) tab.value = 'request';
+      connectors.value = cap.value.connectors || [];
+      eligible.value = (await call('/eligible-configurations')).items;
+      presentationConfigurations.value = (await call('/presentation-configurations')).items;
+      if (cap.value.issuer) {
+        configs.value = (await call('/credential-configurations')).items;
+        flows.value = (await call('/flows')).items;
+        assets.value = (await call('/assets')).items;
+      }
+      if (cap.value.tenantAdmin) {
+        await loadIdentity();
+        connectors.value = (await call('/participant-connectors')).items;
+        members.value = (await api.tenantMembers(props.tenant.tenantId)).items;
+        assignments.value = (await call('/administrators')).items;
+        metadata.value = (await call('/issuer-metadata')).item;
+        if (metadata.value) {
+          metadataForm.value = clone(metadata.value.draft);
+          authServers.value = metadataForm.value.authorizationServers.join(', ');
+        }
+        branding.value = (await call('/branding')).item;
+        if (branding.value) brandingForm.value = {
+          ...brandingForm.value,
+          ...clone(branding.value.draft),
+          accent: '#005FFF',
+          background: '#E1E7EF',
+          foreground: '#1F2937',
+          font: 'system',
+          corners: 'rounded'
+        };
+        settings.value = (await call('/issuer-settings')).item;
+        if (settings.value) settingsForm.value = clone(settings.value.draft);
+        publication.value = await call('/publication');
+      }
+      await restoreJourney();
+    });
+  }
+  function navigate(id) {
+    tab.value = id;
+    preview.value = null;
+    notice.value = '';
+    rememberWorkspace();
+  }
+  return { refresh, navigate };
+}

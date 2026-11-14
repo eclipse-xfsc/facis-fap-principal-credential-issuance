@@ -69,7 +69,7 @@ test("email, invitation and Keycloak URL sites are all base-path aware", () => {
   for (const file of ["backend/functions/registration.js", "backend/functions/provider.js", "backend/functions/reconcile.js", "backend/functions/_common.js"]) {
     assert.match(authored[file], /uiUrl\([^\n]+cfg\.orceBasePath\)/, `${file} must use uiUrl with cfg.orceBasePath`);
   }
-  assert.match(authored["backend/functions/reconcile.js"], /redirectUris = Array\.from\(new Set\(\[uiUrl\(cfg\.mainHost, cfg\.orceBasePath\)/);
+  assert.match(authored["backend/functions/reconcile.js"], /redirectUris\s*=\s*Array\.from\(new Set\(\[\s*uiUrl\(cfg\.mainHost, cfg\.orceBasePath\)/);
   assert.match(authored["backend/functions/reconcile.js"], /post\.logout\.redirect\.uris/);
   assert.match(authored["backend/functions/auth.js"], /const expectedRedirect = uiUrl\(host, cfg\.orceBasePath\)/);
 });

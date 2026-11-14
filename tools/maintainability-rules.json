@@ -1,0 +1,40 @@
+{
+  "$comment": "Limits of the maintainability gate (tools/check-maintainability.mjs). Exceptions name a file, the rules it may still violate, the reason and the issue that tracks their removal. An exception is removed in the pull request that refactors the file.",
+  "scope": [
+    "backend",
+    "src",
+    "shared",
+    "tools",
+    "build.js"
+  ],
+  "lineLength": 240,
+  "fileLines": 900,
+  "statementsPerLine": 3,
+  "issuer": {
+    "pathPrefix": "src/issuer/",
+    "moduleLines": 240,
+    "viewModuleLines": 350,
+    "functionLines": 100,
+    "functionComplexity": 20,
+    "compositionFactoryPrefix": "createPci"
+  },
+  "exceptions": [
+    {
+      "file": "tools/build-requirement-audit.mjs",
+      "rules": [
+        "line-length"
+      ],
+      "reason": "Generated-documentation text of the submitted baseline; rewritten with the requirements documentation in R2-8, which removes this entry.",
+      "issue": "R2-8"
+    },
+    {
+      "file": "tools/build-requirements.mjs",
+      "rules": [
+        "line-length"
+      ],
+      "reason": "Generated-documentation text of the submitted baseline; rewritten with the requirements documentation in R2-8, which removes this entry.",
+      "issue": "R2-8"
+    }
+  ],
+  "sqlLiterals": "string and template literals that contain an SQL statement are exempt from lineLength"
+}
