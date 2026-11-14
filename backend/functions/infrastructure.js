@@ -1,6 +1,5 @@
-return (async () => {
+return (async() => {
   const action = String(msg.pciAction || msg.type || "");
-
   async function currentStatus() {
     try {
       const row = (await getPool().query("SELECT state_value,updated_at FROM platform_state WHERE state_key='platform'"))?.rows?.[0];
@@ -20,18 +19,14 @@ return (async () => {
       if (address && platform.mainHost) {
         const dnsReady = await dnsMatchesHost(platform.mainHost, address).catch(() => false);
         platform.ready = Boolean(dnsReady);
-        platform.status = dnsReady ? "Ready" : "DNSPending";
+        platform.status = dnsReady ? "Ready": "DNSPending";
         if (Array.isArray(platform.conditions)) {
-          platform.conditions = platform.conditions.map((condition) => condition.type === "MainDNSReady"
-            ? {
-                ...condition,
-                status: dnsReady ? "True" : "False",
-                reason: dnsReady ? "DNSMatchesGateway" : "DNSPending",
-                message: dnsReady
-                  ? "Main PCI DNS resolves to the Envoy Gateway."
-                  : `DNS must resolve ${platform.mainHost} to ${address}.`,
-              }
-            : condition);
+          platform.conditions = platform.conditions.map((condition) => condition.type === "MainDNSReady" ? {
+            ...condition,
+            status: dnsReady ? "True": "False",
+            reason: dnsReady ? "DNSMatchesGateway": "DNSPending",
+            message: dnsReady ? "Main PCI DNS resolves to the Envoy Gateway.": `DNS must resolve ${platform.mainHost} to ${address}.`,
+          }: condition);
         }
       }
       return platform;
@@ -47,23 +42,21 @@ return (async () => {
       };
     }
   }
-
   if (action === "platform.status") {
     const platform = await currentStatus();
     node.status({
-      fill: platform.ready ? "green" : "yellow",
-      shape: platform.ready ? "dot" : "ring",
+      fill: platform.ready ? "green": "yellow",
+      shape: platform.ready ? "dot": "ring",
       text: platform.status || "Unknown",
     });
     return emit(200, { platform }, {}, "pci:platform-status");
   }
-
   if (action === "platform.initialize") {
     if (!msg.pciInternal) await requireSession(["provider_admin"]);
     const platform = await currentStatus();
     node.status({
-      fill: platform.ready ? "green" : "yellow",
-      shape: platform.ready ? "dot" : "ring",
+      fill: platform.ready ? "green": "yellow",
+      shape: platform.ready ? "dot": "ring",
       text: platform.status || "GroundZeroRequired",
     });
     return emit(200, {
@@ -72,7 +65,6 @@ return (async () => {
       message: "Cluster bootstrap is owned exclusively by ground-zero; M1 performs no infrastructure mutations.",
     }, {}, "pci:platform-status");
   }
-
   throw pciErrors.notFound("Unknown infrastructure action.");
 })().catch((error) => {
   node.status({ fill: "red", shape: "ring", text: "PCI-PLATFORM-CHECK-FAILED" });
