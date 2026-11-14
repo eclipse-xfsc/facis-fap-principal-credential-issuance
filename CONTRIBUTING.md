@@ -26,10 +26,14 @@ npm run check:maintainability
 npm run test:offline
 ```
 
-The Go/Goa/protobuf gate, Helm rendering, PostgreSQL and browser checks, the
-Kubernetes integration tests and the relevant BDD scenarios run in the pull request
-workflows; see the [test strategy](docs/testing/test-strategy.md) and
-[CI](docs/ci-cd.md). A change to deployed behaviour is tested with the
+Pull request workflows run automated source checks, Go/Goa/protobuf
+generation and tests, Helm lint/render and manifest schema checks, PostgreSQL
+server tests, semantic validation, and browser DOM/component fixture regressions;
+see the [test strategy](docs/testing/test-strategy.md) and [CI](docs/ci-cd.md).
+
+Deployed Kubernetes integration/lifecycle tests and XFSC BDD Executor acceptance/UX
+scenarios are executed separately during R5 on the designated installations.
+Their results are recorded using the
 [live acceptance procedure](docs/testing/live-acceptance.md) and the
 [deployed UX tests](docs/testing/ux-bdd-runbook.md).
 

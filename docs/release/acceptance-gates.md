@@ -13,7 +13,7 @@ updated in the pull request that records the evidence.
 | Licence check | Eclipse Dash green for the Node.js, Python and Go dependency sets; IP Team request filed for every dependency without vetted licence data | `eclipse-dash` workflow run; IPLab request references in the pull request | open |
 | Dependency and secret scans | `security-scans` workflow green: pip-audit, govulncheck, gitleaks over the pull request range and the tree, kubeconform over the rendered charts | `security-scans` workflow run | open |
 | Source gates | `format:check` and `check:maintainability` green with no exception left in `tools/maintainability-rules.json` for `src/` | `ci` workflow, `quality` job | open |
-| Participant service | Go 1.25 build, protobuf generation, vet and race tests in CI | `ci` workflow, `participant` job | open |
+| Participant service | Go build using the toolchain required by `reference/participant-data-repository/go.mod` (including its patch level), protobuf generation, vet and race tests in CI | `ci` workflow, `participant` job | open |
 | PostgreSQL | Migration, isolation and concurrency tests against a server in CI | `ci` workflow, `node` job | open |
 | Helm and Kubernetes | Chart lint and template validation, manifest schema check, lifecycle run in the designated environments | `ci` workflow, `charts` job; `security-scans`, `manifests` job; deployment records | open |
 | Reproducible image | Application and participant images built by the release workflow from the tagged commit, with SBOM and scan; digest recorded with the deployment | `release-container-sbom` workflow; `docs/release/artifacts.json` | open |
