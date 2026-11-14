@@ -31,18 +31,18 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Validate dependency reporting
+        run: node --test test/tests/static/ui-dependency-updates.test.mjs
+
       - name: Compare the pinned Vue version with the npm registry
         id: compare
         run: |
           pinned=$(node -p "require('./package.json').dependencies.vue")
           latest=$(npm view vue version)
+          update=$(node tools/compare-ui-versions.mjs "$pinned" "$latest")
           echo "pinned=$pinned" >> "$GITHUB_OUTPUT"
           echo "latest=$latest" >> "$GITHUB_OUTPUT"
-          if [ "$pinned" = "$latest" ]; then
-            echo "update=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "update=true" >> "$GITHUB_OUTPUT"
-          fi
+          echo "update=$update" >> "$GITHUB_OUTPUT"
 
       - name: Open or update the issue
         if: steps.compare.outputs.update == 'true'
@@ -64,5 +64,5 @@ jobs:
           if [ -n "$existing" ]; then
             gh issue edit "$existing" --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"
           else
-            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body" --label dependencies
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"
           fi
