@@ -1,3 +1,4 @@
+import { stripModuleSyntax, validateFunctionBody } from "./lib/module-source.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -8,11 +9,11 @@ await mkdir(outDir, { recursive: true });
 const releaseVersion = (await readFile(path.join(root, "VERSION"), "utf8")).trim();
 
 const sharedUrlSource = await readFile(path.join(root, "shared", "public-url.js"), "utf8");
-const sharedUrl = sharedUrlSource.replace(/^export\s+(?=(?:async\s+)?function|const|let|var|class)/gm, "");
+const sharedUrl = stripModuleSyntax(sharedUrlSource, "shared/public-url.js");
 const commonBase = (await readFile(path.join(root, "backend", "functions", "_common.js"), "utf8")).replaceAll("__FAP_PCI_VERSION__", releaseVersion);
 const common = commonBase+'\n'+await readFile(path.join(root,'backend/functions/_identity.js'),'utf8')+'\n'+await readFile(path.join(root,'backend/functions/_bridge.js'),'utf8');
 const sr2Files = ['domain.js','journey-input.js','assets.js','participant-security.js','store.js','adapters.js','wire.js','transport.js','profiles.js','sdjwt.js','linked-data.js','native.js','history.js','semantics.js','service.js','revocation.js','issuance.js','presentation.js','maintenance.js','runtime.js','http.js'];
-let sr2Source = (await Promise.all(sr2Files.map(file => readFile(path.join(root,'backend','sr2',file),'utf8')))).map(source => source.replace(/^export \{.*\} from .*;\s*$/gm,'').replace(/^import .*;\s*$/gm,'').replace(/^export /gm,'')).join('\n');
+let sr2Source = (await Promise.all(sr2Files.map(async file => stripModuleSyntax(await readFile(path.join(root,'backend','sr2',file),'utf8'), file)))).join('\n');
 sr2Source=sr2Source.replaceAll('__PCI_SR2_BUILD_ID__',createHash('sha256').update(sr2Source).digest('hex'));
 const sr2Specs = JSON.parse(await readFile(path.join(root,'backend','sr2','routes.json'),'utf8'));
 const k8s = await readFile(path.join(root, "backend", "functions", "_k8s.js"), "utf8")+"\n"+await readFile(path.join(root,"backend/functions/_participant-cleanup.js"),"utf8");
@@ -274,6 +275,16 @@ const baseNodes = await buildBase();
 const moduleNodes = [];
 for (const spec of moduleSpecs) moduleNodes.push(...await buildModule(spec));
 
-await writeFile(path.join(outDir, "fap-pci-flow.json"), `${JSON.stringify([...baseNodes, ...moduleNodes], null, 2)}
+const allNodes = [...baseNodes, ...moduleNodes];
+for (const node of allNodes.filter(item => item.type === 'function')) {
+  for (const field of ['func', 'initialize', 'finalize']) {
+    if (typeof node[field] === 'string' && node[field].trim()) {
+      validateFunctionBody(
+        node[field], `generated ORCE ${node.name} (${node.id}) ${field}`,
+      );
+    }
+  }
+}
+await writeFile(path.join(outDir, "fap-pci-flow.json"), `${JSON.stringify(allNodes, null, 2)}
 `);
 console.log(`[build:flows] wrote canonical flow to ${path.join(outDir, "fap-pci-flow.json")}`);

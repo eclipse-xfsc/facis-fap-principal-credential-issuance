@@ -125,6 +125,7 @@ function uiUrl(host, basePath = "") {
 
 
 // ---- src/config/runtime.js ----
+;
 
 function inferBasePathFromUiLocation(pathname) {
   const value = String(pathname || "");
@@ -180,6 +181,7 @@ async function sha256UrlSafe(value) {
 
 
 // ---- src/state/store.js ----
+;
 
 const store = reactive({
   session: null,
@@ -198,6 +200,7 @@ const store = reactive({
 
 
 // ---- src/state/reducers.js ----
+;
 
 function normalizeUiError(error) {
   return { category: error?.category || (error?.status >= 502 ? 'integration' : 'system'),
@@ -249,8 +252,9 @@ function reduceUiMessage(envelope, pending) {
 
 
 // ---- src/services/transport.js ----
-
-
+;
+;
+;
 
 const bridgePending = new Map();
 let bridgeClient, bridgeGrant, bridgeBootstrap, bridgeStarted = false, bridgeWasReady = false;
@@ -361,6 +365,7 @@ const bridgePing = () => sendCommand('', {}, 'ping');
 
 
 // ---- src/components/feedback.js ----
+;
 
 const UiFeedback = {
   props:['error'], emits:['dismiss','recover'],
@@ -390,9 +395,11 @@ const UiField = {
 
 
 // ---- src/services/api.js ----
+;
+;
 
-
-
+;
+;
 
 async function request(path, options = {}) {
   // Only the cookie/redirect lifecycle uses HTTP. Application reads and writes
@@ -436,8 +443,9 @@ const api = {
 
 
 // ---- src/services/auth.js ----
-
-
+;
+;
+;
 
 const PREFIX = "fap-pci-oidc";
 
@@ -493,6 +501,7 @@ const PCI_QR_ALIGNMENT=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42
 
 
 // ---- src/qr.js ----
+;
 
 // QR byte-mode encoder, error correction L, versions 1–40. No network or
 // browser storage. Tables and placement conventions credit in vendor notice.
@@ -725,14 +734,15 @@ const Sr2Console = {
 
 
 // ---- src/main.js ----
-
-
-
-
-
-
-
-
+;
+;
+;
+;
+;
+;
+;
+;
+;
 
 const App = {
   components: { Sr2Console, UiFeedback, UiProgress, UiField },

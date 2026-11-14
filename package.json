@@ -23,6 +23,9 @@
     "vue": "3.5.43",
     "yaml": "2.9.1"
   },
+  "devDependencies": {
+    "acorn": "8.15.0"
+  },
   "engines": {
     "node": ">=20.0.0"
   },
