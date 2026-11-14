@@ -1,129 +1,761 @@
 // Custom Vue workspace. ORCE rechecks authority for every bridge command.
 const Sr2Console = {
-  components:{UiFeedback,UiField},
-  props:['tenant','session'],
+  components: { UiFeedback, UiField },
+  props: ['tenant', 'session'],
   setup(props) {
-    const query=ref(''),configState=ref('all'),loaded=ref(false);
-    const settingsTab=ref('branding');
-    const tab=ref('request'),notice=ref(''),error=ref(null),busy=ref(false),cap=ref({}),configs=ref([]),flows=ref([]),connectors=ref([]),assets=ref([]),assignments=ref([]),members=ref([]),eligible=ref([]),history=ref([]),versions=ref([]),publication=ref(null);
-    const selected=ref(null),selectedFlow=ref(null),configForm=ref(null),flowForm=ref(null),preview=ref(null),metadata=ref(null),branding=ref(null),connector=ref(null),settings=ref(null);
-    const metadataForm=ref({profile:'oid4vci-1.0',issuer:window.location.origin+runtime.basePath,authorizationServers:[window.location.origin+runtime.basePath],did:'did:web:'+window.location.hostname,tokenKeyRef:'preauth',jwksUrl:window.location.origin+runtime.basePath+'/.well-known/jwks.json',displayName:props.tenant.organizationName});
-    const identity=ref(null),identityRedirect=ref(''),identityForm=ref({mode:'keycloak',displayName:'Organization account',issuer:'',clientId:'',clientSecret:'',audience:'',scopes:'openid profile email'});
-    async function loadIdentity(){const r=await call('/identity-provider');identity.value=r.item;identityRedirect.value=r.redirectUri;for(const key of ['mode','displayName','issuer','clientId','audience','scopes'])identityForm.value[key]=r.item[key];identityForm.value.clientSecret='';}
-    async function saveIdentity(){await run(async()=>{try{const data={...identityForm.value};if(!data.clientSecret)delete data.clientSecret;await call('/identity-provider','PUT',data,identity.value.version);notice.value='Identity provider configured. Sign in again to use it.';}finally{identityForm.value.clientSecret='';await loadIdentity();}});}
-    const keyName=ref('issuer'),keyType=ref('ecdsa-p256');
-    async function createKey(){await run(async()=>{await call('/issuer-keys','POST',{name:keyName.value,type:keyType.value});notice.value='TSA key created. Use its name in the credential configuration.';});}
-    const authServers=ref(window.location.origin+runtime.basePath),brandingForm=ref({title:props.tenant.organizationName,description:'',accent:'#005FFF',background:'#E1E7EF',foreground:'#1f2937',font:'system',layout:'wide',corners:'rounded',footer:'',logoAssetId:null});
-    const connectorForm=ref({name:'',endpoint:'',serverName:'',protocolVersion:'participant-v1',tlsSecret:{name:''},trustSecret:{name:''},jwtIssuer:'',jwtAudience:'',jwtScopes:['credential:issue'],signingModes:['internal-signing'],timeoutMs:5000,attempts:1,ratePerMinute:10,circuitFailureThreshold:3,circuitCooldownMs:30000,configurationIds:[]});
-    const settingsForm=ref({ratePerMinute:30,maxConcurrent:2}),grant=ref({subject:'',configurationIds:null}),grantConfig=ref(''),search=ref({principal:'',credentialId:'',requestId:'',subjectHash:'',type:'',cursor:'',from:'',to:''}),nextCursor=ref(null),historyConfig=ref(''),restoreVersion=ref('');
-    const journey=ref(null),answers=ref({}),consent=ref(false),offer=ref(null),uploadRole=ref('logoAssetId'),uploadScope=ref('configuration');
-    const qr=computed(()=>{if(!offer.value)return null;try{return pciQrImage(offer.value.offerUrl);}catch{return null;}});
-    const presentationConfigurations=ref([]),presentationConfig=ref(''),presentationProfile=ref('oid4vp-1.0'),presentation=ref(null),presentationCode=ref(''),presentationResult=ref(null);
-    const presentationQr=computed(()=>{try{return presentation.value?.requestUri?pciQrImage(presentation.value.requestUri):null;}catch{return null;}});
-    async function startPresentation(){await run(async()=>{presentationResult.value=null;presentationCode.value='';presentation.value=await call('/presentation-requests','POST',{configurationId:presentationConfig.value,profile:presentationProfile.value});});}
-    async function checkPresentation(){await run(async()=>{presentationResult.value=await call('/presentation-requests/'+presentation.value.requestId+'/result','POST',presentationCode.value?{responseCode:presentationCode.value}:{});if(presentationResult.value.status==='verified')presentationCode.value='';});}
-    const presentationReturn=new URLSearchParams(((window.location.hash||'').startsWith('#/presentation?')?window.location.hash.split('?')[1]:''));
-    if(presentationReturn.get('request')&&presentationReturn.get('response_code')){presentation.value={requestId:presentationReturn.get('request')};presentationCode.value=presentationReturn.get('response_code');tab.value='presentation';window.history.replaceState({},'',window.location.pathname+'#/presentation');}
-    const currentStep=computed(()=>journey.value?.request?.state==='journey'?journey.value.flow.steps[journey.value.request.step]:null);
-    const sections=computed(()=>[
-      {id:'request',label:'Request credential',icon:'M5 4h14v16H5z M8 8h8 M8 12h5 M8 16h3',description:'Choose a credential and follow your organization’s request journey.'},
-      {id:'presentation',label:'Verify credential',icon:'M12 3l8 4v5c0 5-8 9-8 9s-8-4-8-9V7z M8 12l3 3 5-6',description:'Present a credential from your wallet to check holder binding and current revocation status.'},
-      ...(cap.value.issuer?[
-        {id:'configurations',label:'Configurations',icon:'M3 6h7l2 3h9v11H3z',description:'Define credentials, review drafts, and manage published versions.'},
-        {id:'journeys',label:'Journeys',icon:'M5 5h5v5H5z M14 14h5v5h-5z M8 10v7h6',description:'Build the steps your members follow to request a credential.'},
-        {id:'history',label:'Issuance history',icon:'M4 8V3 M4 8h5 M4 8a8 8 0 1 1-1 7 M12 7v5l3 2',description:'Find credential records, inspect status, and manage revocation.'}]:[]),
-      ...(cap.value.tenantAdmin?[
-        {id:'tenant',label:'Tenant settings',icon:'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M7 7l-3-3 M17 17l3 3 M7 17l-3 3 M17 7l3-3 M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0',description:'Manage issuer identity, organization branding, and issuance limits.'},
-        {id:'connectors',label:'Connectors',icon:'M9 3v5 M15 3v5 M6 8h12v4a6 6 0 0 1-12 0z M12 18v3',description:'Connect participant services and approve which configurations can use them.'},
-        {id:'delegation',label:'Access & members',icon:'M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0 M5 21v-3a7 7 0 0 1 14 0v3',description:'Invite members and delegate issuer administration.'}]:[])
+    const query = ref(''),
+    configState = ref('all'),
+    loaded = ref(false);
+    const settingsTab = ref('branding');
+    const tab = ref('request'),
+    notice = ref(''),
+    error = ref(null),
+    busy = ref(false),
+    cap = ref({}),
+    configs = ref([]),
+    flows = ref([]),
+    connectors = ref([]),
+    assets = ref([]),
+    assignments = ref([]),
+    members = ref([]),
+    eligible = ref([]),
+    history = ref([]),
+    versions = ref([]),
+    publication = ref(null);
+    const selected = ref(null),
+    selectedFlow = ref(null),
+    configForm = ref(null),
+    flowForm = ref(null),
+    preview = ref(null),
+    metadata = ref(null),
+    branding = ref(null),
+    connector = ref(null),
+    settings = ref(null);
+    const metadataForm = ref({
+      profile: 'oid4vci-1.0',
+      issuer: window.location.origin + runtime.basePath,
+      authorizationServers: [window.location.origin + runtime.basePath],
+      did: 'did:web:' + window.location.hostname,
+      tokenKeyRef: 'preauth',
+      jwksUrl: window.location.origin + runtime.basePath + '/.well-known/jwks.json',
+      displayName: props.tenant.organizationName
+    });
+    const identity = ref(null),
+    identityRedirect = ref(''),
+    identityForm = ref({
+      mode: 'keycloak',
+      displayName: 'Organization account',
+      issuer: '',
+      clientId: '',
+      clientSecret: '',
+      audience: '',
+      scopes: 'openid profile email'
+    });
+    async function loadIdentity() {
+      const r = await call('/identity-provider');
+      identity.value = r.item;
+      identityRedirect.value = r.redirectUri;
+      for (const key of ['mode', 'displayName', 'issuer', 'clientId', 'audience', 'scopes']) identityForm.value[key] = r.item[key];
+      identityForm.value.clientSecret = '';
+    }
+    async function saveIdentity() {
+      await run(async() => {
+        try {
+          const data = { ...identityForm.value };
+          if (!data.clientSecret) delete data.clientSecret;
+          await call('/identity-provider', 'PUT', data, identity.value.version);
+          notice.value = 'Identity provider configured. Sign in again to use it.';
+        } finally {
+          identityForm.value.clientSecret = '';
+          await loadIdentity();
+        }
+      });
+    }
+    const keyName = ref('issuer'),
+    keyType = ref('ecdsa-p256');
+    async function createKey() {
+      await run(async() => {
+        await call('/issuer-keys', 'POST', { name: keyName.value, type: keyType.value });
+        notice.value = 'TSA key created. Use its name in the credential configuration.';
+      });
+    }
+    const authServers = ref(window.location.origin + runtime.basePath),
+    brandingForm = ref({
+      title: props.tenant.organizationName,
+      description: '',
+      accent: '#005FFF',
+      background: '#E1E7EF',
+      foreground: '#1f2937',
+      font: 'system',
+      layout: 'wide',
+      corners: 'rounded',
+      footer: '',
+      logoAssetId: null
+    });
+    const connectorForm = ref({
+      name: '',
+      endpoint: '',
+      serverName: '',
+      protocolVersion: 'participant-v1',
+      tlsSecret: { name: '' },
+      trustSecret: { name: '' },
+      jwtIssuer: '',
+      jwtAudience: '',
+      jwtScopes: ['credential:issue'],
+      signingModes: ['internal-signing'],
+      timeoutMs: 5000,
+      attempts: 1,
+      ratePerMinute: 10,
+      circuitFailureThreshold: 3,
+      circuitCooldownMs: 30000,
+      configurationIds: []
+    });
+    const settingsForm = ref({ ratePerMinute: 30, maxConcurrent: 2 }),
+    grant = ref({ subject: '', configurationIds: null }),
+    grantConfig = ref(''),
+    search = ref({ principal: '', credentialId: '', requestId: '', subjectHash: '', type: '', cursor: '', from: '', to: '' }),
+    nextCursor = ref(null),
+    historyConfig = ref(''),
+    restoreVersion = ref('');
+    const journey = ref(null),
+    answers = ref({}),
+    consent = ref(false),
+    offer = ref(null),
+    uploadRole = ref('logoAssetId'),
+    uploadScope = ref('configuration');
+    const qr = computed(() => {
+      if (!offer.value) return null;
+      try {
+        return pciQrImage(offer.value.offerUrl);
+      } catch {
+        return null;
+      }
+    });
+    const presentationConfigurations = ref([]),
+    presentationConfig = ref(''),
+    presentationProfile = ref('oid4vp-1.0'),
+    presentation = ref(null),
+    presentationCode = ref(''),
+    presentationResult = ref(null);
+    const presentationQr = computed(() => {
+      try {
+        return presentation.value?.requestUri ? pciQrImage(presentation.value.requestUri): null;
+      } catch {
+        return null;
+      }
+    });
+    async function startPresentation() {
+      await run(async() => {
+        presentationResult.value = null;
+        presentationCode.value = '';
+        presentation.value = await call('/presentation-requests', 'POST', { configurationId: presentationConfig
+          .value, profile: presentationProfile.value });
+      });
+    }
+    async function checkPresentation() {
+      await run(async() => {
+        presentationResult.value = await call('/presentation-requests/' + presentation.value.requestId + '/result', 'POST', presentationCode
+          .value ? { responseCode: presentationCode.value }: {});
+        if (presentationResult.value.status === 'verified') presentationCode.value = '';
+      });
+    }
+    const presentationReturn = new URLSearchParams(((window.location.hash || '').startsWith('#/presentation?') ? window.location.hash.split(
+      '?')[1]: ''));
+    if (presentationReturn.get('request') && presentationReturn.get('response_code')) {
+      presentation.value = { requestId: presentationReturn.get('request') };
+      presentationCode.value = presentationReturn.get('response_code');
+      tab.value = 'presentation';
+      window.history.replaceState({}, '', window.location.pathname + '#/presentation');
+    }
+    const currentStep = computed(() => journey.value?.request?.state === 'journey' ? journey.value.flow.steps[journey.value.request.step]:
+      null);
+    const sections = computed(() => [
+      {
+        id: 'request',
+        label: 'Request credential',
+        icon: 'M5 4h14v16H5z M8 8h8 M8 12h5 M8 16h3',
+        description: 'Choose a credential and follow your organization’s request journey.'
+      },
+      {
+        id: 'presentation',
+        label: 'Verify credential',
+        icon: 'M12 3l8 4v5c0 5-8 9-8 9s-8-4-8-9V7z M8 12l3 3 5-6',
+        description: 'Present a credential from your wallet to check holder binding and current revocation status.'
+      },
+      ...(cap.value.issuer ? [
+        {
+          id: 'configurations',
+          label: 'Configurations',
+          icon: 'M3 6h7l2 3h9v11H3z',
+          description: 'Define credentials, review drafts, and manage published versions.'
+        },
+        {
+          id: 'journeys',
+          label: 'Journeys',
+          icon: 'M5 5h5v5H5z M14 14h5v5h-5z M8 10v7h6',
+          description: 'Build the steps your members follow to request a credential.'
+        },
+        {
+          id: 'history',
+          label: 'Issuance history',
+          icon: 'M4 8V3 M4 8h5 M4 8a8 8 0 1 1-1 7 M12 7v5l3 2',
+          description: 'Find credential records, inspect status, and manage revocation.'
+        }
+      ]: []),
+      ...(cap.value.tenantAdmin ? [
+        {
+          id: 'tenant',
+          label: 'Tenant settings',
+          icon: 'M12 3v4 M12 17v4 M3 12h4 M17 12h4 M7 7l-3-3 M17 17l3 3 M7 17l-3 3 M17 7l3-3 M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0',
+          description: 'Manage issuer identity, organization branding, and issuance limits.'
+        },
+        {
+          id: 'connectors',
+          label: 'Connectors',
+          icon: 'M9 3v5 M15 3v5 M6 8h12v4a6 6 0 0 1-12 0z M12 18v3',
+          description: 'Connect participant services and approve which configurations can use them.'
+        },
+        {
+          id: 'delegation',
+          label: 'Access & members',
+          icon: 'M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0 M5 21v-3a7 7 0 0 1 14 0v3',
+          description: 'Invite members and delegate issuer administration.'
+        }
+      ]: [])
     ]);
-    const section=computed(()=>sections.value.find(x=>x.id===tab.value) || sections.value[0]);
-    const filteredConfigs=computed(()=>configs.value.filter(c=>(configState.value==='all'||c.state===configState.value) && (c.draft.name+' '+c.draft.identifier).toLowerCase().includes(query.value.toLowerCase())));
-    const availableConnectors=computed(()=>connectors.value.filter(c=>c.state!=='archived' && (c.draft.configurationIds===null || (c.draft.configurationIds || []).includes(selected.value?.id))));
-    function navigate(id){tab.value=id;preview.value=null;notice.value='';rememberWorkspace();}
-    const base=()=>`/api/v1/tenants/${encodeURIComponent(props.tenant.tenantId)}`;
-    async function call(path,method='GET',data,version,extra={}) {return request(base()+path,{method,headers:{...(version?{'if-match':`"${version}"`}:{}),...extra},...(method!=='GET'?{body:JSON.stringify(data || {})}:{})});}
-    async function run(fn){busy.value=true;notice.value='';try{await fn();}catch(e){error.value=normalizeUiError(e);if(e.code==='PCI-SR2-INPUT-LOST'){try{await restoreJourney();}catch{}}}finally{busy.value=false;}}
-    const clone=value=>JSON.parse(JSON.stringify(value));
-    async function refresh(){await run(async()=>{
-      cap.value=await call('/issuer-capabilities');if(!loaded.value){if(tab.value!=='presentation' && !recovery?.tab)tab.value=cap.value.issuer?'configurations':'request';loaded.value=true;}if(!sections.value.some(s=>s.id===tab.value))tab.value='request';connectors.value=cap.value.connectors || [];eligible.value=(await call('/eligible-configurations')).items;presentationConfigurations.value=(await call('/presentation-configurations')).items;
-      if(cap.value.issuer){configs.value=(await call('/credential-configurations')).items;flows.value=(await call('/flows')).items;assets.value=(await call('/assets')).items;}
-      if(cap.value.tenantAdmin){await loadIdentity();connectors.value=(await call('/participant-connectors')).items;members.value=(await api.tenantMembers(props.tenant.tenantId)).items;assignments.value=(await call('/administrators')).items;
-        metadata.value=(await call('/issuer-metadata')).item;if(metadata.value){metadataForm.value=clone(metadata.value.draft);authServers.value=metadataForm.value.authorizationServers.join(', ');}
-        branding.value=(await call('/branding')).item;if(branding.value)brandingForm.value={...brandingForm.value,...clone(branding.value.draft),accent:'#005FFF',background:'#E1E7EF',foreground:'#1F2937',font:'system',corners:'rounded'};
-        settings.value=(await call('/issuer-settings')).item;if(settings.value)settingsForm.value=clone(settings.value.draft);
-        publication.value=await call('/publication');}
-      await restoreJourney();
-    });}
-    function newConfig(){selected.value=null;versions.value=[];configForm.value={identifier:'',name:'',description:'',profile:'oid4vci-1.0',format:'jwt_vc_json',credentialTypes:['VerifiableCredential','EmployeeCredential'],vct:null,claims:[{name:'name',type:'string',required:true}],logoAssetId:null,backgroundAssetId:null,flowId:null,connectorId:null,signingMode:'internal-signing',keyRef:'',statusProfile:'status-list',eligibility:{subjects:[],roles:['principal'],entitlements:[]},ratePerMinute:10,blockReissuance:true};}
-    async function editConfig(item){await run(async()=>{const r=await call('/credential-configurations/'+item.id);selected.value=r.item;configForm.value=clone(r.item.draft);versions.value=r.versions;preview.value=null;});}
-    async function saveConfig(){await run(async()=>{const r=await call('/credential-configurations'+(selected.value?'/'+selected.value.id:''),selected.value?'PATCH':'POST',{data:configForm.value},selected.value?.version);selected.value=r.item;configForm.value=clone(r.item.draft);configs.value=(await call('/credential-configurations')).items;notice.value='Draft saved. Publish when ready.';});}
-    async function exportTemplate(){if(!selected.value)return;await run(async()=>{const value=await call('/credential-configurations/'+selected.value.id+'/semantic-template');const blob=new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'});const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='pci-template-'+value.identifier+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notice.value='Template exported with JSON-LD context, SHACL constraints and synthetic example.';});}
-    async function configAction(action){if(!selected.value)return;if(action==='archive'&&!window.confirm('Archive this configuration and stop new requests?'))return;await run(async()=>{const r=await call('/credential-configurations/'+selected.value.id+(action==='archive'?'':'/'+action),action==='archive'?'DELETE':'POST',{},selected.value.version);if(r.item){selected.value=r.item;configForm.value=clone(r.item.draft);}preview.value=r.preview || null;notice.value=action==='validate'?'Configuration validation passed. Publish locally, then publish the catalogue to OCM.':'Configuration '+action+' completed.';configs.value=(await call('/credential-configurations')).items;});}
-    function newFlow(){selectedFlow.value=null;flowForm.value={configurationId:selected.value?.id || configs.value[0]?.id || '',data:{name:'Credential journey',steps:[{id:'intro',type:'information',title:'Your credential',text:'Review the information before requesting.',fields:[]},{id:'consent',type:'consent',title:'Privacy and consent',text:'Your participant data is processed transiently for issuance.',fields:[]},{id:'offer',type:'offer',title:'Receive your credential',text:'Open the credential offer in a compatible wallet.',fields:[]}]}};}
-    async function editFlow(item){await run(async()=>{const r=await call('/flows/'+item.id);selectedFlow.value=r.item;flowForm.value={configurationId:r.item.configurationId,data:clone(r.item.draft)};versions.value=r.versions;});}
-    function moveStep(index,delta){const steps=flowForm.value.data.steps,target=index+delta;if(target<0||target>=steps.length)return;[steps[index],steps[target]]=[steps[target],steps[index]];}
-    function addStep(){const list=flowForm.value.data.steps;list.splice(list.length-1,0,{id:'step'+crypto.randomUUID().slice(0,8),type:'information',title:'New step',text:'',fields:[]});}
-    async function flowAction(action){if(action==='save')return run(async()=>{const r=await call('/flows'+(selectedFlow.value?'/'+selectedFlow.value.id:''),selectedFlow.value?'PATCH':'POST',flowForm.value,selectedFlow.value?.version);selectedFlow.value=r.item;flows.value=(await call('/flows')).items;notice.value='Journey draft saved.';});if(!selectedFlow.value)return;await run(async()=>{const r=await call('/flows/'+selectedFlow.value.id+'/'+action,'POST',action==='rollback'?{version:Number(restoreVersion.value)}:{},selectedFlow.value.version);if(r.item){selectedFlow.value=r.item;flowForm.value={configurationId:r.item.configurationId,data:clone(r.item.draft)};}preview.value=r.preview || null;flows.value=(await call('/flows')).items;notice.value=action==='rollback'?'Version restored as a new draft. Publish to activate.':'Journey '+action+' completed.';});}
-    async function saveSingleton(kind,item,form,publish=false){await run(async()=>{const r=await call('/'+kind,item?'PUT':'POST',{data:form},item?.version);let saved=r.item;if(publish)saved=(await call('/'+kind+'/publish','POST',{},saved.version)).item;if(kind==='issuer-metadata')metadata.value=saved;if(kind==='branding'){branding.value=saved;props.tenant.branding=clone(saved.draft);}if(kind==='issuer-settings')settings.value=saved;notice.value=publish?'Saved and activated locally.':'Settings saved.';});}
-    async function saveMetadata(){metadataForm.value.authorizationServers=authServers.value.split(',').map(x=>x.trim()).filter(Boolean);await saveSingleton('issuer-metadata',metadata.value,metadataForm.value,true);}
-    async function saveConnector(){await run(async()=>{let r=await call('/participant-connectors'+(connector.value?'/'+connector.value.id:''),connector.value?'PATCH':'POST',{data:connectorForm.value},connector.value?.version);r=await call('/participant-connectors/'+r.item.id+'/publish','POST',{},r.item.version);connector.value=r.item;connectors.value=(await call('/participant-connectors')).items;notice.value='Connector saved. Test a credential request to verify its identity and mTLS configuration.';});}
-    const emptyConnector=clone(connectorForm.value);
-    function newConnector(){connector.value=null;connectorForm.value=clone(emptyConnector);}
-    function editConnector(c){connector.value=c;connectorForm.value={...clone(c.draft),configurationIds:c.draft.configurationIds ?? (Object.hasOwn(c.draft,'configurationIds')?null:[])};}
-    async function assign(){await run(async()=>{await call('/administrators','POST',{subject:grant.value.subject,configurationIds:grantConfig.value?[grantConfig.value]:null});assignments.value=(await call('/administrators')).items;notice.value='Issuer capability assigned.';});}
-    async function revokeAssignment(a){if(!window.confirm('Revoke this issuer assignment?'))return;await run(async()=>{await call('/administrators/'+a.id,'DELETE');assignments.value=(await call('/administrators')).items;notice.value='Assignment revoked immediately.';});}
-    async function upload(event){const file=event.target.files?.[0];if(!file)return;await run(async()=>{if(file.size>1048576)throw new Error('Select a PNG up to 1 MiB.');const bytes=new Uint8Array(await file.arrayBuffer());let raw='';for(const b of bytes)raw+=String.fromCharCode(b);const configurationId=uploadScope.value==='tenant'?null:selected.value?.id;if(uploadScope.value==='configuration'&&!configurationId)throw new Error('Save and select a configuration first.');const r=await call('/assets','POST',{configurationId,data:{mediaType:'image/png',base64:btoa(raw)}});assets.value=(await call('/assets')).items;if(configurationId)configForm.value[uploadRole.value]=r.item.id;else brandingForm.value.logoAssetId=r.item.id;notice.value='PNG decoded and re-encoded. Save and publish to expose it.';});event.target.value='';}
-    async function archiveAsset(a){if(!window.confirm('Archive this unpublished image?'))return;await run(async()=>{await call('/assets/'+a.id,'DELETE',{},a.version);assets.value=(await call('/assets')).items;notice.value='Image archived.';});}
-    async function restoreConfig(){if(!selected.value)return;await run(async()=>{const r=await call('/credential-configurations/'+selected.value.id+'/rollback','POST',{version:Number(restoreVersion.value)},selected.value.version);selected.value=r.item;configForm.value=clone(r.item.draft);notice.value='Version restored as a draft. Publish to activate.';});}
-    async function loadHistory(append=false){await run(async()=>{if(!historyConfig.value)return;const q=new URLSearchParams();for(const [k,v]of Object.entries(search.value))if(v)q.set(k,['from','to'].includes(k)?new Date(v).toISOString():v);const r=await call('/credential-configurations/'+historyConfig.value+'/history?'+q);history.value=append?[...history.value,...r.items]:r.items;nextCursor.value=r.nextCursor;});}
-    async function revoke(requestId){if(!window.confirm('Revoke this credential through its status provider? This cannot be undone.'))return;await run(async()=>{await call('/credential-configurations/'+historyConfig.value+'/revocations','POST',{requestId,confirmed:true});notice.value='Status provider confirmed revocation.';});await loadHistory();}
-    async function start(id){await run(async()=>{offer.value=null;journey.value=await call('/issuance-requests','POST',{configurationId:id},null,{'idempotency-key':crypto.randomUUID()});answers.value={};consent.value=false;tab.value='request';rememberWorkspace();});}
-    async function next(){await run(async()=>{journey.value=await call('/issuance-requests/'+journey.value.request.requestId+'/advance','POST',{step:journey.value.request.step,consent:consent.value,values:answers.value});answers.value={};consent.value=false;rememberWorkspace();});}
-    async function prepareOffer(){await run(async()=>{offer.value=await call('/issuance-requests/'+journey.value.request.requestId+'/offer','POST');await restoreJourney();});}
-    async function publishMetadata(){await run(async()=>{await call('/publication','POST');notice.value='Upstream metadata publication confirmed.';});publication.value=await call('/publication').catch(()=>publication.value);}
-    async function lifecycle(state){const confirmation=window.prompt('Enter the tenant slug to confirm '+state+':');if(confirmation===null)return;await run(async()=>{await call('/lifecycle','POST',{state,confirmation});window.location.reload();});}
+    const section = computed(() => sections.value.find(x => x.id === tab.value) || sections.value[0]);
+    const filteredConfigs = computed(() => configs.value.filter(c => (configState.value === 'all' || c.state === configState.value) &&
+    (c.draft.name + ' ' + c.draft.identifier).toLowerCase().includes(query.value.toLowerCase())));
+    const availableConnectors = computed(() => connectors.value.filter(c => c.state !== 'archived' &&
+    (c.draft.configurationIds === null || (c.draft.configurationIds || []).includes(selected.value?.id))));
+    function navigate(id) {
+      tab.value = id;
+      preview.value = null;
+      notice.value = '';
+      rememberWorkspace();
+    }
+    const base = () => `/api/v1/tenants/${encodeURIComponent(props.tenant.tenantId)}`;
+    async function call(path, method = 'GET', data, version, extra = {}) {
+      return request(base() + path, {
+        method,
+        headers: { ...(version ? { 'if-match': `"${version}"` }: {}), ...extra },
+        ...(method !== 'GET' ? { body: JSON.stringify(data || {}) }: {})
+      });
+    }
+    async function run(fn) {
+      busy.value = true;
+      notice.value = '';
+      try {
+        await fn();
+      } catch (e) {
+        error.value = normalizeUiError(e);
+        if (e.code === 'PCI-SR2-INPUT-LOST') {
+          try {
+            await restoreJourney();
+          } catch {}
+        }
+      } finally {
+        busy.value = false;
+      }
+    }
+    const clone = value => JSON.parse(JSON.stringify(value));
+    async function refresh() {
+      await run(async() => {
+        cap.value = await call('/issuer-capabilities');
+        if (!loaded.value) {
+          if (tab.value !== 'presentation' && !recovery?.tab) tab.value = cap.value.issuer ? 'configurations': 'request';
+          loaded.value = true;
+        } if (!sections.value.some(s => s.id === tab.value)) tab.value = 'request';
+        connectors.value = cap.value.connectors || [];
+        eligible.value = (await call('/eligible-configurations')).items;
+        presentationConfigurations.value = (await call('/presentation-configurations')).items;
+        if (cap.value.issuer) {
+          configs.value = (await call('/credential-configurations')).items;
+          flows.value = (await call('/flows')).items;
+          assets.value = (await call('/assets')).items;
+        }
+        if (cap.value.tenantAdmin) {
+          await loadIdentity();
+          connectors.value = (await call('/participant-connectors')).items;
+          members.value = (await api.tenantMembers(props.tenant.tenantId)).items;
+          assignments.value = (await call('/administrators')).items;
+          metadata.value = (await call('/issuer-metadata')).item;
+          if (metadata.value) {
+            metadataForm.value = clone(metadata.value.draft);
+            authServers.value = metadataForm.value.authorizationServers.join(', ');
+          }
+          branding.value = (await call('/branding')).item;
+          if (branding.value) brandingForm.value = {
+            ...brandingForm.value,
+            ...clone(branding.value.draft),
+            accent: '#005FFF',
+            background: '#E1E7EF',
+            foreground: '#1F2937',
+            font: 'system',
+            corners: 'rounded'
+          };
+          settings.value = (await call('/issuer-settings')).item;
+          if (settings.value) settingsForm.value = clone(settings.value.draft);
+          publication.value = await call('/publication');
+        }
+        await restoreJourney();
+      });
+    }
+    function newConfig() {
+      selected.value = null;
+      versions.value = [];
+      configForm.value = {
+        identifier: '',
+        name: '',
+        description: '',
+        profile: 'oid4vci-1.0',
+        format: 'jwt_vc_json',
+        credentialTypes: ['VerifiableCredential', 'EmployeeCredential'],
+        vct: null,
+        claims: [{ name: 'name', type: 'string', required: true }],
+        logoAssetId: null,
+        backgroundAssetId: null,
+        flowId: null,
+        connectorId: null,
+        signingMode: 'internal-signing',
+        keyRef: '',
+        statusProfile: 'status-list',
+        eligibility: { subjects: [], roles: ['principal'], entitlements: [] },
+        ratePerMinute: 10,
+        blockReissuance: true
+      };
+    }
+    async function editConfig(item) {
+      await run(async() => {
+        const r = await call('/credential-configurations/' + item.id);
+        selected.value = r.item;
+        configForm.value = clone(r.item.draft);
+        versions.value = r.versions;
+        preview.value = null;
+      });
+    }
+    async function saveConfig() {
+      await run(async() => {
+        const r = await call('/credential-configurations' + (selected.value ? '/' + selected.value.id: ''), selected.value ? 'PATCH':
+          'POST', { data: configForm.value }, selected.value?.version);
+        selected.value = r.item;
+        configForm.value = clone(r.item.draft);
+        configs.value = (await call('/credential-configurations')).items;
+        notice.value = 'Draft saved. Publish when ready.';
+      });
+    }
+    async function exportTemplate() {
+      if (!selected.value) return;
+      await run(async() => {
+        const value = await call('/credential-configurations/' + selected.value.id + '/semantic-template');
+        const blob = new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json' });
+        const url = URL.createObjectURL(blob),
+        link = document.createElement('a');
+        link.href = url;
+        link.download = 'pci-template-' + value.identifier + '.json';
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        notice.value = 'Template exported with JSON-LD context, SHACL constraints and synthetic example.';
+      });
+    }
+    async function configAction(action) {
+      if (!selected.value) return;
+      if (action === 'archive' && !window.confirm('Archive this configuration and stop new requests?')) return;
+      await run(async() => {
+        const r = await call('/credential-configurations/' + selected.value.id + (action === 'archive' ? '': '/' + action), action ===
+          'archive' ? 'DELETE': 'POST', {}, selected.value.version);
+        if (r.item) {
+          selected.value = r.item;
+          configForm.value = clone(r.item.draft);
+        } preview.value = r.preview || null;
+        notice.value = action === 'validate' ? 'Configuration validation passed. Publish locally, then publish the catalogue to OCM.':
+          'Configuration ' + action + ' completed.';
+        configs.value = (await call('/credential-configurations')).items;
+      });
+    }
+    function newFlow() {
+      selectedFlow.value = null;
+      flowForm.value = {
+        configurationId: selected.value?.id || configs.value[0]?.id || '',
+        data: {
+          name: 'Credential journey',
+          steps: [
+            {
+              id: 'intro',
+              type: 'information',
+              title: 'Your credential',
+              text: 'Review the information before requesting.',
+              fields: []
+            },
+            {
+              id: 'consent',
+              type: 'consent',
+              title: 'Privacy and consent',
+              text: 'Your participant data is processed transiently for issuance.',
+              fields: []
+            },
+            {
+              id: 'offer',
+              type: 'offer',
+              title: 'Receive your credential',
+              text: 'Open the credential offer in a compatible wallet.',
+              fields: []
+            }
+          ]
+        }
+      };
+    }
+    async function editFlow(item) {
+      await run(async() => {
+        const r = await call('/flows/' + item.id);
+        selectedFlow.value = r.item;
+        flowForm.value = { configurationId: r.item.configurationId, data: clone(r.item.draft) };
+        versions.value = r.versions;
+      });
+    }
+    function moveStep(index, delta) {
+      const steps = flowForm.value.data.steps,
+      target = index + delta;
+      if (target < 0 || target >= steps.length) return;
+      [steps[index], steps[target]] = [steps[target], steps[index]];
+    }
+    function addStep() {
+      const list = flowForm.value.data.steps;
+      list.splice(list.length - 1, 0, {
+        id: 'step' + crypto.randomUUID().slice(0, 8),
+        type: 'information',
+        title: 'New step',
+        text: '',
+        fields: []
+      });
+    }
+    async function flowAction(action) {
+      if (action === 'save') return run(async() => {
+        const r = await call('/flows' + (selectedFlow.value ? '/' + selectedFlow.value.id: ''), selectedFlow.value ? 'PATCH': 'POST',
+          flowForm.value, selectedFlow.value?.version);
+        selectedFlow.value = r.item;
+        flows.value = (await call('/flows')).items;
+        notice.value = 'Journey draft saved.';
+      });
+      if (!selectedFlow.value) return;
+      await run(async() => {
+        const r = await call('/flows/' + selectedFlow.value.id + '/' + action, 'POST', action === 'rollback' ? { version: Number(
+          restoreVersion.value) }: {}, selectedFlow.value.version);
+        if (r.item) {
+          selectedFlow.value = r.item;
+          flowForm.value = { configurationId: r.item.configurationId, data: clone(r.item.draft) };
+        } preview.value = r.preview || null;
+        flows.value = (await call('/flows')).items;
+        notice.value = action === 'rollback' ? 'Version restored as a new draft. Publish to activate.': 'Journey ' + action + ' completed.';
+      });
+    }
+    async function saveSingleton(kind, item, form, publish = false) {
+      await run(async() => {
+        const r = await call('/' + kind, item ? 'PUT': 'POST', { data: form }, item?.version);
+        let saved = r.item;
+        if (publish) saved = (await call('/' + kind + '/publish', 'POST', {}, saved.version)).item;
+        if (kind === 'issuer-metadata') metadata.value = saved;
+        if (kind === 'branding') {
+          branding.value = saved;
+          props.tenant.branding = clone(saved.draft);
+        } if (kind === 'issuer-settings') settings.value = saved;
+        notice.value = publish ? 'Saved and activated locally.': 'Settings saved.';
+      });
+    }
+    async function saveMetadata() {
+      metadataForm.value.authorizationServers = authServers.value.split(',').map(x => x.trim()).filter(Boolean);
+      await saveSingleton('issuer-metadata', metadata.value, metadataForm.value, true);
+    }
+    async function saveConnector() {
+      await run(async() => {
+        let r = await call('/participant-connectors' + (connector.value ? '/' + connector.value.id: ''), connector.value ? 'PATCH': 'POST',
+          { data: connectorForm.value }, connector.value?.version);
+        r = await call('/participant-connectors/' + r.item.id + '/publish', 'POST', {}, r.item.version);
+        connector.value = r.item;
+        connectors.value = (await call('/participant-connectors')).items;
+        notice.value = 'Connector saved. Test a credential request to verify its identity and mTLS configuration.';
+      });
+    }
+    const emptyConnector = clone(connectorForm.value);
+    function newConnector() {
+      connector.value = null;
+      connectorForm.value = clone(emptyConnector);
+    }
+    function editConnector(c) {
+      connector.value = c;
+      connectorForm.value = {
+        ...clone(c.draft),
+        configurationIds: c.draft.configurationIds ?? (Object.hasOwn(c.draft, 'configurationIds') ? null: [])
+      };
+    }
+    async function assign() {
+      await run(async() => {
+        await call('/administrators', 'POST', { subject: grant.value.subject, configurationIds: grantConfig.value ? [grantConfig.value]:
+          null });
+        assignments.value = (await call('/administrators')).items;
+        notice.value = 'Issuer capability assigned.';
+      });
+    }
+    async function revokeAssignment(a) {
+      if (!window.confirm('Revoke this issuer assignment?')) return;
+      await run(async() => {
+        await call('/administrators/' + a.id, 'DELETE');
+        assignments.value = (await call('/administrators')).items;
+        notice.value = 'Assignment revoked immediately.';
+      });
+    }
+    async function upload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      await run(async() => {
+        if (file.size > 1048576) throw new Error('Select a PNG up to 1 MiB.');
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        let raw = '';
+        for (const b of bytes) raw += String.fromCharCode(b);
+        const configurationId = uploadScope.value === 'tenant' ? null: selected.value?.id;
+        if (uploadScope.value === 'configuration' && !configurationId) throw new Error('Save and select a configuration first.');
+        const r = await call('/assets', 'POST', { configurationId, data: { mediaType: 'image/png', base64: btoa(raw) } });
+        assets.value = (await call('/assets')).items;
+        if (configurationId) configForm.value[uploadRole.value] = r.item.id;
+        else brandingForm.value.logoAssetId = r.item.id;
+        notice.value = 'PNG decoded and re-encoded. Save and publish to expose it.';
+      });
+      event.target.value = '';
+    }
+    async function archiveAsset(a) {
+      if (!window.confirm('Archive this unpublished image?')) return;
+      await run(async() => {
+        await call('/assets/' + a.id, 'DELETE', {}, a.version);
+        assets.value = (await call('/assets')).items;
+        notice.value = 'Image archived.';
+      });
+    }
+    async function restoreConfig() {
+      if (!selected.value) return;
+      await run(async() => {
+        const r = await call('/credential-configurations/' + selected.value.id + '/rollback', 'POST', { version: Number(restoreVersion
+          .value) }, selected.value.version);
+        selected.value = r.item;
+        configForm.value = clone(r.item.draft);
+        notice.value = 'Version restored as a draft. Publish to activate.';
+      });
+    }
+    async function loadHistory(append = false) {
+      await run(async() => {
+        if (!historyConfig.value) return;
+        const q = new URLSearchParams();
+        for (const [k, v] of Object.entries(search.value)) if (v) q.set(k, ['from', 'to'].includes(k) ? new Date(v).toISOString(): v);
+        const r = await call('/credential-configurations/' + historyConfig.value + '/history?' + q);
+        history.value = append ? [...history.value, ...r.items]: r.items;
+        nextCursor.value = r.nextCursor;
+      });
+    }
+    async function revoke(requestId) {
+      if (!window.confirm('Revoke this credential through its status provider? This cannot be undone.')) return;
+      await run(async() => {
+        await call('/credential-configurations/' + historyConfig.value + '/revocations', 'POST', { requestId, confirmed: true });
+        notice.value = 'Status provider confirmed revocation.';
+      });
+      await loadHistory();
+    }
+    async function start(id) {
+      await run(async() => {
+        offer.value = null;
+        journey.value = await call('/issuance-requests', 'POST', { configurationId: id }, null, { 'idempotency-key': crypto.randomUUID() });
+        answers.value = {};
+        consent.value = false;
+        tab.value = 'request';
+        rememberWorkspace();
+      });
+    }
+    async function next() {
+      await run(async() => {
+        journey.value = await call('/issuance-requests/' + journey.value.request.requestId + '/advance', 'POST', { step: journey.value
+          .request.step, consent: consent.value, values: answers.value });
+        answers.value = {};
+        consent.value = false;
+        rememberWorkspace();
+      });
+    }
+    async function prepareOffer() {
+      await run(async() => {
+        offer.value = await call('/issuance-requests/' + journey.value.request.requestId + '/offer', 'POST');
+        await restoreJourney();
+      });
+    }
+    async function publishMetadata() {
+      await run(async() => {
+        await call('/publication', 'POST');
+        notice.value = 'Upstream metadata publication confirmed.';
+      });
+      publication.value = await call('/publication').catch(() => publication.value);
+    }
+    async function lifecycle(state) {
+      const confirmation = window.prompt('Enter the tenant slug to confirm ' + state + ':');
+      if (confirmation === null) return;
+      await run(async() => {
+        await call('/lifecycle', 'POST', { state, confirmation });
+        window.location.reload();
+      });
+    }
     // Only an opaque server-issued request identifier and presentation tab are
     // retained. Answers, offers, tokens and credential claims remain transient.
-    const recoveryKey = 'fap-pci-workspace:'+props.tenant.tenantId+':'+props.session.subject;
-    const recovery = (()=>{try{return JSON.parse(window.sessionStorage?.getItem(recoveryKey)||'null');}catch{return null;}})();
-    if(recovery?.tab)tab.value=recovery.tab;
-    let requestToRestore = /^[a-f0-9-]{36}$/i.test(recovery?.requestId||'')?recovery.requestId:null;
-    function rememberWorkspace(){
-      requestToRestore=journey.value?.request?.requestId || null;
-      try{window.sessionStorage?.setItem(recoveryKey,JSON.stringify({tab:tab.value,requestId:requestToRestore}));}catch{}
-    }
-    async function restoreJourney(){
-      const id=journey.value?.request?.requestId || requestToRestore;
-      if(!id)return;
+    const recoveryKey = 'fap-pci-workspace:' + props.tenant.tenantId + ':' + props.session.subject;
+    const recovery = (() => {
       try {
-        const restored=await call('/issuance-requests/'+encodeURIComponent(id));
-        if(restored.request.expiresAt<=Date.now()){
-          journey.value=null;offer.value=null;requestToRestore=null;
-          notice.value='Your previous request expired. Choose a credential to start again.';
-          rememberWorkspace();return;
+        return JSON.parse(window.sessionStorage?.getItem(recoveryKey) || 'null');
+      } catch {
+        return null;
+      }
+    })();
+    if (recovery?.tab) tab.value = recovery.tab;
+    let requestToRestore = /^[a-f0-9-]{36}$/i.test(recovery?.requestId || '') ? recovery.requestId: null;
+    function rememberWorkspace() {
+      requestToRestore = journey.value?.request?.requestId || null;
+      try {
+        window.sessionStorage?.setItem(recoveryKey, JSON.stringify({ tab: tab.value, requestId: requestToRestore }));
+      } catch {}
+    }
+    async function restoreJourney() {
+      const id = journey.value?.request?.requestId || requestToRestore;
+      if (!id) return;
+      try {
+        const restored = await call('/issuance-requests/' + encodeURIComponent(id));
+        if (restored.request.expiresAt <= Date.now()) {
+          journey.value = null;
+          offer.value = null;
+          requestToRestore = null;
+          notice.value = 'Your previous request expired. Choose a credential to start again.';
+          rememberWorkspace();
+          return;
         }
-        journey.value=restored;
-        if(restored.request.errorCode==='PCI-SR2-INPUT-LOST'){
-          answers.value={};consent.value=false;offer.value=null;
-          notice.value=restored.request.state==='journey'?'Your previous form answers were cleared. Enter them again to continue.':'Your form answers are no longer available. Start a new credential request.';
-          rememberWorkspace();return;
+        journey.value = restored;
+        if (restored.request.errorCode === 'PCI-SR2-INPUT-LOST') {
+          answers.value = {};
+          consent.value = false;
+          offer.value = null;
+          notice.value = restored.request.state === 'journey' ? 'Your previous form answers were cleared. Enter them again to continue.':
+            'Your form answers are no longer available. Start a new credential request.';
+          rememberWorkspace();
+          return;
         }
-        if(!offer.value && restored.request.state!=='journey')notice.value=restored.request.state==='issued'?'Your credential has been issued. Check your wallet.':'Previous request: '+restored.request.state+'. The offer is not stored in this browser. Refresh to check its status or start a new request.';
+        if (!offer.value && restored.request.state !== 'journey') notice.value = restored.request.state === 'issued' ?
+          'Your credential has been issued. Check your wallet.': 'Previous request: ' + restored.request.state +
+          '. The offer is not stored in this browser. Refresh to check its status or start a new request.';
         rememberWorkspace();
-      } catch(e) {
-        if([401,403,404,410].includes(e.status)){
-          journey.value=null;offer.value=null;requestToRestore=null;rememberWorkspace();
-          notice.value='The previous request is no longer available to this account. Start a new request.';
+      } catch (e) {
+        if ([401, 403, 404, 410].includes(e.status)) {
+          journey.value = null;
+          offer.value = null;
+          requestToRestore = null;
+          rememberWorkspace();
+          notice.value = 'The previous request is no longer available to this account. Start a new request.';
         } else throw e;
       }
     }
-    const stopReconnect=onBridgeReconnect(refresh);
+    const stopReconnect = onBridgeReconnect(refresh);
     onUnmounted(stopReconnect);
     onMounted(refresh);
-    return {settingsTab,restoreJourney,identity,identityRedirect,identityForm,saveIdentity,exportTemplate,presentationConfigurations,presentationConfig,presentationProfile,presentation,presentationCode,presentationResult,presentationQr,startPresentation,checkPresentation,keyName,keyType,createKey,query,configState,sections,section,filteredConfigs,availableConnectors,navigate,tab,notice,error,busy,cap,configs,flows,connectors,assets,assignments,members,eligible,history,versions,publication,selected,selectedFlow,configForm,flowForm,preview,metadata,branding,connector,settings,metadataForm,authServers,brandingForm,connectorForm,settingsForm,grant,grantConfig,search,nextCursor,historyConfig,restoreVersion,journey,answers,consent,offer,qr,currentStep,uploadRole,uploadScope,refresh,newConfig,editConfig,saveConfig,configAction,newFlow,editFlow,moveStep,addStep,flowAction,saveSingleton,saveMetadata,saveConnector,editConnector,newConnector,assign,revokeAssignment,upload,archiveAsset,restoreConfig,loadHistory,revoke,start,next,prepareOffer,publishMetadata,lifecycle};
+    return {
+      settingsTab,
+      restoreJourney,
+      identity,
+      identityRedirect,
+      identityForm,
+      saveIdentity,
+      exportTemplate,
+      presentationConfigurations,
+      presentationConfig,
+      presentationProfile,
+      presentation,
+      presentationCode,
+      presentationResult,
+      presentationQr,
+      startPresentation,
+      checkPresentation,
+      keyName,
+      keyType,
+      createKey,
+      query,
+      configState,
+      sections,
+      section,
+      filteredConfigs,
+      availableConnectors,
+      navigate,
+      tab,
+      notice,
+      error,
+      busy,
+      cap,
+      configs,
+      flows,
+      connectors,
+      assets,
+      assignments,
+      members,
+      eligible,
+      history,
+      versions,
+      publication,
+      selected,
+      selectedFlow,
+      configForm,
+      flowForm,
+      preview,
+      metadata,
+      branding,
+      connector,
+      settings,
+      metadataForm,
+      authServers,
+      brandingForm,
+      connectorForm,
+      settingsForm,
+      grant,
+      grantConfig,
+      search,
+      nextCursor,
+      historyConfig,
+      restoreVersion,
+      journey,
+      answers,
+      consent,
+      offer,
+      qr,
+      currentStep,
+      uploadRole,
+      uploadScope,
+      refresh,
+      newConfig,
+      editConfig,
+      saveConfig,
+      configAction,
+      newFlow,
+      editFlow,
+      moveStep,
+      addStep,
+      flowAction,
+      saveSingleton,
+      saveMetadata,
+      saveConnector,
+      editConnector,
+      newConnector,
+      assign,
+      revokeAssignment,
+      upload,
+      archiveAsset,
+      restoreConfig,
+      loadHistory,
+      revoke,
+      start,
+      next,
+      prepareOffer,
+      publishMetadata,
+      lifecycle
+    };
   },
-  template:`<section class="sr2-console" aria-label="Credential issuance workspace">
+  template: `<section class="sr2-console" aria-label="Credential issuance workspace">
     <aside class="workspace-sidebar">
       <div class="workspace-brand"><span class="workspace-monogram">PCI</span><div><strong>Credential issuance</strong><small>FACIS Application Platform</small></div></div>
       <div class="workspace-tenant"><span class="nav-caption">ORGANIZATION</span><strong>{{tenant.branding?.title || tenant.organizationName}}</strong><small>{{tenant.primaryDomain}}</small></div>

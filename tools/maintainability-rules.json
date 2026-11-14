@@ -1,0 +1,57 @@
+{
+  "$comment": "Limits of the maintainability gate (tools/check-maintainability.mjs). Exceptions name a file, the rules it may still violate, the reason and the issue that tracks their removal. An exception is removed in the pull request that refactors the file.",
+  "scope": [
+    "backend",
+    "src",
+    "shared",
+    "tools",
+    "build.js"
+  ],
+  "lineLength": 240,
+  "fileLines": 900,
+  "statementsPerLine": 3,
+  "issuer": {
+    "pathPrefix": "src/issuer/",
+    "moduleLines": 240,
+    "viewModuleLines": 350,
+    "functionLines": 100,
+    "functionComplexity": 20,
+    "compositionFactoryPrefix": "createPci"
+  },
+  "exceptions": [
+    {
+      "file": "src/sr2.js",
+      "rules": [
+        "line-length",
+        "statements-per-line"
+      ],
+      "reason": "Issuer console component of the submitted baseline, one highly condensed file with the embedded template; refactored into src/issuer/ modules in work package R2-5, which removes this entry.",
+      "issue": "R2-5"
+    },
+    {
+      "file": "src/components/feedback.js",
+      "rules": [
+        "line-length"
+      ],
+      "reason": "Component templates of the submitted baseline on one line; reformatted with the issuer user interface in R2-5, which removes this entry.",
+      "issue": "R2-5"
+    },
+    {
+      "file": "tools/build-requirement-audit.mjs",
+      "rules": [
+        "line-length"
+      ],
+      "reason": "Generated-documentation text of the submitted baseline; rewritten with the requirements documentation in R2-8, which removes this entry.",
+      "issue": "R2-8"
+    },
+    {
+      "file": "tools/build-requirements.mjs",
+      "rules": [
+        "line-length"
+      ],
+      "reason": "Generated-documentation text of the submitted baseline; rewritten with the requirements documentation in R2-8, which removes this entry.",
+      "issue": "R2-8"
+    }
+  ],
+  "sqlLiterals": "String and template literals beginning with recognized SQL statement structures are exempt from lineLength; ordinary text and HTML are measured."
+}

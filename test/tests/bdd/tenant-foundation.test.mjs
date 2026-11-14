@@ -22,5 +22,5 @@ test("tenant activation waits for identity, route and DNS", () => {
   assert.match(reconcile, /IdentityReady/);
   assert.match(reconcile, /RouteAccepted/);
   assert.match(reconcile, /DNSReady/);
-  assert.match(reconcile, /dnsReady \? "active" : "provisioning"/);
+  assert.match(reconcile, /dnsReady\s*\?\s*"active"\s*:\s*"provisioning"/);
 });

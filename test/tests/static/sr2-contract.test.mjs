@@ -10,7 +10,7 @@ test('SR2 tabs, typed contracts, version and migration stay embedded in canonica
 });
 test('runtime has no payload debug nodes, optional transport flags, or executable tenant scripts',()=>{
  const flow=JSON.parse(read('dist/fap-pci-flow.json'));assert.equal(flow.some(n=>n.type==='debug'),false);
- const adapters=read('backend/sr2/adapters.js');assert.match(adapters,/ready:false/);assert.doesNotMatch(adapters,/process\.env|env\.get/);
+ const adapters=read('backend/sr2/adapters.js');assert.match(adapters,/ready\s*:\s*false/);assert.doesNotMatch(adapters,/process\.env|env\.get/);
  const domain=read('backend/sr2/domain.js');assert.doesNotMatch(domain,/new Function|\beval\(/);assert.match(read('backend/functions/_common.js'),/msg\.pciTransport === "internal"\) return \[null, null\]/);
 });
 test('schema keeps independent immutable versions and enforces tenant-qualified status uniqueness',()=>{
