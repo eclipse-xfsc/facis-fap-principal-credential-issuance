@@ -1688,6 +1688,7 @@ function createPciJourneyActions(state, dependencies) {
 
 
 // ---- src/issuer/actions/refresh.js ----
+
 /** Refresh operations with explicit state and I/O dependencies. */
 function createPciRefreshActions(state, dependencies) {
   const {
@@ -1711,23 +1712,84 @@ function createPciRefreshActions(state, dependencies) {
     settingsForm,
     publication,
     preview,
-    notice,
-    selected,
-    configForm,
-    selectedFlow,
-    flowForm,
-    identity,
-    identityForm,
-    connector
+    notice
   } = state;
-  const { run, call, loadIdentity, api, props, clone, restoreJourney, rememberWorkspace, recovery, sections } = dependencies;
+  const {
+    run,
+    call,
+    loadIdentity,
+    api,
+    props,
+    clone,
+    restoreJourney,
+    rememberWorkspace,
+    recovery,
+    sections,
+    runtime,
+    window
+  } = dependencies;
+  const defaults = createPciIssuerState({ ref: value => ({ value }), props, runtime, window });
+  const issuerFields = [
+    'configs',
+    'flows',
+    'assets',
+    'selected',
+    'configForm',
+    'selectedFlow',
+    'flowForm',
+    'history',
+    'versions',
+    'preview',
+    'query',
+    'configState',
+    'historyConfig',
+    'restoreVersion',
+    'search',
+    'nextCursor'
+  ];
+  const administratorFields = [
+    'members',
+    'assignments',
+    'identity',
+    'identityRedirect',
+    'identityForm',
+    'metadata',
+    'metadataForm',
+    'authServers',
+    'branding',
+    'brandingForm',
+    'settings',
+    'settingsForm',
+    'publication',
+    'connector',
+    'connectorForm',
+    'grant',
+    'grantConfig',
+    'keyName',
+    'keyType',
+    'settingsTab'
+  ];
+  function resetFields(names) {
+    for (const name of names) state[name].value = clone(defaults[name].value);
+  }
+  function clearRevokedPrivileges() {
+    if (!cap.value.issuer) resetFields(issuerFields);
+    if (!cap.value.tenantAdmin) resetFields(administratorFields);
+    if (!cap.value.issuer && !cap.value.tenantAdmin) {
+      resetFields(['uploadRole', 'uploadScope']);
+    }
+  }
   async function refresh() {
     await run(async() => {
       cap.value = await call('/issuer-capabilities');
+      clearRevokedPrivileges();
       if (!loaded.value) {
-        if (tab.value !== 'presentation' && !recovery?.tab) tab.value = cap.value.issuer ? 'configurations': 'request';
+        if (tab.value !== 'presentation' && !recovery?.tab) {
+          tab.value = cap.value.issuer ? 'configurations': 'request';
+        }
         loaded.value = true;
-      } if (!sections.value.some(s => s.id === tab.value)) tab.value = 'request';
+      }
+      if (!sections.value.some(section => section.id === tab.value)) tab.value = 'request';
       connectors.value = cap.value.connectors || [];
       eligible.value = (await call('/eligible-configurations')).items;
       presentationConfigurations.value = (await call('/presentation-configurations')).items;
@@ -1735,14 +1797,6 @@ function createPciRefreshActions(state, dependencies) {
         configs.value = (await call('/credential-configurations')).items;
         flows.value = (await call('/flows')).items;
         assets.value = (await call('/assets')).items;
-      } else {
-        configs.value = [];
-        flows.value = [];
-        assets.value = [];
-        selected.value = null;
-        configForm.value = null;
-        selectedFlow.value = null;
-        flowForm.value = null;
       }
       if (cap.value.tenantAdmin) {
         await loadIdentity();
@@ -1767,16 +1821,6 @@ function createPciRefreshActions(state, dependencies) {
         settings.value = (await call('/issuer-settings')).item;
         if (settings.value) settingsForm.value = clone(settings.value.draft);
         publication.value = await call('/publication');
-      } else {
-        members.value = [];
-        assignments.value = [];
-        identity.value = null;
-        identityForm.value.clientSecret = '';
-        metadata.value = null;
-        branding.value = null;
-        settings.value = null;
-        publication.value = null;
-        connector.value = null;
       }
       await restoreJourney();
     });
