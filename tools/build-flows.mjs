@@ -1,4 +1,4 @@
-import { stripModuleSyntax } from "./lib/module-source.mjs";
+import { stripModuleSyntax, validateFunctionBody } from "./lib/module-source.mjs";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -275,6 +275,16 @@ const baseNodes = await buildBase();
 const moduleNodes = [];
 for (const spec of moduleSpecs) moduleNodes.push(...await buildModule(spec));
 
-await writeFile(path.join(outDir, "fap-pci-flow.json"), `${JSON.stringify([...baseNodes, ...moduleNodes], null, 2)}
+const allNodes = [...baseNodes, ...moduleNodes];
+for (const node of allNodes.filter(item => item.type === 'function')) {
+  for (const field of ['func', 'initialize', 'finalize']) {
+    if (typeof node[field] === 'string' && node[field].trim()) {
+      validateFunctionBody(
+        node[field], `generated ORCE ${node.name} (${node.id}) ${field}`,
+      );
+    }
+  }
+}
+await writeFile(path.join(outDir, "fap-pci-flow.json"), `${JSON.stringify(allNodes, null, 2)}
 `);
 console.log(`[build:flows] wrote canonical flow to ${path.join(outDir, "fap-pci-flow.json")}`);
