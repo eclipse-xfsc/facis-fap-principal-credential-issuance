@@ -1,0 +1,114 @@
+{
+  "recordType": "pci-deployment-record",
+  "recordedAt": "2026-11-18T21:39:45+00:00",
+  "environment": "IONOS",
+  "tag": "v0.5.0-rc.17",
+  "commit": "30eb5e77252c449ab0310dd5499970f9711dfcd8",
+  "reportedVersion": "0.5.0-rc.17",
+  "health": {
+    "status": "ok",
+    "service": "facis-fap-pci-orce",
+    "version": "0.5.0-rc.17",
+    "orceBasePath": "/pci-orce"
+  },
+  "workloads": {
+    "xfsc-orce-pci-orce": [
+      {
+        "pod": "fap-pci-mailpit-55f594d66d-pj6x5",
+        "container": "mailpit",
+        "image": "axllent/mailpit:v1.31.4",
+        "imageID": "docker.io/axllent/mailpit@sha256:b68349e3a014b90c5610bfb26b2ae36f3892d7b8cf25ee140c6c71c98d2fcf48",
+        "ready": true,
+        "restarts": 0
+      },
+      {
+        "pod": "fap-pci-observability-589b966968-pkm5z",
+        "container": "collector",
+        "image": "otel/opentelemetry-collector-contrib:0.162.0",
+        "imageID": "docker.io/otel/opentelemetry-collector-contrib@sha256:39923a8e431bd1f57be82411999d389fcfe40857492e4365456d97a4c1f74be6",
+        "ready": true,
+        "restarts": 0
+      },
+      {
+        "pod": "fap-pci-observability-589b966968-pkm5z",
+        "container": "jaeger",
+        "image": "jaegertracing/jaeger:2.22.0",
+        "imageID": "docker.io/jaegertracing/jaeger@sha256:836b967b5abcf1f7758066aa6b348619267a2f1459f72d472840570f9bd88a17",
+        "ready": true,
+        "restarts": 0
+      },
+      {
+        "pod": "fap-pci-observability-589b966968-pkm5z",
+        "container": "prometheus",
+        "image": "prom/prometheus:v3.15.0",
+        "imageID": "docker.io/prom/prometheus@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e",
+        "ready": true,
+        "restarts": 0
+      },
+      {
+        "pod": "fap-pci-postgres-0",
+        "container": "postgresql",
+        "image": "postgres:17.4-alpine3.21",
+        "imageID": "docker.io/library/postgres@sha256:7062a2109c4b51f3c792c7ea01e83ed12ef9a980886e3b3d380a7d2e5f6ce3f5",
+        "ready": true,
+        "restarts": 0
+      },
+      {
+        "pod": "xfsc-orce-574d967bc9-gwttc",
+        "container": "orce",
+        "image": "ecofacis/fap-pci@sha256:c610909cf73ccd3ecbda8ec518df66dcdb77f318fe98fe97d0b2e133383f68fd",
+        "imageID": "docker.io/ecofacis/fap-pci@sha256:c610909cf73ccd3ecbda8ec518df66dcdb77f318fe98fe97d0b2e133383f68fd",
+        "ready": true,
+        "restarts": 0
+      }
+    ],
+    "pci-participant-82d1d1e0-2e75-4b76-950c-07ad245547bf": [
+      {
+        "pod": "pci-participant-78f98dc444-hf5j2",
+        "container": "participant",
+        "image": "ecofacis/fap-pci-participant@sha256:5f9e5115f64cc0cfc12b809837fd546c27cd8ab2bdcdb8c81815efb63e3f63fd",
+        "imageID": "docker.io/ecofacis/fap-pci-participant@sha256:5f9e5115f64cc0cfc12b809837fd546c27cd8ab2bdcdb8c81815efb63e3f63fd",
+        "ready": true,
+        "restarts": 0
+      }
+    ]
+  },
+  "helmReleases": {
+    "xfsc-orce-pci-orce": [
+      {
+        "name": "fap-pci",
+        "namespace": "xfsc-orce-pci-orce",
+        "revision": "1",
+        "updated": "2026-10-14 03:46:41.502384865 +0200 CEST",
+        "status": "deployed",
+        "chart": "fap-pci-0.5.0-rc.11",
+        "app_version": "0.5.0-rc.11"
+      },
+      {
+        "name": "fap-pci-observability",
+        "namespace": "xfsc-orce-pci-orce",
+        "revision": "1",
+        "updated": "2026-10-14 03:47:10.2121489 +0200 CEST",
+        "status": "deployed",
+        "chart": "fap-pci-observability-0.5.0-rc.12",
+        "app_version": "0.5.0-rc.12"
+      }
+    ],
+    "pci-participant-82d1d1e0-2e75-4b76-950c-07ad245547bf": [
+      {
+        "name": "pci-participant",
+        "namespace": "pci-participant-82d1d1e0-2e75-4b76-950c-07ad245547bf",
+        "revision": "1",
+        "updated": "2026-11-18 22:15:23.138053047 +0100 CET",
+        "status": "deployed",
+        "chart": "fap-pci-participant-0.5.0-rc.17",
+        "app_version": "0.5.0-rc.17"
+      }
+    ]
+  },
+  "consistency": {
+    "versionMatchesTag": true,
+    "everyContainerHasDigest": true,
+    "everyContainerReady": true
+  }
+}

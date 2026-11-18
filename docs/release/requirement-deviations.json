@@ -9,186 +9,186 @@
     {
       "id": "FR-PCI-48",
       "status": "PARTIAL",
-      "reason": "PCI's own transient-data handling is implemented and tested; R4-3 adds the collection of the captures for the canary scan. The whole-chain check depends on the deployment of the upstream payload-logging fixes by the OCM owner.",
+      "reason": "PCI's own transient-data handling is implemented and tested; R4-3 adds the collection of the captures for the canary scan. The whole-chain check depends on the deployment of the upstream payload-logging fixes by the OCM owner. This rc.17 handover run does not establish completion of this acceptance measure; manual wallet receipt is narrower evidence.",
       "measure": "Canary scan with scripts/collect-privacy-captures.py and scripts/privacy-audit.py on both QA deployments after a successful and a failed synthetic issuance (R5); written notice of the upstream dependency to the principal.",
       "closes": "R4-3, R5",
-      "evidence": null
+      "evidence": "[Scoped test report](handover-rc17.md); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-51",
       "status": "PARTIAL",
-      "reason": "A PCI/ directory for rc.12 has been in eclipse-xfsc/deployment since 17 October 2026, uploaded directly to main and not through a pull request; the acceptance criterion requires pull requests merged by a maintainer. R4-4 generates the package from the source.",
-      "measure": "Pull request to eclipse-xfsc/deployment replacing PCI/ with the export of the release candidate, reviewed and merged by its maintainers.",
+      "reason": "Deployment PR #17 contains the package regenerated from rc.17 commit 30eb5e77252c449ab0310dd5499970f9711dfcd8. Kian approved head fbc42b4c81b4ce600a92487aef68f4d48e234c05. Maintainer merge is outstanding; SonarCloud reports a failed security gate.",
+      "measure": "Maintainer assesses the failed check and completes the reviewed merge. Record the actual merge commit on source issue #31 before closing it.",
       "closes": "R4-4, deployment PR",
-      "evidence": null
+      "evidence": "[Deployment PR and checks](https://github.com/eclipse-xfsc/deployment/pull/17)"
     },
     {
       "id": "FR-PCI-54",
-      "status": "PARTIAL",
-      "reason": "The documentation built strictly but was published only on manual dispatch. R3-8 publishes it on every push to main and every release candidate tag and adds the troubleshooting and FAQ page; publication for the current source is not yet recorded.",
-      "measure": "Documentation workflow run with publication on the release candidate tag, recorded in the evidence package.",
+      "status": "EVIDENCE_LINKED",
+      "reason": "The Documentation workflow succeeded on v0.5.0-rc.17, attempt 2.",
+      "measure": "Retain the successful tag publication run as documentation evidence.",
       "closes": "R3-8, R6",
-      "evidence": null
+      "evidence": "[Documentation publication](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345297485/attempts/2); [Release](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/releases/tag/v0.5.0-rc.17)"
     },
     {
       "id": "FR-PCI-60",
       "status": "PARTIAL",
-      "reason": "The baseline forced the FACIS palette, font and corners. R2-10 lets each tenant choose colors (with the contrast rules), one of five font stacks, the corner style and the page width, applied as soon as the branding is activated; the provider pages keep the FACIS standard. The live ad-hoc demonstration on a deployment is outstanding.",
+      "reason": "The baseline forced the FACIS palette, font and corners. R2-10 lets each tenant choose colors (with the contrast rules), one of five font stacks, the corner style and the page width, applied as soon as the branding is activated; the provider pages keep the FACIS standard. The live ad-hoc demonstration on a deployment is outstanding. This rc.17 handover run does not establish completion of this acceptance measure; manual wallet receipt is narrower evidence.",
       "measure": "Live demonstration of an ad-hoc theme change on the QA deployment during the internal milestone demonstration (R5), recorded with the test report.",
       "closes": "R2-10, R5",
-      "evidence": null
+      "evidence": "[Scoped test report](handover-rc17.md); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-61",
       "status": "PARTIAL",
-      "reason": "The deployed XFSC BDD Executor run has not been executed; the runner and the twelve @pci-ux scenarios are in the repository (R2-7).",
+      "reason": "The deployed XFSC BDD Executor run has not been executed; the runner and the twelve @pci-ux scenarios are in the repository (R2-7). This rc.17 handover run does not establish completion of this acceptance measure; manual wallet receipt is narrower evidence.",
       "measure": "Run on IONOS and OSC in R5; summary committed through a pull request; evidence linked here.",
       "closes": "R5",
-      "evidence": null
+      "evidence": "[Scoped test report](handover-rc17.md); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-73",
       "status": "PARTIAL",
-      "reason": "The Eclipse Dash check failed on the baseline because markdown 3.11.2 has no vetted licence data.",
-      "measure": "Constraints pin (R1-1) makes the check green; IP Team request for markdown 3.11.2 filed by the committer; approval recorded.",
+      "reason": "The rc.17 Eclipse Dash workflow failed. The earlier Markdown baseline explanation is not sufficient evidence of current IP clearance; release notes identify outstanding dependency-review work.",
+      "measure": "Record final Eclipse IP decisions and the resulting licence-scan evidence, or obtain the required written disposition of the deviation.",
       "closes": "R1-1",
-      "evidence": null
+      "evidence": "[Tag Dash result](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345307857); [Release notes](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/v0.5.0-rc.17/docs/release/0.5.0-rc.17.md)"
     },
     {
       "id": "FR-PCI-74",
       "status": "PARTIAL",
-      "reason": "As FR-PCI-51 for this milestone.",
-      "measure": "As FR-PCI-51.",
+      "reason": "Deployment PR #17 contains the package regenerated from rc.17 commit 30eb5e77252c449ab0310dd5499970f9711dfcd8. Kian approved head fbc42b4c81b4ce600a92487aef68f4d48e234c05. Maintainer merge is outstanding; SonarCloud reports a failed security gate.",
+      "measure": "Maintainer assesses the failed check and completes the reviewed merge. Record the actual merge commit on source issue #31 before closing it.",
       "closes": "R4-4, deployment PR",
-      "evidence": null
+      "evidence": "[Deployment PR and checks](https://github.com/eclipse-xfsc/deployment/pull/17)"
     },
     {
       "id": "FR-PCI-75",
-      "status": "PARTIAL",
-      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
-      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "status": "EVIDENCE_LINKED",
+      "reason": "IONOS and OSC deployment records identify v0.5.0-rc.17, its source commit, reported version and actual image digests. The OSC aggregate readiness flag is false because two completed Job containers are included; their successful completion was checked separately.",
+      "measure": "Retain both original deployment records and the completed-Job explanation.",
       "closes": "R4-3, R6",
-      "evidence": null
+      "evidence": "[IONOS deployment record](deployments/ionos-v0.5.0-rc.17.json); [OSC deployment record](deployments/osc-v0.5.0-rc.17.json); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-84",
       "status": "PARTIAL",
-      "reason": "As FR-PCI-73 for milestone 2.",
-      "measure": "As FR-PCI-73.",
+      "reason": "The rc.17 Eclipse Dash workflow failed. The earlier Markdown baseline explanation is not sufficient evidence of current IP clearance; release notes identify outstanding dependency-review work.",
+      "measure": "Record final Eclipse IP decisions and the resulting licence-scan evidence, or obtain the required written disposition of the deviation.",
       "closes": "R1-1",
-      "evidence": null
+      "evidence": "[Tag Dash result](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345307857); [Release notes](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/v0.5.0-rc.17/docs/release/0.5.0-rc.17.md)"
     },
     {
       "id": "FR-PCI-85",
       "status": "PARTIAL",
-      "reason": "As FR-PCI-51 for this milestone.",
-      "measure": "As FR-PCI-51.",
+      "reason": "Deployment PR #17 contains the package regenerated from rc.17 commit 30eb5e77252c449ab0310dd5499970f9711dfcd8. Kian approved head fbc42b4c81b4ce600a92487aef68f4d48e234c05. Maintainer merge is outstanding; SonarCloud reports a failed security gate.",
+      "measure": "Maintainer assesses the failed check and completes the reviewed merge. Record the actual merge commit on source issue #31 before closing it.",
       "closes": "R4-4, deployment PR",
-      "evidence": null
+      "evidence": "[Deployment PR and checks](https://github.com/eclipse-xfsc/deployment/pull/17)"
     },
     {
       "id": "FR-PCI-86",
-      "status": "PARTIAL",
-      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
-      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "status": "EVIDENCE_LINKED",
+      "reason": "IONOS and OSC deployment records identify v0.5.0-rc.17, its source commit, reported version and actual image digests. The OSC aggregate readiness flag is false because two completed Job containers are included; their successful completion was checked separately.",
+      "measure": "Retain both original deployment records and the completed-Job explanation.",
       "closes": "R4-3, R6",
-      "evidence": null
+      "evidence": "[IONOS deployment record](deployments/ionos-v0.5.0-rc.17.json); [OSC deployment record](deployments/osc-v0.5.0-rc.17.json); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-87",
       "status": "PARTIAL",
-      "reason": "PCM Mobile import of two distinct flows is not established by the software-wallet tests and the QR generation.",
+      "reason": "PCM Mobile import of two distinct flows is not established by the software-wallet tests and the QR generation. This rc.17 handover run does not establish completion of this acceptance measure; manual wallet receipt is narrower evidence.",
       "measure": "End-to-end test with PCM Mobile import of two flows on both clusters in R5, recorded with the test report.",
       "closes": "R5",
-      "evidence": null
+      "evidence": "[Scoped test report](handover-rc17.md); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-88",
       "status": "PARTIAL",
-      "reason": "PCM Mobile issuance across several tenants and users is not demonstrated.",
+      "reason": "PCM Mobile issuance across several tenants and users is not demonstrated. This rc.17 handover run does not establish completion of this acceptance measure; manual wallet receipt is narrower evidence.",
       "measure": "End-to-end test across two tenants and users on both clusters in R5.",
       "closes": "R5",
-      "evidence": null
+      "evidence": "[Scoped test report](handover-rc17.md); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-89",
-      "status": "PARTIAL",
-      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
-      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "status": "EVIDENCE_LINKED",
+      "reason": "IONOS and OSC deployment records identify v0.5.0-rc.17, its source commit, reported version and actual image digests. The OSC aggregate readiness flag is false because two completed Job containers are included; their successful completion was checked separately.",
+      "measure": "Retain both original deployment records and the completed-Job explanation.",
       "closes": "R4-3, R6",
-      "evidence": null
+      "evidence": "[IONOS deployment record](deployments/ionos-v0.5.0-rc.17.json); [OSC deployment record](deployments/osc-v0.5.0-rc.17.json); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-90",
       "status": "PARTIAL",
-      "reason": "As FR-PCI-73 for milestone 3.",
-      "measure": "As FR-PCI-73.",
+      "reason": "The rc.17 Eclipse Dash workflow failed. The earlier Markdown baseline explanation is not sufficient evidence of current IP clearance; release notes identify outstanding dependency-review work.",
+      "measure": "Record final Eclipse IP decisions and the resulting licence-scan evidence, or obtain the required written disposition of the deviation.",
       "closes": "R1-1",
-      "evidence": null
+      "evidence": "[Tag Dash result](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345307857); [Release notes](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/v0.5.0-rc.17/docs/release/0.5.0-rc.17.md)"
     },
     {
       "id": "FR-PCI-91",
       "status": "PARTIAL",
-      "reason": "Second-cluster deployment with end-to-end issuance is not recorded; the automation exists.",
-      "measure": "Deployment of the release candidate images on OSC and IONOS and end-to-end issuance in R5, recorded with digests.",
+      "reason": "Manual synthetic wallet receipt was reported on IONOS and OSC and both deployment records are available. Independent signature/status verification and complete issuance-history evidence remain outstanding. The IONOS terminal wallet attempt failed at the credential endpoint with HTTP 400 invalid_credential_request.",
+      "measure": "Complete and record independent verification using a named tool, retain the failed attempt, and document the reported upstream blocker.",
       "closes": "R5",
-      "evidence": null
+      "evidence": "[IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379); [IONOS deployment record](deployments/ionos-v0.5.0-rc.17.json); [OSC deployment record](deployments/osc-v0.5.0-rc.17.json); [Scoped test report](handover-rc17.md)"
     },
     {
       "id": "FR-PCI-92",
       "status": "PARTIAL",
-      "reason": "As FR-PCI-51 for this milestone.",
-      "measure": "As FR-PCI-51.",
+      "reason": "Deployment PR #17 contains the package regenerated from rc.17 commit 30eb5e77252c449ab0310dd5499970f9711dfcd8. Kian approved head fbc42b4c81b4ce600a92487aef68f4d48e234c05. Maintainer merge is outstanding; SonarCloud reports a failed security gate.",
+      "measure": "Maintainer assesses the failed check and completes the reviewed merge. Record the actual merge commit on source issue #31 before closing it.",
       "closes": "R4-4, deployment PR",
-      "evidence": null
+      "evidence": "[Deployment PR and checks](https://github.com/eclipse-xfsc/deployment/pull/17)"
     },
     {
       "id": "FR-PCI-93",
-      "status": "PARTIAL",
-      "reason": "The deployed version was not bound to an immutable tag; R4-3 adds scripts/record-deployment.py, which records tag, commit, image digests and reported version and checks their consistency.",
-      "measure": "Release candidate tag v0.5.0-rc.16, images built from it, and a deployment record per QA deployment (R4, R5, R6).",
+      "status": "EVIDENCE_LINKED",
+      "reason": "IONOS and OSC deployment records identify v0.5.0-rc.17, its source commit, reported version and actual image digests. The OSC aggregate readiness flag is false because two completed Job containers are included; their successful completion was checked separately.",
+      "measure": "Retain both original deployment records and the completed-Job explanation.",
       "closes": "R4-3, R6",
-      "evidence": null
+      "evidence": "[IONOS deployment record](deployments/ionos-v0.5.0-rc.17.json); [OSC deployment record](deployments/osc-v0.5.0-rc.17.json); [IONOS](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992513386); [OSC](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6986540721); [OSC record](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/issues/32#issuecomment-6992613379)"
     },
     {
       "id": "FR-PCI-94",
       "status": "PARTIAL",
-      "reason": "As FR-PCI-73 for milestone 4.",
-      "measure": "As FR-PCI-73.",
+      "reason": "The rc.17 Eclipse Dash workflow failed. The earlier Markdown baseline explanation is not sufficient evidence of current IP clearance; release notes identify outstanding dependency-review work.",
+      "measure": "Record final Eclipse IP decisions and the resulting licence-scan evidence, or obtain the required written disposition of the deviation.",
       "closes": "R1-1",
-      "evidence": null
+      "evidence": "[Tag Dash result](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345307857); [Release notes](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/v0.5.0-rc.17/docs/release/0.5.0-rc.17.md)"
     },
     {
       "id": "FR-PCI-95",
-      "status": "PARTIAL",
-      "reason": "Docker Hub image publication and GitHub Release chart delivery are configured but not yet executed for the final tag. No Harbor publication or acceptance is claimed.",
-      "measure": "After the committer merges and tags the reviewed source, publish the tested images to Docker Hub, attach charts and SBOMs to the release, record immutable digests, and obtain QA confirmation of the registry delivery requirement.",
+      "status": "EVIDENCE_LINKED",
+      "reason": "The rc.17 images were published to Docker Hub; charts, SBOMs and publication records are attached to the GitHub release. This records executed delivery, not Harbor publication or contractual acceptance of a registry substitution.",
+      "measure": "QA must confirm the registry delivery requirement and obtain any required written agreement for the Docker Hub delivery.",
       "closes": "R6",
-      "evidence": null
+      "evidence": "[Release assets and publication records](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/releases/tag/v0.5.0-rc.17)"
     },
     {
       "id": "FR-PCI-96",
-      "status": "PARTIAL",
-      "reason": "Stale statements of earlier CI results were corrected in R2-8, R3-7 and R3-8; the reviewed, versioned and published documentation of the release candidate is outstanding.",
-      "measure": "Review of the documentation pull requests and publication on the release candidate tag.",
+      "status": "EVIDENCE_LINKED",
+      "reason": "The Documentation workflow succeeded on v0.5.0-rc.17, attempt 2.",
+      "measure": "Retain the successful tag publication run as documentation evidence.",
       "closes": "R3-8, R6",
-      "evidence": null
+      "evidence": "[Documentation publication](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345297485/attempts/2); [Release](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/releases/tag/v0.5.0-rc.17)"
     },
     {
       "id": "FR-PCI-97",
       "status": "PARTIAL",
-      "reason": "As FR-PCI-73 for the final milestone.",
-      "measure": "As FR-PCI-73.",
+      "reason": "The rc.17 Eclipse Dash workflow failed. The earlier Markdown baseline explanation is not sufficient evidence of current IP clearance; release notes identify outstanding dependency-review work.",
+      "measure": "Record final Eclipse IP decisions and the resulting licence-scan evidence, or obtain the required written disposition of the deviation.",
       "closes": "R1-1",
-      "evidence": null
+      "evidence": "[Tag Dash result](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345307857); [Release notes](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/blob/v0.5.0-rc.17/docs/release/0.5.0-rc.17.md)"
     },
     {
       "id": "FR-PCI-101",
       "status": "GAP",
-      "reason": "An all-green workflow result cannot be claimed while the Eclipse Dash workflow is red on main.",
-      "measure": "All workflows green on the release candidate tag after R1-1; the run recorded in the evidence package.",
+      "reason": "An all-green release workflow result is not established: the rc.17 Eclipse Dash run failed. A decision to disregard a gate does not convert the failed run into a passing result.",
+      "measure": "Obtain the required passing workflow evidence or record an explicitly agreed deviation without claiming all-green CI.",
       "closes": "R6",
-      "evidence": null
+      "evidence": "[Failed tag Dash run](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/actions/runs/44345307857); [Release](https://github.com/eclipse-xfsc/facis-fap-principal-credential-issuance/releases/tag/v0.5.0-rc.17)"
     }
   ]
 }
